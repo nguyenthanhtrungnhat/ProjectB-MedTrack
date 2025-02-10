@@ -1,0 +1,80 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.margin {
+    margin: 15px;
+}
+
+.padding {
+    padding: 15px;
+}
+
+.border {
+    border-radius: 5px;
+}
+
+.marginBottom {
+    margin-bottom: 15px;
+}
+
+.blueText {
+    color: #2290B0;
+}
+
+.center {
+    align-items: center;
+}
+
+.room {
+    background-color: #D8FBF7;
+}
+
+.mainBg {
+    background-color: #A5CFCC;
+    padding-top: 15px;
+}
+
+.whiteBg {
+    background-color: white;
+}
+
+.custom-navbar {
+    background: linear-gradient(90deg, #47D5FF 0%, #ABF9CE 100%);
+    padding-left: 30px;
+}
+
+.whiteText {
+    color: white;
+
+}
+
+.medSche {
+    height: 142px;
+}
+.medicineSchedule{
+    height: 174px;
+}
+.medicineScheduleDetail{
+    height: 174px;
+}
+.hasInformation{
+    height: 427px;
+}
+.noPl{
+    padding-left: 0;
+}
+.hasHomeIcon::before {
+    content: "\f015";  /* Unicode for FontAwesome home icon */
+    font-family: "fontawesome"; /* Ensure the correct font is used */
+    margin-right: 8px; /* Space between icon and text */
+    color: white;
+}
+
+.hasProfileIcon::before {
+    content: "\f007";  /* Unicode for FontAwesome home icon */
+    font-family: "fontawesome"; /* Ensure the correct font is used */
+    margin-right: 8px; /* Space between icon and text */
+    color: white;
+}
