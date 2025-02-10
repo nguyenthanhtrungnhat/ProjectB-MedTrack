@@ -1,224 +1,102 @@
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Grid from '@mui/material/Grid2';
-import Paper from '@mui/material/Paper';
-import { styled } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
-const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-    ...theme.applyStyles('dark', {
-        backgroundColor: '#1A2027',
-    }),
-}));
+import './Test.css'
 export default function Screen() {
     return (
-        <>
-            <Box sx={{ flexGrow: 1 }}>
-                <Grid container spacing={2}>
+        <div className="container">
+            <div className="row">
+                <div className="col-9 border">
+                    <div className="row">
+                        <div className="col-6 border ">
+                            <div className="row">
+                                <div className="col-9">
 
-                    <Grid size={10}>
-                        <Item>
-                            <Grid container spacing={2}>
+                                    <h5>Nurse information</h5>
+                                    <p>Name:</p>
+                                    <p>Name:</p>
+                                    <p>Name:</p>
+                                    <p>Name:</p>
+                                    <p>Name:</p>
+                                    <p>Name:</p>
+                                    <p>Name:</p>
+                                </div>
+                                <div className="col-3">
+                                    <img src="" alt="" />
+                                    <p>2131200088</p>
+                                </div>
+                            </div>
 
-                                <Grid size={8}>
-                                    <Item>
-                                        size=8
-                                        size=8 size=8 size=8 size=8 size=8 size=8
-                                    </Item>
-                                </Grid>
-                                <Grid size={4}>
-                                    <Item>
-                                        <Grid container spacing={2}>
-                                            <Grid size={12}>
-                                                <Item>
-                                                    size=12
-                                                </Item>
-                                            </Grid>
-                                            <Grid size={12}>
-                                                <Item>
-                                                    size=12
-                                                </Item>
-                                            </Grid>
-                                        </Grid>
-                                    </Item>
-                                </Grid>
-                                <Grid size={4}>
-                                    <Item>
-                                        <Card sx={{ maxWidth: 345 }}>
-                                            <CardMedia
-                                                sx={{ height: 140 }}
-                                                image="/static/images/cards/contemplative-reptile.jpg"
-                                                title="green iguana"
-                                            />
-                                            <CardContent>
-                                                <Typography gutterBottom variant="h5" component="div">
-                                                    Lizard
-                                                </Typography>
-                                                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                                                    species, ranging across all continents except Antarctica
-                                                </Typography>
-                                            </CardContent>
-                                            <CardActions>
-                                                <Button size="small">Share</Button>
-                                                <Button size="small">Learn More</Button>
-                                            </CardActions>
-                                        </Card>
+                        </div>
+                        <div className="col-6 ">
+                            <div className="row">
+                                <div className="col-12 border medicineSchedule ">Schedule</div>
+                                <div className="col-12 border medicineScheduleDetail ">Details</div>
+                            </div>
+                        </div>
+                        <div className="col-12 border roomList roomPadding">
+                            <div className="row">
+                                <div className="col-4 padding">
+                                    <div className="card">
+                                        <div className="card-body">
+                                            <h5 className="card-title">Special title treatment</h5>
+                                            <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-4 padding">
+                                    <div className="card">
+                                        <div className="card-body">
+                                            <h5 className="card-title">Special title treatment</h5>
+                                            <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-4 padding">
+                                    <div className="card">
+                                        <div className="card-body">
+                                            <h5 className="card-title">Special title treatment</h5>
+                                            <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-4 padding">
+                                    <div className="card">
+                                        <div className="card-body">
+                                            <h5 className="card-title">Special title treatment</h5>
+                                            <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-4 padding">
+                                    <div className="card">
+                                        <div className="card-body">
+                                            <h5 className="card-title">Special title treatment</h5>
+                                            <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-4 padding">
+                                    <div className="card">
+                                        <div className="card-body">
+                                            <h5 className="card-title">Special title treatment</h5>
+                                            <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                                    </Item>
-                                </Grid>
-                                <Grid size={4}>
-                                    <Item>
-                                        <Card sx={{ maxWidth: 345 }}>
-                                            <CardMedia
-                                                sx={{ height: 140 }}
-                                                image="/static/images/cards/contemplative-reptile.jpg"
-                                                title="green iguana"
-                                            />
-                                            <CardContent>
-                                                <Typography gutterBottom variant="h5" component="div">
-                                                    Lizard
-                                                </Typography>
-                                                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                                                    species, ranging across all continents except Antarctica
-                                                </Typography>
-                                            </CardContent>
-                                            <CardActions>
-                                                <Button size="small">Share</Button>
-                                                <Button size="small">Learn More</Button>
-                                            </CardActions>
-                                        </Card>
-
-                                    </Item>
-                                </Grid>
-                                <Grid size={4}>
-                                    <Item>
-                                        <Card sx={{ maxWidth: 345 }}>
-                                            <CardMedia
-                                                sx={{ height: 140 }}
-                                                image="/static/images/cards/contemplative-reptile.jpg"
-                                                title="green iguana"
-                                            />
-                                            <CardContent>
-                                                <Typography gutterBottom variant="h5" component="div">
-                                                    Lizard
-                                                </Typography>
-                                                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                                                    species, ranging across all continents except Antarctica
-                                                </Typography>
-                                            </CardContent>
-                                            <CardActions>
-                                                <Button size="small">Share</Button>
-                                                <Button size="small">Learn More</Button>
-                                            </CardActions>
-                                        </Card>
-
-                                    </Item>
-                                </Grid>
-                                <Grid size={4}>
-                                    <Item>
-                                        <Card sx={{ maxWidth: 345 }}>
-                                            <CardMedia
-                                                sx={{ height: 140 }}
-                                                image="/static/images/cards/contemplative-reptile.jpg"
-                                                title="green iguana"
-                                            />
-                                            <CardContent>
-                                                <Typography gutterBottom variant="h5" component="div">
-                                                    Lizard
-                                                </Typography>
-                                                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                                                    species, ranging across all continents except Antarctica
-                                                </Typography>
-                                            </CardContent>
-                                            <CardActions>
-                                                <Button size="small">Share</Button>
-                                                <Button size="small">Learn More</Button>
-                                            </CardActions>
-                                        </Card>
-
-                                    </Item>
-                                </Grid>
-                                <Grid size={4}>
-                                    <Item>
-                                        <Card sx={{ maxWidth: 345 }}>
-                                            <CardMedia
-                                                sx={{ height: 140 }}
-                                                image="/static/images/cards/contemplative-reptile.jpg"
-                                                title="green iguana"
-                                            />
-                                            <CardContent>
-                                                <Typography gutterBottom variant="h5" component="div">
-                                                    Lizard
-                                                </Typography>
-                                                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                                                    species, ranging across all continents except Antarctica
-                                                </Typography>
-                                            </CardContent>
-                                            <CardActions>
-                                                <Button size="small">Share</Button>
-                                                <Button size="small">Learn More</Button>
-                                            </CardActions>
-                                        </Card>
-
-                                    </Item>
-                                </Grid>
-                                <Grid size={4}>
-                                    <Item>
-                                        <Card sx={{ maxWidth: 345 }}>
-                                            <CardMedia
-                                                sx={{ height: 140 }}
-                                                image="/static/images/cards/contemplative-reptile.jpg"
-                                                title="green iguana"
-                                            />
-                                            <CardContent>
-                                                <Typography gutterBottom variant="h5" component="div">
-                                                    Lizard
-                                                </Typography>
-                                                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                                                    species, ranging across all continents except Antarctica
-                                                </Typography>
-                                            </CardContent>
-                                            <CardActions>
-                                                <Button size="small">Share</Button>
-                                                <Button size="small">Learn More</Button>
-                                            </CardActions>
-                                        </Card>
-
-                                    </Item>
-                                </Grid>
-                            </Grid>
-                        </Item>
-                    </Grid>
-                    <Grid size={2}>
-                        <Item>
-                            <Grid container spacing={2}>
-                                <Grid size={12}>
-                                    <Item>size=12</Item>
-                                </Grid>
-                                <Grid size={12}>
-                                    <Item>size=12</Item>
-                                </Grid>
-                            </Grid>
-                        </Item>
-                    </Grid>
-
-
-                </Grid>
-            </Box>
-        </>
-    )
+                        </div>
+                    </div>
+                </div>
+                <div className="col-3 border">
+                    <div className="row">
+                        <div className="col-12 border  login padding">Side 1
+                            <p>0922639956</p>
+                            <p>Nguyen Thanh Trung Nhat</p>
+                            <button type="button" className="btn btn-danger">Danger</button>
+                        </div>
+                        <div className="col-12 border feature">Side 2</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 }
