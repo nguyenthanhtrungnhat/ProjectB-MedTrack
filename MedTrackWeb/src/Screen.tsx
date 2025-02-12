@@ -1,7 +1,7 @@
 import './Test.css'
 export default function Screen() {
     return (
-        <>
+        <div className='vh-100'>
             <div className="header">
                 <nav className="navbar navbar-expand-lg navbar-light custom-navbar">
                     <a className="navbar-brand " href="#"><h4 className='whiteText'>MedTrack</h4></a>
@@ -17,7 +17,7 @@ export default function Screen() {
                     </div>
                 </nav>
             </div>
-            <div className="container-fluid mainBg vh-100">
+            <div className="container-fluid mainBg ">
                 <div className="row">
                     <div className="col-10">
                         <div className="row">
@@ -159,7 +159,7 @@ export default function Screen() {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
 
     );
 }
