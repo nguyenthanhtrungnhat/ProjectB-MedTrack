@@ -18,7 +18,7 @@ export default function Screen() {
     return (
         <div className='vh-100'>
             <Header />
-            <div className="container-fluid mainBg">
+            <div className="container-fluid mainBg main-content">
                 <div className="row">
                     <div className="col-10">
                         <div className="row">

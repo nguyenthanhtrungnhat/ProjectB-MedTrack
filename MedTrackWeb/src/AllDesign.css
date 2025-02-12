@@ -90,3 +90,6 @@
 .roomBtn{
     border: none;
 }
+.main-content {
+    margin-top: 65px; /* Adjust based on your header height */
+}

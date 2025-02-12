@@ -1,7 +1,7 @@
 import logo from './images/logo.png'
 export default function Header() {
     return (
-        <div className="header dropShadow">
+        <div className="header dropShadow fixed-top">
             <nav className="navbar navbar-expand-lg navbar-light custom-navbar">
                 <img src={logo} className="logo" />
                 <a className="navbar-brand " href="#"><h4 className='whiteText'> MedTrack</h4></a>
