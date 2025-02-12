@@ -16,7 +16,7 @@
    
 }
 .dropShadow{
-    filter: drop-shadow(10px 10px 5px grey);
+    filter: drop-shadow(10px 10px 5px #C3c3c3);
 }
 
 .marginBottom {
