@@ -27,7 +27,6 @@ export default function Screen() {
                                 <Information
                                     image={user.image}
                                     name={`${user.firstName} ${user.lastName}`}
-                                    age={user.age}
                                     gender={user.gender}
                                     dob={user.birthDate}
                                     phone={user.phone}
