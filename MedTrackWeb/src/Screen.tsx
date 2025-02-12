@@ -2,12 +2,12 @@ import axios from 'axios';
 import Header from './Header';
 import Room from './Room';
 import './AllDesign.css';
-import Information from './Information';
+import NurseInformation from './NurseInformation';
 import { useEffect, useState } from 'react';
-import { PatientProps } from './interface';
+import { NurseProps } from './interface';
 
 export default function Screen() {
-    const [user, setUser] = useState<PatientProps | null>(null);
+    const [user, setUser] = useState<NurseProps | null>(null);
 
     useEffect(() => {
         axios.get('https://dummyjson.com/users/1')
@@ -18,13 +18,13 @@ export default function Screen() {
     return (
         <div className='vh-100'>
             <Header />
-            <div className="container-fluid mainBg main-content">
+            <div className="container-fluid mainBg main-content vh-100">
                 <div className="row">
                     <div className="col-10">
                         <div className="row">
                             {/* ✅ Only render Information when user is not null */}
                             {user && (
-                                <Information
+                                <NurseInformation
                                     image={user.image}
                                     name={`${user.firstName} ${user.lastName}`}
                                     gender={user.gender}

@@ -180,3 +180,18 @@
 .greenText {
     color: green;
 }
+.patientImg{
+    height: 226px;
+    width: 82px;
+}
+.pluseImg{
+    height: 34px;
+    width: 30px;
+}
+.tempImg{
+    height: 35px;
+    width: 14px;
+}
+.paddingLeft20{
+    padding-left: 20px;
+}

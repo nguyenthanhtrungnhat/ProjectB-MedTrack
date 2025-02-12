@@ -1,12 +1,12 @@
-import { PatientProps } from "./interface";
+import {  PatientProps } from "./interface";
 
-export default function Information({ image, name, gender, dob, phone, id, address, email }: PatientProps) {
+export default function PatientInformation({ image, name, gender, dob, phone, id, address, email }: PatientProps) {
     return (
-        <div className="col-6 ">
+      
             <div className="hasInformation border padding whiteBg dropShadow">
                 <div className="row">
                     <div className="col-8">
-                        <h5 className='blueText'>Nurse information</h5>
+                        <h5 className='blueText'>Patient information</h5>
                         <p className='blueText m-4'>Full name: {name}</p>
                         <p className='blueText m-4'>Date of birth: {dob}</p>
                         <p className='blueText m-4'>Gender: {gender}</p>
@@ -21,6 +21,6 @@ export default function Information({ image, name, gender, dob, phone, id, addre
                     </div>
                 </div>
             </div>
-        </div>
+       
     )
 }

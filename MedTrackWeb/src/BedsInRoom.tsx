@@ -1,40 +1,34 @@
-
 import Header from './Header';
-import Room from './Room';
 import './AllDesign.css';
-
-
+import Bed from './Bed';
 export default function BedsInRoom() {
-
-
-
     return (
         <div className='vh-100'>
             <Header />
-            <div className="container-fluid mainBg main-content">
+            <div className="container-fluid mainBg main-content vh-100">
                 <div className="row">
                     <div className="col-10">
                         <div className="hasRoomList border padding whiteBg dropShadow marginBottom">
                             <h2 className='blueText text-center marginBottom'>Bed list</h2>
                             <div>
                                 <div className="row">
-                                    <Room />
-                                    <Room />
-                                    <Room />
-                                    <Room />
-                                    <Room />
-                                    <Room />
+                                    <Bed />
+                                    <Bed />
+                                    <Bed />
+                                    <Bed />
+                                    <Bed />
+                                    <Bed />
                                 </div>
                             </div>
                             <h2 className='greenText text-center marginBottom'>Empty bed</h2>
                             <div>
                                 <div className="row">
-                                    <Room />
-                                    <Room />
-                                    <Room />
-                                    <Room />
-                                    <Room />
-                                    <Room />
+                                    <Bed />
+                                    <Bed />
+                                    <Bed />
+                                    <Bed />
+                                    <Bed />
+                                    <Bed />
                                 </div>
                             </div>
                         </div>
