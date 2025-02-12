@@ -13,7 +13,6 @@
 
 .border {
     border-radius: 10px;
-   
 }
 .dropShadow{
     filter: drop-shadow(4px 4px 7px gray);
@@ -51,9 +50,14 @@
 
 .whiteText {
     color: white;
-
 }
-
+.blueBg{
+    background-color: #47D5FF;
+}
+.loginHead{
+    border-radius: 10px 10px 0 0 ;
+    padding :10px;
+}
 .medicineSchedule{
     height: 174px;
 }
@@ -79,8 +83,15 @@
     margin-right: 8px; /* Space between icon and text */
     color: white;
 }
+
+.loginHead::before {
+    content: "\f007";  /* Unicode for FontAwesome home icon */
+    font-family: "fontawesome"; /* Ensure the correct font is used */
+    margin-right: 8px; /* Space between icon and text */
+    color: white;
+}
 .login{
-    height: 174px;
+    height: 205px;
 }
 .logo{
     height: 40px;

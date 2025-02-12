@@ -73,14 +73,16 @@ export default function Screen() {
                         </div>
                     </div>
                     <div className="col-2 noPl">
-                        <div className="leftBody padding border whiteBg marginBottom dropShadow">
+                        <div className="leftBody border whiteBg marginBottom dropShadow">
                             <div className="row">
-                                <div className="col-12 login">
-                                    <h5>Account</h5>
-                                    <p>0922639956</p>
-                                    <p>Nguyen Thanh Trung Nhat</p>
-                                    <div className="d-flex justify-content-center">
-                                        <button type="button" className="btn btn-danger w-100">Logout</button>
+                                <div className="col-12 login ">
+                                    <h5 className='whiteText blueBg loginHead'>Account</h5>
+                                    <div className="padding">
+                                        <p>0922639956</p>
+                                        <p>Nguyen Thanh Trung Nhat</p>
+                                        <div className="d-flex justify-content-center">
+                                            <button type="button" className="btn btn-danger w-100">Logout</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
