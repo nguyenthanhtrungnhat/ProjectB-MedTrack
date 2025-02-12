@@ -119,15 +119,7 @@ export default function Screen() {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="col-4 marginBottom">
-                                                <div className="card room">
-                                                    <div className="card-body">
-                                                        <h5 className="card-title">Room 001</h5>
-                                                        <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                                                        <h6 className='blueText text-center'>Emergency Department</h6>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                           
                                         </div>
                                     </div>
                                 </div>
@@ -147,9 +139,9 @@ export default function Screen() {
                                 </div>
                             </div>
                         </div>
-                        <div className="leftBody padding border whiteBg marginBottom">
+                        <div className="leftBody padding border whiteBg ">
                             <div className="row">
-                                <div className="col-12 border feature padding whiteBg">
+                                <div className="col-12  feature padding whiteBg ">
                                     <h5>Feature</h5>
                                 </div>
 
