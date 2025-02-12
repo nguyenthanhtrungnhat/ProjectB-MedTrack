@@ -17,7 +17,7 @@ export default function Screen() {
                     </div>
                 </nav>
             </div>
-            <div className="container-fluid mainBg">
+            <div className="container-fluid mainBg vh-100">
                 <div className="row">
                     <div className="col-10">
                         <div className="row">
