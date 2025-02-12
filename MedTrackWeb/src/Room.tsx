@@ -1,3 +1,4 @@
+import axios from 'axios';
 import Header from './Header';
 import Room from './Room';
 import './AllDesign.css';
@@ -9,9 +10,8 @@ export default function Screen() {
     const [user, setUser] = useState<PatientProps | null>(null);
 
     useEffect(() => {
-        fetch('https://dummyjson.com/users/1')
-            .then(response => response.json())
-            .then(data => setUser(data)) // Set user directly
+        axios.get('https://dummyjson.com/users/1')
+            .then(response => setUser(response.data)) // Axios auto-parses JSON
             .catch(error => console.error('Error fetching user:', error));
     }, []);
 
