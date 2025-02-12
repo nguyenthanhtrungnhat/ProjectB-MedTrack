@@ -14,7 +14,8 @@
 .border {
     border-radius: 10px;
 }
-.dropShadow{
+
+.dropShadow {
     filter: drop-shadow(4px 4px 7px gray);
 }
 
@@ -51,56 +52,131 @@
 .whiteText {
     color: white;
 }
-.blueBg{
+
+.blueBg {
     background-color: #47D5FF;
 }
-.loginHead{
-    border-radius: 10px 10px 0 0 ;
-    padding :10px;
+
+.loginHead {
+    border-radius: 10px 10px 0 0;
+    padding: 10px;
 }
-.medicineSchedule{
+
+.announceHead {
+    padding: 10px;
+}
+
+.medicineSchedule {
     height: 174px;
 }
-.medicineScheduleDetail{
+
+.medicineScheduleDetail {
     height: 174px;
 }
-.hasInformation{
+
+.hasInformation {
     height: 427px;
 }
-.noPl{
+
+.noPl {
     padding-left: 0;
 }
+
 .hasHomeIcon::before {
-    content: "\f015";  /* Unicode for FontAwesome home icon */
-    font-family: "fontawesome"; /* Ensure the correct font is used */
-    margin-right: 8px; /* Space between icon and text */
+    content: "\f015";
+    /* Unicode for FontAwesome home icon */
+    font-family: "fontawesome";
+    /* Ensure the correct font is used */
+    margin-right: 8px;
+    /* Space between icon and text */
     color: white;
 }
 
 .hasProfileIcon::before {
-    content: "\f007";  /* Unicode for FontAwesome home icon */
-    font-family: "fontawesome"; /* Ensure the correct font is used */
-    margin-right: 8px; /* Space between icon and text */
+    content: "\f007";
+    /* Unicode for FontAwesome home icon */
+    font-family: "fontawesome";
+    /* Ensure the correct font is used */
+    margin-right: 8px;
+    /* Space between icon and text */
     color: white;
 }
 
 .loginHead::before {
-    content: "\f007";  /* Unicode for FontAwesome home icon */
-    font-family: "fontawesome"; /* Ensure the correct font is used */
-    margin-right: 8px; /* Space between icon and text */
+    content: "\f007";
+    /* Unicode for FontAwesome home icon */
+    font-family: "fontawesome";
+    /* Ensure the correct font is used */
+    margin-right: 8px;
+    /* Space between icon and text */
     color: white;
 }
-.login{
+
+.featureHead::before {
+    content: "\f085";
+    /* Unicode for FontAwesome home icon */
+    font-family: "fontawesome";
+    /* Ensure the correct font is used */
+    margin-right: 8px;
+    /* Space between icon and text */
+    color: white;
+}
+
+.announceHead::before {
+    content: "\f0f3";
+    /* Unicode for FontAwesome home icon */
+    font-family: "fontawesome";
+    /* Ensure the correct font is used */
+    margin-right: 8px;
+    /* Space between icon and text */
+    color: white;
+}
+
+.login {
     height: 205px;
 }
-.logo{
+
+.logo {
     height: 40px;
     margin-bottom: 8px;
-    margin-right:10px;
+    margin-right: 10px;
 }
-.roomBtn{
+
+.roomBtn {
     border: none;
 }
+
 .main-content {
-    margin-top: 65px; /* Adjust based on your header height */
+    margin-top: 65px;
+    /* Adjust based on your header height */
+}
+
+.featureHead {
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+}
+
+.size50 {
+    font-size: 50px;
+}
+.size25
+{
+    font-size: 25px;
+}
+.padding50 {
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.square170-250 {
+    height: 170px;
+    width: 250px;
+}
+
+.padding20 {
+    padding: 20px;
+}
+
+.greenText {
+    color: green;
 }
