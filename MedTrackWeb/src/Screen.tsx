@@ -37,14 +37,14 @@ export default function Screen() {
                             )}
 
                             <div className="col-6 noPl">
-                                <div className="hasSchedule padding border whiteBg marginBottom">
+                                <div className="hasSchedule padding border whiteBg marginBottom dropShadow">
                                     <div className="row">
                                         <div className="col-12 medicineSchedule">
                                             <h5 className='blueText medSche'>Medicine schedule</h5>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="hasSchedule padding border whiteBg">
+                                <div className="hasSchedule padding border whiteBg dropShadow">
                                     <div className="row">
                                         <div className="col-12 medicineScheduleDetail">
                                             <div className="row">
@@ -56,7 +56,7 @@ export default function Screen() {
                                 </div>
                             </div>
                             <div className="col-12 padding">
-                                <div className="hasRoomList border padding whiteBg">
+                                <div className="hasRoomList border padding whiteBg dropShadow">
                                     <h1 className='blueText text-center'>Room list</h1>
                                     <div>
                                         <div className="row">
@@ -73,7 +73,7 @@ export default function Screen() {
                         </div>
                     </div>
                     <div className="col-2 noPl">
-                        <div className="leftBody padding border whiteBg marginBottom">
+                        <div className="leftBody padding border whiteBg marginBottom dropShadow">
                             <div className="row">
                                 <div className="col-12 login">
                                     <h5>Account</h5>
@@ -85,7 +85,7 @@ export default function Screen() {
                                 </div>
                             </div>
                         </div>
-                        <div className="leftBody padding border whiteBg">
+                        <div className="leftBody padding border whiteBg dropShadow">
                             <div className="row">
                                 <div className="col-12 feature padding whiteBg">
                                     <h5>Feature</h5>

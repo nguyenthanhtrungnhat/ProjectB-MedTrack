@@ -13,6 +13,10 @@
 
 .border {
     border-radius: 10px;
+   
+}
+.dropShadow{
+    filter: drop-shadow(3px 3px 2px gray);
 }
 
 .marginBottom {
@@ -82,4 +86,7 @@
     height: 40px;
     margin-bottom: 8px;
     margin-right:10px;
+}
+.roomBtn{
+    border: none;
 }
