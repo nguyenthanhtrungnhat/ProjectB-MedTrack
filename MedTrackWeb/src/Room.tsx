@@ -1,8 +1,14 @@
+import { useNavigate } from "react-router-dom";
 export default function Room() {
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate("/beds-in-room"); // Change to the actual route
+    };
     return (
         <>
             <div className="col-4 marginBottom">
-                <button className="roomBtn">
+                <button className="roomBtn"onClick={handleClick}>
                     <div className="card room">
                         <div className="card-body">
                             <h5 className="card-title">Room 001</h5>
