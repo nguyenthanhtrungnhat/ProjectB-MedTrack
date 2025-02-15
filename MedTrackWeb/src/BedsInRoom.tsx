@@ -3,9 +3,9 @@ import './AllDesign.css';
 import Bed from './Bed';
 export default function BedsInRoom() {
     return (
-        <div className='vh-100'>
+        <div >
             <Header />
-            <div className="container-fluid mainBg main-content vh-100">
+            <div className="container-fluid mainBg main-content ">
                 <div className="row">
                     <div className="col-10">
                         <div className="hasRoomList border padding whiteBg dropShadow marginBottom">

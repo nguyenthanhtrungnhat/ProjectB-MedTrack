@@ -148,8 +148,9 @@
 
 .main-content {
     margin-top: 65px;
-    /* Adjust based on your header height */
+   
 }
+
 
 .featureHead {
     padding: 10px;
@@ -195,3 +196,4 @@
 .paddingLeft20{
     padding-left: 20px;
 }
+
