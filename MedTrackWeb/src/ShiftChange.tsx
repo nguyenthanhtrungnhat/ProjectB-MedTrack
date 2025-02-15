@@ -6,7 +6,7 @@ export default function ShiftChange() {
     return (
         <div >
             <Header />
-            <div className="container-fluid scBg main-content a">
+            <div className="container-fluid scBg main-content vh-100 padding">
                 <div className="row">
                     <div className="col-10">
                     <div className="d-flex flex-column justify-content-center align-items-center">
