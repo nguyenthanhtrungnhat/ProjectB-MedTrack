@@ -7,6 +7,7 @@ import { PatientProps } from './interface';
 import patientImg from './images/Untitled-1.png';
 import pluseImg from './images/pluse.png';
 import tempImg from './images/nhietdo.png';
+import { Link } from 'react-router-dom';
 export default function BedDetails() {
     const [user, setUser] = useState<PatientProps | null>(null);
 
@@ -133,8 +134,17 @@ export default function BedDetails() {
                                     <h6 className='whiteText blueBg featureHead'>Feature</h6>
                                     <div className="padding">
                                         <ul className='list-unstyled'>
-                                            <li><a href="" className="text-decoration-none">Shift change registration</a></li>
-                                            <li><a href="" className="text-decoration-none">Daily checking health</a></li>
+                                            <li>
+                                                <Link to="/shift-change" className="text-decoration-none">
+                                                    Shift change registration
+                                                </Link>
+                                            </li>
+
+                                            <li>
+                                                <Link to="/daily-checking" className="text-decoration-none">
+                                                    Daily checking health
+                                                </Link>
+                                            </li>
                                         </ul>
                                     </div>
                                     <h6 className='whiteText blueBg announceHead'>Lastes announcements</h6>

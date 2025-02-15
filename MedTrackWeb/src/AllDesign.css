@@ -148,7 +148,6 @@
 
 .main-content {
     margin-top: 65px;
-   
 }
 
 
@@ -160,10 +159,11 @@
 .size50 {
     font-size: 50px;
 }
-.size25
-{
+
+.size25 {
     font-size: 25px;
 }
+
 .padding50 {
     padding-left: 50px;
     padding-right: 50px;
@@ -181,19 +181,54 @@
 .greenText {
     color: green;
 }
-.patientImg{
+
+.patientImg {
     height: 226px;
     width: 82px;
 }
-.pluseImg{
+
+.pluseImg {
     height: 34px;
     width: 30px;
 }
-.tempImg{
+
+.tempImg {
     height: 35px;
     width: 14px;
 }
-.paddingLeft20{
+
+.paddingLeft20 {
     padding-left: 20px;
 }
 
+.dlcForm {
+    background: linear-gradient(90deg, #82DBF7 0%, #B6F09C 100%);
+}
+
+.h1359 {
+    height: 1359px;
+}
+.dlcBtn{
+    background: linear-gradient(90deg, #259FC5 0%, #C1FFA5 100%);  
+}
+.mb80{
+    margin-bottom: 80px;
+}
+.dlcForm p{
+    color: #505F63;
+    margin-bottom: 6px;
+    margin-top: 20px;
+}
+.dlcgray{
+    color: #505F63;
+}
+.scBg{
+    background: #D5D5D5;
+}
+.scBlue{
+    color: #2290B0;
+}
+.h1Sc{
+    margin-top: 150px;
+    margin-bottom: 50px;
+}

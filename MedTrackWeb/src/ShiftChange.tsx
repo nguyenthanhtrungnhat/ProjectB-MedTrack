@@ -1,37 +1,29 @@
 import Header from './Header';
 import './AllDesign.css';
-import Bed from './Bed';
 import { Link } from 'react-router-dom';
-export default function BedsInRoom() {
+export default function ShiftChange() {
+
     return (
         <div >
             <Header />
-            <div className="container-fluid mainBg main-content ">
+            <div className="container-fluid scBg main-content a">
                 <div className="row">
                     <div className="col-10">
-                        <div className="hasRoomList border padding whiteBg dropShadow marginBottom">
-                            <h2 className='blueText text-center marginBottom'>Bed list</h2>
-                            <div>
-                                <div className="row">
-                                    <Bed />
-                                    <Bed />
-                                    <Bed />
-                                    <Bed />
-                                    <Bed />
-                                    <Bed />
+                    <div className="d-flex flex-column justify-content-center align-items-center">
+                            <h1 className="scBlue h1Sc d-inline w-50">
+                                Shift change registration
+                                <i className="fa fa-hand-paper-o" aria-hidden="true"></i>
+                            </h1>
+                            <form className='w-50'>
+                                <div className="form-group">
+                                    <label htmlFor="exampleFormControlInput1">Email address</label>
+                                    <input type="email" className="form-control " id="exampleFormControlInput1" placeholder="name@example.com"/>
                                 </div>
-                            </div>
-                            <h2 className='greenText text-center marginBottom'>Empty bed</h2>
-                            <div>
-                                <div className="row">
-                                    <Bed />
-                                    <Bed />
-                                    <Bed />
-                                    <Bed />
-                                    <Bed />
-                                    <Bed />
+                                <div className="form-group">
+                                    <label htmlFor="exampleFormControlTextarea1">Example textarea</label>
+                                    <textarea className="form-control" id="exampleFormControlTextarea1" ></textarea>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                     <div className="col-2 noPl">
@@ -55,7 +47,7 @@ export default function BedsInRoom() {
                                     <h6 className='whiteText blueBg featureHead'>Feature</h6>
                                     <div className="padding">
                                         <ul className='list-unstyled'>
-                                        <li>
+                                            <li>
                                                 <Link to="/shift-change" className="text-decoration-none">
                                                     Shift change registration
                                                 </Link>

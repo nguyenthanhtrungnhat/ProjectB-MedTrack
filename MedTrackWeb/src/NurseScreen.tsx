@@ -5,8 +5,9 @@ import './AllDesign.css';
 import NurseInformation from './NurseInformation';
 import { useEffect, useState } from 'react';
 import { NurseProps } from './interface';
+import { Link } from 'react-router-dom';
 
-export default function Screen() {
+export default function NurseScreen() {
     const [user, setUser] = useState<NurseProps | null>(null);
 
     useEffect(() => {
@@ -116,8 +117,17 @@ export default function Screen() {
                                     <h6 className='whiteText blueBg featureHead'>Feature</h6>
                                     <div className="padding">
                                         <ul className='list-unstyled'>
-                                            <li><a href="" className="text-decoration-none">Shift change registration</a></li>
-                                            <li><a href="" className="text-decoration-none">Daily checking health</a></li>
+                                            <li>
+                                                <Link to="/shift-change" className="text-decoration-none">
+                                                    Shift change registration
+                                                </Link>
+                                            </li>
+
+                                            <li>
+                                                <Link to="/daily-checking" className="text-decoration-none">
+                                                    Daily checking health
+                                                </Link>
+                                            </li>
                                         </ul>
                                     </div>
                                     <h6 className='whiteText blueBg announceHead'>Lastes announcements</h6>
@@ -146,7 +156,7 @@ export default function Screen() {
                                                 <p className="card-text p-0">Description</p>
                                             </div>
                                         </div>
-                                        
+
                                     </div>
                                 </div>
                             </div>
