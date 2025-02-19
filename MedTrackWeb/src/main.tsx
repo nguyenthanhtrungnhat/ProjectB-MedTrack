@@ -11,8 +11,8 @@ createRoot(document.getElementById('root')!).render(
      <Router>
             <Routes>
                 <Route path="/" element={<NurseScreen />} />
-                <Route path="/beds-in-room" element={<BedsInRoom />} />
-                <Route path="/bed-details" element={<BedDetails />} />
+                <Route path="/beds-in-room/:roomID" element={<BedsInRoom />} />
+                <Route path="/bed-details/:patientID" element={<BedDetails />} />
                 <Route path="/shift-change" element={<ShiftChange />} />
                 <Route path="/daily-checking" element={<DailyCheckingForm/>} />
             </Routes>

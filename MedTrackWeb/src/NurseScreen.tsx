@@ -4,16 +4,23 @@ import Room from './Room';
 import './AllDesign.css';
 import NurseInformation from './NurseInformation';
 import { useEffect, useState } from 'react';
-import { NurseProps } from './interface';
+import { NurseProps, RoomProps } from './interface';
 import { Link } from 'react-router-dom';
+
+
 
 export default function NurseScreen() {
     const [user, setUser] = useState<NurseProps | null>(null);
-
+    const url = 'http://localhost:3000/nurses/1';
+    const [rooms, setRooms] = useState<RoomProps[]>([]); // Store rooms from API
+    const roomsUrl = 'http://localhost:3000/rooms'; // API to get all rooms
     useEffect(() => {
-        axios.get('https://dummyjson.com/users/1')
+        axios.get(url)
             .then(response => setUser(response.data)) // Axios auto-parses JSON
             .catch(error => console.error('Error fetching user:', error));
+        axios.get(roomsUrl)
+            .then(response => setRooms(response.data)) // Set rooms in state
+            .catch(error => console.error('Error fetching rooms:', error));
     }, []);
 
     return (
@@ -26,14 +33,14 @@ export default function NurseScreen() {
                             {/* ✅ Only render Information when user is not null */}
                             {user && (
                                 <NurseInformation
-                                    image={user.image}
-                                    name={`${user.firstName} ${user.lastName}`}
-                                    gender={user.gender}
-                                    dob={user.birthDate}
-                                    phone={user.phone}
-                                    id={user.id}
-                                    address={user.address?.address} // ✅ Optional chaining
-                                    email={user.email}
+                                    image={'blank'}
+                                    nurseFullName={user.nurseFullName}
+                                    gender={user.gender = 1 ? 'Male' : 'Female'}
+                                    dob={user.nurseDob?.split('T')[0]} // Extract only the date part (YYYY-MM-DD)
+                                    phone={user.nursePhone}
+                                    id={user.nurseID}
+                                    address={user.address} // ✅ Optional chaining
+                                    email={user.nurseEmail}
                                 />
                             )}
 
@@ -84,12 +91,10 @@ export default function NurseScreen() {
                                     <h2 className='blueText text-center marginBottom'>Room list</h2>
                                     <div>
                                         <div className="row">
-                                            <Room />
-                                            <Room />
-                                            <Room />
-                                            <Room />
-                                            <Room />
-                                            <Room />
+                                            {/* ✅ Dynamically render rooms using .map() */}
+                                            {rooms.map((room) => (
+                                                <Room key={room.roomID} {...room} />
+                                            ))}
                                         </div>
                                     </div>
                                 </div>

@@ -1,8 +1,22 @@
 import Header from './Header';
 import './AllDesign.css';
 import Bed from './Bed';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+import { PatientProps } from './interface';
 export default function BedsInRoom() {
+    const { roomID } = useParams(); // ✅ Get roomID from URL
+    const [patients, setPatients] = useState<PatientProps[]>([]);
+
+    useEffect(() => {
+        axios.get(`http://localhost:3000/rooms/${roomID}/patients`)  // ✅ Use new API
+            .then(response => {
+                setPatients(response.data);
+            })
+            .catch(error => console.error("Error fetching patients:", error));
+    }, [roomID]);
+
     return (
         <div >
             <Header />
@@ -10,28 +24,26 @@ export default function BedsInRoom() {
                 <div className="row">
                     <div className="col-10">
                         <div className="hasRoomList border padding whiteBg dropShadow marginBottom">
-                            <h2 className='blueText text-center marginBottom'>Bed list</h2>
-                            <div>
-                                <div className="row">
-                                    <Bed />
-                                    <Bed />
-                                    <Bed />
-                                    <Bed />
-                                    <Bed />
-                                    <Bed />
-                                </div>
-                            </div>
-                            <h2 className='greenText text-center marginBottom'>Empty bed</h2>
-                            <div>
-                                <div className="row">
-                                    <Bed />
-                                    <Bed />
-                                    <Bed />
-                                    <Bed />
-                                    <Bed />
-                                    <Bed />
-                                </div>
-                            </div>
+                            {patients.length == 0 ?
+                                (
+                                    <>
+                                        <h2 className='greenText text-center marginBottom'>Empty bed</h2>
+                                        <div>
+                                            <div className="row">
+                                            </div>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <h2 className='blueText text-center marginBottom'>Bed list</h2>
+                                        <div>
+                                            <div className="row">
+                                                {patients.map(patient => <Bed key={patient.patientID} {...patient} />)}
+                                            </div>
+                                        </div>
+                                    </>
+                                )
+                            }
                         </div>
                     </div>
                     <div className="col-2 noPl">
@@ -55,7 +67,7 @@ export default function BedsInRoom() {
                                     <h6 className='whiteText blueBg featureHead'>Feature</h6>
                                     <div className="padding">
                                         <ul className='list-unstyled'>
-                                        <li>
+                                            <li>
                                                 <Link to="/shift-change" className="text-decoration-none">
                                                     Shift change registration
                                                 </Link>

@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
-export default function Bed() {
+import { PatientProps } from "./interface";
+export default function Bed({fullName,patientID}:PatientProps) {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate("/bed-details"); // Change to the actual route
+        navigate(`/bed-details/${patientID}`); // Change to the actual route
     };
     return (
         <>
@@ -13,7 +14,7 @@ export default function Bed() {
                         <div className="card-body">
                             <h5 className="card-title">Bed 001</h5>
                             <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                            <h6 className='blueText text-center'>Patient's name - id</h6>
+                            <h6 className='blueText text-center'>Patient's name: {fullName} - id: {patientID}</h6>
                         </div>
                     </div>
                 </button>

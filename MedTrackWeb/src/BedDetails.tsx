@@ -7,12 +7,12 @@ import { PatientProps } from './interface';
 import patientImg from './images/Untitled-1.png';
 import pluseImg from './images/pluse.png';
 import tempImg from './images/nhietdo.png';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 export default function BedDetails() {
     const [user, setUser] = useState<PatientProps | null>(null);
-
+    const { patientID } = useParams();
     useEffect(() => {
-        axios.get('https://dummyjson.com/users/2')
+        axios.get(`http://localhost:3000/patients/${patientID}`)
             .then(response => setUser(response.data)) // Axios auto-parses JSON
             .catch(error => console.error('Error fetching user:', error));
     }, []);
@@ -27,13 +27,13 @@ export default function BedDetails() {
                             <div className="col-6 ">
                                 {user && (
                                     <PatientInformation
-                                        image={user.image}
-                                        name={`${user.firstName} ${user.lastName}`}
-                                        gender={user.gender}
-                                        dob={user.birthDate}
+                                        image={'blank'}
+                                        fullName={user.fullName}
+                                        gender={user.gender = 1 ? 'Male' : 'Female'}
+                                        dob={user.dob?.split('T')[0]} // Extract only the date part (YYYY-MM-DD)
                                         phone={user.phone}
-                                        id={user.id}
-                                        address={user.address?.address}
+                                        patientID={user.patientID}
+                                        address={user.address} // ✅ Optional chaining
                                         email={user.email}
                                     />
                                 )}

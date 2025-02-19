@@ -1,13 +1,13 @@
 import { NurseProps } from "./interface";
 
-export default function NurseInformation({ image, name, gender, dob, phone, id, address, email }: NurseProps) {
+export default function NurseInformation({ image, nurseFullName, gender, dob, phone, id, address, email }: NurseProps) {
     return (
         <div className="col-6 ">
             <div className="hasInformation border padding whiteBg dropShadow">
                 <div className="row">
                     <div className="col-8">
                         <h5 className='blueText'>Nurse information</h5>
-                        <p className='blueText m-4'>Full name: {name}</p>
+                        <p className='blueText m-4'>Full name: {nurseFullName}</p>
                         <p className='blueText m-4'>Date of birth: {dob}</p>
                         <p className='blueText m-4'>Gender: {gender}</p>
                         <p className='blueText m-4'>Phone number: {phone}</p>
