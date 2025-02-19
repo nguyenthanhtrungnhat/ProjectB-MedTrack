@@ -148,7 +148,7 @@ app.get("/medical-records/:patientID", (req, res) => {
   const query = `
     SELECT *
     FROM MEDICALRECORDS 
-    WHERE PATIENT.patientID = ?;
+    WHERE MEDICALRECORDS.patientID = ?;
   `;
 
   db.query(query, [patientID], (err, results) => {
