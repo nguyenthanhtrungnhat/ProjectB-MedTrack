@@ -11,9 +11,9 @@ import { Link } from 'react-router-dom';
 
 export default function NurseScreen() {
     const [user, setUser] = useState<NurseProps | null>(null);
-    const url = 'http://localhost:3000/nurses/1';
+    const url = 'http://26.184.100.176:3000/nurses/1';
     const [rooms, setRooms] = useState<RoomProps[]>([]); // Store rooms from API
-    const roomsUrl = 'http://localhost:3000/rooms'; // API to get all rooms
+    const roomsUrl = 'http://26.184.100.176:3000/rooms'; // API to get all rooms
     useEffect(() => {
         axios.get(url)
             .then(response => setUser(response.data)) // Axios auto-parses JSON
