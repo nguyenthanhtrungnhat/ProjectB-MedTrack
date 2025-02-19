@@ -12,7 +12,7 @@ export default function BedDetails() {
     const [user, setUser] = useState<PatientProps | null>(null);
     const { patientID } = useParams();
     useEffect(() => {
-        axios.get(`http://localhost:3000/patients/${patientID}`)
+        axios.get(`http://26.184.100.176:3000/patients/${patientID}`)
             .then(response => setUser(response.data)) // Axios auto-parses JSON
             .catch(error => console.error('Error fetching user:', error));
     }, []);

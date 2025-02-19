@@ -10,7 +10,7 @@ export default function BedsInRoom() {
     const [patients, setPatients] = useState<PatientProps[]>([]);
 
     useEffect(() => {
-        axios.get(`http://localhost:3000/rooms/${roomID}/patients`)  // ✅ Use new API
+        axios.get(`http://26.184.100.176:3000/rooms/${roomID}/patients`)  // ✅ Use new API
             .then(response => {
                 setPatients(response.data);
             })
