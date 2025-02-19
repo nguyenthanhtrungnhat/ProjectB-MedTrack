@@ -13,4 +13,32 @@ export interface PatientProps {
     patientID: string; // Changed from 'id' to 'patientID' for consistency
     address: string;
     email: string;
+    hospitalizationsDiagnosis: string;
+    summaryCondition: string;
+    dischargeDiagnosis: string;
+
+}
+export interface RecordProps {
+    recordID: string,
+    timeCreate: string,
+    heartRate: string,
+    pulse: string,
+    height: string,
+    weight: string,
+    hurtScale: string,
+    temperature: string,
+    currentCondition: string,
+    healthStatus: string,
+    SP02: string,
+    respiratoryRate: string,
+    bloodPressure: string,
+    urine: string,
+    doctorID: string,
+    patientID: string,
+    nurseID: string
+}
+export interface Dianosis {
+    hospitalizationsDiagnosis: string,
+    summaryCondition: string,
+    dischargeDiagnosis: string;
 }
