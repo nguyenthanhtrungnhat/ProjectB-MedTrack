@@ -141,7 +141,24 @@ app.get("/patients/:patientID", (req, res) => {
     res.json(results[0]);
   });
 });
+//get medical-record by id
+app.get("/medical-records/:patientID", (req, res) => {
+  const { patientID } = req.params;
 
+  const query = `
+    SELECT *
+    FROM MEDICALRECORDS 
+    JOIN PATIENT ON PATIENT.PATIENTID = MEDICALRECORDS.PATIENTID
+    WHERE PATIENT.patientID = ?;
+  `;
+
+  db.query(query, [patientID], (err, results) => {
+    if (err) return res.status(500).json({ error: "Database error", details: err });
+    if (results.length === 0) return res.status(404).json({ error: "Patient not found" });
+
+    res.json(results[0]);
+  });
+});
 
 
 

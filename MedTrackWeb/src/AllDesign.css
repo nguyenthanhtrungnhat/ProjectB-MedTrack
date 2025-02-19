@@ -188,15 +188,22 @@
 }
 
 .pluseImg {
-    height: 34px;
-    width: 30px;
+    height: 31px;
+    width: 34px;
 }
 
 .tempImg {
     height: 35px;
     width: 14px;
 }
-
+.ntImg{
+    height: 31px;
+    width: 29px;
+}
+.bpImg{
+    height: 39px;
+    width: 39px;
+}
 .paddingLeft20 {
     padding-left: 20px;
 }
