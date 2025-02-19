@@ -148,7 +148,6 @@ app.get("/medical-records/:patientID", (req, res) => {
   const query = `
     SELECT *
     FROM MEDICALRECORDS 
-    JOIN PATIENT ON PATIENT.PATIENTID = MEDICALRECORDS.PATIENTID
     WHERE PATIENT.patientID = ?;
   `;
 
