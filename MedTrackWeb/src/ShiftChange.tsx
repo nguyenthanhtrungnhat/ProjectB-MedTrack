@@ -9,7 +9,7 @@ export default function ShiftChange() {
             <div className="container-fluid scBg main-content vh-100 padding">
                 <div className="row">
                     <div className="col-10">
-                    <div className="d-flex flex-column justify-content-center align-items-center">
+                        <div className="d-flex flex-column justify-content-center align-items-center">
                             <h1 className="scBlue h1Sc d-inline w-50">
                                 Shift change registration
                                 <i className="fa fa-hand-paper-o" aria-hidden="true"></i>
@@ -17,12 +17,16 @@ export default function ShiftChange() {
                             <form className='w-50'>
                                 <div className="form-group">
                                     <label htmlFor="exampleFormControlInput1">Email address</label>
-                                    <input type="email" className="form-control " id="exampleFormControlInput1" placeholder="name@example.com"/>
+                                    <input type="email" className="form-control " id="exampleFormControlInput1" placeholder="name@example.com" />
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="exampleFormControlTextarea1">Example textarea</label>
                                     <textarea className="form-control" id="exampleFormControlTextarea1" ></textarea>
                                 </div>
+                                <div className="form-group">
+                                    <button type="button" className="btn btn-success w-100">Submit and continue</button>
+                                </div>
+
                             </form>
                         </div>
                     </div>
