@@ -121,16 +121,13 @@ export default function BedDetails() {
                                 <div className=" padding border whiteBg marginBottom dropShadow">
                                     <h5 className='blueText'>Diagnose</h5>
                                     <p className="blueText">Hospitalization diagnosis:</p>
-                                    {/* <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p> */}
                                     <p>{user?.hospitalizationsDiagnosis}</p>
                                     <p className="blueText">Sumary of disease process and clinical course
                                         ( Onset characteristic, clinical symptoms,
                                         disease course,...):</p>
                                     <p>{user?.summaryCondition}</p>
-                                    {/* <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p> */}
                                     <p className="blueText">Discharge diagnosis: </p>
                                     <p>{user?.dischargeDiagnosis}</p>
-                                    {/* <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p> */}
                                 </div>
                             </div>
                         </div>

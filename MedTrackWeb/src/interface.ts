@@ -37,8 +37,3 @@ export interface RecordProps {
     patientID: string,
     nurseID: string
 }
-export interface Dianosis {
-    hospitalizationsDiagnosis: string,
-    summaryCondition: string,
-    dischargeDiagnosis: string;
-}
