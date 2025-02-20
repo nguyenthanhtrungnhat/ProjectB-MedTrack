@@ -1,6 +1,7 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 .margin {
@@ -28,6 +29,8 @@
 }
 
 .center {
+    display: flex;
+    justify-content: center;
     align-items: center;
 }
 
@@ -49,6 +52,17 @@
     padding-left: 30px;
 }
 
+/* Responsive Navbar */
+@media screen and (max-width: 768px) {
+    .custom-navbar {
+        padding-left: 15px;
+    }
+
+    .nav-link {
+        font-size: 14px;
+    }
+}
+
 .whiteText {
     color: white;
 }
@@ -66,11 +80,7 @@
     padding: 10px;
 }
 
-.medicineSchedule {
-    height: 174px;
-}
-
-.medicineScheduleDetail {
+.medicineSchedule, .medicineScheduleDetail {
     height: 174px;
 }
 
@@ -82,60 +92,42 @@
     padding-left: 0;
 }
 
-.hasHomeIcon::before {
-    content: "\f015";
-    /* Unicode for FontAwesome home icon */
-    font-family: "fontawesome";
-    /* Ensure the correct font is used */
+/* FontAwesome Icons */
+.hasHomeIcon::before,
+.hasProfileIcon::before,
+.loginHead::before,
+.featureHead::before,
+.announceHead::before {
+    font-family: "FontAwesome";
     margin-right: 8px;
-    /* Space between icon and text */
     color: white;
+}
+
+.hasHomeIcon::before {
+    content: "\f015"; /* Home Icon */
 }
 
 .hasProfileIcon::before {
-    content: "\f007";
-    /* Unicode for FontAwesome home icon */
-    font-family: "fontawesome";
-    /* Ensure the correct font is used */
-    margin-right: 8px;
-    /* Space between icon and text */
-    color: white;
+    content: "\f007"; /* User Icon */
 }
 
 .loginHead::before {
-    content: "\f007";
-    /* Unicode for FontAwesome home icon */
-    font-family: "fontawesome";
-    /* Ensure the correct font is used */
-    margin-right: 8px;
-    /* Space between icon and text */
-    color: white;
+    content: "\f007"; /* User Icon */
 }
 
 .featureHead::before {
-    content: "\f085";
-    /* Unicode for FontAwesome home icon */
-    font-family: "fontawesome";
-    /* Ensure the correct font is used */
-    margin-right: 8px;
-    /* Space between icon and text */
-    color: white;
+    content: "\f085"; /* Gear Icon */
 }
 
 .announceHead::before {
-    content: "\f0f3";
-    /* Unicode for FontAwesome home icon */
-    font-family: "fontawesome";
-    /* Ensure the correct font is used */
-    margin-right: 8px;
-    /* Space between icon and text */
-    color: white;
+    content: "\f0f3"; /* Bell Icon */
 }
 
 .login {
     height: 205px;
 }
 
+/* Logo */
 .logo {
     height: 40px;
     margin-bottom: 8px;
@@ -150,12 +142,20 @@
     margin-top: 65px;
 }
 
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+    .main-content {
+        margin-top: 30px;
+        padding: 10px;
+    }
+}
 
 .featureHead {
     padding: 10px;
     border-radius: 10px 10px 0 0;
 }
 
+/* Font Sizes */
 .size50 {
     font-size: 50px;
 }
@@ -164,9 +164,29 @@
     font-size: 25px;
 }
 
+/* Responsive Font Sizes */
+@media screen and (max-width: 768px) {
+    .size50 {
+        font-size: 30px;
+    }
+
+    .size25 {
+        font-size: 18px;
+    }
+}
+
+/* Padding Adjustments */
 .padding50 {
     padding-left: 50px;
     padding-right: 50px;
+}
+
+/* Responsive Padding */
+@media screen and (max-width: 768px) {
+    .padding50 {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
 }
 
 .square170-250 {
@@ -174,6 +194,15 @@
     width: 250px;
 }
 
+/* Responsive Image Sizes */
+@media screen and (max-width: 768px) {
+    .square170-250 {
+        height: 130px;
+        width: 180px;
+    }
+}
+
+/* General Spacing */
 .padding20 {
     padding: 20px;
 }
@@ -182,6 +211,14 @@
     color: green;
 }
 
+/* Responsive Layout Adjustments */
+@media screen and (max-width: 768px) {
+    .padding20 {
+        padding: 10px;
+    }
+}
+
+/* Images */
 .patientImg {
     height: 226px;
     width: 82px;
@@ -196,18 +233,22 @@
     height: 35px;
     width: 14px;
 }
-.ntImg{
+
+.ntImg {
     height: 31px;
     width: 29px;
 }
-.bpImg{
+
+.bpImg {
     height: 39px;
     width: 39px;
 }
+
 .paddingLeft20 {
     padding-left: 10px;
 }
 
+/* Form Background */
 .dlcForm {
     background: linear-gradient(90deg, #82DBF7 0%, #B6F09C 100%);
 }
@@ -215,30 +256,70 @@
 .h1359 {
     height: 1359px;
 }
-.dlcBtn{
-    background: linear-gradient(90deg, #259FC5 0%, #C1FFA5 100%);  
+
+/* Button Styling */
+.dlcBtn {
+    background: linear-gradient(90deg, #259FC5 0%, #C1FFA5 100%);
 }
-.mb80{
+
+/* Bottom Margin */
+.mb80 {
     margin-bottom: 80px;
 }
-.dlcForm p{
+
+/* Form Paragraph */
+.dlcForm p {
     color: #505F63;
     margin-bottom: 6px;
     margin-top: 20px;
 }
-.dlcgray{
+
+/* Text Color */
+.dlcgray {
     color: #505F63;
 }
-.scBg{
+
+/* Section Background */
+.scBg {
     background: #D6ECE9;
 }
-.scBlue{
+
+.scBlue {
     color: #2290B0;
 }
-.h1Sc{
+
+/* Header Spacing */
+.h1Sc {
     margin-top: 150px;
     margin-bottom: 50px;
 }
-.bannerImg{
-    height: 750px;
+
+/* Banner Image */
+.bannerImg {
+    height: 500px;
+}
+
+/* Responsive Banner */
+@media screen and (max-width: 768px) {
+    .bannerImg {
+        height: 250px;
+        width: 100%;
+    }
+}
+
+/* Responsive Grid Layout */
+@media screen and (max-width: 768px) {
+    .grid-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .grid-item {
+        width: 90%;
+        margin-bottom: 15px;
+    }
+}
+.color505F63{
+    color: #505F63;
 }

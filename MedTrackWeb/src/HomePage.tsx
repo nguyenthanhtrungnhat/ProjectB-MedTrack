@@ -1,12 +1,14 @@
 import Header from "./Header";
-
+import banner1 from './images/banner1.jpg'
+import banner2 from './images/banner2.jpg'
+import banner3 from './images/banner3.jpg'
 export default function HomePage() {
     return (
         <>
             <Header />
 
             <div className="container-fluid main-content h-100 padding">
-                <h1 className="blueText">Healthcare</h1>
+                <h1 className="blueText padding">Healthcare</h1>
                 <div id="carouselExampleCaptions" className="carousel slide" data-ride="carousel">
                     <ol className="carousel-indicators">
                         <li data-target="#carouselExampleCaptions" data-slide-to="0" className="active"></li>
@@ -15,16 +17,13 @@ export default function HomePage() {
                     </ol>
                     <div className="carousel-inner">
                         <div className="carousel-item active">
-                            <img src="https://static.vecteezy.com/system/resources/previews/000/382/288/original/vector-healthcare-and-medical-banner-template-background.jpg" className="d-block w-100" alt="..." />
-
+                            <img src={banner1} className="d-block w-100 bannerImg" alt="..." />
                         </div>
                         <div className="carousel-item">
-                            <img src="https://th.bing.com/th/id/R.82237fe9cb402e76e90e338c63094a04?rik=BXZJjeUYCbb2vw&riu=http%3a%2f%2furoomsurf.com%2fwp-content%2fuploads%2f2020%2f05%2fHospital-Banner-Template-Example.jpg&ehk=IzHdc5lrAssfUf7Svgep6k%2btS%2fvOMX6v2nkO%2fRj84H8%3d&risl=&pid=ImgRaw&r=0" className="d-block w-100" alt="..." />
-
+                            <img src={banner2} className="d-block w-100 bannerImg" alt="..." />
                         </div>
                         <div className="carousel-item">
-                            <img src="https://i.pinimg.com/originals/dd/77/d2/dd77d2b74cc81a8e61299c35194b0f3b.jpg" className="d-block w-100" alt="..." />
-
+                            <img src={banner3} className="d-block w-100 bannerImg" alt="..." />
                         </div>
                     </div>
                     <button className="carousel-control-prev" type="button" data-target="#carouselExampleCaptions" data-slide="prev">
@@ -35,6 +34,59 @@ export default function HomePage() {
                         <span className="carousel-control-next-icon" aria-hidden="true"></span>
                         <span className="sr-only">Next</span>
                     </button>
+                </div>
+            </div>
+            <div className="container">
+                <div className="row">
+                    <div className="col-12 padding">
+                        <p className="color505F63">Our international, high-quality healthcare facilities and services, such as Example International Hospital and Example General Hospital serve the healthcare and wellness needs of the communities in our industrial parks and townships.</p>
+                    </div>
+
+                </div>
+            </div>
+            <div className="container-fluid">
+                <div className="row">
+                    <div className="col-5">
+                        <div className="card mb-3" >
+                            <div className="row no-gutters">
+                                <div className="col-md-4">
+                                    <img style={{maxWidth: "200px"}} src='https://images.vexels.com/content/145908/preview/male-avatar-maker-2a7919.png' alt="..." />
+                                </div>
+                                <div className="col-md-8">
+                                    <div className="card-body">
+                                        <h5 className="card-title">Card title</h5>
+                                        <p className="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-7">
+                        <div className="row">
+                            <div className="col-4"><div className="card" >
+                                <img src={banner1} className="card-img-top" alt="..." />
+                                <div className="card-body">
+                                    <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                </div>
+                            </div></div>
+                            <div className="col-4">
+                                <div className="card" >
+                                    <img src={banner2} className="card-img-top" alt="..." />
+                                    <div className="card-body">
+                                        <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-4">
+                                <div className="card" >
+                                    <img src={banner3} className="card-img-top" alt="..." />
+                                    <div className="card-body">
+                                        <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </>
