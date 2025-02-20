@@ -6,7 +6,7 @@ export default function ShiftChange() {
     return (
         <div >
             <Header />
-            <div className="container-fluid scBg main-content vh-100 padding">
+            <div className="container-fluid scBg main-content h-100 padding">
                 <div className="row">
                     <div className="col-10">
                         <div className="d-flex flex-column justify-content-center align-items-center">
@@ -16,11 +16,11 @@ export default function ShiftChange() {
                             </h1>
                             <form className='w-50'>
                                 <div className="form-group">
-                                    <label htmlFor="exampleFormControlInput1">Email address</label>
-                                    <input type="email" className="form-control " id="exampleFormControlInput1" placeholder="name@example.com" />
+                                    <label htmlFor="exampleFormControlInput1">Expected working date</label>
+                                    <input type="date" className="form-control " id="exampleFormControlInput1" placeholder="name@example.com" />
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="exampleFormControlTextarea1">Example textarea</label>
+                                    <label htmlFor="exampleFormControlTextarea1">Reason for transfer</label>
                                     <textarea className="form-control" id="exampleFormControlTextarea1" ></textarea>
                                 </div>
                                 <div className="form-group">
@@ -97,7 +97,7 @@ export default function ShiftChange() {
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 }

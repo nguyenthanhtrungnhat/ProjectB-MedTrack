@@ -6,13 +6,14 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { PatientProps } from './interface';
 export default function BedsInRoom() {
-    const { roomID } = useParams(); // ✅ Get roomID from URL
+    const { roomID } = useParams();
     const [patients, setPatients] = useState<PatientProps[]>([]);
-
+    const url = `http://26.184.100.176:3000/rooms/${roomID}/patients`;
     useEffect(() => {
-        axios.get(`http://26.184.100.176:3000/rooms/${roomID}/patients`)  // ✅ Use new API
+        axios.get(url)
             .then(response => {
                 setPatients(response.data);
+                console.log("Patient Data:", response.data);
             })
             .catch(error => console.error("Error fetching patients:", error));
     }, [roomID]);
@@ -20,7 +21,7 @@ export default function BedsInRoom() {
     return (
         <div >
             <Header />
-            <div className="container-fluid mainBg main-content vh-100">
+            <div className="container-fluid mainBg main-content h-100">
                 <div className="row">
                     <div className="col-10">
                         <div className="hasRoomList border padding whiteBg dropShadow marginBottom">

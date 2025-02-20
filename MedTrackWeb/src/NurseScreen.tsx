@@ -16,10 +16,16 @@ export default function NurseScreen() {
     const roomsUrl = 'http://26.184.100.176:3000/rooms'; // API to get all rooms
     useEffect(() => {
         axios.get(url)
-            .then(response => setUser(response.data)) // Axios auto-parses JSON
+            .then(response => {
+                setUser(response.data);
+                console.log("User Data:", response.data);
+            }) // Axios auto-parses JSON
             .catch(error => console.error('Error fetching user:', error));
         axios.get(roomsUrl)
-            .then(response => setRooms(response.data)) // Set rooms in state
+            .then(response => {
+                setRooms(response.data);
+                console.log("Room Data:", response.data);
+            })
             .catch(error => console.error('Error fetching rooms:', error));
     }, []);
 
@@ -34,13 +40,13 @@ export default function NurseScreen() {
                             {user && (
                                 <NurseInformation
                                     image={'blank'}
-                                    nurseFullName={user.nurseFullName}
+                                    fullName={user.fullName}
                                     gender={user.gender = 1 ? 'Male' : 'Female'}
-                                    dob={user.nurseDob?.split('T')[0]} // Extract only the date part (YYYY-MM-DD)
-                                    phone={user.nursePhone}
-                                    id={user.nurseID}
+                                    dob={user.dob?.split('T')[0]} // Extract only the date part (YYYY-MM-DD)
+                                    phone={user.phone}
+                                    nurseID={user.nurseID}
                                     address={user.address} // ✅ Optional chaining
-                                    email={user.nurseEmail}
+                                    email={user.email}
                                 />
                             )}
 

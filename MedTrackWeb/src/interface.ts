@@ -1,5 +1,5 @@
 export interface NurseProps {
-    image: string, nurseFullName: string, gender: string, dob: string, phone: string, id: string, address: string, email: string
+    image: string, fullName: string, gender: string, dob: string, phone: string, nurseID: string, address: string, email: string
 }
 export interface RoomProps {
     department: string, roomID: string

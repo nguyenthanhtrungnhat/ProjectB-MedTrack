@@ -15,19 +15,30 @@ export default function BedDetails() {
     const [user, setUser] = useState<PatientProps | null>(null);
     const [record, setRecord] = useState<RecordProps | null>(null);
     const { patientID } = useParams();
+    // const BASE_URL = `http://${window.location.hostname}:3000`;
+    // const patientByIdUrl = `${BASE_URL}/patients/${patientID}`;
+    // const recordBypatientIdUrl = `${BASE_URL}/medical-records/${patientID}`;
+    const patientByIdUrl = `http://26.184.100.176:3000/patients/${patientID}`;
+    const recordBypatientIdUrl = `http://26.184.100.176:3000/medical-records/${patientID}`;
     useEffect(() => {
-        axios.get(`http://26.184.100.176:3000/patients/${patientID}`)
-            .then(response => setUser(response.data)) // Axios auto-parses JSON
+        axios.get(patientByIdUrl)
+            .then(response => {
+                setUser(response.data);
+                console.log("Patient Data:", response.data);
+            })
             .catch(error => console.error('Error fetching user:', error));
-        axios.get(`http://26.184.100.176:3000/medical-records/${patientID}`)
-            .then(response => setRecord(response.data)) // Axios auto-parses JSON
+        axios.get(recordBypatientIdUrl)
+            .then(response => {
+                setRecord(response.data);
+                console.log("Medical Record:", response.data);
+            }) 
             .catch(error => console.error('Error fetching record:', error));
     }, []);
 
     return (
         <div >
             <Header />
-            <div className="container-fluid mainBg main-content vh-100">
+            <div className="container-fluid mainBg main-content h-100">
                 <div className="row">
                     <div className="col-10">
                         <div className="row">
