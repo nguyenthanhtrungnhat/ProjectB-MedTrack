@@ -2,6 +2,7 @@ import Header from "./Header";
 import banner1 from './images/banner1.jpg'
 import banner2 from './images/banner2.jpg'
 import banner3 from './images/banner3.jpg'
+import avtRandom from './images/male-avatar-maker-2a7919.png'
 export default function HomePage() {
     return (
         <>
@@ -50,7 +51,7 @@ export default function HomePage() {
                         <div className="card mb-3" >
                             <div className="row no-gutters">
                                 <div className="col-md-4">
-                                    <img style={{maxWidth: "200px"}} src='https://images.vexels.com/content/145908/preview/male-avatar-maker-2a7919.png' alt="..." />
+                                    <img style={{ maxWidth: "200px" }} src={avtRandom} alt="..." />
                                 </div>
                                 <div className="col-md-8">
                                     <div className="card-body">
