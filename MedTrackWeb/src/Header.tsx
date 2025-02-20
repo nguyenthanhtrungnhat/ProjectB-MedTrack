@@ -10,8 +10,8 @@ export default function Header() {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div className="navbar-nav">
-                        <a className="nav-link active " href="/home-page"><h5 className='whiteText hasHomeIcon'>Home</h5> <span className="sr-only">(current)</span></a>
-                        <a className="nav-link whiteText " href="/"><h5 className='whiteText hasProfileIcon'>Profile</h5></a>
+                        <a className="nav-link active " href="/"><h5 className='whiteText hasHomeIcon'>Home</h5> <span className="sr-only">(current)</span></a>
+                        <a className="nav-link whiteText " href="/nurse-profile"><h5 className='whiteText hasProfileIcon'>Profile</h5></a>
                     </div>
                 </div>
             </nav>

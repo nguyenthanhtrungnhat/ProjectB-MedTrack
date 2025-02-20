@@ -7,7 +7,6 @@ export default function HomePage() {
     return (
         <>
             <Header />
-
             <div className="container-fluid main-content h-100 padding">
                 <h1 className="blueText padding">Healthcare</h1>
                 <div id="carouselExampleCaptions" className="carousel slide" data-ride="carousel">
@@ -37,7 +36,7 @@ export default function HomePage() {
                     </button>
                 </div>
             </div>
-            <div className="container">
+            <div className="container main-content">
                 <div className="row">
                     <div className="col-12 padding">
                         <p className="color505F63">Our international, high-quality healthcare facilities and services, such as Example International Hospital and Example General Hospital serve the healthcare and wellness needs of the communities in our industrial parks and townships.</p>
@@ -45,7 +44,7 @@ export default function HomePage() {
 
                 </div>
             </div>
-            <div className="container-fluid">
+            <div className="container-fluid main-content padding">
                 <div className="row">
                     <div className="col-5">
                         <div className="card mb-3" >

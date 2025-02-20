@@ -11,12 +11,12 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
      <Router>
             <Routes>
-                <Route path="/" element={<NurseScreen />} />
+                <Route path="/nurse-profile" element={<NurseScreen />} />
                 <Route path="/beds-in-room/:roomID" element={<BedsInRoom />} />
                 <Route path="/bed-details/:patientID" element={<BedDetails />} />
                 <Route path="/shift-change" element={<ShiftChange />} />
                 <Route path="/daily-checking" element={<DailyCheckingForm/>} />
-                <Route path="/home-page" element={<HomePage/>} />
+                <Route path="/" element={<HomePage/>} />
             </Routes>
         </Router>
   </StrictMode>
