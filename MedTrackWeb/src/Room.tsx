@@ -4,7 +4,7 @@ export default function Room({department,roomID}:RoomProps) {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate(`/beds-in-room/${roomID}`); // ✅ Pass roomID in the URL
+        navigate(`/home/beds-in-room/${roomID}`); // ✅ Pass roomID in the URL
     };
     return (
         <>

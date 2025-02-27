@@ -1,5 +1,4 @@
 import axios from 'axios';
-import Header from './Header';
 import './AllDesign.css';
 import PatientInformation from './PatientInformation';
 import { useEffect, useState } from 'react';
@@ -37,7 +36,6 @@ export default function BedDetails() {
 
     return (
         <div >
-            <Header />
             <div className="container-fluid mainBg main-content h-100">
                 <div className="row">
                     <div className="col-10">
@@ -165,13 +163,13 @@ export default function BedDetails() {
                                     <div className="padding">
                                         <ul className='list-unstyled'>
                                             <li>
-                                                <Link to="/shift-change" className="text-decoration-none">
+                                                <Link to="/home/shift-change" className="text-decoration-none">
                                                     Shift change registration
                                                 </Link>
                                             </li>
 
                                             <li>
-                                                <Link to="/daily-checking" className="text-decoration-none">
+                                                <Link to="/home/daily-checking" className="text-decoration-none">
                                                     Daily checking health
                                                 </Link>
                                             </li>

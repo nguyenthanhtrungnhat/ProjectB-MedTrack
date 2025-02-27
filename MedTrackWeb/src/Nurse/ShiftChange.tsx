@@ -1,11 +1,11 @@
-import Header from './Header';
-import './AllDesign.css';
+import './../AllDesign.css';
+
 import { Link } from 'react-router-dom';
+
 export default function ShiftChange() {
 
     return (
         <div >
-            <Header />
             <div className="container-fluid scBg main-content h-100 padding">
                 <div className="row">
                     <div className="col-10">
@@ -52,13 +52,13 @@ export default function ShiftChange() {
                                     <div className="padding">
                                         <ul className='list-unstyled'>
                                             <li>
-                                                <Link to="/shift-change" className="text-decoration-none">
+                                                <Link to="/home/shift-change" className="text-decoration-none">
                                                     Shift change registration
                                                 </Link>
                                             </li>
 
                                             <li>
-                                                <Link to="/daily-checking" className="text-decoration-none">
+                                                <Link to="/home/daily-checking" className="text-decoration-none">
                                                     Daily checking health
                                                 </Link>
                                             </li>
@@ -97,7 +97,7 @@ export default function ShiftChange() {
                         </div>
                     </div>
                 </div>
-            </div >
+            </div >          
         </div >
     );
 }

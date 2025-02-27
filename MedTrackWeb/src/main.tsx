@@ -1,23 +1,47 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import NurseScreen from './NurseScreen';
+import NurseScreen from './Nurse/NurseScreen';
 import BedsInRoom from './BedsInRoom';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Outlet,
+} from "react-router-dom";
 import BedDetails from './BedDetails';
-import ShiftChange from './ShiftChange';
-import DailyCheckingForm from './DailyCheckingForm';
+import ShiftChange from './Nurse/ShiftChange';
+import DailyCheckingForm from './Nurse/DailyCheckingForm';
 import HomePage from './HomePage';
+import Header from './Header';
+import LoginScreen from './Login/Login';
+const Layout = () => (
+  <>
+    <Header />
+    <Outlet />
+  </>
+);
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    children: [
+      { index:true, element: <LoginScreen /> },
+    ],
+  },
+  {
+    path: "/home",
+    element: <Layout />,
+    children: [
+      { index:true, element: <HomePage /> },
+      { path: "/home/nurse-profile", element: <NurseScreen /> },
+      { path: "/home/beds-in-room/:roomID", element: <BedsInRoom /> },
+      { path: "/home/bed-details/:patientID", element: <BedDetails /> },
+      { path: "/home/shift-change", element: <ShiftChange /> },
+      { path: "/home/daily-checking", element: <DailyCheckingForm /> },
+    ],
+  }
+]);
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-     <Router>
-            <Routes>
-                <Route path="/nurse-profile" element={<NurseScreen />} />
-                <Route path="/beds-in-room/:roomID" element={<BedsInRoom />} />
-                <Route path="/bed-details/:patientID" element={<BedDetails />} />
-                <Route path="/shift-change" element={<ShiftChange />} />
-                <Route path="/daily-checking" element={<DailyCheckingForm/>} />
-                <Route path="/" element={<HomePage/>} />
-            </Routes>
-        </Router>
+    <RouterProvider router={router} />
   </StrictMode>
 )

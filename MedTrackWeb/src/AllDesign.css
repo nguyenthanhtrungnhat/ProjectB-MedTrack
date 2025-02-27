@@ -52,6 +52,11 @@
     padding-left: 30px;
 }
 
+.loginBg {
+    background: linear-gradient(90deg, #33D5F5 0%, #8BD7C0 100%);
+    padding-left: 30px;
+}
+
 /* Responsive Navbar */
 @media screen and (max-width: 768px) {
     .custom-navbar {
@@ -80,7 +85,8 @@
     padding: 10px;
 }
 
-.medicineSchedule, .medicineScheduleDetail {
+.medicineSchedule,
+.medicineScheduleDetail {
     height: 174px;
 }
 
@@ -104,23 +110,28 @@
 }
 
 .hasHomeIcon::before {
-    content: "\f015"; /* Home Icon */
+    content: "\f015";
+    /* Home Icon */
 }
 
 .hasProfileIcon::before {
-    content: "\f007"; /* User Icon */
+    content: "\f007";
+    /* User Icon */
 }
 
 .loginHead::before {
-    content: "\f007"; /* User Icon */
+    content: "\f007";
+    /* User Icon */
 }
 
 .featureHead::before {
-    content: "\f085"; /* Gear Icon */
+    content: "\f085";
+    /* Gear Icon */
 }
 
 .announceHead::before {
-    content: "\f0f3"; /* Bell Icon */
+    content: "\f0f3";
+    /* Bell Icon */
 }
 
 .login {
@@ -201,6 +212,7 @@
         width: 180px;
     }
 }
+
 
 /* General Spacing */
 .padding20 {
@@ -320,6 +332,43 @@
         margin-bottom: 15px;
     }
 }
-.color505F63{
+
+.color505F63 {
     color: #505F63;
+}
+
+.padding100 {
+    padding: 100px;
+}
+
+.inputLogin {
+    background: transparent;
+    color: white;
+   
+    border-radius: 8px;
+    outline: none;
+    height: 50px;
+}
+
+.inputLogin::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+    /* Light white placeholder */
+}
+
+.inputLogin:focus {
+    border-color: lightgreen;
+    background: transparent;
+    /* Change border on focus */
+}
+.w200{
+    width: 200px;
+}
+.w100{
+    width: 100px;
+}
+.color32AEBD{
+background-color: #32AEBD;
+}
+.pt50{
+    padding-top: 50px;
 }

@@ -4,7 +4,7 @@ export default function Bed({fullName,patientID}:PatientProps) {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate(`/bed-details/${patientID}`); // Change to the actual route
+        navigate(`/home/bed-details/${patientID}`); // Change to the actual route
     };
     return (
         <>
