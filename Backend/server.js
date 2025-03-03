@@ -215,39 +215,39 @@ const authenticate = (req, res, next) => {
   }
 };
 
-// POST API: Create a Request
-app.post("/submit-shiftchange", authenticate, async (req, res) => {
-  try {
-    const { requestContent } = req.body;
-    const nurseID = req.nurseID; // Get nurseID from token
-    const dateTime = new Date().toISOString(); // Use current date
-    const requestType = 1;
+app.post("/requestSC", authenticate, (req, res) => {
+  const { date, reason } = req.body; // Match frontend
+  const nurseID = req.nurseID;
+  const dateTime = new Date(date).toISOString();
+  const requestType = 1;
 
-    if (!requestContent) {
-      return res.status(400).json({ error: "Request content is required." });
-    }
-
-    const query = `
-      INSERT INTO requests (dateTime, requestContent, requestStatus, nurseID, doctorID, requestType) 
-      VALUES (?, ?, NULL, ?, NULL, ?)
-    `;
-    const values = [dateTime, requestContent, nurseID, requestType];
-
-    const [result] = await pool.execute(query, values);
-
-    res.status(201).json({
-      message: "Request created successfully",
-      requestID: result.insertId,
-      dateTime,
-      requestContent,
-      nurseID,
-      requestType
-    });
-  } catch (error) {
-    console.error("Error inserting request:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+  if (!date || !reason) {
+      return res.status(400).json({ error: "Date and reason are required." });
   }
+
+  const query = `
+      INSERT INTO Request (dateTime, requestContent, requestStatus, nurseID, doctorID, requestType) 
+      VALUES (?, ?, NULL, ?, NULL, ?)
+  `;
+  const values = [dateTime, reason, nurseID, requestType];
+
+  db.query(query, values, (err, result) => {
+      if (err) {
+          console.error("Error inserting request:", err);
+          return res.status(500).json({ error: "Internal Server Error" });
+      }
+
+      res.status(201).json({
+          message: "Request created successfully",
+          requestID: result.insertId,
+          dateTime,
+          requestContent: reason,
+          nurseID,
+          requestType
+      });
+  });
 });
+
 // Start the server
 const PORT = 3000;
 app.listen(PORT, () => {
