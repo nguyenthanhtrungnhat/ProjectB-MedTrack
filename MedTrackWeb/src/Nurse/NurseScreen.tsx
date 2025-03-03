@@ -24,6 +24,7 @@ const getUserIDFromToken = () => {
 
 export default function NurseScreen() {
     const [user, setUser] = useState<NurseProps | null>(null);
+    localStorage.setItem("info", JSON.stringify(user));
     const [rooms, setRooms] = useState<RoomProps[]>([]);
     const [nurseID, setNurseID] = useState<number | null>(null);
 

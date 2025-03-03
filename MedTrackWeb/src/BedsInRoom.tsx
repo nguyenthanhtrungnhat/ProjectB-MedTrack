@@ -4,7 +4,10 @@ import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { PatientProps } from './interface';
+import SidebarLogin from './SidebarLogin';
 export default function BedsInRoom() {
+    const storedInfo = localStorage.getItem("info");
+    const info = storedInfo ? JSON.parse(storedInfo) : null;
     const { roomID } = useParams();
     const [patients, setPatients] = useState<PatientProps[]>([]);
     const url = `http://26.184.100.176:3000/rooms/${roomID}/patients`;
@@ -49,14 +52,10 @@ export default function BedsInRoom() {
                         <div className="leftBody border whiteBg marginBottom dropShadow">
                             <div className="row">
                                 <div className="col-12 login ">
-                                    <h6 className='whiteText blueBg loginHead'>Account</h6>
-                                    <div className="padding">
-                                        <p className='blueText'>0922639956</p>
-                                        <p className='blueText'>Nguyen Thanh Trung Nhat</p>
-                                        <div className="d-flex justify-content-center">
-                                            <button type="button" className="btn btn-danger w-100">Logout</button>
-                                        </div>
-                                    </div>
+                                    <SidebarLogin
+                                        phone={info?.phone || ""}
+                                        fullName={info?.fullName || ""}
+                                    />
                                 </div>
                             </div>
                         </div>

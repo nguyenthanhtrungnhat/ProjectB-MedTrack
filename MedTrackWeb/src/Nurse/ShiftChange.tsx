@@ -1,9 +1,11 @@
+import SidebarLogin from '../SidebarLogin';
 import './../AllDesign.css';
 
 import { Link } from 'react-router-dom';
 
 export default function ShiftChange() {
-
+    const storedInfo = localStorage.getItem("info");
+    const info = storedInfo ? JSON.parse(storedInfo) : null;
     return (
         <div >
             <div className="container-fluid scBg main-content h-100 padding">
@@ -34,14 +36,10 @@ export default function ShiftChange() {
                         <div className="leftBody border whiteBg marginBottom dropShadow">
                             <div className="row">
                                 <div className="col-12 login ">
-                                    <h6 className='whiteText blueBg loginHead'>Account</h6>
-                                    <div className="padding">
-                                        <p className='blueText'>0922639956</p>
-                                        <p className='blueText'>Nguyen Thanh Trung Nhat</p>
-                                        <div className="d-flex justify-content-center">
-                                            <button type="button" className="btn btn-danger w-100">Logout</button>
-                                        </div>
-                                    </div>
+                                    <SidebarLogin
+                                        phone={info?.phone || ""}
+                                        fullName={info?.fullName || ""}
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -97,7 +95,7 @@ export default function ShiftChange() {
                         </div>
                     </div>
                 </div>
-            </div >          
+            </div >
         </div >
     );
 }

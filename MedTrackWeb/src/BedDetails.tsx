@@ -10,13 +10,13 @@ import tempImg from './images/nhietdo.png';
 import bpImg from './images/bloodPressure.png';
 import ntImg from './images/nhiptho.png';
 import { Link, useParams } from 'react-router-dom';
+import SidebarLogin from './SidebarLogin';
 export default function BedDetails() {
     const [user, setUser] = useState<PatientProps | null>(null);
     const [record, setRecord] = useState<RecordProps | null>(null);
     const { patientID } = useParams();
-    // const BASE_URL = `http://${window.location.hostname}:3000`;
-    // const patientByIdUrl = `${BASE_URL}/patients/${patientID}`;
-    // const recordBypatientIdUrl = `${BASE_URL}/medical-records/${patientID}`;
+    const storedInfo = localStorage.getItem("info");
+    const info = storedInfo ? JSON.parse(storedInfo) : null;
     const patientByIdUrl = `http://26.184.100.176:3000/patients/${patientID}`;
     const recordBypatientIdUrl = `http://26.184.100.176:3000/medical-records/${patientID}`;
     useEffect(() => {
@@ -145,14 +145,10 @@ export default function BedDetails() {
                         <div className="leftBody border whiteBg marginBottom dropShadow">
                             <div className="row">
                                 <div className="col-12 login ">
-                                    <h6 className='whiteText blueBg loginHead'>Account</h6>
-                                    <div className="padding">
-                                        <p className='blueText'>0922639956</p>
-                                        <p className='blueText'>Nguyen Thanh Trung Nhat</p>
-                                        <div className="d-flex justify-content-center">
-                                            <button type="button" className="btn btn-danger w-100">Logout</button>
-                                        </div>
-                                    </div>
+                                    <SidebarLogin
+                                        phone={info?.phone || ""}
+                                        fullName={info?.fullName || ""}
+                                    />
                                 </div>
                             </div>
                         </div>
