@@ -198,55 +198,46 @@ app.post("/login", (req, res) => {
     });
   });
 });
-// Middleware to authenticate user and get nurseID
-const authenticate = (req, res, next) => {
-  const token = req.header("Authorization");
-
-  if (!token) {
-    return res.status(401).json({ error: "Access denied. No token provided." });
-  }
-
+// Endpoint to create a new request
+app.post('/api/requests', verifyToken, (req, res) => {
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.nurseID = decoded.userID; // Extract nurseID from token
-    next();
-  } catch (error) {
-    res.status(400).json({ error: "Invalid token." });
-  }
-};
+    const { dateTime } = req.body;
+    const nurseID = req.nurseID; // Extracted from token
+    const requestType = 1;
 
-app.post("/requestSC", authenticate, (req, res) => {
-  const { date, reason } = req.body; // Match frontend
-  const nurseID = req.nurseID;
-  const dateTime = new Date(date).toISOString();
-  const requestType = 1;
-
-  if (!date || !reason) {
-      return res.status(400).json({ error: "Date and reason are required." });
-  }
-
-  const query = `
-      INSERT INTO Request (dateTime, requestContent, requestStatus, nurseID, doctorID, requestType) 
-      VALUES (?, ?, NULL, ?, NULL, ?)
-  `;
-  const values = [dateTime, reason, nurseID, requestType];
-
-  db.query(query, values, (err, result) => {
+    // Validate input
+    if (!dateTime) {
+      return res.status(400).json({ error: "dateTime is required" });
+    }
+    
+    // Ensure nurseID exists
+    db.query("SELECT nurseID FROM Nurse WHERE nurseID = ?", [nurseID], (err, results) => {
       if (err) {
-          console.error("Error inserting request:", err);
-          return res.status(500).json({ error: "Internal Server Error" });
+        console.error("Database error:", err);
+        return res.status(500).json({ error: "Database error", details: err.message });
+      }
+      if (results.length === 0) {
+        return res.status(403).json({ error: "Unauthorized: Nurse not found" });
       }
 
-      res.status(201).json({
-          message: "Request created successfully",
-          requestID: result.insertId,
-          dateTime,
-          requestContent: reason,
-          nurseID,
-          requestType
+      // Insert request
+      const sql = `INSERT INTO requests (dateTime, nurseID, requestType) VALUES (?, ?, ?)`;
+      const values = [dateTime, nurseID, requestType];
+
+      db.query(sql, values, (err, result) => {
+        if (err) {
+          console.error("Database error:", err);
+          return res.status(500).json({ error: "Database error", details: err.message });
+        }
+        res.status(201).json({ message: "Request created successfully", requestID: result.insertId });
       });
-  });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
+
 
 // Start the server
 const PORT = 3000;
