@@ -1,30 +1,13 @@
+import SidebarLogin from '../SidebarLogin';
 import './../AllDesign.css';
-import { useState } from 'react';
-import axios from 'axios';
+
 import { Link } from 'react-router-dom';
 
 export default function ShiftChange() {
-    const [date, setDate] = useState("");
-    const [reason, setReason] = useState("");
-
-    const handleSubmit = async () => {
-        console.log("Submitting:", { date, reason }); // Debugging: Check if data is correct
-
-        try {
-            const response = await axios.post(
-                "http://26.184.100.176:3000/requestSC",
-                { date, reason }, // Ensure these match backend expectations
-                { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
-            );
-
-            console.log("Request Successful:", response.data);
-        } catch (error) {
-            console.error("Error submitting request:", error);
-        }
-    };
-
+    const storedInfo = localStorage.getItem("info");
+    const info = storedInfo ? JSON.parse(storedInfo) : null;
     return (
-        <div>
+        <div >
             <div className="container-fluid scBg main-content h-100 padding">
                 <div className="row">
                     <div className="col-10">
@@ -35,52 +18,31 @@ export default function ShiftChange() {
                             </h1>
                             <form className='w-50'>
                                 <div className="form-group">
-                                    <label htmlFor="dateInput">Expected working date</label>
-                                    <input
-                                        type="date"
-                                        className="form-control"
-                                        id="dateInput"
-                                        value={date}
-                                        onChange={(e) => setDate(e.target.value)}
-                                    />
+                                    <label htmlFor="exampleFormControlInput1">Expected working date</label>
+                                    <input type="date" className="form-control " id="exampleFormControlInput1" placeholder="name@example.com" />
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="reasonInput">Reason for transfer</label>
-                                    <textarea
-                                        className="form-control"
-                                        id="reasonInput"
-                                        value={reason}
-                                        onChange={(e) => setReason(e.target.value)}
-                                    ></textarea>
+                                    <label htmlFor="exampleFormControlTextarea1">Reason for transfer</label>
+                                    <textarea className="form-control" id="exampleFormControlTextarea1" ></textarea>
                                 </div>
                                 <div className="form-group">
-                                    <button
-                                        type="button"
-                                        className="btn btn-success w-100"
-                                        onClick={handleSubmit}
-                                    >
-                                        Submit and continue
-                                    </button>
+                                    <button type="button" className="btn btn-success w-100">Submit and continue</button>
                                 </div>
+
                             </form>
                         </div>
                     </div>
                     <div className="col-2 noPl">
                         <div className="leftBody border whiteBg marginBottom dropShadow">
                             <div className="row">
-                                <div className="col-12 login">
-                                    <h6 className='whiteText blueBg loginHead'>Account</h6>
-                                    <div className="padding">
-                                        <p className='blueText'>0922639956</p>
-                                        <p className='blueText'>Nguyen Thanh Trung Nhat</p>
-                                        <div className="d-flex justify-content-center">
-                                            <button type="button" className="btn btn-danger w-100">Logout</button>
-                                        </div>
-                                    </div>
+                                <div className="col-12 login ">
+                                    <SidebarLogin
+                                        phone={info?.phone} fullName={info?.fullName}
+                                    />
                                 </div>
                             </div>
                         </div>
-                        <div className="leftBody border whiteBg dropShadow marginBottom">
+                        <div className="leftBody  border whiteBg dropShadow marginBottom">
                             <div className="row">
                                 <div className="col-12">
                                     <h6 className='whiteText blueBg featureHead'>Feature</h6>
@@ -91,6 +53,7 @@ export default function ShiftChange() {
                                                     Shift change registration
                                                 </Link>
                                             </li>
+
                                             <li>
                                                 <Link to="/home/daily-checking" className="text-decoration-none">
                                                     Daily checking health
@@ -98,7 +61,7 @@ export default function ShiftChange() {
                                             </li>
                                         </ul>
                                     </div>
-                                    <h6 className='whiteText blueBg announceHead'>Latest announcements</h6>
+                                    <h6 className='whiteText blueBg announceHead'>Lastes announcements</h6>
                                     <div className='padding20'>
                                         <div className="card border-light mb-3 dropShadow">
                                             <div className="card-body p-2 card-header">
@@ -124,13 +87,14 @@ export default function ShiftChange() {
                                                 <p className="card-text p-0">Description</p>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>          
-        </div>
+            </div >
+        </div >
     );
 }
