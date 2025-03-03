@@ -5,47 +5,83 @@ import NurseInformation from '../NurseInformation';
 import { useEffect, useState } from 'react';
 import { NurseProps, RoomProps } from '../interface';
 import { Link } from 'react-router-dom';
+import { jwtDecode } from "jwt-decode";
+import SidebarLogin from '../SidebarLogin';
+
+
+const getUserIDFromToken = () => {
+    const token = localStorage.getItem("token");
+    if (!token) return null;
+
+    try {
+        const decoded: any = jwtDecode(token);
+        return decoded.userID; // Extract userID from token
+    } catch (error) {
+        console.error("Invalid token:", error);
+        return null;
+    }
+};
 
 export default function NurseScreen() {
     const [user, setUser] = useState<NurseProps | null>(null);
-    const url = 'http://26.184.100.176:3000/nurses/1';
-    const [rooms, setRooms] = useState<RoomProps[]>([]); // Store rooms from API
-    const roomsUrl = 'http://26.184.100.176:3000/rooms'; // API to get all rooms
+    const [rooms, setRooms] = useState<RoomProps[]>([]);
+    const [nurseID, setNurseID] = useState<number | null>(null);
+
+    const userID = getUserIDFromToken();
+    const url = `http://26.184.100.176:3000/nurses/by-user/${userID}`;
+    const roomsUrl = 'http://26.184.100.176:3000/rooms';
+
     useEffect(() => {
+        if (!userID) return;
+
         axios.get(url)
             .then(response => {
+                setNurseID(response.data.nurseID);
+                console.log("Nurse ID:", response.data.nurseID);
+            })
+            .catch(error => console.error("Error fetching nurseID:", error));
+    }, [userID]);
+
+    useEffect(() => {
+        if (!nurseID) return;
+
+        axios.get(`http://26.184.100.176:3000/nurses/${nurseID}`)
+            .then(response => {
                 setUser(response.data);
-                console.log("User Data:", response.data);
-            }) // Axios auto-parses JSON
-            .catch(error => console.error('Error fetching user:', error));
+                console.log("Nurse Data:", response.data);
+            })
+            .catch(error => console.error("Error fetching nurse:", error));
+
         axios.get(roomsUrl)
             .then(response => {
                 setRooms(response.data);
                 console.log("Room Data:", response.data);
             })
-            .catch(error => console.error('Error fetching rooms:', error));
-    }, []);
+            .catch(error => console.error("Error fetching rooms:", error));
+    }, [nurseID]);
+
+    if (!userID) {
+        return <p>Please log in to view your nurse profile.</p>;
+    }
 
     return (
-        <div >
-            <div className="container-fluid mainBg main-content ">
+        <div>
+            <div className="container-fluid mainBg main-content">
                 <div className="row">
                     <div className="col-10">
                         <div className="row">
-                            {/* ✅ Only render Information when user is not null */}
                             {user && (
                                 <NurseInformation
                                     image={'blank'}
                                     fullName={user.fullName}
-                                    gender={user.gender = 1 ? 'Male' : 'Female'}
-                                    dob={user.dob?.split('T')[0]} // Extract only the date part (YYYY-MM-DD)
+                                    gender={user.gender === 1 ? 'Male' : 'Female'}
+                                    dob={user.dob?.split('T')[0]}
                                     phone={user.phone}
                                     nurseID={user.nurseID}
-                                    address={user.address} // ✅ Optional chaining
+                                    address={user.address}
                                     email={user.email}
                                 />
                             )}
-
                             <div className="col-6 noPl">
                                 <div className="hasSchedule padding border whiteBg marginBottom dropShadow">
                                     <div className="row">
@@ -62,10 +98,10 @@ export default function NurseScreen() {
                                 <div className="hasSchedule padding border whiteBg dropShadow">
                                     <div className="row">
                                         <div className="col-12 medicineScheduleDetail">
-                                            <div className="row ">
+                                            <div className="row">
                                                 <div className="col-6 d-flex justify-content-center">
                                                     <div className="border border-success square170-250 padding20">
-                                                        <h5 className=' medSche greenText'>Assigned Task</h5>
+                                                        <h5 className='medSche greenText'>Assigned Task</h5>
                                                         <div className="d-flex bd-highlight mb-3">
                                                             <p className='p-2 bd-highlight size25'>0</p>
                                                             <i className="ml-auto p-2 bd-highlight fa fa-calendar size25 greenText" aria-hidden="true"></i>
@@ -75,7 +111,7 @@ export default function NurseScreen() {
                                                 </div>
                                                 <div className="col-6 d-flex justify-content-center">
                                                     <div className="border border-info square170-250 padding20">
-                                                        <h5 className=' medSche blueText'>Patient's requirements</h5>
+                                                        <h5 className='medSche blueText'>Patient's requirements</h5>
                                                         <div className="d-flex bd-highlight mb-3">
                                                             <p className='p-2 bd-highlight size25'>0</p>
                                                             <i className="ml-auto p-2 bd-highlight fa fa-calendar blueText size25" aria-hidden="true"></i>
@@ -93,7 +129,6 @@ export default function NurseScreen() {
                                     <h2 className='blueText text-center marginBottom'>Room list</h2>
                                     <div>
                                         <div className="row">
-                                            {/* ✅ Dynamically render rooms using .map() */}
                                             {rooms.map((room) => (
                                                 <Room key={room.roomID} {...room} />
                                             ))}
@@ -106,19 +141,22 @@ export default function NurseScreen() {
                     <div className="col-2 noPl">
                         <div className="leftBody border whiteBg marginBottom dropShadow">
                             <div className="row">
-                                <div className="col-12 login ">
-                                    <h6 className='whiteText blueBg loginHead'>Account</h6>
+                                <div className="col-12 login">
+                                    {/* <h6 className='whiteText blueBg loginHead'>Account</h6>
                                     <div className="padding">
                                         <p className='blueText'>0922639956</p>
                                         <p className='blueText'>Nguyen Thanh Trung Nhat</p>
                                         <div className="d-flex justify-content-center">
                                             <button type="button" className="btn btn-danger w-100">Logout</button>
                                         </div>
-                                    </div>
+                                    </div> */}
+                                    <SidebarLogin
+                                        phone={user?.phone} fullName={user?.fullName}
+                                    />
                                 </div>
                             </div>
                         </div>
-                        <div className="leftBody  border whiteBg dropShadow marginBottom">
+                        <div className="leftBody border whiteBg dropShadow marginBottom">
                             <div className="row">
                                 <div className="col-12">
                                     <h6 className='whiteText blueBg featureHead'>Feature</h6>
@@ -129,7 +167,6 @@ export default function NurseScreen() {
                                                     Shift change registration
                                                 </Link>
                                             </li>
-
                                             <li>
                                                 <Link to="/home/daily-checking" className="text-decoration-none">
                                                     Daily checking health
@@ -137,33 +174,16 @@ export default function NurseScreen() {
                                             </li>
                                         </ul>
                                     </div>
-                                    <h6 className='whiteText blueBg announceHead'>Lastes announcements</h6>
+                                    <h6 className='whiteText blueBg announceHead'>Latest announcements</h6>
                                     <div className='padding20'>
-                                        <div className="card border-light mb-3 dropShadow">
-                                            <div className="card-body p-2 card-header">
-                                                <p className="card-title p-0"><b>Light card title</b></p>
-                                                <p className="card-text p-0">Description</p>
+                                        {[...Array(4)].map((_, index) => (
+                                            <div key={index} className="card border-light mb-3 dropShadow">
+                                                <div className="card-body p-2 card-header">
+                                                    <p className="card-title p-0"><b>Light card title</b></p>
+                                                    <p className="card-text p-0">Description</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className="card border-light mb-3 dropShadow">
-                                            <div className="card-body p-2 card-header">
-                                                <p className="card-title p-0"><b>Light card title</b></p>
-                                                <p className="card-text p-0">Description</p>
-                                            </div>
-                                        </div>
-                                        <div className="card border-light mb-3 dropShadow">
-                                            <div className="card-body p-2 card-header">
-                                                <p className="card-title p-0"><b>Light card title</b></p>
-                                                <p className="card-text p-0">Description</p>
-                                            </div>
-                                        </div>
-                                        <div className="card border-light mb-3 dropShadow">
-                                            <div className="card-body p-2 card-header">
-                                                <p className="card-title p-0"><b>Light card title</b></p>
-                                                <p className="card-text p-0">Description</p>
-                                            </div>
-                                        </div>
-
+                                        ))}
                                     </div>
                                 </div>
                             </div>

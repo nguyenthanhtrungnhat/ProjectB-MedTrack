@@ -37,3 +37,7 @@ export interface RecordProps {
     patientID: string,
     nurseID: string
 }
+export interface SidebarInfoProps{
+    phone: string ,
+    fullName: string;
+}
