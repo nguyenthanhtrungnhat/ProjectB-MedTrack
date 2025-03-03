@@ -30,7 +30,7 @@ export default function BedDetails() {
             .then(response => {
                 setRecord(response.data);
                 console.log("Medical Record:", response.data);
-            }) 
+            })
             .catch(error => console.error('Error fetching record:', error));
     }, []);
 
