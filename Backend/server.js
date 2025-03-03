@@ -69,56 +69,6 @@ app.get("/nurses/:nurseID", (req, res) => {
     res.json(results[0]);
   });
 });
-// app.get('/nurses/:id', (req, res) => {
-//   const nurseID = req.params.id;
-
-//   const query = `
-//   SELECT 
-//       n.nurseID, 
-//       n.department, 
-//       CAST(COALESCE(JSON_ARRAYAGG(
-//           JSON_OBJECT(
-//               'patientID', p.patientID,
-//               'fullName', uP.fullName,
-//               'dob', uP.dob,
-//               'phone', uP.phone,
-//               'email', uP.email,
-//               'BHYT', p.BHYT,
-//               'admissionDate', p.admissionDate,
-//               'dischargeDate', p.dischargeDate,
-//               'hospitalizationsDiagnosis', p.hospitalizationsDiagnosis,
-//               'summaryCondition', p.summaryCondition,
-//               'dischargeDiagnosis', p.dischargeDiagnosis,
-//               'roomID', p.roomID  -- 🔥 Added roomID
-//           )
-//       ), '[]') AS JSON) AS patients,  
-//       uN.userID, uN.username, uN.fullName AS nurseFullName, 
-//       uN.dob AS nurseDob, uN.phone AS nursePhone, 
-//       uN.email AS nurseEmail, uN.CCCD, uN.address, uN.gender
-//   FROM Nurse n
-//   JOIN User uN ON n.userID = uN.userID  
-//   LEFT JOIN NursePatient np ON n.nurseID = np.nurseID
-//   LEFT JOIN Patient p ON np.patientID = p.patientID
-//   LEFT JOIN User uP ON p.userID = uP.userID  
-//   WHERE n.nurseID = ?
-//   GROUP BY n.nurseID, n.department, uN.userID, uN.username, 
-//            uN.fullName, uN.dob, uN.phone, uN.email, uN.CCCD, 
-//            uN.address, uN.gender;
-// `;
-
-
-//   db.query(query, [nurseID], (err, results) => {
-//     if (err) {
-//       console.error('🛑 SQL Error:', err.sqlMessage);  // Print the exact SQL error
-//       return res.status(500).json({ error: 'Failed to retrieve nurse data', details: err.sqlMessage });
-//     }
-//     if (results.length === 0) {
-//       return res.status(404).json({ message: 'Nurse not found' });
-//     }
-
-//     res.status(200).json(results[0]);
-//   });
-// });
 
 // API to get patients by roomID
 app.get("/rooms/:roomID/patients", (req, res) => {
@@ -175,7 +125,27 @@ app.get("/medical-records/:patientID", (req, res) => {
     res.json(results[0]);
   });
 });
+// Login API
+app.post("/login", (req, res) => {
+  const { email, password } = req.body;
+  const query = "SELECT * FROM users WHERE email = ?";
 
+  db.query(query, [email], async (err, results) => {
+      if (err) return res.status(500).json({ error: "Database error" });
+      if (results.length === 0) return res.status(401).json({ error: "Invalid email or password" });
+
+      const user = results[0];
+
+      // Compare password with hashed password in the database
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) return res.status(401).json({ error: "Invalid email or password" });
+
+      // Generate JWT Token
+      const token = jwt.sign({ userId: user.id, email: user.email }, "your_secret_key", { expiresIn: "1h" });
+
+      res.json({ message: "Login successful", token });
+  });
+});
 
 
 // Start the server
