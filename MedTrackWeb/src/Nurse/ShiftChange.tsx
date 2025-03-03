@@ -1,55 +1,25 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import SidebarLogin from "../SidebarLogin";
-import "./../AllDesign.css";
+import './../AllDesign.css';
+import { useState } from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 export default function ShiftChange() {
-    const storedInfo = localStorage.getItem("info");
-    const info = storedInfo ? JSON.parse(storedInfo) : null;
-   
-    // State for form inputs
-    const [workingDate, setWorkingDate] = useState("");
+    const [date, setDate] = useState("");
     const [reason, setReason] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState("");
 
-    // Handle form submission
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        if (!workingDate || !reason.trim()) {
-            setMessage("Please fill in all fields.");
-            return;
-        }
-
-        setLoading(true);
-        setMessage("");
+    const handleSubmit = async () => {
+        console.log("Submitting:", { date, reason }); // Debugging: Check if data is correct
 
         try {
-            const token = localStorage.getItem("token"); // Assuming token is stored
-
             const response = await axios.post(
-                "/submit-shiftchange",
-                {
-                    requestContent: `Shift Change Request: ${reason}, Date: ${workingDate}`,
-                },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
+                "http://26.184.100.176:3000/requestSC",
+                { date, reason }, // Ensure these match backend expectations
+                { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
             );
 
-            setMessage("Shift change request submitted successfully!");
-            setWorkingDate("");
-            setReason("");
+            console.log("Request Successful:", response.data);
         } catch (error) {
-            console.error("Error submitting shift change:", error);
-            setMessage(error.response?.data?.error || "An error occurred. Please try again.");
-        } finally {
-            setLoading(false);
+            console.error("Error submitting request:", error);
         }
     };
 
@@ -63,32 +33,33 @@ export default function ShiftChange() {
                                 Shift change registration
                                 <i className="fa fa-hand-paper-o" aria-hidden="true"></i>
                             </h1>
-                            {message && <p className="text-danger">{message}</p>}
-                            <form className="w-50" onSubmit={handleSubmit}>
+                            <form className='w-50'>
                                 <div className="form-group">
-                                    <label htmlFor="workingDate">Expected working date</label>
+                                    <label htmlFor="dateInput">Expected working date</label>
                                     <input
                                         type="date"
                                         className="form-control"
-                                        id="workingDate"
-                                        value={workingDate}
-                                        onChange={(e) => setWorkingDate(e.target.value)}
-                                        required
+                                        id="dateInput"
+                                        value={date}
+                                        onChange={(e) => setDate(e.target.value)}
                                     />
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="reason">Reason for transfer</label>
+                                    <label htmlFor="reasonInput">Reason for transfer</label>
                                     <textarea
                                         className="form-control"
-                                        id="reason"
+                                        id="reasonInput"
                                         value={reason}
                                         onChange={(e) => setReason(e.target.value)}
-                                        required
-                                    />
+                                    ></textarea>
                                 </div>
                                 <div className="form-group">
-                                    <button type="submit" className="btn btn-success w-100" disabled={loading}>
-                                        {loading ? "Submitting..." : "Submit and continue"}
+                                    <button
+                                        type="button"
+                                        className="btn btn-success w-100"
+                                        onClick={handleSubmit}
+                                    >
+                                        Submit and continue
                                     </button>
                                 </div>
                             </form>
@@ -98,16 +69,23 @@ export default function ShiftChange() {
                         <div className="leftBody border whiteBg marginBottom dropShadow">
                             <div className="row">
                                 <div className="col-12 login">
-                                    <SidebarLogin phone={info?.phone || ""} fullName={info?.fullName || ""} />
+                                    <h6 className='whiteText blueBg loginHead'>Account</h6>
+                                    <div className="padding">
+                                        <p className='blueText'>0922639956</p>
+                                        <p className='blueText'>Nguyen Thanh Trung Nhat</p>
+                                        <div className="d-flex justify-content-center">
+                                            <button type="button" className="btn btn-danger w-100">Logout</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div className="leftBody border whiteBg dropShadow marginBottom">
                             <div className="row">
                                 <div className="col-12">
-                                    <h6 className="whiteText blueBg featureHead">Feature</h6>
+                                    <h6 className='whiteText blueBg featureHead'>Feature</h6>
                                     <div className="padding">
-                                        <ul className="list-unstyled">
+                                        <ul className='list-unstyled'>
                                             <li>
                                                 <Link to="/home/shift-change" className="text-decoration-none">
                                                     Shift change registration
@@ -120,37 +98,29 @@ export default function ShiftChange() {
                                             </li>
                                         </ul>
                                     </div>
-                                    <h6 className="whiteText blueBg announceHead">Latest announcements</h6>
-                                    <div className="padding20">
+                                    <h6 className='whiteText blueBg announceHead'>Latest announcements</h6>
+                                    <div className='padding20'>
                                         <div className="card border-light mb-3 dropShadow">
                                             <div className="card-body p-2 card-header">
-                                                <p className="card-title p-0">
-                                                    <b>Light card title</b>
-                                                </p>
+                                                <p className="card-title p-0"><b>Light card title</b></p>
                                                 <p className="card-text p-0">Description</p>
                                             </div>
                                         </div>
                                         <div className="card border-light mb-3 dropShadow">
                                             <div className="card-body p-2 card-header">
-                                                <p className="card-title p-0">
-                                                    <b>Light card title</b>
-                                                </p>
+                                                <p className="card-title p-0"><b>Light card title</b></p>
                                                 <p className="card-text p-0">Description</p>
                                             </div>
                                         </div>
                                         <div className="card border-light mb-3 dropShadow">
                                             <div className="card-body p-2 card-header">
-                                                <p className="card-title p-0">
-                                                    <b>Light card title</b>
-                                                </p>
+                                                <p className="card-title p-0"><b>Light card title</b></p>
                                                 <p className="card-text p-0">Description</p>
                                             </div>
                                         </div>
                                         <div className="card border-light mb-3 dropShadow">
                                             <div className="card-body p-2 card-header">
-                                                <p className="card-title p-0">
-                                                    <b>Light card title</b>
-                                                </p>
+                                                <p className="card-title p-0"><b>Light card title</b></p>
                                                 <p className="card-text p-0">Description</p>
                                             </div>
                                         </div>
@@ -160,7 +130,7 @@ export default function ShiftChange() {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>          
         </div>
     );
 }
