@@ -4,6 +4,9 @@ import axios from "axios";
 import './../AllDesign.css';
 import LoginImg from './../images/LoginImg.png';
 import Logo from './../images/logo.png';
+import { jwtDecode } from "jwt-decode";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function LoginScreen() {
     const navigate = useNavigate();
@@ -14,16 +17,48 @@ export default function LoginScreen() {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post("http://localhost:5000/login", { email, password });
-            localStorage.setItem("token", response.data.token);
-            navigate(`/home`);
+            const response = await axios.post("http://26.184.100.176:3000/login", { email, password });
+            const { token } = response.data;
+
+            if (!token) {
+                setError("Invalid server response. Please try again.");
+                return;
+            }
+
+            localStorage.setItem("token", token);
+            const decodedToken = jwtDecode(token);
+            const roleID = decodedToken.roleID;
+
+            if (!roleID) {
+                setError("Role information missing. Please contact support.");
+                return;
+            }
+
+            localStorage.setItem("roleID", roleID.toString());
+
+            toast.success("Login successful!", { position: "top-right" });
+
+            setTimeout(() => {
+                if (roleID === 1) {
+                    navigate("/doctor");
+                } else if (roleID === 2) {
+                    navigate("/home");
+                } else if (roleID === 666) {
+                    navigate("/admin");
+                } else {
+                    setError("Unauthorized role. Please contact support.");
+                }
+            }, 1000); // Delay navigation for the toast
         } catch (err) {
+            console.error("Login Error:", err);
             setError(err.response?.data?.error || "Server error. Please try again later.");
+            toast.error("Login failed. Please check your credentials.", { position: "top-right" });
         }
     };
 
     return (
         <main className='h-100'>
+            <ToastContainer /> {/* Add this to show notifications */}
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-6 padding100 loginBg pt50">

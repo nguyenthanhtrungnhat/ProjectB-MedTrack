@@ -1,21 +1,72 @@
-import logo from './images/logo.png'
-export default function Header() {
-    return (
+import { useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
+import logo from "./images/logo.png";
 
+const getUserRoleFromToken = () => {
+    const token = localStorage.getItem("token");
+    if (!token) return null;
+
+    try {
+        const decoded: any = jwtDecode(token);
+        return decoded.roleID; // Extract roleID from token
+    } catch (error) {
+        console.error("Invalid token:", error);
+        return null;
+    }
+};
+
+export default function Header() {
+    const [roleID, setRoleID] = useState<number | null>(null);
+
+    useEffect(() => {
+        const role = getUserRoleFromToken();
+        setRoleID(role);
+    }, []);
+
+    return (
         <header className="header dropShadow fixed-top">
             <nav className="navbar navbar-expand-lg navbar-light custom-navbar">
                 <img src={logo} className="logo" />
-                <a className="navbar-brand " href="/"><h4 className='whiteText'> MedTrack</h4></a>
-                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <a className="navbar-brand" href="#">
+                    <h4 className="whiteText">MedTrack</h4>
+                </a>
+                <button
+                    className="navbar-toggler"
+                    type="button"
+                    data-toggle="collapse"
+                    data-target="#navbarNavAltMarkup"
+                    aria-controls="navbarNavAltMarkup"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div className="navbar-nav">
-                        <a className="nav-link active " href="/home"><h5 className='whiteText hasHomeIcon'>Home</h5> <span className="sr-only">(current)</span></a>
-                        <a className="nav-link whiteText " href="/home/nurse-profile"><h5 className='whiteText hasProfileIcon'>Profile</h5></a>
+                        {roleID === 1 ? ( // Doctor
+                            <>
+                                <a className="nav-link active" href="/doctor">
+                                    <h5 className="whiteText hasHomeIcon">Home</h5>
+                                    <span className="sr-only">(current)</span>
+                                </a>
+                                <a className="nav-link whiteText" href="/doctor/doctor-profile">
+                                    <h5 className="whiteText hasProfileIcon">Profile</h5>
+                                </a>
+                            </>
+                        ) : roleID === 2 ? ( // Nurse
+                            <>
+                                <a className="nav-link active" href="/home">
+                                    <h5 className="whiteText hasHomeIcon">Home</h5>
+                                    <span className="sr-only">(current)</span>
+                                </a>
+                                <a className="nav-link whiteText" href="/home/nurse-profile">
+                                    <h5 className="whiteText hasProfileIcon">Profile</h5>
+                                </a>
+                            </>
+                        ) : null}
                     </div>
                 </div>
             </nav>
         </header>
-    )
+    );
 }
