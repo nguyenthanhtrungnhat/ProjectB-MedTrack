@@ -185,7 +185,7 @@ app.post("/login", (req, res) => {
       const token = jwt.sign({ userID: user.userID, roleID }, "secretkey", { expiresIn: "1h" });
 
       console.log(`User logged in successfully: ${user.email} (ID: ${user.userID}, Role: ${roleID})`);
-      
+
       res.json({
         message: "Login successful",
         token,
@@ -198,7 +198,56 @@ app.post("/login", (req, res) => {
     });
   });
 });
+// Middleware to authenticate user and get nurseID
+const authenticate = (req, res, next) => {
+  const token = req.header("Authorization");
 
+  if (!token) {
+    return res.status(401).json({ error: "Access denied. No token provided." });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.nurseID = decoded.userID; // Extract nurseID from token
+    next();
+  } catch (error) {
+    res.status(400).json({ error: "Invalid token." });
+  }
+};
+
+// POST API: Create a Request
+app.post("/submit-shiftchange", authenticate, async (req, res) => {
+  try {
+    const { requestContent } = req.body;
+    const nurseID = req.nurseID; // Get nurseID from token
+    const dateTime = new Date().toISOString(); // Use current date
+    const requestType = 1;
+
+    if (!requestContent) {
+      return res.status(400).json({ error: "Request content is required." });
+    }
+
+    const query = `
+      INSERT INTO requests (dateTime, requestContent, requestStatus, nurseID, doctorID, requestType) 
+      VALUES (?, ?, NULL, ?, NULL, ?)
+    `;
+    const values = [dateTime, requestContent, nurseID, requestType];
+
+    const [result] = await pool.execute(query, values);
+
+    res.status(201).json({
+      message: "Request created successfully",
+      requestID: result.insertId,
+      dateTime,
+      requestContent,
+      nurseID,
+      requestType
+    });
+  } catch (error) {
+    console.error("Error inserting request:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 // Start the server
 const PORT = 3000;
 app.listen(PORT, () => {
