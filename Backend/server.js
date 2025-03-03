@@ -1,8 +1,10 @@
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
-
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const app = express();
+require("dotenv").config({ path: "JWT.env" });
 
 // Enable CORS
 app.use(cors());
@@ -69,6 +71,24 @@ app.get("/nurses/:nurseID", (req, res) => {
     res.json(results[0]);
   });
 });
+// Get full nurse details by userID
+app.get("/nurses/by-user/:userID", (req, res) => {
+  const { userID } = req.params;
+
+  const query = `
+    SELECT n.*, u.*
+    FROM Nurse n
+    JOIN User u ON n.userID = u.userID
+    WHERE n.userID = ?;
+  `;
+
+  db.query(query, [userID], (err, results) => {
+    if (err) return res.status(500).json({ error: "Database error", details: err });
+    if (results.length === 0) return res.status(404).json({ error: "Nurse not found" });
+
+    res.json(results[0]); // Send full nurse data
+  });
+});
 
 // API to get patients by roomID
 app.get("/rooms/:roomID/patients", (req, res) => {
@@ -125,28 +145,59 @@ app.get("/medical-records/:patientID", (req, res) => {
     res.json(results[0]);
   });
 });
-// Login API
+
+//login API
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
-  const query = "SELECT * FROM users WHERE email = ?";
+  if (!email || !password) return res.status(400).json({ error: "Email and password are required" });
 
-  db.query(query, [email], async (err, results) => {
-      if (err) return res.status(500).json({ error: "Database error" });
-      if (results.length === 0) return res.status(401).json({ error: "Invalid email or password" });
+  // Check if the user exists
+  const query = "SELECT * FROM user WHERE email = ?";
+  db.query(query, [email], (err, results) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+    if (results.length === 0) {
+      console.log(`Failed login attempt for email: ${email}`);
+      return res.status(401).json({ error: "Invalid email or password" });
+    }
 
-      const user = results[0];
+    const user = results[0];
 
-      // Compare password with hashed password in the database
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch) return res.status(401).json({ error: "Invalid email or password" });
+    // Compare plaintext password
+    if (password !== user.password) {
+      console.log(`Failed login attempt for email: ${email}`);
+      return res.status(401).json({ error: "Invalid email or password" });
+    }
 
-      // Generate JWT Token
-      const token = jwt.sign({ userId: user.id, email: user.email }, "your_secret_key", { expiresIn: "1h" });
+    // Get user role from userRole table
+    db.query("SELECT roleID FROM userRole WHERE userID = ?", [user.userID], (err, roleResults) => {
+      if (err) {
+        console.error("Database error:", err);
+        return res.status(500).json({ error: "Internal server error" });
+      }
+      if (roleResults.length === 0) {
+        return res.status(401).json({ error: "Role not found" });
+      }
 
-      res.json({ message: "Login successful", token });
+      const roleID = roleResults[0].roleID;
+      const token = jwt.sign({ userID: user.userID, roleID }, "secretkey", { expiresIn: "1h" });
+
+      console.log(`User logged in successfully: ${user.email} (ID: ${user.userID}, Role: ${roleID})`);
+      
+      res.json({
+        message: "Login successful",
+        token,
+        user: {
+          userID: user.userID,
+          email: user.email,
+          roleID,
+        }
+      });
+    });
   });
 });
-
 
 // Start the server
 const PORT = 3000;
