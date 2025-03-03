@@ -27,7 +27,7 @@ export default function NurseScreen() {
     localStorage.setItem("info", JSON.stringify(user));
     const [rooms, setRooms] = useState<RoomProps[]>([]);
     const [nurseID, setNurseID] = useState<number | null>(null);
-
+    localStorage.setItem("nurseID", JSON.stringify(nurseID));
     const userID = getUserIDFromToken();
     const url = `http://26.184.100.176:3000/nurses/by-user/${userID}`;
     const roomsUrl = 'http://26.184.100.176:3000/rooms';
