@@ -198,46 +198,6 @@ app.post("/login", (req, res) => {
     });
   });
 });
-// Endpoint to create a new request
-app.post('/api/requests', verifyToken, (req, res) => {
-  try {
-    const { dateTime } = req.body;
-    const nurseID = req.nurseID; // Extracted from token
-    const requestType = 1;
-
-    // Validate input
-    if (!dateTime) {
-      return res.status(400).json({ error: "dateTime is required" });
-    }
-    
-    // Ensure nurseID exists
-    db.query("SELECT nurseID FROM Nurse WHERE nurseID = ?", [nurseID], (err, results) => {
-      if (err) {
-        console.error("Database error:", err);
-        return res.status(500).json({ error: "Database error", details: err.message });
-      }
-      if (results.length === 0) {
-        return res.status(403).json({ error: "Unauthorized: Nurse not found" });
-      }
-
-      // Insert request
-      const sql = `INSERT INTO requests (dateTime, nurseID, requestType) VALUES (?, ?, ?)`;
-      const values = [dateTime, nurseID, requestType];
-
-      db.query(sql, values, (err, result) => {
-        if (err) {
-          console.error("Database error:", err);
-          return res.status(500).json({ error: "Database error", details: err.message });
-        }
-        res.status(201).json({ message: "Request created successfully", requestID: result.insertId });
-      });
-    });
-  } catch (error) {
-    console.error("Unexpected error:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-
 
 // Start the server
 const PORT = 3000;
