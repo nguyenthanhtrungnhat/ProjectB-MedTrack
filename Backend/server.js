@@ -207,7 +207,7 @@ app.post("/requestShiftChange", async (req, res) => {
           return res.status(400).json({ message: "All fields are required" });
       }
 
-      const query = `INSERT INTO requests (dateTime, requestContent, nurseID, requestType) VALUES (?, ?, ?, ?)`;
+      const query = `INSERT INTO request (dateTime, requestContent, nurseID, requestType) VALUES (?, ?, ?, ?)`;
       const values = [dateTime, requestContent, nurseID, requestType];
 
       const [result] = await db.execute(query, values);
