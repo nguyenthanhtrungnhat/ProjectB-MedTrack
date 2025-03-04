@@ -7,7 +7,11 @@ import Logo from './../images/logo.png';
 import { jwtDecode } from "jwt-decode";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { JwtPayload } from "jwt-decode";
 
+interface CustomJwtPayload extends JwtPayload {
+    roleID: number; // Define the expected roleID property
+}
 export default function LoginScreen() {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
@@ -26,7 +30,7 @@ export default function LoginScreen() {
             }
 
             localStorage.setItem("token", token);
-            const decodedToken = jwtDecode(token);
+            const decodedToken = jwtDecode<CustomJwtPayload>(token);
             const roleID = decodedToken.roleID;
 
             if (!roleID) {

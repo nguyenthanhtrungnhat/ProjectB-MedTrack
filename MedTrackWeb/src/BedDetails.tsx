@@ -36,8 +36,8 @@ export default function BedDetails() {
 
     return (
         <div >
-            <div className="container-fluid mainBg main-content vh-100">
-                <div className="row">
+            <div className="container-fluid mainBg main-content ">
+                <div className="row mainBg">
                     <div className="col-10">
                         <div className="row">
                             <div className="col-6 ">
@@ -179,7 +179,7 @@ export default function BedDetails() {
                                                 <p className="card-text p-0">Description</p>
                                             </div>
                                         </div>
-                                       
+
 
                                     </div>
                                 </div>
