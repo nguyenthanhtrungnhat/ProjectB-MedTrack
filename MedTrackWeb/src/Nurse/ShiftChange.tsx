@@ -6,7 +6,7 @@ import './../AllDesign.css';
 export default function ShiftChange() {
     const [workingDate, setWorkingDate] = useState("");
     const [reason, setReason] = useState("");
-    const [loading, setLoading] = useState(false); // Prevent duplicate submissions
+    
     const urlPost = "http://26.184.100.176:3000/requestShiftChange";
     const token = localStorage.getItem("token");
     const nurseID = JSON.parse(localStorage.getItem("nurseID") || "null"); // Ensure correct data type
@@ -69,9 +69,9 @@ export default function ShiftChange() {
                                         type="button"
                                         className="btn btn-success w-100"
                                         onClick={postData}
-                                        disabled={loading} // Prevent double submissions
+                                      
                                     >
-                                        {loading ? "Submitting..." : "Submit and continue"}
+                                        
                                     </button>
                                 </div>
                             </form>
