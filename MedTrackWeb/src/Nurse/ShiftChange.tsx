@@ -7,60 +7,30 @@ export default function ShiftChange() {
     const [workingDate, setWorkingDate] = useState("");
     const [reason, setReason] = useState("");
     const [loading, setLoading] = useState(false); // Prevent duplicate submissions
-
     const urlPost = "http://26.184.100.176:3000/requestShiftChange";
     const token = localStorage.getItem("token");
     const nurseID = JSON.parse(localStorage.getItem("nurseID") || "null"); // Ensure correct data type
-
-    const handleSubmit = async () => {
-        if (!workingDate.trim() || !reason.trim()) {
-            alert("Please fill out all fields.");
-            return;
-        }
-
-        if (!token) {
-            alert("Authentication error! Please log in again.");
-            return;
-        }
-
-        setLoading(true); // Disable button while processing
-
+    const requestType = 1;
+    const postData = async () => {
         try {
-            const requestData = {
-                dateTime: new Date(workingDate).toISOString(),
-                requestContent: reason.trim(),
-                requestStatus: null,
-                nurseID: nurseID,  
-                doctorID: null,
-                requestType: 1,
+            const newData = {
+                dateTime: workingDate,
+                requestContent: reason,
+                nurseID: nurseID,
+                requestType: requestType,
             };
 
-            const response = await axios.post(urlPost, requestData, {
+            const response = await axios.post(urlPost, newData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
                 },
             });
 
-            console.log("Response:", response.data);
-            alert("Request submitted successfully!");
+            console.log("POST Response:", response.data);
 
-            // Clear form
-            setWorkingDate("");
-            setReason("");
-        } catch (error: unknown) {
-            if (axios.isAxiosError(error)) {
-                console.error("Server responded with:", error.response?.data);
-                alert(`Error: ${error.response?.data?.message || "Failed to submit request."}`);
-            } else if (error instanceof Error) {
-                console.error("Request error:", error.message);
-                alert("Network error, please try again.");
-            } else {
-                console.error("An unexpected error occurred.");
-                alert("An unknown error occurred.");
-            }
-        } finally {
-            setLoading(false); // Re-enable button
+
+        } catch (error) {
+            console.error("Error posting data:", error);
         }
     };
 
@@ -95,10 +65,10 @@ export default function ShiftChange() {
                                     ></textarea>
                                 </div>
                                 <div className="form-group">
-                                    <button 
-                                        type="button" 
+                                    <button
+                                        type="button"
                                         className="btn btn-success w-100"
-                                        onClick={handleSubmit}
+                                        onClick={postData}
                                         disabled={loading} // Prevent double submissions
                                     >
                                         {loading ? "Submitting..." : "Submit and continue"}
