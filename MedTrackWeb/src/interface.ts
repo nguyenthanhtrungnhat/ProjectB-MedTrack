@@ -13,9 +13,9 @@ export interface PatientProps {
     patientID: string; // Changed from 'id' to 'patientID' for consistency
     address: string;
     email: string;
-    hospitalizationsDiagnosis: string;
-    summaryCondition: string;
-    dischargeDiagnosis: string;
+    hospitalizationsDiagnosis?: string;
+    summaryCondition?: string;
+    dischargeDiagnosis?: string;
 
 }
 export interface RecordProps {
@@ -38,6 +38,6 @@ export interface RecordProps {
     nurseID: string
 }
 export interface SidebarInfoProps{
-    phone: string ,
-    fullName: string;
+    phone?: string;
+    fullName?: string;
 }

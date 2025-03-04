@@ -75,7 +75,7 @@ export default function NurseScreen() {
                                 <NurseInformation
                                     image={'blank'}
                                     fullName={user.fullName}
-                                    gender={user.gender === 1 ? 'Male' : 'Female'}
+                                    gender={user.gender = 1 ? 'Male' : 'Female'}
                                     dob={user.dob?.split('T')[0]}
                                     phone={user.phone}
                                     nurseID={user.nurseID}
