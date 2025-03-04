@@ -49,7 +49,7 @@ export default function LoginScreen() {
                     setError("Unauthorized role. Please contact support.");
                 }
             }, 1000); // Delay navigation for the toast
-        } catch (err) {
+        } catch (err: unknown) {
             console.error("Login Error:", err);
             setError(err.response?.data?.error || "Server error. Please try again later.");
             toast.error("Login failed. Please check your credentials.", { position: "top-right" });

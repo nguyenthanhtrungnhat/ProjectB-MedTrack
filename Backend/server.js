@@ -198,7 +198,52 @@ app.post("/login", (req, res) => {
     });
   });
 });
+// Middleware for authentication
+const authenticateToken = (req, res, next) => {
+  const token = req.headers["authorization"]?.split(" ")[1];
 
+  if (!token) {
+      return res.status(401).json({ message: "Unauthorized: No token provided." });
+  }
+
+  jwt.verify(token, SECRET_KEY, (err, user) => {
+      if (err) {
+          return res.status(403).json({ message: "Forbidden: Invalid token." });
+      }
+      req.user = user;
+      next();
+  });
+};
+
+// API Endpoint: Shift Change Request
+app.post("/requestShiftChange", authenticateToken, async (req, res) => {
+  try {
+      const { dateTime, requestContent, requestStatus, nurseID, doctorID, requestType } = req.body;
+
+      // Input validation
+      if (!dateTime || !requestContent || !nurseID) {
+          return res.status(400).json({ message: "Missing required fields." });
+      }
+
+      // Insert request into the database
+      const query = `
+          INSERT INTO shift_requests (dateTime, requestContent, requestStatus, nurseID, doctorID, requestType)
+          VALUES (?, ?, ?, ?, ?, ?)
+      `;
+      const values = [dateTime, requestContent, requestStatus, nurseID, doctorID, requestType];
+
+      const [result] = await db.execute(query, values);
+
+      if (result.affectedRows > 0) {
+          return res.status(201).json({ message: "Shift change request submitted successfully." });
+      } else {
+          return res.status(500).json({ message: "Failed to submit request." });
+      }
+  } catch (error) {
+      console.error("Error submitting shift change request:", error);
+      return res.status(500).json({ message: "Internal server error." });
+  }
+});
 // Start the server
 const PORT = 3000;
 app.listen(PORT, () => {
