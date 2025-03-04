@@ -170,7 +170,7 @@ export default function NurseScreen() {
                                     </div>
                                     <h6 className='whiteText blueBg announceHead'>Latest announcements</h6>
                                     <div className='padding20'>
-                                        {[...Array(4)].map((_, index) => (
+                                        {[...Array(1)].map((_, index) => (
                                             <div key={index} className="card border-light mb-3 dropShadow">
                                                 <div className="card-body p-2 card-header">
                                                     <p className="card-title p-0"><b>Light card title</b></p>

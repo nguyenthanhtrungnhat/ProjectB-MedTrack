@@ -22,7 +22,7 @@ export default function BedsInRoom() {
 
     return (
         <div >
-            <div className="container-fluid mainBg main-content h-100">
+            <div className="container-fluid mainBg main-content vh-100">
                 <div className="row">
                     <div className="col-10">
                         <div className="hasRoomList border padding whiteBg dropShadow marginBottom">
@@ -86,24 +86,7 @@ export default function BedsInRoom() {
                                                 <p className="card-text p-0">Description</p>
                                             </div>
                                         </div>
-                                        <div className="card border-light mb-3 dropShadow">
-                                            <div className="card-body p-2 card-header">
-                                                <p className="card-title p-0"><b>Light card title</b></p>
-                                                <p className="card-text p-0">Description</p>
-                                            </div>
-                                        </div>
-                                        <div className="card border-light mb-3 dropShadow">
-                                            <div className="card-body p-2 card-header">
-                                                <p className="card-title p-0"><b>Light card title</b></p>
-                                                <p className="card-text p-0">Description</p>
-                                            </div>
-                                        </div>
-                                        <div className="card border-light mb-3 dropShadow">
-                                            <div className="card-body p-2 card-header">
-                                                <p className="card-title p-0"><b>Light card title</b></p>
-                                                <p className="card-text p-0">Description</p>
-                                            </div>
-                                        </div>
+                                        
 
                                     </div>
                                 </div>
