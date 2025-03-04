@@ -143,14 +143,7 @@ export default function NurseScreen() {
                         <div className="leftBody border whiteBg marginBottom dropShadow">
                             <div className="row">
                                 <div className="col-12 login">
-                                    {/* <h6 className='whiteText blueBg loginHead'>Account</h6>
-                                    <div className="padding">
-                                        <p className='blueText'>0922639956</p>
-                                        <p className='blueText'>Nguyen Thanh Trung Nhat</p>
-                                        <div className="d-flex justify-content-center">
-                                            <button type="button" className="btn btn-danger w-100">Logout</button>
-                                        </div>
-                                    </div> */}
+                                    
                                     <SidebarLogin
                                         phone={user?.phone} fullName={user?.fullName}
                                     />

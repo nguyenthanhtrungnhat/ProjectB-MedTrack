@@ -14,7 +14,7 @@ export default function LoginScreen() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
-    const handleLogin = async (e) => {
+    const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
             const response = await axios.post("http://26.184.100.176:3000/login", { email, password });
@@ -51,9 +51,18 @@ export default function LoginScreen() {
             }, 1000); // Delay navigation for the toast
         } catch (err: unknown) {
             console.error("Login Error:", err);
-            setError(err.response?.data?.error || "Server error. Please try again later.");
+
+            if (err instanceof Error) {
+                // If the error is an instance of Error, check if it has a response (Axios error)
+                const axiosError = err as any; // Type assertion for Axios errors
+                setError(axiosError.response?.data?.error || "Server error. Please try again later.");
+            } else {
+                setError("An unexpected error occurred.");
+            }
+
             toast.error("Login failed. Please check your credentials.", { position: "top-right" });
         }
+
     };
 
     return (

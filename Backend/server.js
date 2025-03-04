@@ -199,24 +199,22 @@ app.post("/login", (req, res) => {
   });
 });
 
-app.post("/requestShiftChange", async (req, res) => {
-  try {
-      const { dateTime, requestContent, nurseID, requestType } = req.body;
+// Shift change request
+app.post("/requestShiftChange", (req, res) => {
+  const { dateTime, requestContent, nurseID, requestType } = req.body;
 
-      if (!dateTime || !requestContent || !nurseID) {
-          return res.status(400).json({ message: "All fields are required" });
-      }
-
-      const query = `INSERT INTO request (dateTime, requestContent, nurseID, requestType) VALUES (?, ?, ?, ?)`;
-      const values = [dateTime, requestContent, nurseID, requestType];
-
-      const [result] = await db.execute(query, values);
-
-      res.status(201).json({ message: "Shift change request submitted successfully", requestID: result.insertId });
-  } catch (error) {
-      console.error("Error:", error);
-      res.status(500).json({ message: "Server error" });
+  if (!dateTime || !requestContent || !nurseID) {
+      return res.status(400).json({ message: "All fields are required" });
   }
+
+  const query = "INSERT INTO request (dateTime, requestContent, nurseID, requestType) VALUES (?, ?, ?, ?)";
+  db.query(query, [dateTime, requestContent, nurseID, requestType], (err, result) => {
+      if (err) {
+          console.error("Error:", err);
+          return res.status(500).json({ message: "Server error" });
+      }
+      res.status(201).json({ message: "Shift change request submitted successfully", requestID: result.insertId });
+  });
 });
 // Start the server
 const PORT = 3000;

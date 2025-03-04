@@ -1,17 +1,28 @@
 import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import './../AllDesign.css';
+import SidebarLogin from "../SidebarLogin";
+
 
 export default function ShiftChange() {
+    const storedInfo = localStorage.getItem("info");
+    const info = storedInfo ? JSON.parse(storedInfo) : null;
     const [workingDate, setWorkingDate] = useState("");
     const [reason, setReason] = useState("");
-    
-    const urlPost = "http://26.184.100.176:3000/requestShiftChange";
+    const [loading, setLoading] = useState(false); // Prevent double submission
+
+    const urlPost = "http://localhost:3000/requestShiftChange";
     const token = localStorage.getItem("token");
     const nurseID = JSON.parse(localStorage.getItem("nurseID") || "null"); // Ensure correct data type
     const requestType = 1;
+
     const postData = async () => {
+        if (loading) return; // Prevent multiple clicks
+        setLoading(true);
+
         try {
             const newData = {
                 dateTime: workingDate,
@@ -26,17 +37,44 @@ export default function ShiftChange() {
                 },
             });
 
-            console.log("POST Response:", response.data);
+            // Show success toast
+            toast.success("Shift change request submitted successfully!", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
 
+            // Clear fields after successful submission
+            setWorkingDate("");
+            setReason("");
+            console.log(`Shift change request submitted successfully! Data:`, response.data);
 
         } catch (error) {
             console.error("Error posting data:", error);
+            console.log("Failed to submit shift change request. Error posting data:", error);
+            // Show error toast
+            toast.error("Failed to submit shift change request.", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+
+        } finally {
+            setLoading(false); // Enable button again
         }
     };
 
     return (
         <div>
-            <div className="container-fluid scBg main-content vh-100 padding">
+            <div className="container-fluid scBg main-content h-100 padding">
                 <div className="row">
                     <div className="col-10">
                         <div className="d-flex flex-column justify-content-center align-items-center">
@@ -53,6 +91,7 @@ export default function ShiftChange() {
                                         id="workingDate"
                                         value={workingDate}
                                         onChange={(e) => setWorkingDate(e.target.value)}
+                                        required
                                     />
                                 </div>
                                 <div className="form-group">
@@ -62,6 +101,7 @@ export default function ShiftChange() {
                                         id="reason"
                                         value={reason}
                                         onChange={(e) => setReason(e.target.value)}
+                                        required
                                     ></textarea>
                                 </div>
                                 <div className="form-group">
@@ -69,9 +109,9 @@ export default function ShiftChange() {
                                         type="button"
                                         className="btn btn-success w-100"
                                         onClick={postData}
-                                      
+                                        disabled={loading} // Disable button while submitting
                                     >
-                                        Submit
+                                        {loading ? "Submitting..." : "Submit"}
                                     </button>
                                 </div>
                             </form>
@@ -80,15 +120,11 @@ export default function ShiftChange() {
                     <div className="col-2 noPl">
                         <div className="leftBody border whiteBg marginBottom dropShadow">
                             <div className="row">
-                                <div className="col-12 login ">
-                                    <h6 className='whiteText blueBg loginHead'>Account</h6>
-                                    <div className="padding">
-                                        <p className='blueText'>0922639956</p>
-                                        <p className='blueText'>Nguyen Thanh Trung Nhat</p>
-                                        <div className="d-flex justify-content-center">
-                                            <button type="button" className="btn btn-danger w-100">Logout</button>
-                                        </div>
-                                    </div>
+                                <div className="col-12 login">
+                                    <SidebarLogin
+                                        phone={info?.phone || ""}
+                                        fullName={info?.fullName || ""}
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -130,7 +166,7 @@ export default function ShiftChange() {
                         </div>
                     </div>
                 </div>
-            </div >
-        </div >
+            </div>
+        </div>
     );
 }
