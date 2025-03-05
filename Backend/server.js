@@ -52,6 +52,24 @@ app.get('/appointments', (req, res) => getAllRecords('Appointment', res));
 app.get('/roles', (req, res) => getAllRecords('Role', res));
 app.get('/user-roles', (req, res) => getAllRecords('UserRole', res));
 app.get('/feedback', (req, res) => getAllRecords('Feedback', res));
+app.get('/nursepatient', (req, res) => getAllRecords('nursepatient', res));
+// Get patient by nurseID
+app.get("/nursepatient/:nurseID", (req, res) => {
+  const { nurseID } = req.params;
+
+  const query = `
+    SELECT np.*
+    FROM nursepatient np
+    WHERE nurseID = ?;
+  `;
+
+  db.query(query, [nurseID], (err, results) => {
+    if (err) return res.status(500).json({ error: "Database error", details: err });
+    if (results.length === 0) return res.status(404).json({ error: "No patients found for this nurse" });
+
+    res.json(results); // ✅ Return full list of patients
+  });
+});
 
 // Get nurse by ID
 app.get("/nurses/:nurseID", (req, res) => {
@@ -71,6 +89,7 @@ app.get("/nurses/:nurseID", (req, res) => {
     res.json(results[0]);
   });
 });
+
 // Get full nurse details by userID
 app.get("/nurses/by-user/:userID", (req, res) => {
   const { userID } = req.params;
@@ -204,18 +223,67 @@ app.post("/requestShiftChange", (req, res) => {
   const { dateTime, requestContent, nurseID, requestType } = req.body;
 
   if (!dateTime || !requestContent || !nurseID) {
-      return res.status(400).json({ message: "All fields are required" });
+    return res.status(400).json({ message: "All fields are required" });
   }
 
   const query = "INSERT INTO request (dateTime, requestContent, nurseID, requestType) VALUES (?, ?, ?, ?)";
   db.query(query, [dateTime, requestContent, nurseID, requestType], (err, result) => {
-      if (err) {
-          console.error("Error:", err);
-          return res.status(500).json({ message: "Server error" });
-      }
-      res.status(201).json({ message: "Shift change request submitted successfully", requestID: result.insertId });
+    if (err) {
+      console.error("Error:", err);
+      return res.status(500).json({ message: "Server error" });
+    }
+    res.status(201).json({ message: "Shift change request submitted successfully", requestID: result.insertId });
   });
 });
+
+// API POST để thêm dữ liệu vào bảng MedicalRecords
+app.post("/post-medical-records", (req, res) => {
+  const {
+    heartRate,
+    pulse,
+    height,
+    weight,
+    hurtScale,
+    temperature,
+    currentCondition,
+    SP02,
+    healthStatus,
+    respiratoryRate,
+    bloodPressure,
+    urine,
+  } = req.body;
+
+  const sql = `
+    INSERT INTO MedicalRecords 
+    (patientID, heartRate, pulse, height, weight, hurtScale, temperature, currentCondition, SP02, healthStatus, respiratoryRate, bloodPressure, urine) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+  db.query(
+    sql,
+    [
+      heartRate,
+      pulse,
+      height,
+      weight,
+      hurtScale,
+      temperature,
+      currentCondition,
+      SP02,
+      healthStatus,
+      respiratoryRate,
+      bloodPressure,
+      urine,
+    ],
+    (err, result) => {
+      if (err) {
+        console.error("Lỗi khi thêm dữ liệu:", err);
+        return res.status(500).json({ message: "Lỗi server", error: err });
+      }
+      res.status(201).json({ message: "Thêm thành công", recordID: result.insertId });
+    }
+  );
+});
+
 // Start the server
 const PORT = 3000;
 app.listen(PORT, () => {

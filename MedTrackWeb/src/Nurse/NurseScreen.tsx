@@ -73,7 +73,7 @@ export default function NurseScreen() {
                         <div className="row">
                             {user && (
                                 <NurseInformation
-                                    image={'blank'}
+                                    image={user.image}
                                     fullName={user.fullName}
                                     gender={user.gender = 1 ? 'Male' : 'Female'}
                                     dob={user.dob?.split('T')[0]}

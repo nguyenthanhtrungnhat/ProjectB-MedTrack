@@ -93,7 +93,9 @@
 .hasInformation {
     height: 427px;
 }
-
+.hasInformationP {
+    height: 627px;
+}
 .noPl {
     padding-left: 0;
 }
@@ -259,7 +261,9 @@
 .paddingLeft20 {
     padding-left: 10px;
 }
-
+.paddingLeft50{
+    padding-left: 50px;
+}
 /* Form Background */
 .dlcForm {
     background: linear-gradient(90deg, #82DBF7 0%, #B6F09C 100%);
@@ -278,7 +282,9 @@
 .mb80 {
     margin-bottom: 80px;
 }
-
+.margintop0{
+    margin-top: 0px;
+}
 /* Form Paragraph */
 .dlcForm p {
     color: #505F63;
@@ -354,7 +360,9 @@
     color: rgba(255, 255, 255, 0.7);
     /* Light white placeholder */
 }
-
+.tracking-sheet{
+    width: 1000px;
+}
 .inputLogin:focus {
     border-color: lightgreen;
     background: transparent;
@@ -371,4 +379,9 @@ background-color: #32AEBD;
 }
 .pt50{
     padding-top: 50px;
+}
+.avtIMG{
+    margin-top: 50px;
+    height: 200px;
+    width: 150px;
 }

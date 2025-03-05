@@ -43,7 +43,7 @@ export default function BedDetails() {
                             <div className="col-6 ">
                                 {user && (
                                     <PatientInformation
-                                        image={'blank'}
+                                        image={user.image}
                                         fullName={user.fullName}
                                         gender={user.gender = 1 ? 'Male' : 'Female'}
                                         dob={user.dob?.split('T')[0]} // Extract only the date part (YYYY-MM-DD)
@@ -51,6 +51,10 @@ export default function BedDetails() {
                                         patientID={user.patientID}
                                         address={user.address} // ✅ Optional chaining
                                         email={user.email}
+                                        BHYT={user.BHYT}
+                                        admissionDate={user.admissionDate?.split('T')[0]}
+                                        relativeName={user.relativeName}
+                                        relativeNumber={user.relativeNumber}
                                     />
                                 )}
                                 <div className="row">

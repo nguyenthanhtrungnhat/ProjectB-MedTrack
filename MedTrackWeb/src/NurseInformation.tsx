@@ -16,7 +16,7 @@ export default function NurseInformation({ image, fullName, gender, dob, phone, 
                         <p className='blueText m-4'>Address: {address}</p>
                     </div>
                     <div className="col-4">
-                        <img src={image} alt="" />
+                        <img src={image} className="avtIMG" loading="lazy" />
                         <p className='blueText m-4'>{nurseID}</p>
                     </div>
                 </div>
