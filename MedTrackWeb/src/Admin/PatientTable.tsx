@@ -1,27 +1,24 @@
 import React, { useState } from "react";
 import { PatientProps } from "../interface";
-
-
+import axios from "axios";
+import { toast } from "react-toastify";
 
 interface PatientTableProps {
     patients: PatientProps[];
     onDelete: (id: number, type: string) => void;
+    onUpdate: () => void; // Add this to refresh patient list after update
 }
 
-const PatientTable: React.FC<PatientTableProps> = ({ patients, onDelete }) => {
+const PatientTable: React.FC<PatientTableProps> = ({ patients, onDelete, onUpdate }) => {
     const formatDate = (dateString: string | null): string => {
         if (!dateString) return "N/A";
         const date = new Date(dateString);
-        return (
-            ("0" + date.getDate()).slice(-2) +
-            "/" +
-            ("0" + (date.getMonth() + 1)).slice(-2) +
-            "/" +
-            date.getFullYear()
-        );
+        return date.toLocaleDateString("en-GB"); // Formats as DD/MM/YYYY
     };
+
     const [selectedPatient, setSelectedPatient] = useState<PatientProps | null>(null);
     const [editedPatient, setEditedPatient] = useState<PatientProps | null>(null);
+
     const handleEdit = (patient: PatientProps) => {
         setSelectedPatient(patient);
         setEditedPatient({ ...patient });
@@ -35,14 +32,14 @@ const PatientTable: React.FC<PatientTableProps> = ({ patients, onDelete }) => {
 
     const handleSave = () => {
         if (!editedPatient) return;
-
-        axios.put(`http://localhost:3000/patients/${editedPatient.patientID}`, editedPatient)
+        axios.put(`http://localhost:3000/users/${editedPatient.userID}`, editedPatient)
             .then(() => {
-                alert("Patient updated successfully!");
+                toast.success("Patient updated successfully!");
                 setSelectedPatient(null);
+                onUpdate(); // Refresh patient list
             })
-            .catch(() => alert("Failed to update patient"));
     };
+
     return (
         <div className="row mt-5">
             <h2>Patients List</h2>
@@ -74,17 +71,17 @@ const PatientTable: React.FC<PatientTableProps> = ({ patients, onDelete }) => {
                                 <td>{patient.patientID}</td>
                                 <td>{patient.username}</td>
                                 <td>{patient.fullName}</td>
-                                <td>{patient.BHYT}</td>
+                                <td>{patient.BHYT ?? "N/A"}</td>
                                 <td>{formatDate(patient.admissionDate)}</td>
                                 <td>{formatDate(patient.dischargeDate)}</td>
-                                <td>{patient.hospitalizationsDiagnosis}</td>
-                                <td>{patient.summaryCondition}</td>
-                                <td>{patient.relativeName}</td>
-                                <td>{patient.relativeNumber}</td>
-                                <td>{patient.phone}</td>
-                                <td>{patient.email}</td>
-                                <td>{patient.CCCD}</td>
-                                <td>{patient.address}</td>
+                                <td>{patient.hospitalizationsDiagnosis ?? "N/A"}</td>
+                                <td>{patient.summaryCondition ?? "N/A"}</td>
+                                <td>{patient.relativeName ?? "N/A"}</td>
+                                <td>{patient.relativeNumber ?? "N/A"}</td>
+                                <td>{patient.phone ?? "N/A"}</td>
+                                <td>{patient.email ?? "N/A"}</td>
+                                <td>{patient.CCCD ?? "N/A"}</td>
+                                <td>{patient.address ?? "N/A"}</td>
                                 <td>{patient.gender === 1 ? "Male" : "Female"}</td>
                                 <td>
                                     <button
@@ -100,6 +97,7 @@ const PatientTable: React.FC<PatientTableProps> = ({ patients, onDelete }) => {
                     </tbody>
                 </table>
             </div>
+
             {/* Edit Modal */}
             {selectedPatient && editedPatient && (
                 <div className="modal" style={{ display: "block", backgroundColor: "rgba(0,0,0,0.5)" }}>

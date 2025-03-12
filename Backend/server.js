@@ -356,6 +356,54 @@ app.delete("/patients/:patientID", (req, res) => {
     res.status(200).json({ message: "Patient deleted successfully" });
   });
 });
+// Update user by ID
+app.put("/users/:id", (req, res) => {
+  const userID = req.params.id;
+  let {
+      username,
+      password,
+      fullName,
+      dob,
+      phone,
+      email,
+      CCCD,
+      address,
+      haveTask,
+      gender
+  } = req.body;
+
+  // Convert date fields from ISO to MySQL format (YYYY-MM-DD HH:MM:SS)
+  const formatDate = (isoDate) => {
+      if (!isoDate) return null; // Handle null cases
+      const date = new Date(isoDate);
+      return date.toISOString().slice(0, 19).replace("T", " "); // Convert to MySQL DATETIME format
+  };
+
+  dob = formatDate(dob);
+  haveTask = formatDate(haveTask);
+
+  const sql = `
+      UPDATE user
+      SET username = ?, password = ?, fullName = ?, dob = ?, phone = ?, 
+          email = ?, CCCD = ?, address = ?, haveTask = ?, gender = ? 
+      WHERE userID = ?`;
+
+  db.query(
+      sql,
+      [username, password, fullName, dob, phone, email, CCCD, address, haveTask, gender, userID],
+      (err, result) => {
+          if (err) {
+              console.error("Error updating user:", err);
+              return res.status(500).json({ error: "Failed to update user" });
+          }
+          if (result.affectedRows === 0) {
+              return res.status(404).json({ error: "User not found" });
+          }
+          console.log(result);
+          res.json({ message: "User updated successfully!" });
+      }
+  );
+});
 
 // Start the server
 const PORT = 3000;

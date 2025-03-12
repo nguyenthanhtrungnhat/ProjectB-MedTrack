@@ -25,7 +25,8 @@ export default function AdminScreen() {
         axios.get("http://localhost:3000/doctors")
             .then(response => setDoctors(response.data))
             .catch(() => toast.error("Failed to fetch doctors data"));
-    }, []);
+        console.log("test fetching times");
+    },[]);
 
     const handleDelete = (id, type) => {
         console.log(`Deleting ${type} with ID:`, id);
