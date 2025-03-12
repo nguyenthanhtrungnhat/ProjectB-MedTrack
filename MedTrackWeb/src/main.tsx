@@ -16,6 +16,7 @@ import Header from "./Header";
 import LoginScreen from "./Login/Login";
 import DoctorScreen from "./Doctor/DoctorScreen";
 import AdminScreen from "./Admin/Admin";
+import PatientScreen from "./Patient/PatientScreen";
 
 const Layout = () => (
   <>
@@ -61,6 +62,18 @@ const router = createBrowserRouter([
         path: "/doctor", element: <Layout />, children: [
           { index: true, element: <HomePage /> },
           { path: "doctor-profile", element: <DoctorScreen /> },
+        ]
+      },
+    ],
+  },
+  {
+    path: "/patient",
+    element: <ProtectedRoute />, // Wrap in ProtectedRoute
+    children: [
+      {
+        path: "/patient", element: <Layout />, children: [
+          { index: true, element: <HomePage /> },
+          { path: "patient-profile", element: <PatientScreen /> },
         ]
       },
     ],

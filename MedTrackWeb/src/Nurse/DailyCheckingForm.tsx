@@ -9,9 +9,6 @@ import { FormData } from '../interface';
 export default function DailyCheckingForm() {
     const nurseID = localStorage.getItem("nurseID");
     console.log("NurseID", nurseID);
-    // const [patients, setPatients] = useState<{ patientID: number }[]>([]);
-    const [search, setSearch] = useState("");
-    // const [filteredPatients, setFilteredPatients] = useState<{ patientID: number }[]>([]);
     const [formData, setFormData] = useState<FormData>({
         patientID: "",
         pulse: "",
@@ -28,33 +25,6 @@ export default function DailyCheckingForm() {
         hurtScale: "",
         currentCondition: ""
     });
-    // useEffect(() => {
-    //     if (nurseID) {
-    //         axios.get(`http://localhost:3000/nursepatient/${nurseID}`)
-    //             .then((response) => {
-    //                 //  setPatients(response.data);
-    //                 // setFilteredPatients(response.data); // Initialize full list
-    //             })
-    //             .catch((error) => console.error("Error fetching patients:", error));
-    //     }
-    // }, [nurseID]);
-
-    // const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     const query = event.target.value;
-    //     setSearch(query);
-
-    //     // Filter patients based on input
-    //     const results = patients.filter((p) =>
-    //         p.patientID.toString().includes(query)
-    //     );
-    //     setFilteredPatients(results);
-    // };
-
-    // const selectPatient = (patientID: number) => {
-    //     setFormData({ ...formData, patient: patientID.toString() });
-    //     setSearch(""); // Clear search input
-    //     setFilteredPatients([]); // Hide suggestions
-    // };
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormData({
             ...formData,
@@ -67,7 +37,7 @@ export default function DailyCheckingForm() {
 
         try {
             await axios.post("http://26.184.100.176:3000/post-medical-records", {
-                patient: parseInt(formData.patientID),
+                patientID: parseInt(formData.patientID),
                 heartRate: parseInt(formData.heartRate),
                 pulse: parseInt(formData.pulse),
                 height: parseInt(formData.height),
@@ -128,15 +98,7 @@ export default function DailyCheckingForm() {
                                         placeholder="Search"
                                         required
                                     />
-                                    {/* {search && (
-                                        <ul className="patient-dropdown">
-                                            {filteredPatients.map((p) => (
-                                                <li key={p.patientID} onClick={() => selectPatient(p.patientID)} className="patient-dropdown-li">
-                                                    Patient ID: {p.patientID}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    )} */}
+                                 
                                 </div>
                             </div>
                             <div className="row">

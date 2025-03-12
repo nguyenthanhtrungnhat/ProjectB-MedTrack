@@ -254,6 +254,7 @@ app.post("/requestShiftChange", (req, res) => {
 // API POST để thêm dữ liệu vào bảng MedicalRecords
 app.post("/post-medical-records", (req, res) => {
   const {
+    patientID,
     heartRate,
     pulse,
     height,
@@ -276,6 +277,7 @@ app.post("/post-medical-records", (req, res) => {
   db.query(
     sql,
     [
+      patientID,
       heartRate,
       pulse,
       height,
@@ -403,6 +405,23 @@ app.put("/users/:id", (req, res) => {
           res.json({ message: "User updated successfully!" });
       }
   );
+});
+// get patient by userID
+app.get('/api/patientByUserID/:userID', (req, res) => {
+  const userID = req.params.userID;
+  // const query = "SELECT * FROM patient WHERE userID = ?";
+  const query = `
+  SELECT p.*, u.*
+  FROM Patient p
+  JOIN User u ON p.userID = u.userID
+  WHERE p.userID = ?;
+`;
+  db.query(query, [userID], (err, results) => {
+      if (err) {
+          return res.status(500).json({ error: err.message });
+      }
+      res.json(results);
+  });
 });
 
 // Start the server

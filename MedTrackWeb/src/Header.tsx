@@ -64,6 +64,16 @@ export default function Header() {
                                     <h5 className="whiteText hasProfileIcon">Profile</h5>
                                 </Link>
                             </>
+                        )  : roleID === 3 ? ( // Patient
+                            <>
+                                <Link className="nav-link active" to={"/patient"}>
+                                    <h5 className="whiteText hasHomeIcon">Home</h5>
+                                    <span className="sr-only">(current)</span>
+                                </Link>
+                                <Link className="nav-link whiteText" to={"/patient/patient-profile"}>
+                                    <h5 className="whiteText hasProfileIcon">Profile</h5>
+                                </Link>
+                            </>
                         ) : null}
                     </div>
                 </div>

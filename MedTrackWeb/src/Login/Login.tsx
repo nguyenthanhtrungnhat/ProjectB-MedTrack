@@ -47,6 +47,8 @@ export default function LoginScreen() {
                     navigate("/doctor");
                 } else if (roleID === 2) {
                     navigate("/home");
+                } else if (roleID === 3) {
+                    navigate("/patient");
                 } else if (roleID === 666) {
                     navigate("/admin");
                 } else {

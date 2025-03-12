@@ -62,7 +62,7 @@ export default function BedDetails() {
                                         <div className="hasRoomList border padding whiteBg dropShadow">
                                             <div className="row"><div className="col-12">
                                                 <div className="dropdown ">
-                                                    <Link className="btn border btn-secondary  dropdown-toggle"to={"#"} role="button" data-toggle="dropdown" aria-expanded="false">
+                                                    <Link className="btn border btn-secondary  dropdown-toggle" to={"#"} role="button" data-toggle="dropdown" aria-expanded="false">
                                                         Record Date
                                                     </Link>
 
