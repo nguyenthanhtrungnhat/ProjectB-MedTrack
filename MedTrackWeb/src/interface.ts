@@ -25,10 +25,30 @@ export interface PatientProps {
     summaryCondition?: string;
     dischargeDiagnosis?: string;
     BHYT?: string;
-    admissionDate?:string;
-    relativeName?:string;
-    relativeNumber?:string;
+    admissionDate?: string | null;
+    relativeName?: string;
+    relativeNumber?: string;
+    dischargeDate?: string | null;
+    CCCD?: string;
+    username?: string;
 }
+// interface Patient {
+//     patientID: number;
+//     username: string;
+//     fullName: string;
+//     BHYT: string;
+//     admissionDate: string | null;
+//     dischargeDate: string | null;
+//     hospitalizationsDiagnosis: string;
+//     summaryCondition: string;
+//     relativeName: string;
+//     relativeNumber: string;
+//     phone: string;
+//     email: string;
+//     CCCD: string;
+//     address: string;
+//     gender: number;
+// }
 export interface RecordProps {
     recordID: string,
     timeCreate: string,
@@ -52,7 +72,7 @@ export interface SidebarInfoProps {
     phone?: string;
     fullName?: string;
 }
-export interface FormData  {
+export interface FormData {
     patientID: string;
     pulse: string;
     spo2: string;

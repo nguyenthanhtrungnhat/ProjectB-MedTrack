@@ -31,6 +31,7 @@ app.use(express.json());
 
 // Generic function to fetch all records from a table
 const getAllRecords = (tableName, res) => {
+
   db.query(`SELECT * FROM ${tableName}`, (err, results) => {
     if (err) {
       res.status(500).send({ error: 'Failed to retrieve records from ' + tableName });
@@ -39,12 +40,26 @@ const getAllRecords = (tableName, res) => {
     }
   });
 };
-
+// Generic function to fetch all records from a table
+const getAllRecords2 = (tableName, res) => {
+  const query = `
+    SELECT n.*, u.*
+    FROM ${tableName} n
+    JOIN User u ON n.userID = u.userID;
+  `;
+  db.query(query, (err, results) => {
+    if (err) {
+      res.status(500).send({ error: 'Failed to retrieve records from ' + tableName });
+    } else {
+      res.status(200).json(results);
+    }
+  });
+};
 // API routes for each table
-app.get('/nurses', (req, res) => getAllRecords('Nurse', res));
-app.get('/doctors', (req, res) => getAllRecords('Doctor', res));
+app.get('/nurses', (req, res) => getAllRecords2('Nurse', res));
+app.get('/doctors', (req, res) => getAllRecords2('Doctor', res));
 app.get('/medical-records', (req, res) => getAllRecords('MedicalRecords', res));
-app.get('/patients', (req, res) => getAllRecords('Patient', res));
+app.get('/patients', (req, res) => getAllRecords2('Patient', res));
 app.get('/rooms', (req, res) => getAllRecords('Room', res));
 app.get('/requests', (req, res) => getAllRecords('Request', res));
 app.get('/users', (req, res) => getAllRecords('User', res));
@@ -282,6 +297,64 @@ app.post("/post-medical-records", (req, res) => {
       res.status(201).json({ message: "Thêm thành công", recordID: result.insertId });
     }
   );
+});
+
+//delete nurse by nurseID
+app.delete("/nurses/:nurseID", (req, res) => {
+  const nurseID = req.params.nurseID;
+
+  console.log("Attempting to delete nurse with ID:", nurseID);  // Debugging log
+
+  const sql = "DELETE FROM nurse WHERE nurseID = ?";
+
+  db.query(sql, [nurseID], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);  // Log the exact MySQL error
+      return res.status(500).json({ message: "Failed to delete nurse", error: err });
+    }
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Nurse not found" });
+    }
+    res.status(200).json({ message: "Nurse deleted successfully" });
+  });
+});
+//delete doctor by doctorID
+app.delete("/doctors/:doctorID", (req, res) => {
+  const nurseID = req.params.nurseID;
+
+  console.log("Attempting to delete doctor with ID:", doctorID);  // Debugging log
+
+  const sql = "DELETE FROM doctor WHERE doctorID = ?";
+
+  db.query(sql, [doctorID], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);  // Log the exact MySQL error
+      return res.status(500).json({ message: "Failed to delete doctor", error: err });
+    }
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Doctor not found" });
+    }
+    res.status(200).json({ message: "Doctor deleted successfully" });
+  });
+});
+//delete patient by doctorID
+app.delete("/patients/:patientID", (req, res) => {
+  const nurseID = req.params.nurseID;
+
+  console.log("Attempting to delete patient with ID:", patientID);  // Debugging log
+
+  const sql = "DELETE FROM patient WHERE patientID = ?";
+
+  db.query(sql, [patientID], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);  // Log the exact MySQL error
+      return res.status(500).json({ message: "Failed to delete patient", error: err });
+    }
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Patient not found" });
+    }
+    res.status(200).json({ message: "Patient deleted successfully" });
+  });
 });
 
 // Start the server
