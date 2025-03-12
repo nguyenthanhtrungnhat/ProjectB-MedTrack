@@ -62,14 +62,14 @@ export default function BedDetails() {
                                         <div className="hasRoomList border padding whiteBg dropShadow">
                                             <div className="row"><div className="col-12">
                                                 <div className="dropdown ">
-                                                    <a className="btn border btn-secondary  dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                                                    <Link className="btn border btn-secondary  dropdown-toggle"to={"#"} role="button" data-toggle="dropdown" aria-expanded="false">
                                                         Record Date
-                                                    </a>
+                                                    </Link>
 
                                                     <div className="dropdown-menu">
-                                                        <a className="dropdown-item" href="#">Action</a>
-                                                        <a className="dropdown-item" href="#">Another action</a>
-                                                        <a className="dropdown-item" href="#">Something else here</a>
+                                                        <Link className="dropdown-item" to={"#"}>Action</Link>
+                                                        <Link className="dropdown-item" to={"#"}>Another action</Link>
+                                                        <Link className="dropdown-item" to={"#"}>Something else here</Link>
                                                     </div>
                                                 </div></div></div>
                                             <div className="row">
@@ -183,8 +183,6 @@ export default function BedDetails() {
                                                 <p className="card-text p-0">Description</p>
                                             </div>
                                         </div>
-
-
                                     </div>
                                 </div>
                             </div>

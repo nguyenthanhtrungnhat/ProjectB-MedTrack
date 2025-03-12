@@ -385,3 +385,6 @@ background-color: #32AEBD;
     height: 200px;
     width: 150px;
 }
+.patient-dropdown{
+   list-style: none;
+}

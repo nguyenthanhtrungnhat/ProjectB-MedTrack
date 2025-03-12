@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import logo from "./images/logo.png";
+import { Link } from "react-router-dom";
 
 const getUserRoleFromToken = () => {
     const token = localStorage.getItem("token");
@@ -27,9 +28,9 @@ export default function Header() {
         <header className="header dropShadow fixed-top">
             <nav className="navbar navbar-expand-lg navbar-light custom-navbar">
                 <img src={logo} className="logo" />
-                <a className="navbar-brand" href="#">
+                <Link className="navbar-brand" to={"#"}>
                     <h4 className="whiteText">MedTrack</h4>
-                </a>
+                </Link>
                 <button
                     className="navbar-toggler"
                     type="button"
@@ -45,23 +46,23 @@ export default function Header() {
                     <div className="navbar-nav">
                         {roleID === 1 ? ( // Doctor
                             <>
-                                <a className="nav-link active" href="/doctor">
+                                <Link className="nav-link active" to={"doctor"}>
                                     <h5 className="whiteText hasHomeIcon">Home</h5>
                                     <span className="sr-only">(current)</span>
-                                </a>
-                                <a className="nav-link whiteText" href="/doctor/doctor-profile">
+                                </Link>
+                                <Link className="nav-link whiteText" to={"/doctor/doctor-profile"}>
                                     <h5 className="whiteText hasProfileIcon">Profile</h5>
-                                </a>
+                                </Link>
                             </>
                         ) : roleID === 2 ? ( // Nurse
                             <>
-                                <a className="nav-link active" href="/home">
+                                <Link className="nav-link active" to={"/home"}>
                                     <h5 className="whiteText hasHomeIcon">Home</h5>
                                     <span className="sr-only">(current)</span>
-                                </a>
-                                <a className="nav-link whiteText" href="/home/nurse-profile">
+                                </Link>
+                                <Link className="nav-link whiteText" to={"/home/nurse-profile"}>
                                     <h5 className="whiteText hasProfileIcon">Profile</h5>
-                                </a>
+                                </Link>
                             </>
                         ) : null}
                     </div>

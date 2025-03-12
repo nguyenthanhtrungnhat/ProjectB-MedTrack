@@ -15,6 +15,7 @@ import HomePage from "./HomePage";
 import Header from "./Header";
 import LoginScreen from "./Login/Login";
 import DoctorScreen from "./Doctor/DoctorScreen";
+import AdminScreen from "./Admin/Admin";
 
 const Layout = () => (
   <>
@@ -60,6 +61,17 @@ const router = createBrowserRouter([
         path: "/doctor", element: <Layout />, children: [
           { index: true, element: <HomePage /> },
           { path: "doctor-profile", element: <DoctorScreen /> },
+        ]
+      },
+    ],
+  },
+  {
+    path: "/admin",
+    element: <ProtectedRoute />, // Wrap in ProtectedRoute
+    children: [
+      {
+        path: "/admin", children: [
+          { index: true, element: <AdminScreen /> },
         ]
       },
     ],

@@ -53,7 +53,7 @@ export interface SidebarInfoProps {
     fullName?: string;
 }
 export interface FormData  {
-    patient: string;
+    patientID: string;
     pulse: string;
     spo2: string;
     temperature: string;
