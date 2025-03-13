@@ -1,0 +1,26 @@
+.roomBtn {
+    border: none;
+    background: none;
+    width: 100%;
+    padding: 0;
+}
+
+.room {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.room:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.room .card-body {
+    transition: background-color 0.3s ease;
+}
+
+.room:hover .card-body {
+    background-color: #f0f8ff; /* Light blue tint */
+}

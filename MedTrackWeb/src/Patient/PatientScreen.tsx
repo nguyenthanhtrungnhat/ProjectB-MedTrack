@@ -121,7 +121,83 @@ export default function PatientScreen() {
                             </div>
 
                         </div>
+                        <div className="row padding">
+                            <div className="col-12 border whiteBg dropShadow">
+                                <div className="row">
+                                    <div className="col-12 padding">
 
+                                        <div className="row"><div className="col-12">
+                                            <div className="dropdown ">
+                                                <Link className="btn border btn-secondary  dropdown-toggle" to={"#"} role="button" data-toggle="dropdown" aria-expanded="false">
+                                                    Record Date
+                                                </Link>
+
+                                                <div className="dropdown-menu">
+                                                    <Link className="dropdown-item" to={"#"}>Action</Link>
+                                                    <Link className="dropdown-item" to={"#"}>Another action</Link>
+                                                    <Link className="dropdown-item" to={"#"}>Something else here</Link>
+                                                </div>
+                                            </div></div></div>
+                                        <div className="container">
+                                            <div className="row">
+                                                <div className="col-4">
+                                                    <div className="row">
+                                                        <div className="col-12 padding">
+                                                            <div className="border whiteBg dropShadow padding">
+                                                                <p className="blueText">Pluse</p>
+                                                                <div className="d-flex align-items-center">
+                                                                    <img src={pluseImg} className="pluseImg me-2" />
+                                                                    <h4 className="blueText mb-0 paddingLeft20">{record && record.pulse}</h4>
+                                                                    <span className='blueText'> L/ph</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-12 padding">
+                                                            <div className="border whiteBg dropShadow padding">
+                                                                <p className="blueText">Temperature</p>
+                                                                <div className="d-flex align-items-center">
+                                                                    <img src={tempImg} className="tempImg me-2" />
+                                                                    <h4 className="blueText mb-0 paddingLeft20">{record && record.temperature}</h4>
+                                                                    <span className='blueText'> *C</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="col-4 d-flex justify-content-center align-items-center">
+                                                    {record && record.healthStatus == '1' ? (<img src={patientImg} className='patientImg ' />) : (<img src={notgoodpatientImg} className='patientImg ' />)}
+                                                </div>
+                                                <div className="col-4">
+                                                    <div className="row">
+                                                        <div className="col-12 padding">
+                                                            <div className="border whiteBg dropShadow padding">
+                                                                <p className="blueText">Pluse</p>
+                                                                <div className="d-flex align-items-center">
+                                                                    <img src={ntImg} className="ntImg me-2 " />
+                                                                    <h4 className="blueText mb-0 paddingLeft20">{record && record.respiratoryRate}</h4>
+                                                                    <span className='blueText'> times/min</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-12 padding">
+                                                            <div className="border whiteBg dropShadow padding">
+                                                                <p className="blueText">Blood pressure</p>
+                                                                <div className="d-flex align-items-center">
+                                                                    <img src={bpImg} className="bpImg me-2" />
+                                                                    <h4 className="blueText mb-0 paddingLeft20">{record && record.bloodPressure}</h4>
+                                                                    <span className='blueText'> mmHg</span>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div className="col-2 noPl">
                         <div className="leftBody border whiteBg marginBottom dropShadow">
@@ -157,83 +233,6 @@ export default function PatientScreen() {
                                                 </div>
                                             </div>
                                         ))}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="row padding">
-                    <div className="col-12 border whiteBg dropShadow">
-                        <div className="row">
-                            <div className="col-12 padding">
-
-                                <div className="row"><div className="col-12">
-                                    <div className="dropdown ">
-                                        <Link className="btn border btn-secondary  dropdown-toggle" to={"#"} role="button" data-toggle="dropdown" aria-expanded="false">
-                                            Record Date
-                                        </Link>
-
-                                        <div className="dropdown-menu">
-                                            <Link className="dropdown-item" to={"#"}>Action</Link>
-                                            <Link className="dropdown-item" to={"#"}>Another action</Link>
-                                            <Link className="dropdown-item" to={"#"}>Something else here</Link>
-                                        </div>
-                                    </div></div></div>
-                                <div className="container">
-                                    <div className="row">
-                                        <div className="col-4">
-                                            <div className="row">
-                                                <div className="col-12 padding">
-                                                    <div className="border whiteBg dropShadow padding">
-                                                        <p className="blueText">Pluse</p>
-                                                        <div className="d-flex align-items-center">
-                                                            <img src={pluseImg} className="pluseImg me-2" />
-                                                            <h4 className="blueText mb-0 paddingLeft20">{record && record.pulse}</h4>
-                                                            <span className='blueText'> L/ph</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="col-12 padding">
-                                                    <div className="border whiteBg dropShadow padding">
-                                                        <p className="blueText">Temperature</p>
-                                                        <div className="d-flex align-items-center">
-                                                            <img src={tempImg} className="tempImg me-2" />
-                                                            <h4 className="blueText mb-0 paddingLeft20">{record && record.temperature}</h4>
-                                                            <span className='blueText'> *C</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="col-4 d-flex justify-content-center align-items-center">
-                                            {record && record.healthStatus == '1' ? (<img src={patientImg} className='patientImg ' />) : (<img src={notgoodpatientImg} className='patientImg ' />)}
-                                        </div>
-                                        <div className="col-4">
-                                            <div className="row">
-                                                <div className="col-12 padding">
-                                                    <div className="border whiteBg dropShadow padding">
-                                                        <p className="blueText">Pluse</p>
-                                                        <div className="d-flex align-items-center">
-                                                            <img src={ntImg} className="ntImg me-2 " />
-                                                            <h4 className="blueText mb-0 paddingLeft20">{record && record.respiratoryRate}</h4>
-                                                            <span className='blueText'> times/min</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="col-12 padding">
-                                                    <div className="border whiteBg dropShadow padding">
-                                                        <p className="blueText">Blood pressure</p>
-                                                        <div className="d-flex align-items-center">
-                                                            <img src={bpImg} className="bpImg me-2" />
-                                                            <h4 className="blueText mb-0 paddingLeft20">{record && record.bloodPressure}</h4>
-                                                            <span className='blueText'> mmHg</span>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>

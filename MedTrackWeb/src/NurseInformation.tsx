@@ -6,18 +6,52 @@ export default function NurseInformation({ image, fullName, gender, dob, phone, 
             <div className="hasInformation border padding whiteBg dropShadow">
                 <div className="row">
                     <div className="col-8">
-                        <h5 className='blueText'>Nurse information</h5>
-                        <p className='blueText m-4'>Full name: {fullName}</p>
-                        <p className='blueText m-4'>Date of birth: {dob}</p>
-                        <p className='blueText m-4'>Gender: {gender}</p>
-                        <p className='blueText m-4'>Phone number: {phone}</p>
-                        <p className='blueText m-4'>ID card: {nurseID}</p>
-                        <p className='blueText m-4'>Email: {email}</p>
-                        <p className='blueText m-4'>Address: {address}</p>
+                    <h5 className='blueText'>Nurse information</h5>
+                    <div className="d-flex bd-highlight h-46px">
+                        <div className="p-2 bd-highlight">
+                            <p className='blueText'> <b>Full name:</b> </p>
+                        </div>
+                        <div className="ml-auto p-2 bd-highlight">{fullName}</div>
                     </div>
+                    <div className="d-flex bd-highlight h-46px">
+                        <div className="p-2 bd-highlight">
+                            <p className='blueText'><b>Date of birth: </b></p>
+                        </div>
+                        <div className="ml-auto p-2 bd-highlight">{dob}</div>
+                    </div>
+                    <div className="d-flex bd-highlight h-46px">
+                        <div className="p-2 bd-highlight">
+                            <p className='blueText'><b>Gender:  </b></p>
+                        </div>
+                        <div className="ml-auto p-2 bd-highlight">{gender}</div>
+                    </div>
+                    <div className="d-flex bd-highlight h-46px">
+                        <div className="p-2 bd-highlight">
+                            <p className='blueText'><b>Phone number:</b></p>
+                        </div>
+                        <div className="ml-auto p-2 bd-highlight">{phone}</div>
+                    </div>
+                    <div className="d-flex bd-highlight h-46px">
+                        <div className="p-2 bd-highlight">
+                            <p className='blueText'><b>ID card:</b></p>
+                        </div>
+                        <div className="ml-auto p-2 bd-highlight">{nurseID}</div>
+                    </div>
+                    <div className="d-flex bd-highlight h-46px ">
+                        <div className="p-2 bd-highlight">
+                            <p className='blueText'><b>Email:</b></p>
+                        </div>
+                        <div className="ml-auto p-2 bd-highlight">{email}</div>
+                    </div>
+                    <div className="d-flex bd-highlight h-46px">
+                        <div className="p-2 bd-highlight">
+                            <p className='blueText'><b>Address:</b></p>
+                        </div>
+                        <div className="ml-auto p-2 bd-highlight">{address}</div>
+                    </div>
+                </div>
                     <div className="col-4">
                         <img src={image} className="avtIMG" loading="lazy" />
-                        <p className='blueText m-4'>{nurseID}</p>
                     </div>
                 </div>
             </div>

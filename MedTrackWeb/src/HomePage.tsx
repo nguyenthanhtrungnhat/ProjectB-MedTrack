@@ -17,13 +17,13 @@ export default function HomePage() {
                     </ol>
                     <div className="carousel-inner">
                         <div className="carousel-item active">
-                            <img src={banner1} className="d-block w-100 bannerImg" alt="..." />
+                            <img src={banner1} className="d-block w-100 bannerImg"loading="lazy" alt="..."/>
                         </div>
                         <div className="carousel-item">
-                            <img src={banner2} className="d-block w-100 bannerImg" alt="..." />
+                            <img src={banner2} className="d-block w-100 bannerImg" loading="lazy"alt="..." />
                         </div>
                         <div className="carousel-item">
-                            <img src={banner3} className="d-block w-100 bannerImg" alt="..." />
+                            <img src={banner3} className="d-block w-100 bannerImg" loading="lazy" alt="..."/>
                         </div>
                     </div>
                     <button className="carousel-control-prev" type="button" data-target="#carouselExampleCaptions" data-slide="prev">
@@ -50,7 +50,7 @@ export default function HomePage() {
                         <div className="card mb-3" >
                             <div className="row no-gutters">
                                 <div className="col-md-4">
-                                    <img style={{ maxWidth: "200px" }} src={avtRandom} alt="..." />
+                                    <img style={{ maxWidth: "200px" }} src={avtRandom} loading="lazy"alt="..." />
                                 </div>
                                 <div className="col-md-8">
                                     <div className="card-body">
@@ -64,14 +64,14 @@ export default function HomePage() {
                     <div className="col-7">
                         <div className="row">
                             <div className="col-4"><div className="card" >
-                                <img src={banner1} className="card-img-top" alt="..." />
+                                <img src={banner1} className="card-img-top" alt="..."loading="lazy" />
                                 <div className="card-body">
                                     <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                                 </div>
                             </div></div>
                             <div className="col-4">
                                 <div className="card" >
-                                    <img src={banner2} className="card-img-top" alt="..." />
+                                    <img src={banner2} className="card-img-top" alt="..." loading="lazy"/>
                                     <div className="card-body">
                                         <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                                     </div>
@@ -79,7 +79,7 @@ export default function HomePage() {
                             </div>
                             <div className="col-4">
                                 <div className="card" >
-                                    <img src={banner3} className="card-img-top" alt="..." />
+                                    <img src={banner3} className="card-img-top" alt="..." loading="lazy"/>
                                     <div className="card-body">
                                         <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                                     </div>

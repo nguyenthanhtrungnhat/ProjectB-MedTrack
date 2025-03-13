@@ -36,6 +36,7 @@
 
 .room {
     background-color: #D8FBF7;
+    border-radius: 7px;
 }
 
 .mainBg {
@@ -94,7 +95,7 @@
     height: 427px;
 }
 .hasInformationP {
-    height: 627px;
+    height: 527px;
 }
 .noPl {
     padding-left: 0;
@@ -389,5 +390,14 @@ background-color: #32AEBD;
    list-style: none;
 }
 .h-400px{
-    height: 405px;
+    height: 305px;
+}
+.h-627px{
+    height: 527px;
+}
+.pt-0{
+    padding-top: 0px;
+}
+.h-46px{
+    height: 46px;
 }
