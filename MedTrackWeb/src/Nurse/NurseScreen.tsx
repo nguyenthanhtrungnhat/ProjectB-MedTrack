@@ -143,7 +143,7 @@ export default function NurseScreen() {
                         <div className="leftBody border whiteBg marginBottom dropShadow">
                             <div className="row">
                                 <div className="col-12 login">
-                                    
+
                                     <SidebarLogin
                                         phone={user?.phone} fullName={user?.fullName}
                                     />
@@ -158,12 +158,12 @@ export default function NurseScreen() {
                                         <ul className='list-unstyled'>
                                             <li>
                                                 <Link to="/home/shift-change" className="text-decoration-none">
-                                                    Shift change registration
+                                                    <i className="fa fa-caret-right" aria-hidden="true"></i> Shift change registration
                                                 </Link>
                                             </li>
                                             <li>
                                                 <Link to="/home/daily-checking" className="text-decoration-none">
-                                                    Daily checking health
+                                                    <i className="fa fa-caret-right" aria-hidden="true"></i> Daily checking health
                                                 </Link>
                                             </li>
                                         </ul>

@@ -218,7 +218,7 @@ export default function PatientScreen() {
                                         <ul className='list-unstyled'>
                                             <li>
                                                 <Link to="#" className="text-decoration-none">
-                                                    Developing ...
+                                                    <i className="fa fa-caret-right" aria-hidden="true"></i> Developing ...
                                                 </Link>
                                             </li>
                                         </ul>
