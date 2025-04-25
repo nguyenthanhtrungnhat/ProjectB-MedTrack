@@ -1,50 +1,43 @@
-# React + TypeScript + Vite
+# MEDTRACK
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📱 Overview
 
-Currently, two official plugins are available:
+**MEDTRACK** is a medical tracking application designed to help users monitor their health status, manage medications, and stay on top of their treatment plans. With a user-friendly interface and practical features, MEDTRACK aims to make health management more efficient and accessible.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🧑‍💻 Authors
 
-## Expanding the ESLint configuration
+- Nguyen Thanh Trung Nhat (2131200088)  
+- Phan Dinh Hieu Thao (2131200020)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## 🎨 UI/UX Design
 
-- Configure the top-level `parserOptions` property like this:
+Check out our Figma design:  
+[👉 MEDTRACK App Design on Figma](https://www.figma.com/design/OUhAEObMN76tiNYnDMWaAD/Medtrack_app?node-id=0-1&p=f)
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## 📌 Features
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+- Medication reminders and tracking
+- Health condition logging
+- Appointment scheduling
+- Personalized health insights (optional, if implemented)
+- User-friendly dashboard for quick access
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+## 🚀 Getting Started
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+To run this project locally:
+
+```bash
+# Clone the repository
+git clone https://github.com/nguyenthanhtrungnhat/ProjectB-MedTrack
+
+# Navigate to the frontend folder
+cd MedTrackWeb
+
+# Navigate to the backend folder
+cd Backend
+
+# Install dependencies
+npm i
+
+# Run the application
+npm run dev
