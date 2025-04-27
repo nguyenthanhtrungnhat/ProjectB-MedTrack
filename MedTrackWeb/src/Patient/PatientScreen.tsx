@@ -30,7 +30,7 @@ export default function PatientScreen() {
     const [patients, setPatients] = useState<PatientProps[]>([]);
     const userID = getUserIDFromToken();
     useEffect(() => {
-        axios.get(`http://localhost:3000/api/patientByUserID/${userID}`)
+        axios.get(`http://26.184.100.176:3000/api/patientByUserID/${userID}`)
             .then(response => {
                 console.log("Fetched data:", response.data);
                 setPatients(response.data)
