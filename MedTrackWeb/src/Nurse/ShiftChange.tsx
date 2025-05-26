@@ -8,15 +8,15 @@ import SidebarLogin from "../SidebarLogin";
 
 
 export default function ShiftChange() {
-    const storedInfo = localStorage.getItem("info");
+    const storedInfo = sessionStorage.getItem("info");
     const info = storedInfo ? JSON.parse(storedInfo) : null;
     const [workingDate, setWorkingDate] = useState("");
     const [reason, setReason] = useState("");
     const [loading, setLoading] = useState(false); // Prevent double submission
 
     const urlPost = "http://26.184.100.176:3000/requestShiftChange";
-    const token = localStorage.getItem("token");
-    const nurseID = JSON.parse(localStorage.getItem("nurseID") || "null"); // Ensure correct data type
+    const token = sessionStorage.getItem("token");
+    const nurseID = JSON.parse(sessionStorage.getItem("nurseID") || "null"); // Ensure correct data type
     const requestType = 1;
 
     const postData = async () => {

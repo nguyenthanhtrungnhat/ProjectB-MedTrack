@@ -10,7 +10,7 @@ export default function SidebarLogin({ phone, fullName }: SidebarInfoProps) {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        localStorage.clear(); // Clear all stored data
+        sessionStorage.clear(); // Clear all stored data
         toast.success("Logged out successfully!", { position: "top-right" }); // Show toast notification
         
         setTimeout(() => {

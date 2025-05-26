@@ -10,7 +10,7 @@ import SidebarLogin from '../SidebarLogin';
 
 
 const getUserIDFromToken = () => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     if (!token) return null;
 
     try {
@@ -24,10 +24,10 @@ const getUserIDFromToken = () => {
 
 export default function NurseScreen() {
     const [user, setUser] = useState<NurseProps | null>(null);
-    localStorage.setItem("info", JSON.stringify(user));
+    sessionStorage.setItem("info", JSON.stringify(user));
     const [rooms, setRooms] = useState<RoomProps[]>([]);
     const [nurseID, setNurseID] = useState<number | null>(null);
-    localStorage.setItem("nurseID", JSON.stringify(nurseID));
+    sessionStorage.setItem("nurseID", JSON.stringify(nurseID));
     const userID = getUserIDFromToken();
     const url = `http://26.184.100.176:3000/nurses/by-user/${userID}`;
     const roomsUrl = 'http://26.184.100.176:3000/rooms';

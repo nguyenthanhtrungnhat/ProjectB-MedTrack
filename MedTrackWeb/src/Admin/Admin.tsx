@@ -46,7 +46,7 @@ export default function AdminScreen() {
     };
 
     const handleLogout = () => {
-        localStorage.clear();
+        sessionStorage.clear();
         toast.success("Logged out successfully!");
         setTimeout(() => navigate("/"), 1000);
     };

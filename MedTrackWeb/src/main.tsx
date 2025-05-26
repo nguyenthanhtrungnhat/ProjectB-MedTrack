@@ -28,7 +28,7 @@ const Layout = () => (
   </>
 );
 const ProtectedRoute = () => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
 
   if (!token) {
     return <Navigate to="/" replace />; // Redirect to login if no token

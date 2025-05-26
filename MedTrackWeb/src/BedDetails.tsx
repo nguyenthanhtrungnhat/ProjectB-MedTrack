@@ -18,7 +18,7 @@ export default function BedDetails() {
     const [record, setRecord] = useState<RecordProps | null>(null);
 
     const { patientID } = useParams();
-    const storedInfo = localStorage.getItem("info");
+    const storedInfo = sessionStorage.getItem("info");
     const info = storedInfo ? JSON.parse(storedInfo) : null;
     const patientByIdUrl = `http://26.184.100.176:3000/patients/${patientID}`;
     const recordBypatientIdUrl = `http://26.184.100.176:3000/medical-records/${patientID}`;

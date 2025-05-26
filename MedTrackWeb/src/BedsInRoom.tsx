@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { PatientProps } from './interface';
 import SidebarLogin from './SidebarLogin';
 export default function BedsInRoom() {
-    const storedInfo = localStorage.getItem("info");
+    const storedInfo = sessionStorage.getItem("info");
     const info = storedInfo ? JSON.parse(storedInfo) : null;
     const { roomID } = useParams();
     const [patients, setPatients] = useState<PatientProps[]>([]);

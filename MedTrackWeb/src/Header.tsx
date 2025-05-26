@@ -4,7 +4,7 @@ import logo from "./images/logo.png";
 import { Link } from "react-router-dom";
 
 const getUserRoleFromToken = () => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     if (!token) return null;
 
     try {

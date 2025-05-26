@@ -29,7 +29,7 @@ export default function LoginScreen() {
                 return;
             }
 
-            localStorage.setItem("token", token);
+            sessionStorage.setItem("token", token);
             const decodedToken = jwtDecode<CustomJwtPayload>(token);
             const roleID = decodedToken.roleID;
 
@@ -38,7 +38,7 @@ export default function LoginScreen() {
                 return;
             }
 
-            localStorage.setItem("roleID", roleID.toString());
+            sessionStorage.setItem("roleID", roleID.toString());
 
             toast.success("Login successful!", { position: "top-right" });
 
