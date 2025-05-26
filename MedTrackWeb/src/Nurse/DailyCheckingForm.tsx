@@ -41,7 +41,7 @@ export default function DailyCheckingForm() {
 
   useEffect(() => {
     // Fetch patients data once on mount
-    axios.get<Patient[]>("http://localhost:3000/patients")
+    axios.get<Patient[]>("http://26.184.100.176:3000/patients")
       .then(res => setPatients(res.data))
       .catch(err => {
         console.error("Error fetching patients:", err);

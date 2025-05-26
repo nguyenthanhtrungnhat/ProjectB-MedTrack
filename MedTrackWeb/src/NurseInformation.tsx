@@ -1,60 +1,54 @@
 import { NurseProps } from "./interface";
 
-export default function NurseInformation({ image, fullName, gender, dob, phone, nurseID, address, email }: NurseProps) {
+export default function NurseInformation({
+    image,
+    fullName,
+    gender,
+    dob,
+    phone,
+    nurseID,
+    address,
+    email,
+}: NurseProps) {
     return (
-        <div className="col-6 ">
+        <div className="col-6">
             <div className="hasInformation border padding whiteBg dropShadow">
                 <div className="row">
                     <div className="col-8">
-                    <h5 className='blueText'>Nurse information</h5>
-                    <div className="d-flex bd-highlight h-46px">
-                        <div className="p-2 bd-highlight">
-                            <p className='blueText'> <b>Full name:</b> </p>
-                        </div>
-                        <div className="me-auto p-2 bd-highlight">{fullName}</div>
+                        <h5 className="blueText mb-3">Nurse Information</h5>
+                        <InfoRow label="Full name" value={fullName} />
+                        <InfoRow label="Date of birth" value={dob} />
+                        <InfoRow label="Gender" value={gender} />
+                        <InfoRow label="Phone number" value={phone} />
+                        <InfoRow label="ID card" value={nurseID} />
+                        <InfoRow label="Email" value={email} />
+                        <InfoRow label="Address" value={address} />
                     </div>
-                    <div className="d-flex bd-highlight h-46px">
-                        <div className="p-2 bd-highlight">
-                            <p className='blueText'><b>Date of birth: </b></p>
-                        </div>
-                        <div className="me-auto p-2 bd-highlight">{dob}</div>
-                    </div>
-                    <div className="d-flex bd-highlight h-46px">
-                        <div className="p-2 bd-highlight">
-                            <p className='blueText'><b>Gender:  </b></p>
-                        </div>
-                        <div className="me-auto p-2 bd-highlight">{gender}</div>
-                    </div>
-                    <div className="d-flex bd-highlight h-46px">
-                        <div className="p-2 bd-highlight">
-                            <p className='blueText'><b>Phone number:</b></p>
-                        </div>
-                        <div className="me-auto p-2 bd-highlight">{phone}</div>
-                    </div>
-                    <div className="d-flex bd-highlight h-46px">
-                        <div className="p-2 bd-highlight">
-                            <p className='blueText'><b>ID card:</b></p>
-                        </div>
-                        <div className="me-auto p-2 bd-highlight">{nurseID}</div>
-                    </div>
-                    <div className="d-flex bd-highlight h-46px ">
-                        <div className="p-2 bd-highlight">
-                            <p className='blueText'><b>Email:</b></p>
-                        </div>
-                        <div className="me-auto p-2 bd-highlight">{email}</div>
-                    </div>
-                    <div className="d-flex bd-highlight h-46px">
-                        <div className="p-2 bd-highlight">
-                            <p className='blueText'><b>Address:</b></p>
-                        </div>
-                        <div className="me-auto p-2 bd-highlight">{address}</div>
-                    </div>
-                </div>
-                    <div className="col-4">
-                        <img src={image} className="avtIMG" loading="lazy" />
+                    <div className="col-4 d-flex justify-content-center align-items-start">
+                        {image && (
+                            <img
+                                src={image}
+                                className="avtIMG img-fluid rounded"
+                                alt={`${fullName}'s avatar`}
+                                loading="lazy"
+                            />
+                        )}
                     </div>
                 </div>
             </div>
         </div>
-    )
+    );
+}
+
+function InfoRow({ label, value }: { label: string; value: string }) {
+    return (
+        <div className="row mb-4">
+            <div className="col-5 text-start blueText">
+                <strong>{label}:</strong>
+            </div>
+            <div className="col-7 text-end">
+                {value}
+            </div>
+        </div>
+    );
 }
