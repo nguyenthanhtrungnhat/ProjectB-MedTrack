@@ -94,7 +94,7 @@ export default function ShiftChange() {
                                         required
                                     />
                                 </div>
-                                <div className="form-group">
+                                <div className="form-group mb-3">
                                     <label htmlFor="reason">Reason for transfer</label>
                                     <textarea
                                         className="form-control"
