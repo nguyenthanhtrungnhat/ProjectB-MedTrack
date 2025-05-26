@@ -113,7 +113,7 @@ export default function LoginScreen() {
                                 <a href="#" className='whiteText'>Forgot password?</a>
                             </div>
                             <div className="mx-auto w200">
-                                <button type="submit" className="btn color32AEBD w200 whiteText">Login</button>
+                                <button type="submit" className="btn btn-success w200">Login</button>
                             </div>
                         </form>
                     </div>

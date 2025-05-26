@@ -5,16 +5,16 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const app = express();
 require("dotenv").config({ path: "JWT.env" });
-
+require('dotenv').config();
 // Enable CORS
 app.use(cors());
 
 // Create MySQL connection
 const db = mysql.createConnection({
-  host: 'localhost', // Adjust as necessary
-  user: 'root',      // Your MySQL username
-  password: 'nhat123A@',      // Your MySQL password
-  database: 'HospitalDB'
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME
 });
 
 // Connect to the database
