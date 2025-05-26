@@ -32,23 +32,7 @@ export interface PatientProps {
     CCCD?: string;
     username?: string;
 }
-// interface Patient {
-//     patientID: number;
-//     username: string;
-//     fullName: string;
-//     BHYT: string;
-//     admissionDate: string | null;
-//     dischargeDate: string | null;
-//     hospitalizationsDiagnosis: string;
-//     summaryCondition: string;
-//     relativeName: string;
-//     relativeNumber: string;
-//     phone: string;
-//     email: string;
-//     CCCD: string;
-//     address: string;
-//     gender: number;
-// }
+
 export interface RecordProps {
     recordID: string,
     timeCreate: string,

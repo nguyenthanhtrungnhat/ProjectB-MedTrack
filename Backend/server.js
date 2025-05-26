@@ -163,6 +163,23 @@ app.get("/patients/:patientID", (req, res) => {
   });
 });
 //get medical-record by id
+// app.get("/medical-records/:patientID", (req, res) => {
+//   const { patientID } = req.params;
+
+//   const query = `
+//     SELECT *
+//     FROM MEDICALRECORDS 
+//     WHERE MEDICALRECORDS.patientID = ?;
+//   `;
+
+//   db.query(query, [patientID], (err, results) => {
+//     if (err) return res.status(500).json({ error: "Database error", details: err });
+//     if (results.length === 0) return res.status(404).json({ error: "Patient not found" });
+
+//     res.json(results[0]);
+//   });
+// });
+// get medical-records by patientID (all records)
 app.get("/medical-records/:patientID", (req, res) => {
   const { patientID } = req.params;
 
@@ -176,10 +193,33 @@ app.get("/medical-records/:patientID", (req, res) => {
     if (err) return res.status(500).json({ error: "Database error", details: err });
     if (results.length === 0) return res.status(404).json({ error: "Patient not found" });
 
-    res.json(results[0]);
+    res.json(results);  // return all records
   });
 });
 
+// GET: Get medical record by recordID
+app.get('/medical-records/by-recordId/:recordID', (req, res) => {
+  const recordID = parseInt(req.params.recordID);
+
+  if (isNaN(recordID)) {
+    return res.status(400).json({ error: 'Invalid recordID' });
+  }
+
+  const query = 'SELECT * FROM MEDICALRECORDS WHERE recordID = ?';
+
+  db.query(query, [recordID], (err, results) => {
+    if (err) {
+      console.error('Query error:', err);
+      return res.status(500).json({ error: 'Database error' });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ message: 'Record not found' });
+    }
+
+    res.json(results[0]);
+  });
+});
 //login API
 app.post("/login", (req, res) => {
   const { email, password } = req.body;

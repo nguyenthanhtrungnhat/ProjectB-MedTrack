@@ -17,6 +17,9 @@ import LoginScreen from "./Login/Login";
 import DoctorScreen from "./Doctor/DoctorScreen";
 import AdminScreen from "./Admin/Admin";
 import PatientScreen from "./Patient/PatientScreen";
+import Schedule from "./Schedule";
+import 'bootstrap/dist/css/bootstrap.min.css';        // Bootstrap CSS
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';   // Bootstrap JS with Popper
 
 const Layout = () => (
   <>
@@ -37,6 +40,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     children: [{ index: true, element: <LoginScreen /> }],
+    // children: [{ index: true, element: <Schedule /> }],
   },
   {
     path: "/home",

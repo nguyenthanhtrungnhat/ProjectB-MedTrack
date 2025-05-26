@@ -1,0 +1,10 @@
+td{
+    width: 1000px;
+    height: 50px;
+    text-align: center;
+}
+.task {
+    background-color: lightblue;
+    font-weight: bold;
+    text-align: center;
+}
