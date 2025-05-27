@@ -206,11 +206,62 @@ app.get('/medical-records/by-recordId/:recordID', (req, res) => {
 });
 
 //login API
+// app.post("/login", (req, res) => {
+//   const { email, password } = req.body;
+//   if (!email || !password) return res.status(400).json({ error: "Email and password are required" });
+
+//   // Check if the user exists
+//   const query = "SELECT * FROM user WHERE email = ?";
+//   db.query(query, [email], (err, results) => {
+//     if (err) {
+//       console.error("Database error:", err);
+//       return res.status(500).json({ error: "Internal server error" });
+//     }
+//     if (results.length === 0) {
+//       console.log(`Failed login attempt for email: ${email}`);
+//       return res.status(401).json({ error: "Invalid email or password" });
+//     }
+
+//     const user = results[0];
+
+//     // Compare plaintext password
+//     if (password !== user.password) {
+//       console.log(`Failed login attempt for email: ${email}`);
+//       return res.status(401).json({ error: "Invalid email or password" });
+//     }
+
+//     // Get user role from userRole table
+//     db.query("SELECT roleID FROM userRole WHERE userID = ?", [user.userID], (err, roleResults) => {
+//       if (err) {
+//         console.error("Database error:", err);
+//         return res.status(500).json({ error: "Internal server error" });
+//       }
+//       if (roleResults.length === 0) {
+//         return res.status(401).json({ error: "Role not found" });
+//       }
+
+//       const roleID = roleResults[0].roleID;
+//       const token = jwt.sign({ userID: user.userID, roleID }, "secretkey", { expiresIn: "1h" });
+
+//       console.log(`User logged in successfully: ${user.email} (ID: ${user.userID}, Role: ${roleID})`);
+
+//       res.json({
+//         message: "Login successful",
+//         token,
+//         user: {
+//           userID: user.userID,
+//           email: user.email,
+//           roleID,
+//         }
+//       });
+//     });
+//   });
+// });
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
-  if (!email || !password) return res.status(400).json({ error: "Email and password are required" });
+  if (!email || !password)
+    return res.status(400).json({ error: "Email and password are required" });
 
-  // Check if the user exists
   const query = "SELECT * FROM user WHERE email = ?";
   db.query(query, [email], (err, results) => {
     if (err) {
@@ -224,13 +275,11 @@ app.post("/login", (req, res) => {
 
     const user = results[0];
 
-    // Compare plaintext password
     if (password !== user.password) {
       console.log(`Failed login attempt for email: ${email}`);
       return res.status(401).json({ error: "Invalid email or password" });
     }
 
-    // Get user role from userRole table
     db.query("SELECT roleID FROM userRole WHERE userID = ?", [user.userID], (err, roleResults) => {
       if (err) {
         console.error("Database error:", err);
@@ -243,11 +292,31 @@ app.post("/login", (req, res) => {
       const roleID = roleResults[0].roleID;
       const token = jwt.sign({ userID: user.userID, roleID }, "secretkey", { expiresIn: "1h" });
 
+      // Determine redirect path based on roleID
+      let redirectPath;
+      switch (roleID) {
+        case 1:
+          redirectPath = "/doctor";
+          break;
+        case 2:
+          redirectPath = "/home";
+          break;
+        case 3:
+          redirectPath = "/patient";
+          break;
+        case 666:
+          redirectPath = "/admin";
+          break;
+        default:
+          return res.status(403).json({ error: "Unauthorized role. Please contact support." });
+      }
+
       console.log(`User logged in successfully: ${user.email} (ID: ${user.userID}, Role: ${roleID})`);
 
       res.json({
         message: "Login successful",
         token,
+        redirect: redirectPath, // Include the redirect path
         user: {
           userID: user.userID,
           email: user.email,

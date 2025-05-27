@@ -26,7 +26,7 @@ export default function AdminScreen() {
             .then(response => setDoctors(response.data))
             .catch(() => toast.error("Failed to fetch doctors data"));
         console.log("test fetching times");
-    },[]);
+    },[nurses,doctors,patients]);
 
     const handleDelete = (id, type) => {
         console.log(`Deleting ${type} with ID:`, id);
