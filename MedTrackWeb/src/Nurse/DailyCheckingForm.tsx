@@ -47,7 +47,7 @@ export default function DailyCheckingForm() {
         console.error("Error fetching patients:", err);
         toast.error("Failed to load patients data");
       });
-  }, []);
+  }, [patients]);
 
   // Handle live search input change separately
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {

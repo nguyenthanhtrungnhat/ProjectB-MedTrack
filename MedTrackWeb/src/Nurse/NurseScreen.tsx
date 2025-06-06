@@ -107,7 +107,8 @@ export default function NurseScreen() {
                                                             <p className='p-2 bd-highlight size25'>0</p>
                                                             <i className="ml-auto p-2 bd-highlight fa fa-calendar size25 greenText" aria-hidden="true"></i>
                                                         </div>
-                                                        <a href="" className='greenText'>More detail</a>
+                                                           <Link to="/home/schedule" className="greenText">More detail</Link>
+                                                        {/* <a href="" className='greenText'>More detail</a> */}
                                                     </div>
                                                 </div>
                                                 <div className="col-6 d-flex justify-content-center">

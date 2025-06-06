@@ -1,115 +1,172 @@
+import React, { useState, useEffect } from 'react';
 import './schedule.css';
 
 export default function Schedule() {
-    const simulateSchedules = [
-        { name: "CSE_442", date: "2025-05-20", startAt: "09:30", workingHours: 1, userId: "1", roomName: "402B11" }, // Tuesday
-        { name: "CSE_441", date: "2025-05-19", startAt: "07:30", workingHours: 2, userId: "1", roomName: "402B11" }, // Monday
-        { name: "CSE_443", date: "2025-05-21", startAt: "13:30", workingHours: 2, userId: "1", roomName: "402B11" }, // Wednesday
-        { name: "CSE_444", date: "2025-05-23", startAt: "07:30", workingHours: 2, userId: "1", roomName: "402B11" }, // Friday
-        { name: "CSE_445", date: "2025-05-24", startAt: "14:30", workingHours: 1, userId: "1", roomName: "402B11" }  // Saturday
-    ];
+  // Updated schedule dates to 2025 (for demo)
+  const simulateSchedules = [
+    { name: "CSE_442", date: "2025-04-20", startAt: "09:30", workingHours: 1, userId: "1", roomName: "402B11" },
+    { name: "CSE_441", date: "2025-04-19", startAt: "07:30", workingHours: 2, userId: "1", roomName: "402B11" },
+    { name: "CSE_443", date: "2025-04-21", startAt: "13:30", workingHours: 2, userId: "1", roomName: "402B11" },
+    { name: "CSE_444", date: "2025-04-23", startAt: "07:30", workingHours: 2, userId: "1", roomName: "402B11" },
+    { name: "CSE_445", date: "2025-04-24", startAt: "14:30", workingHours: 1, userId: "1", roomName: "402B11" }
+  ];
 
-    const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-    const timeSlots = [
-        "07:30 - 08:30",
-        "08:30 - 09:30",
-        "09:30 - 10:30",
-        "10:30 - 11:30",
-        "12:30 - 13:30",
-        "13:30 - 14:30",
-        "14:30 - 15:30",
-        "15:30 - 16:30",
-        "17:30 - 18:30"
-    ];
+  const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  const timeSlots = [
+    "07:30 - 08:30", "08:30 - 09:30", "09:30 - 10:30", "10:30 - 11:30",
+    "12:30 - 13:30", "13:30 - 14:30", "14:30 - 15:30", "15:30 - 16:30", "17:30 - 18:30"
+  ];
 
-    const timeToSlotIndex = (time) => {
-        return timeSlots.findIndex(slot => slot.startsWith(time));
-    };
+  const getWeekStartDate = (input: string | Date) => {
+    const date = new Date(input);
+    const day = date.getDay(); // Sunday=0 ... Saturday=6
+    const diff = (day + 6) % 7; // Monday=0 ... Sunday=6
+    date.setDate(date.getDate() - diff);
+    date.setHours(0, 0, 0, 0);
+    return date;
+  };
 
-    const dateToDayIndex = (dateString) => {
-        const day = new Date(dateString).getDay(); // Sunday = 0
-        return (day + 6) % 7; // Shift so Monday = 0
-    };
+  const formatWeekLabel = (monday: Date) => {
+    const sunday = new Date(monday);
+    sunday.setDate(monday.getDate() + 6);
+    return `${monday.toLocaleDateString('vi-VN')} - ${sunday.toLocaleDateString('vi-VN')}`;
+  };
 
-    const scheduleMap = {};
-    const skipMap = new Set(); // Keys like "row-col" to skip rendering
-    const occupiedSlots = new Set(); // Tracks all occupied slots to detect conflicts
+  // Generate all Mondays of the year until after Dec 31
+  const getWeeksOfYear = (year: number) => {
+    const weeks = [];
+    // Start from Jan 1
+    let date = new Date(year, 0, 1);
+    // Move to first Monday of the year or that week start
+    date = getWeekStartDate(date);
 
-    simulateSchedules.forEach(schedule => {
-        const col = dateToDayIndex(schedule.date);
-        const startRow = timeToSlotIndex(schedule.startAt);
-        const rowSpan = schedule.workingHours;
-        let conflict = false;
+    // Loop until date goes beyond Dec 31 of year
+    while (date.getFullYear() === year || (date.getFullYear() === year - 1 && date.getMonth() === 11)) {
+      weeks.push({ key: date.toISOString().split('T')[0], label: formatWeekLabel(date) });
+      date = new Date(date);
+      date.setDate(date.getDate() + 7);
+    }
+    return weeks;
+  };
 
-        // Check if any slot is already occupied
-        for (let i = 0; i < rowSpan; i++) {
-            const key = `${startRow + i}-${col}`;
-            if (occupiedSlots.has(key)) {
-                console.warn(`Conflict: Task "${schedule.name}" overlaps at ${key}`);
-                conflict = true;
-                break;
-            }
-        }
+  const [year, setYear] = useState(2025);
+  const [allWeeks, setAllWeeks] = useState(() => getWeeksOfYear(2025));
+  const [selectedWeekIndex, setSelectedWeekIndex] = useState(0);
 
-        // If no conflict, mark occupied and update scheduleMap and skipMap
-        if (!conflict) {
-            const key = `${startRow}-${col}`;
-            scheduleMap[key] = {
-                name: schedule.name,
-                roomName: schedule.roomName,
-                rowSpan
-            };
+  useEffect(() => {
+    const weeks = getWeeksOfYear(year);
+    setAllWeeks(weeks);
+    setSelectedWeekIndex(0);
+  }, [year]);
 
-            for (let i = 0; i < rowSpan; i++) {
-                const slotKey = `${startRow + i}-${col}`;
-                occupiedSlots.add(slotKey);
-                if (i !== 0) skipMap.add(slotKey); // Skip rendering if part of a rowspan
-            }
-        }
-    });
+  const selectedWeek = allWeeks[selectedWeekIndex]?.key;
 
-    return (
-        <div style={{ overflowX: 'auto' }}>
-            <table>
-                <thead>
-                    <tr>
-                        <td className="border">Previous</td>
-                        {days.map(day => (
-                            <td key={day} className="border">{day}</td>
-                        ))}
-                        <td className="border">Next</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {timeSlots.map((timeSlot, rowIndex) => (
-                        <tr key={rowIndex}>
-                            <td className="border">{timeSlot}</td>
-                            {days.map((_, colIndex) => {
-                                const key = `${rowIndex}-${colIndex}`;
-                                if (skipMap.has(key)) return null;
+  const getWeekString = (dateStr: string) => getWeekStartDate(dateStr).toISOString().split('T')[0];
 
-                                const schedule = scheduleMap[key];
-                                return (
-                                    <td
-                                        key={colIndex}
-                                        className={`border ${schedule ? 'task' : ''}`}
-                                        rowSpan={schedule?.rowSpan || 1}
-                                        title={schedule ? `${schedule.name} @ ${schedule.roomName}` : ''}
-                                    >
-                                        {schedule && (
-                                            <div>
-                                                <div><strong>{schedule.name}</strong></div>
-                                                <div style={{ fontSize: '0.85em', color: '#555' }}>{schedule.roomName}</div>
-                                            </div>
-                                        )}
-                                    </td>
-                                );
-                            })}
-                            <td className="border">{timeSlot}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-    );
+  // Filter schedules only for the selected week start date
+  const filteredSchedules = simulateSchedules.filter(s => getWeekString(s.date) === selectedWeek);
+
+  const timeToSlotIndex = (time: string) => timeSlots.findIndex(slot => slot.startsWith(time));
+  const dateToDayIndex = (dateStr: string) => (new Date(dateStr).getDay() + 6) % 7;
+
+  const scheduleMap: Record<string, { name: string, roomName: string, rowSpan: number }> = {};
+  const skipMap = new Set<string>();
+  const occupiedSlots = new Set<string>();
+
+  filteredSchedules.forEach(schedule => {
+    const col = dateToDayIndex(schedule.date);
+    const startRow = timeToSlotIndex(schedule.startAt);
+    const rowSpan = schedule.workingHours;
+
+    // Check conflicts
+    let conflict = false;
+    for (let i = 0; i < rowSpan; i++) {
+      if (occupiedSlots.has(`${startRow + i}-${col}`)) {
+        conflict = true;
+        break;
+      }
+    }
+
+    if (!conflict) {
+      scheduleMap[`${startRow}-${col}`] = { name: schedule.name, roomName: schedule.roomName, rowSpan };
+      for (let i = 0; i < rowSpan; i++) {
+        const key = `${startRow + i}-${col}`;
+        occupiedSlots.add(key);
+        if (i > 0) skipMap.add(key);
+      }
+    }
+  });
+
+   return (
+    <div className="p-3 overflow-auto main-content">
+      <div className="mb-3 d-flex align-items-center gap-3 flex-wrap">
+        <label htmlFor="yearSelect" className="fw-semibold mb-0">Chọn năm:</label>
+        <select
+          id="yearSelect"
+          className="form-select form-select-sm w-auto"
+          value={year}
+          onChange={e => setYear(Number(e.target.value))}
+        >
+          {[2024, 2025, 2026].map(y => (
+            <option key={y} value={y}>{y}</option>
+          ))}
+        </select>
+
+        <label htmlFor="weekSelect" className="fw-semibold mb-0 ms-3">Chọn tuần:</label>
+        <select
+          id="weekSelect"
+          className="form-select form-select-sm w-auto"
+          value={selectedWeekIndex}
+          onChange={e => setSelectedWeekIndex(Number(e.target.value))}
+        >
+          {allWeeks.map((w, i) => (
+            <option key={w.key} value={i}>{w.label}</option>
+          ))}
+        </select>
+      </div>
+
+      <div className="mb-3">
+        <strong>Tuần hiện tại:</strong> {selectedWeek ? formatWeekLabel(new Date(selectedWeek)) : "N/A"}
+      </div>
+
+      <table className="table table-bordered text-center align-middle">
+        <thead className="table-light">
+          <tr>
+            <th scope="col" style={{minWidth: '140px'}}>Giờ / Ngày</th>
+            {days.map(day => (
+              <th scope="col" key={day}>{day}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {timeSlots.map((slot, rowIndex) => (
+            <tr key={rowIndex}>
+              <th scope="row" className="align-middle">{slot}</th>
+              {days.map((_, colIndex) => {
+                const key = `${rowIndex}-${colIndex}`;
+                if (skipMap.has(key)) return null;
+                const schedule = scheduleMap[key];
+                return (
+                  <td
+                    key={colIndex}
+                    rowSpan={schedule?.rowSpan || 1}
+                    title={schedule ? `${schedule.name} @ ${schedule.roomName}` : ''}
+                    className={schedule ? 'table-primary fw-semibold' : ''}
+                    style={{ cursor: schedule ? 'pointer' : 'default' }}
+                  >
+                    {schedule && (
+                      <>
+                        <div>{schedule.name}</div>
+                        <div className="text-muted small">{schedule.roomName}</div>
+                      </>
+                    )}
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 }

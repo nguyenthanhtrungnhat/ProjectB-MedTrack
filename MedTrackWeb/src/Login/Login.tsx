@@ -18,58 +18,6 @@ export default function LoginScreen() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
-    // const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    //     e.preventDefault();
-    //     try {
-    //         const response = await axios.post("http://26.184.100.176:3000/login", { email, password });
-    //         const { token } = response.data;
-
-    //         if (!token) {
-    //             setError("Invalid server response. Please try again.");
-    //             return;
-    //         }
-
-    //         sessionStorage.setItem("token", token);
-    //         const decodedToken = jwtDecode<CustomJwtPayload>(token);
-    //         const roleID = decodedToken.roleID;
-
-    //         if (!roleID) {
-    //             setError("Role information missing. Please contact support.");
-    //             return;
-    //         }
-
-    //         sessionStorage.setItem("roleID", roleID.toString());
-
-    //         toast.success("Login successful!", { position: "top-right" });
-
-    //         setTimeout(() => {
-    //             if (roleID === 1) {
-    //                 navigate("/doctor");
-    //             } else if (roleID === 2) {
-    //                 navigate("/home");
-    //             } else if (roleID === 3) {
-    //                 navigate("/patient");
-    //             } else if (roleID === 666) {
-    //                 navigate("/admin");
-    //             } else {
-    //                 setError("Unauthorized role. Please contact support.");
-    //             }
-    //         }, 1000); // Delay navigation for the toast
-    //     } catch (err: unknown) {
-    //         console.error("Login Error:", err);
-
-    //         if (err instanceof Error) {
-    //             // If the error is an instance of Error, check if it has a response (Axios error)
-    //             const axiosError = err as any; // Type assertion for Axios errors
-    //             setError(axiosError.response?.data?.error || "Server error. Please try again later.");
-    //         } else {
-    //             setError("An unexpected error occurred.");
-    //         }
-
-    //         toast.error("Login failed. Please check your credentials.", { position: "top-right" });
-    //     }
-
-    // };
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {

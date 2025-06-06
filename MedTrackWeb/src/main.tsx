@@ -54,6 +54,7 @@ const router = createBrowserRouter([
           { path: "bed-details/:patientID", element: <BedDetails /> },
           { path: "shift-change", element: <ShiftChange /> },
           { path: "daily-checking", element: <DailyCheckingForm /> },
+           { path: "schedule", element: <Schedule /> },
         ]
       },
     ],
