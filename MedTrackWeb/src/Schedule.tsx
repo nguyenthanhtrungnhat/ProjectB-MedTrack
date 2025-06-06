@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import './schedule.css';
 
 export default function Schedule() {
-  // Updated schedule dates to 2025 (for demo)
   const simulateSchedules = [
-    { name: "CSE_442", date: "2025-04-20", startAt: "09:30", workingHours: 1, userId: "1", roomName: "402B11" },
-    { name: "CSE_441", date: "2025-04-19", startAt: "07:30", workingHours: 2, userId: "1", roomName: "402B11" },
-    { name: "CSE_443", date: "2025-04-21", startAt: "13:30", workingHours: 2, userId: "1", roomName: "402B11" },
-    { name: "CSE_444", date: "2025-04-23", startAt: "07:30", workingHours: 2, userId: "1", roomName: "402B11" },
-    { name: "CSE_445", date: "2025-04-24", startAt: "14:30", workingHours: 1, userId: "1", roomName: "402B11" }
+    { name: "CSE_442", date: "2025-06-20", startAt: "09:30", workingHours: 1, userId: "1", roomName: "402B11" },
+    { name: "CSE_441", date: "2025-06-19", startAt: "07:30", workingHours: 2, userId: "1", roomName: "402B11" },
+    { name: "CSE_443", date: "2025-06-21", startAt: "13:30", workingHours: 2, userId: "1", roomName: "402B11" },
+    { name: "CSE_444", date: "2025-06-23", startAt: "07:30", workingHours: 2, userId: "1", roomName: "402B11" },
+    { name: "CSE_445", date: "2025-06-24", startAt: "14:30", workingHours: 1, userId: "1", roomName: "402B11" }
   ];
 
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -32,15 +31,11 @@ export default function Schedule() {
     return `${monday.toLocaleDateString('vi-VN')} - ${sunday.toLocaleDateString('vi-VN')}`;
   };
 
-  // Generate all Mondays of the year until after Dec 31
   const getWeeksOfYear = (year: number) => {
     const weeks = [];
-    // Start from Jan 1
     let date = new Date(year, 0, 1);
-    // Move to first Monday of the year or that week start
     date = getWeekStartDate(date);
 
-    // Loop until date goes beyond Dec 31 of year
     while (date.getFullYear() === year || (date.getFullYear() === year - 1 && date.getMonth() === 11)) {
       weeks.push({ key: date.toISOString().split('T')[0], label: formatWeekLabel(date) });
       date = new Date(date);
@@ -49,21 +44,35 @@ export default function Schedule() {
     return weeks;
   };
 
+  const findWeekIndexByKey = (weeks: { key: string; label: string }[], key: string) => {
+    return weeks.findIndex(w => w.key === key);
+  };
+
   const [year, setYear] = useState(2025);
   const [allWeeks, setAllWeeks] = useState(() => getWeeksOfYear(2025));
-  const [selectedWeekIndex, setSelectedWeekIndex] = useState(0);
+  const todayWeekKey = getWeekStartDate(new Date()).toISOString().split('T')[0];
+  const initialWeekIndex = findWeekIndexByKey(allWeeks, todayWeekKey);
+  const [selectedWeekIndex, setSelectedWeekIndex] = useState(
+    initialWeekIndex !== -1 ? initialWeekIndex : 0
+  );
 
   useEffect(() => {
     const weeks = getWeeksOfYear(year);
     setAllWeeks(weeks);
-    setSelectedWeekIndex(0);
+
+    if (year === new Date().getFullYear()) {
+      const currentWeekKey = getWeekStartDate(new Date()).toISOString().split('T')[0];
+      const index = findWeekIndexByKey(weeks, currentWeekKey);
+      setSelectedWeekIndex(index !== -1 ? index : 0);
+    } else {
+      setSelectedWeekIndex(0);
+    }
   }, [year]);
 
   const selectedWeek = allWeeks[selectedWeekIndex]?.key;
 
   const getWeekString = (dateStr: string) => getWeekStartDate(dateStr).toISOString().split('T')[0];
 
-  // Filter schedules only for the selected week start date
   const filteredSchedules = simulateSchedules.filter(s => getWeekString(s.date) === selectedWeek);
 
   const timeToSlotIndex = (time: string) => timeSlots.findIndex(slot => slot.startsWith(time));
@@ -78,7 +87,6 @@ export default function Schedule() {
     const startRow = timeToSlotIndex(schedule.startAt);
     const rowSpan = schedule.workingHours;
 
-    // Check conflicts
     let conflict = false;
     for (let i = 0; i < rowSpan; i++) {
       if (occupiedSlots.has(`${startRow + i}-${col}`)) {
@@ -97,7 +105,15 @@ export default function Schedule() {
     }
   });
 
-   return (
+  // Handlers for Prev / Next week buttons
+  const goPrevWeek = () => {
+    if (selectedWeekIndex > 0) setSelectedWeekIndex(selectedWeekIndex - 1);
+  };
+  const goNextWeek = () => {
+    if (selectedWeekIndex < allWeeks.length - 1) setSelectedWeekIndex(selectedWeekIndex + 1);
+  };
+
+  return (
     <div className="p-3 overflow-auto main-content">
       <div className="mb-3 d-flex align-items-center gap-3 flex-wrap">
         <label htmlFor="yearSelect" className="fw-semibold mb-0">Chọn năm:</label>
@@ -123,6 +139,22 @@ export default function Schedule() {
             <option key={w.key} value={i}>{w.label}</option>
           ))}
         </select>
+
+        {/* New Previous and Next buttons */}
+        <button
+          className="btn btn-outline-primary btn-sm ms-3"
+          onClick={goPrevWeek}
+          disabled={selectedWeekIndex === 0}
+        >
+          Previous Week
+        </button>
+        <button
+          className="btn btn-outline-primary btn-sm"
+          onClick={goNextWeek}
+          disabled={selectedWeekIndex === allWeeks.length - 1}
+        >
+          Next Week
+        </button>
       </div>
 
       <div className="mb-3">
@@ -132,7 +164,7 @@ export default function Schedule() {
       <table className="table table-bordered text-center align-middle">
         <thead className="table-light">
           <tr>
-            <th scope="col" style={{minWidth: '140px'}}>Giờ / Ngày</th>
+            <th scope="col" style={{ minWidth: '140px' }}>Giờ / Ngày</th>
             {days.map(day => (
               <th scope="col" key={day}>{day}</th>
             ))}

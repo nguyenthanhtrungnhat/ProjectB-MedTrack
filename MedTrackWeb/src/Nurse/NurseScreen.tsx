@@ -7,6 +7,7 @@ import { NurseProps, RoomProps } from '../interface';
 import { Link } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
 import SidebarLogin from '../SidebarLogin';
+import PatientSearch from './PatientSearch';
 
 
 const getUserIDFromToken = () => {
@@ -107,7 +108,7 @@ export default function NurseScreen() {
                                                             <p className='p-2 bd-highlight size25'>0</p>
                                                             <i className="ml-auto p-2 bd-highlight fa fa-calendar size25 greenText" aria-hidden="true"></i>
                                                         </div>
-                                                           <Link to="/home/schedule" className="greenText">More detail</Link>
+                                                        <Link to="/home/schedule" className="greenText">More detail</Link>
                                                         {/* <a href="" className='greenText'>More detail</a> */}
                                                     </div>
                                                 </div>
@@ -126,10 +127,16 @@ export default function NurseScreen() {
                                     </div>
                                 </div>
                             </div>
+                            <div className="col-12 padding pb-0 dropShadow z-index9999">
+                                <div className="whiteBg border padding">
+                                    <PatientSearch />
+                                </div>
+                            </div>
                             <div className="col-12 padding">
                                 <div className="hasRoomList border padding whiteBg dropShadow">
                                     <h2 className='blueText text-center marginBottom'>Room list</h2>
                                     <div>
+
                                         <div className="row">
                                             {rooms.map((room) => (
                                                 <Room key={room.roomID} {...room} />

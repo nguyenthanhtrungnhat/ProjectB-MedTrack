@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from "jwt-decode"; // fixed import syntax
 import logo from "./images/logo.png";
 import { Link } from "react-router-dom";
 
@@ -26,16 +26,16 @@ export default function Header() {
 
     return (
         <header className="header dropShadow fixed-top">
-            <nav className="navbar navbar-expand-lg navbar-light custom-navbar">
-                <img src={logo} className="logo" />
+            <nav className="p-3 navbar navbar-expand-lg navbar-light custom-navbar">
+                <img src={logo} className="logo" alt="MedTrack Logo" />
                 <Link className="navbar-brand" to={"#"}>
                     <h4 className="whiteText">MedTrack</h4>
                 </Link>
                 <button
                     className="navbar-toggler"
                     type="button"
-                    data-toggle="collapse"
-                    data-target="#navbarNavAltMarkup"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavAltMarkup"
                     aria-controls="navbarNavAltMarkup"
                     aria-expanded="false"
                     aria-label="Toggle navigation"
@@ -64,7 +64,7 @@ export default function Header() {
                                     <h5 className="whiteText hasProfileIcon">Profile</h5>
                                 </Link>
                             </>
-                        )  : roleID === 3 ? ( // Patient
+                        ) : roleID === 3 ? ( // Patient
                             <>
                                 <Link className="nav-link active" to={"/patient"}>
                                     <h5 className="whiteText hasHomeIcon">Home</h5>

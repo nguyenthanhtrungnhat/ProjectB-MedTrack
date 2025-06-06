@@ -41,7 +41,7 @@
 
 .mainBg {
     background-color: #A5CFCC;
-    padding-top: 15px;
+    padding-top: 30px;
 }
 
 .whiteBg {
@@ -400,4 +400,7 @@ background-color: #32AEBD;
 }
 .h-46px{
     height: 46px;
+}
+.z-index9999{
+     z-index: 9999;
 }
