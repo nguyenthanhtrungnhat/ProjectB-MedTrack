@@ -41,7 +41,7 @@
 
 .mainBg {
     background-color: #A5CFCC;
-    padding-top: 30px;
+    padding-top:15px;
 }
 
 .whiteBg {
@@ -153,7 +153,7 @@
 }
 
 .main-content {
-    margin-top: 65px;
+    margin-top: 80px;
 }
 
 /* Responsive Adjustments */
