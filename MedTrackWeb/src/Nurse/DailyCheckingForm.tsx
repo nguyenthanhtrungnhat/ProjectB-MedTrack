@@ -13,7 +13,7 @@ interface Patient {
 }
 
 export default function DailyCheckingForm() {
-  const nurseID = localStorage.getItem("nurseID");
+  const nurseID = sessionStorage.getItem("nurseID");
   console.log("NurseID", nurseID);
 
   const [formData, setFormData] = useState<FormData>({

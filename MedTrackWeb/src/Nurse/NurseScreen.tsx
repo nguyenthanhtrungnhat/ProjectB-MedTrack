@@ -32,7 +32,29 @@ export default function NurseScreen() {
     const userID = getUserIDFromToken();
     const url = `http://26.184.100.176:3000/nurses/by-user/${userID}`;
     const roomsUrl = 'http://26.184.100.176:3000/rooms';
+    // const nurseID = sessionStorage.getItem("nurseID") || ""; // get nurseID
+    const [count, setCount] = useState<number | null>(null);
+    useEffect(() => {
+        if (!nurseID) {
+            return;
+        }
 
+        const fetchCount = async () => {
+            try {
+                const res = await axios.get(`http://26.184.100.176:3000/api/schedules/${nurseID}`);
+                const data = res.data;
+                if (Array.isArray(data)) {
+                    setCount(data.length);
+                } else {
+                    setCount(0);
+                }
+            } catch (err: any) {
+                setCount(0);
+            }
+        };
+
+        fetchCount();
+    }, [nurseID]);
     useEffect(() => {
         if (!userID) return;
 
@@ -102,24 +124,35 @@ export default function NurseScreen() {
                                         <div className="col-12 medicineScheduleDetail">
                                             <div className="row">
                                                 <div className="col-6 d-flex justify-content-center">
-                                                    <div className="border border-success square170-250 padding20">
-                                                        <h5 className='medSche greenText'>Assigned Task</h5>
-                                                        <div className="d-flex bd-highlight mb-3">
-                                                            <p className='p-2 bd-highlight size25'>0</p>
-                                                            <i className="ml-auto p-2 bd-highlight fa fa-calendar size25 greenText" aria-hidden="true"></i>
+                                                    <div className="border border-success square170-250 padding20 d-flex flex-column justify-content-between">
+                                                        <h5 className="medSche greenText mb-3">Assigned Task</h5>
+                                                        <div className="d-flex align-items-center mb-3">
+                                                            <p className="size25 greenText mb-0 me-auto">{count}</p>
+                                                            <i
+                                                                className="fa fa-calendar size25 greenText"
+                                                                aria-hidden="true"
+                                                                style={{ marginLeft: "auto" }}
+                                                            ></i>
                                                         </div>
-                                                        <Link to="/home/schedule" className="greenText">More detail</Link>
-                                                        {/* <a href="" className='greenText'>More detail</a> */}
+                                                        <Link to="/home/schedule" className="greenText text-decoration-none">
+                                                            More detail
+                                                        </Link>
                                                     </div>
                                                 </div>
                                                 <div className="col-6 d-flex justify-content-center">
-                                                    <div className="border border-info square170-250 padding20">
-                                                        <h5 className='medSche blueText'>Patient's requirements</h5>
-                                                        <div className="d-flex bd-highlight mb-3">
-                                                            <p className='p-2 bd-highlight size25'>0</p>
-                                                            <i className="ml-auto p-2 bd-highlight fa fa-calendar blueText size25" aria-hidden="true"></i>
+                                                    <div className="border border-info square170-250 padding20 d-flex flex-column justify-content-between">
+                                                        <h5 className="medSche blueText mb-3">Patient's requirements</h5>
+                                                        <div className="d-flex align-items-center mb-3">
+                                                            <p className="size25 blueText mb-0 me-auto">0</p>
+                                                            <i
+                                                                className="fa fa-calendar size25 blueText"
+                                                                aria-hidden="true"
+                                                                style={{ marginLeft: "auto" }}
+                                                            ></i>
                                                         </div>
-                                                        <a href="">More detail</a>
+                                                        <a href="#" className="blueText text-decoration-none">
+                                                            More detail
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>

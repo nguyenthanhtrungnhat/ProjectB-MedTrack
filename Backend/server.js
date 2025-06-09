@@ -517,6 +517,45 @@ app.get('/api/patientByUserID/:userID', (req, res) => {
       res.json(results);
   });
 });
+// Route to get schedules for a specific nurse by nurseID
+app.get('/api/schedules/:nurseID', (req, res) => {
+  const nurseID = req.params.nurseID;
+
+  const query = `
+    SELECT 
+        s.scheduleID,
+        s.name AS subject,
+        s.date,
+        s.start_at,
+        s.working_hours,
+        r.roomID,
+        r.location AS room_location
+    FROM schedules s
+    JOIN room r ON s.roomID = r.roomID
+    WHERE s.nurseID = ?
+    ORDER BY s.date, s.start_at
+  `;
+
+  db.query(query, [nurseID], (err, results) => {
+    if (err) {
+      console.error('Query error: ', err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+    // Map keys if needed (optional)
+    const mappedResults = results.map(row => ({
+      scheduleID: row.scheduleID,
+      subject: row.subject,
+      date: row.date,
+      start_at: row.start_at,
+      working_hours: row.working_hours,
+      roomID: row.roomID,
+      room_location: row.room_location
+    }));
+
+    res.json(mappedResults);
+  });
+});
 
 // Start the server
 const PORT = 3000;

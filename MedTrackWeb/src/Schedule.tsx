@@ -1,197 +1,196 @@
-import React, { useState, useEffect } from 'react';
-import './schedule.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./schedule.css";
+
+type ScheduleItem = {
+  scheduleID: number;
+  subject: string;
+  date: string;
+  start_at: string;
+  working_hours: number;
+  roomID: number;
+  room_location: string;
+};
+
+// Robust type guard to verify schedule data shape
+const isScheduleArray = (data: any): data is ScheduleItem[] => {
+  if (!Array.isArray(data)) return false;
+  for (const item of data) {
+    if (typeof item !== "object" || item === null) return false;
+    if (typeof item.scheduleID !== "number") return false;
+    if (typeof item.subject !== "string") return false;
+    if (typeof item.date !== "string") return false;
+    if (typeof item.start_at !== "string") return false;
+    if (typeof item.working_hours !== "number") return false;
+    if (typeof item.roomID !== "number") return false;
+    if (typeof item.room_location !== "string") return false;
+  }
+  return true;
+};
 
 export default function Schedule() {
-  const simulateSchedules = [
-    { name: "CSE_442", date: "2025-06-20", startAt: "09:30", workingHours: 1, userId: "1", roomName: "402B11" },
-    { name: "CSE_441", date: "2025-06-19", startAt: "07:30", workingHours: 2, userId: "1", roomName: "402B11" },
-    { name: "CSE_443", date: "2025-06-21", startAt: "13:30", workingHours: 2, userId: "1", roomName: "402B11" },
-    { name: "CSE_444", date: "2025-06-23", startAt: "07:30", workingHours: 2, userId: "1", roomName: "402B11" },
-    { name: "CSE_445", date: "2025-06-24", startAt: "14:30", workingHours: 1, userId: "1", roomName: "402B11" }
-  ];
+  const nurseID = sessionStorage.getItem("nurseID");
+  const [schedules, setSchedules] = useState<ScheduleItem[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
-  const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  const days = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
   const timeSlots = [
-    "07:30 - 08:30", "08:30 - 09:30", "09:30 - 10:30", "10:30 - 11:30",
-    "12:30 - 13:30", "13:30 - 14:30", "14:30 - 15:30", "15:30 - 16:30", "17:30 - 18:30"
+    "07:30",
+    "08:30",
+    "09:30",
+    "10:30",
+    "12:30",
+    "13:30",
+    "14:30",
+    "15:30",
+    "17:30",
   ];
 
-  const getWeekStartDate = (input: string | Date) => {
-    const date = new Date(input);
-    const day = date.getDay(); // Sunday=0 ... Saturday=6
-    const diff = (day + 6) % 7; // Monday=0 ... Sunday=6
-    date.setDate(date.getDate() - diff);
-    date.setHours(0, 0, 0, 0);
-    return date;
+  const getWeekStart = (date: Date) => {
+    const copy = new Date(date);
+    copy.setHours(0, 0, 0, 0);
+    // Set Monday as first day of week
+    copy.setDate(copy.getDate() - ((copy.getDay() + 6) % 7));
+    return copy;
   };
 
-  const formatWeekLabel = (monday: Date) => {
-    const sunday = new Date(monday);
-    sunday.setDate(monday.getDate() + 6);
-    return `${monday.toLocaleDateString('vi-VN')} - ${sunday.toLocaleDateString('vi-VN')}`;
-  };
+  const [weekStart, setWeekStart] = useState(getWeekStart(new Date()));
 
-  const getWeeksOfYear = (year: number) => {
-    const weeks = [];
-    let date = new Date(year, 0, 1);
-    date = getWeekStartDate(date);
-
-    while (date.getFullYear() === year || (date.getFullYear() === year - 1 && date.getMonth() === 11)) {
-      weeks.push({ key: date.toISOString().split('T')[0], label: formatWeekLabel(date) });
-      date = new Date(date);
-      date.setDate(date.getDate() + 7);
+  // Fetch schedules from API and validate response
+  const fetchSchedules = () => {
+    if (!nurseID) {
+      setError("No nurse ID found in sessionStorage");
+      return;
     }
-    return weeks;
-  };
 
-  const findWeekIndexByKey = (weeks: { key: string; label: string }[], key: string) => {
-    return weeks.findIndex(w => w.key === key);
+    axios
+      .get(`http://26.184.100.176:3000/api/schedules/${nurseID}`)
+      .then((res) => {
+        const data = res.data;
+        if (isScheduleArray(data)) {
+          setSchedules(data);
+          setError(null);
+        } else {
+          setSchedules([]);
+          setError("Invalid schedule data received from server");
+          console.warn("API response is not valid ScheduleItem[]:", data);
+        }
+      })
+      .catch((err) => {
+        setError(err.message || "Failed to load schedules");
+        setSchedules([]);
+      });
   };
-
-  const [year, setYear] = useState(2025);
-  const [allWeeks, setAllWeeks] = useState(() => getWeeksOfYear(2025));
-  const todayWeekKey = getWeekStartDate(new Date()).toISOString().split('T')[0];
-  const initialWeekIndex = findWeekIndexByKey(allWeeks, todayWeekKey);
-  const [selectedWeekIndex, setSelectedWeekIndex] = useState(
-    initialWeekIndex !== -1 ? initialWeekIndex : 0
-  );
 
   useEffect(() => {
-    const weeks = getWeeksOfYear(year);
-    setAllWeeks(weeks);
+    fetchSchedules();
+  }, [nurseID]);
 
-    if (year === new Date().getFullYear()) {
-      const currentWeekKey = getWeekStartDate(new Date()).toISOString().split('T')[0];
-      const index = findWeekIndexByKey(weeks, currentWeekKey);
-      setSelectedWeekIndex(index !== -1 ? index : 0);
-    } else {
-      setSelectedWeekIndex(0);
-    }
-  }, [year]);
+  const formatDate = (date: Date) => date.toISOString().split("T")[0];
 
-  const selectedWeek = allWeeks[selectedWeekIndex]?.key;
-
-  const getWeekString = (dateStr: string) => getWeekStartDate(dateStr).toISOString().split('T')[0];
-
-  const filteredSchedules = simulateSchedules.filter(s => getWeekString(s.date) === selectedWeek);
-
-  const timeToSlotIndex = (time: string) => timeSlots.findIndex(slot => slot.startsWith(time));
-  const dateToDayIndex = (dateStr: string) => (new Date(dateStr).getDay() + 6) % 7;
-
-  const scheduleMap: Record<string, { name: string, roomName: string, rowSpan: number }> = {};
-  const skipMap = new Set<string>();
-  const occupiedSlots = new Set<string>();
-
-  filteredSchedules.forEach(schedule => {
-    const col = dateToDayIndex(schedule.date);
-    const startRow = timeToSlotIndex(schedule.startAt);
-    const rowSpan = schedule.workingHours;
-
-    let conflict = false;
-    for (let i = 0; i < rowSpan; i++) {
-      if (occupiedSlots.has(`${startRow + i}-${col}`)) {
-        conflict = true;
-        break;
-      }
-    }
-
-    if (!conflict) {
-      scheduleMap[`${startRow}-${col}`] = { name: schedule.name, roomName: schedule.roomName, rowSpan };
-      for (let i = 0; i < rowSpan; i++) {
-        const key = `${startRow + i}-${col}`;
-        occupiedSlots.add(key);
-        if (i > 0) skipMap.add(key);
-      }
-    }
+  // Filter schedules within the current week
+  const filteredSchedules = schedules.filter((s) => {
+    const schedDate = new Date(s.date);
+    const start = new Date(weekStart);
+    const end = new Date(weekStart);
+    end.setDate(end.getDate() + 6);
+    // Normalize to dates only
+    return schedDate >= start && schedDate <= end;
   });
 
-  // Handlers for Prev / Next week buttons
+  // Navigation handlers
   const goPrevWeek = () => {
-    if (selectedWeekIndex > 0) setSelectedWeekIndex(selectedWeekIndex - 1);
+    const newStart = new Date(weekStart);
+    newStart.setDate(weekStart.getDate() - 7);
+    setWeekStart(newStart);
   };
+
   const goNextWeek = () => {
-    if (selectedWeekIndex < allWeeks.length - 1) setSelectedWeekIndex(selectedWeekIndex + 1);
+    const newStart = new Date(weekStart);
+    newStart.setDate(weekStart.getDate() + 7);
+    setWeekStart(newStart);
   };
+
+  const goCurrentWeek = () => setWeekStart(getWeekStart(new Date()));
+
+  // Get date string of week day for headers and lookup
+  const getDateOfWeekday = (weekdayIndex: number) => {
+    const date = new Date(weekStart);
+    date.setDate(weekStart.getDate() + weekdayIndex);
+    return formatDate(date);
+  };
+
+  // Find a schedule matching a date and time slot
+  const findSchedule = (date: string, time: string) =>
+    filteredSchedules.find(
+      (s) =>
+        formatDate(new Date(s.date)) === date && s.start_at.startsWith(time)
+    );
 
   return (
-    <div className="p-3 overflow-auto main-content">
-      <div className="mb-3 d-flex align-items-center gap-3 flex-wrap">
-        <label htmlFor="yearSelect" className="fw-semibold mb-0">Chọn năm:</label>
-        <select
-          id="yearSelect"
-          className="form-select form-select-sm w-auto"
-          value={year}
-          onChange={e => setYear(Number(e.target.value))}
-        >
-          {[2024, 2025, 2026].map(y => (
-            <option key={y} value={y}>{y}</option>
-          ))}
-        </select>
-
-        <label htmlFor="weekSelect" className="fw-semibold mb-0 ms-3">Chọn tuần:</label>
-        <select
-          id="weekSelect"
-          className="form-select form-select-sm w-auto"
-          value={selectedWeekIndex}
-          onChange={e => setSelectedWeekIndex(Number(e.target.value))}
-        >
-          {allWeeks.map((w, i) => (
-            <option key={w.key} value={i}>{w.label}</option>
-          ))}
-        </select>
-
-        {/* New Previous and Next buttons */}
-        <button
-          className="btn btn-outline-primary btn-sm ms-3"
-          onClick={goPrevWeek}
-          disabled={selectedWeekIndex === 0}
-        >
+    <div className="p-3 main-content">
+      <div className="mb-3 d-flex gap-2">
+        <button onClick={goPrevWeek} className="btn btn-outline-primary btn-sm">
           Previous Week
         </button>
-        <button
-          className="btn btn-outline-primary btn-sm"
-          onClick={goNextWeek}
-          disabled={selectedWeekIndex === allWeeks.length - 1}
-        >
+        <button onClick={goNextWeek} className="btn btn-outline-primary btn-sm">
           Next Week
         </button>
+        <button onClick={goCurrentWeek} className="btn btn-outline-success btn-sm">
+          This Week
+        </button>
+        <div className="ms-3 mt-1">
+          <strong>Week:</strong>{" "}
+          {formatDate(weekStart)} -{" "}
+          {formatDate(new Date(weekStart.getTime() + 6 * 86400000))}
+        </div>
       </div>
 
-      <div className="mb-3">
-        <strong>Tuần hiện tại:</strong> {selectedWeek ? formatWeekLabel(new Date(selectedWeek)) : "N/A"}
-      </div>
+      {error && <div className="text-danger mb-3">Error: {error}</div>}
 
       <table className="table table-bordered text-center align-middle">
         <thead className="table-light">
           <tr>
-            <th scope="col" style={{ minWidth: '140px' }}>Giờ / Ngày</th>
-            {days.map(day => (
-              <th scope="col" key={day}>{day}</th>
+            <th>Time / Day</th>
+            {days.map((day, i) => (
+              <th key={i}>
+                {day} <br />
+                <small>{getDateOfWeekday(i)}</small>
+              </th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {timeSlots.map((slot, rowIndex) => (
-            <tr key={rowIndex}>
-              <th scope="row" className="align-middle">{slot}</th>
-              {days.map((_, colIndex) => {
-                const key = `${rowIndex}-${colIndex}`;
-                if (skipMap.has(key)) return null;
-                const schedule = scheduleMap[key];
+          {timeSlots.map((slot, rowIdx) => (
+            <tr key={rowIdx}>
+              <td>{slot}</td>
+              {days.map((_, colIdx) => {
+                const date = getDateOfWeekday(colIdx);
+                const sched = findSchedule(date, slot);
+                // Add a class or style to highlight
+                const cellStyle = sched
+                  ? { backgroundColor: "lightblue" } // Light green background for tasks
+                  : undefined;
+
                 return (
-                  <td
-                    key={colIndex}
-                    rowSpan={schedule?.rowSpan || 1}
-                    title={schedule ? `${schedule.name} @ ${schedule.roomName}` : ''}
-                    className={schedule ? 'table-primary fw-semibold' : ''}
-                    style={{ cursor: schedule ? 'pointer' : 'default' }}
-                  >
-                    {schedule && (
-                      <>
-                        <div>{schedule.name}</div>
-                        <div className="text-muted small">{schedule.roomName}</div>
-                      </>
-                    )}
+                  <td key={colIdx} style={cellStyle}>
+                    {sched ? (
+                      <div>
+                        <strong>{sched.subject}</strong>
+                        <br />
+                        {sched.room_location}
+                        <br />
+                        Room {sched.roomID}
+                      </div>
+                    ) : null}
                   </td>
                 );
               })}
