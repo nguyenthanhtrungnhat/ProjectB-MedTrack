@@ -127,7 +127,7 @@ export default function NurseScreen() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-12 padding pb-0 dropShadow z-index9999">
+                            <div className="col-12 padding pb-0 dropShadow z-index">
                                 <div className="whiteBg border padding">
                                     <PatientSearch />
                                 </div>

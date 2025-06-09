@@ -25,7 +25,7 @@ export default function Header() {
     }, []);
 
     return (
-        <header className="header dropShadow fixed-top">
+        <header className="header dropShadow fixed-top ">
             <nav className="p-3 navbar navbar-expand-lg navbar-light custom-navbar">
                 <img src={logo} className="logo" alt="MedTrack Logo" />
                 <Link className="navbar-brand" to={"#"}>
