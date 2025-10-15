@@ -11,6 +11,7 @@ interface Patient {
   email: string;
   image: string;
 }
+const token = sessionStorage.getItem("token");
 
 export default function DailyCheckingForm() {
   const nurseID = sessionStorage.getItem("nurseID");
@@ -47,7 +48,7 @@ export default function DailyCheckingForm() {
         console.error("Error fetching patients:", err);
         toast.error("Failed to load patients data");
       });
-  }, [patients]);
+  }, []);
 
   // Handle live search input change separately
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -103,7 +104,12 @@ export default function DailyCheckingForm() {
         respiratoryRate: parseInt(formData.respiratoryRate),
         bloodPressure: formData.bloodPressure,
         urine: formData.urine
-      });
+      },
+    {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
       toast.success("Dữ liệu đã gửi thành công!", { position: "top-right" });
       setFormData({

@@ -296,31 +296,76 @@ app.post("/requestShiftChange", (req, res) => {
 });
 
 // API POST để thêm dữ liệu vào bảng MedicalRecords
+// app.post("/post-medical-records", (req, res) => {
+//   const {
+//     patientID,
+//     heartRate,
+//     pulse,
+//     height,
+//     weight,
+//     hurtScale,
+//     temperature,
+//     currentCondition,
+//     SP02,
+//     healthStatus,
+//     respiratoryRate,
+//     bloodPressure,
+//     urine,
+//   } = req.body;
+
+//   const sql = `
+//     INSERT INTO MedicalRecords 
+//     (patientID, heartRate, pulse, height, weight, hurtScale, temperature, currentCondition, SP02, healthStatus, respiratoryRate, bloodPressure, urine) 
+//     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+//   db.query(
+//     sql,
+//     [
+//       patientID,
+//       heartRate,
+//       pulse,
+//       height,
+//       weight,
+//       hurtScale,
+//       temperature,
+//       currentCondition,
+//       SP02,
+//       healthStatus,
+//       respiratoryRate,
+//       bloodPressure,
+//       urine,
+//     ],
+//     (err, result) => {
+//       if (err) {
+//         console.error("Lỗi khi thêm dữ liệu:", err);
+//         return res.status(500).json({ message: "Lỗi server", error: err });
+//       }
+//       res.status(201).json({ message: "Thêm thành công", recordID: result.insertId });
+//     }
+//   );
+// });
 app.post("/post-medical-records", (req, res) => {
-  const {
-    patientID,
-    heartRate,
-    pulse,
-    height,
-    weight,
-    hurtScale,
-    temperature,
-    currentCondition,
-    SP02,
-    healthStatus,
-    respiratoryRate,
-    bloodPressure,
-    urine,
-  } = req.body;
+  // 🔹 Lấy token từ header
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1]; // dạng "Bearer <token>"
 
-  const sql = `
-    INSERT INTO MedicalRecords 
-    (patientID, heartRate, pulse, height, weight, hurtScale, temperature, currentCondition, SP02, healthStatus, respiratoryRate, bloodPressure, urine) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  if (!token) {
+    return res.status(403).json({ message: "Thiếu token xác thực" });
+  }
 
-  db.query(
-    sql,
-    [
+  // 🔹 Xác minh token (phải dùng đúng secret key bạn dùng khi sign)
+  jwt.verify(token, "secretkey", (err, decoded) => {
+    if (err) {
+      console.error("Token không hợp lệ:", err);
+      return res.status(401).json({ message: "Token không hợp lệ hoặc đã hết hạn" });
+    }
+
+    // Nếu hợp lệ, bạn có thể lấy thông tin user từ token
+    console.log("Xác thực thành công cho userID:", decoded.userID);
+    console.log("Vai trò (roleID):", decoded.roleID);
+
+    // 🔹 Giờ mới thực hiện thêm dữ liệu
+    const {
       patientID,
       heartRate,
       pulse,
@@ -334,17 +379,46 @@ app.post("/post-medical-records", (req, res) => {
       respiratoryRate,
       bloodPressure,
       urine,
-    ],
-    (err, result) => {
-      if (err) {
-        console.error("Lỗi khi thêm dữ liệu:", err);
-        return res.status(500).json({ message: "Lỗi server", error: err });
-      }
-      res.status(201).json({ message: "Thêm thành công", recordID: result.insertId });
-    }
-  );
-});
+    } = req.body;
 
+    const sql = `
+      INSERT INTO MedicalRecords 
+      (patientID, heartRate, pulse, height, weight, hurtScale, temperature, currentCondition, SP02, healthStatus, respiratoryRate, bloodPressure, urine) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    db.query(
+      sql,
+      [
+        patientID,
+        heartRate,
+        pulse,
+        height,
+        weight,
+        hurtScale,
+        temperature,
+        currentCondition,
+        SP02,
+        healthStatus,
+        respiratoryRate,
+        bloodPressure,
+        urine,
+      ],
+      (err, result) => {
+        if (err) {
+          console.error("Lỗi khi thêm dữ liệu:", err);
+          return res.status(500).json({ message: "Lỗi server", error: err });
+        }
+
+        res.status(201).json({
+          message: "Thêm thành công",
+          recordID: result.insertId,
+          addedBy: decoded.userID, // có thể log user đã thêm
+        });
+      }
+    );
+  });
+});
 //delete nurse by nurseID
 app.delete("/nurses/:nurseID", (req, res) => {
   const nurseID = req.params.nurseID;
@@ -406,23 +480,23 @@ app.delete("/patients/:patientID", (req, res) => {
 app.put("/users/:id", (req, res) => {
   const userID = req.params.id;
   let {
-      username,
-      password,
-      fullName,
-      dob,
-      phone,
-      email,
-      CCCD,
-      address,
-      haveTask,
-      gender
+    username,
+    password,
+    fullName,
+    dob,
+    phone,
+    email,
+    CCCD,
+    address,
+    haveTask,
+    gender
   } = req.body;
 
   // Convert date fields from ISO to MySQL format (YYYY-MM-DD HH:MM:SS)
   const formatDate = (isoDate) => {
-      if (!isoDate) return null; // Handle null cases
-      const date = new Date(isoDate);
-      return date.toISOString().slice(0, 19).replace("T", " "); // Convert to MySQL DATETIME format
+    if (!isoDate) return null; // Handle null cases
+    const date = new Date(isoDate);
+    return date.toISOString().slice(0, 19).replace("T", " "); // Convert to MySQL DATETIME format
   };
 
   dob = formatDate(dob);
@@ -435,19 +509,19 @@ app.put("/users/:id", (req, res) => {
       WHERE userID = ?`;
 
   db.query(
-      sql,
-      [username, password, fullName, dob, phone, email, CCCD, address, haveTask, gender, userID],
-      (err, result) => {
-          if (err) {
-              console.error("Error updating user:", err);
-              return res.status(500).json({ error: "Failed to update user" });
-          }
-          if (result.affectedRows === 0) {
-              return res.status(404).json({ error: "User not found" });
-          }
-          console.log(result);
-          res.json({ message: "User updated successfully!" });
+    sql,
+    [username, password, fullName, dob, phone, email, CCCD, address, haveTask, gender, userID],
+    (err, result) => {
+      if (err) {
+        console.error("Error updating user:", err);
+        return res.status(500).json({ error: "Failed to update user" });
       }
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      console.log(result);
+      res.json({ message: "User updated successfully!" });
+    }
   );
 });
 // get patient by userID
@@ -461,10 +535,10 @@ app.get('/api/patientByUserID/:userID', (req, res) => {
   WHERE p.userID = ?;
 `;
   db.query(query, [userID], (err, results) => {
-      if (err) {
-          return res.status(500).json({ error: err.message });
-      }
-      res.json(results);
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json(results);
   });
 });
 // Route to get schedules for a specific nurse by nurseID
