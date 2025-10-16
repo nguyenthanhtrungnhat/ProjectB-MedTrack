@@ -34,7 +34,7 @@ export default function PatientScreen() {
     const [allRecords, setAllRecords] = useState<RecordProps[]>([]);
     const [record, setRecord] = useState<RecordProps | null>(null);
     const userID = getUserIDFromToken();
-
+    const [showMore, setShowMore] = useState(false);
     // Fetch patients for this user
     useEffect(() => {
         if (!userID) return;
@@ -166,11 +166,19 @@ export default function PatientScreen() {
                                                     ))}
                                                 </ul>
                                             </div>
+                                            
+
+                                        </div>
+                                        <div className="col-12">
+                                            <button type="button" className="btn btn-primary" data-bs-toggle="button">Toggle button</button>
+                                            <button type="button" className="btn btn-primary active" data-bs-toggle="button" aria-pressed="true">Active toggle button</button>
+                                            <button type="button" className="btn btn-primary" disabled data-bs-toggle="button">Disabled toggle button</button>
                                         </div>
                                     </div>
 
                                     <div className="container">
                                         <div className="row">
+
                                             <div className="col-4">
                                                 <div className="row">
                                                     <div className="col-12 padding">
@@ -224,6 +232,18 @@ export default function PatientScreen() {
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    {showMore && (
+                                                        <div className="col-12 padding">
+                                                            <div className="border whiteBg dropShadow padding">
+                                                                <p className="blueText">Weight</p>
+                                                                <div className="d-flex align-items-center">
+                                                                    <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
+                                                                    <h4 className="blueText mb-0 paddingLeft20">{record.weight}</h4>
+                                                                    <span className="blueText"> Kg</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                         </div>

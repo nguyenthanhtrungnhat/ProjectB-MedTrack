@@ -16,7 +16,7 @@ export default function BedDetails() {
     const [user, setUser] = useState<PatientProps | null>(null);
     const [allRecords, setAllRecords] = useState<RecordProps[]>([]);
     const [record, setRecord] = useState<RecordProps | null>(null);
-
+    const [showMore, setShowMore] = useState(false);
     const { patientID } = useParams();
     const storedInfo = sessionStorage.getItem("info");
     const info = storedInfo ? JSON.parse(storedInfo) : null;
@@ -120,6 +120,16 @@ export default function BedDetails() {
                                                 </ul>
 
                                             </div>
+                                           
+                                                <button
+                                                    type="button"
+                                                    className={`btn btn-primary ${showMore ? 'active' : ''}`}
+                                                    data-bs-toggle="button"
+                                                    onClick={() => setShowMore(!showMore)}
+                                                >
+                                                    {showMore ? 'Hide' : 'Show'}
+                                                </button>
+                                            
                                         </div>
                                     </div>
                                     <div className="row">
@@ -176,6 +186,18 @@ export default function BedDetails() {
                                                         </div>
                                                     </div>
                                                 </div>
+                                                {showMore && (
+                                                    <div className="col-12 padding">
+                                                        <div className="border whiteBg dropShadow padding">
+                                                            <p className="blueText">Weight</p>
+                                                            <div className="d-flex align-items-center">
+                                                                <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
+                                                                <h4 className="blueText mb-0 paddingLeft20">{record.weight}</h4>
+                                                                <span className="blueText"> Kg</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
