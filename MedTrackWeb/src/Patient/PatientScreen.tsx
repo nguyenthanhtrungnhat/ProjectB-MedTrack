@@ -76,7 +76,7 @@ export default function PatientScreen() {
     return (
         <div className="container-fluid mainBg main-content h-100">
             <div className="row">
-                <div className="col-10">
+                <div className="col-9">
                     <div className="row">
                         <div className="col-6">
                             <PatientInformation
@@ -94,7 +94,7 @@ export default function PatientScreen() {
                                 relativeNumber={patient.relativeNumber || 0}
                             />
                         </div>
-                        <div className="col-6 noPl">
+                        <div className="col-6 noPl ">
                             <div className="hasSchedule padding border whiteBg marginBottom dropShadow">
                                 <div className="row">
                                     <div className="col-12 medicineSchedule padding50">
@@ -107,7 +107,7 @@ export default function PatientScreen() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="hasSchedule padding border whiteBg dropShadow h-400px">
+                            <div className="hasSchedule padding border whiteBg dropShadow h-59">
                                 <div className="row">
                                     <div className="col-12 medicineScheduleDetail">
                                         <div className="row">
@@ -255,7 +255,7 @@ export default function PatientScreen() {
                     </div>
                 </div>
 
-                <div className="col-2 noPl">
+                <div className="col-3 noPl">
                     <div className="leftBody border whiteBg marginBottom dropShadow">
                         <div className="row">
                             <div className="col-12 login">

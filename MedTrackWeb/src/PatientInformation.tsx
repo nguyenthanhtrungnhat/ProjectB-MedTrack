@@ -27,8 +27,8 @@ export default function PatientInformation({
   admissionDate,
   relativeNumber,
 }: PatientProps) {
-  return (
-    <div className="hasInformationP border padding whiteBg dropShadow">
+  return ( 
+    <div className="hasInformationP border padding whiteBg dropShadow ">
       <div className="row">
         <div className="col-8">
           <h5 className="blueText mb-3">Patient Information</h5>

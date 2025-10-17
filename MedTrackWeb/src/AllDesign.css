@@ -79,7 +79,7 @@
 .announceHead::before { content: "\f0f3"; }     /* Bell */
 
 /* Image Sizes */
-.patientImg { height: 226px; width: 82px; }
+.patientImg { height: 366px; width: 142px; }
 .pluseImg { height: 31px; width: 34px; }
 .tempImg { height: 35px; width: 14px; }
 .ntImg { height: 31px; width: 29px; }
@@ -88,6 +88,7 @@
 .avtIMG { margin-top: 50px; height: 200px; width: 150px; }
 .logo{height: 50px;width: 50px;}
 .h-98{height: 98%;}
+.h-59{height: 59%;}
 
 /* Layout / Elements */
 .roomBtn { border: none; }
@@ -113,7 +114,7 @@
 
 /* Misc */
 .z-index { z-index: 1; }
-.noPl { padding-left: 0; }
+.noPl { padding-left: 0 !important; }
 
 /* Form Text */
 .dlcForm p {

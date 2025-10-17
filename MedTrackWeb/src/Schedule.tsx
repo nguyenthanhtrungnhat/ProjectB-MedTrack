@@ -34,14 +34,16 @@ export default function Schedule() {
   const [error, setError] = useState<string | null>(null);
 
   const days = [
+    "Sunday",
     "Monday",
     "Tuesday",
     "Wednesday",
     "Thursday",
     "Friday",
     "Saturday",
-    "Sunday",
+
   ];
+
   const timeSlots = [
     "07:30",
     "08:30",
@@ -57,8 +59,12 @@ export default function Schedule() {
   const getWeekStart = (date: Date) => {
     const copy = new Date(date);
     copy.setHours(0, 0, 0, 0);
-    // Set Monday as first day of week
-    copy.setDate(copy.getDate() - ((copy.getDay() + 6) % 7));
+
+    // Make Monday the first day of the week
+    const day = copy.getDay(); // Sunday = 0, Monday = 1, ...
+    const diff = (day === 0 ? -6 : 1) - day; // shift back to Monday
+    copy.setDate(copy.getDate() + diff);
+
     return copy;
   };
 

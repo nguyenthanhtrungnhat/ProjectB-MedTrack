@@ -4,6 +4,7 @@ const cors = require('cors');
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const app = express();
+const verifyToken = require("./verifyToken");
 require("dotenv").config({ path: "JWT.env" });
 require('dotenv').config();
 // Enable CORS
@@ -241,7 +242,6 @@ app.post("/login", (req, res) => {
 
       const roleID = roleResults[0].roleID;
       const token = jwt.sign({ userID: user.userID, roleID }, "secretkey", { expiresIn: "1h" });
-
       // Determine redirect path based on roleID
       let redirectPath;
       switch (roleID) {
@@ -344,28 +344,36 @@ app.post("/requestShiftChange", (req, res) => {
 //     }
 //   );
 // });
-app.post("/post-medical-records", (req, res) => {
-  // 🔹 Lấy token từ header
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1]; // dạng "Bearer <token>"
+app.post("/post-medical-records", verifyToken, (req, res) => {
+  // 🔹 Giờ mới thực hiện thêm dữ liệu
+  const {
+    patientID,
+    heartRate,
+    pulse,
+    height,
+    weight,
+    hurtScale,
+    temperature,
+    currentCondition,
+    SP02,
+    healthStatus,
+    respiratoryRate,
+    bloodPressure,
+    urine,
+  } = req.body;
 
-  if (!token) {
-    return res.status(403).json({ message: "Thiếu token xác thực" });
-  }
+  const userID = req.user.userID; // ✅ From token
+  const roleID = req.user.roleID;
 
-  // 🔹 Xác minh token (phải dùng đúng secret key bạn dùng khi sign)
-  jwt.verify(token, "secretkey", (err, decoded) => {
-    if (err) {
-      console.error("Token không hợp lệ:", err);
-      return res.status(401).json({ message: "Token không hợp lệ hoặc đã hết hạn" });
-    }
+  const sql = `
+      INSERT INTO MedicalRecords 
+      (patientID, heartRate, pulse, height, weight, hurtScale, temperature, currentCondition, SP02, healthStatus, respiratoryRate, bloodPressure, urine) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
 
-    // Nếu hợp lệ, bạn có thể lấy thông tin user từ token
-    console.log("Xác thực thành công cho userID:", decoded.userID);
-    console.log("Vai trò (roleID):", decoded.roleID);
-
-    // 🔹 Giờ mới thực hiện thêm dữ liệu
-    const {
+  db.query(
+    sql,
+    [
       patientID,
       heartRate,
       pulse,
@@ -379,45 +387,21 @@ app.post("/post-medical-records", (req, res) => {
       respiratoryRate,
       bloodPressure,
       urine,
-    } = req.body;
-
-    const sql = `
-      INSERT INTO MedicalRecords 
-      (patientID, heartRate, pulse, height, weight, hurtScale, temperature, currentCondition, SP02, healthStatus, respiratoryRate, bloodPressure, urine) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
-
-    db.query(
-      sql,
-      [
-        patientID,
-        heartRate,
-        pulse,
-        height,
-        weight,
-        hurtScale,
-        temperature,
-        currentCondition,
-        SP02,
-        healthStatus,
-        respiratoryRate,
-        bloodPressure,
-        urine,
-      ],
-      (err, result) => {
-        if (err) {
-          console.error("Lỗi khi thêm dữ liệu:", err);
-          return res.status(500).json({ message: "Lỗi server", error: err });
-        }
-
-        res.status(201).json({
-          message: "Thêm thành công",
-          recordID: result.insertId,
-          addedBy: decoded.userID, // có thể log user đã thêm
-        });
+    ],
+    (err, result) => {
+      if (err) {
+        console.error("Lỗi khi thêm dữ liệu:", err);
+        return res.status(500).json({ message: "Lỗi server", error: err });
       }
-    );
-  });
+
+      res.status(201).json({
+        message: "Medical record added successfully",
+        recordID: result.insertId,
+        addedBy: userID,
+        roleID,
+      });
+    }
+  );
 });
 //delete nurse by nurseID
 app.delete("/nurses/:nurseID", (req, res) => {

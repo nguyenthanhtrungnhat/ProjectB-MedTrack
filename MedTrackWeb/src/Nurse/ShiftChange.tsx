@@ -74,9 +74,9 @@ export default function ShiftChange() {
 
     return (
         <div>
-            <div className="container-fluid scBg main-content padding vh-100">
+            <div className="container-fluid scBg main-content padding h-100">
                 <div className="row">
-                    <div className="col-10">
+                    <div className="col-9">
                         <div className="d-flex flex-column justify-content-center align-items-center">
                             <h1 className="scBlue h1Sc d-inline w-50">
                                 Shift change registration
@@ -117,7 +117,7 @@ export default function ShiftChange() {
                             </form>
                         </div>
                     </div>
-                    <div className="col-2 noPl">
+                    <div className="col-3 noPl">
                         <div className="leftBody border whiteBg marginBottom dropShadow">
                             <div className="row">
                                 <div className="col-12 login">

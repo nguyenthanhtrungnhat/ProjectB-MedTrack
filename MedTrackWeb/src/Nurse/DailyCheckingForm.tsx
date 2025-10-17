@@ -105,11 +105,11 @@ export default function DailyCheckingForm() {
         bloodPressure: formData.bloodPressure,
         urine: formData.urine
       },
-    {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
       toast.success("Dữ liệu đã gửi thành công!", { position: "top-right" });
       setFormData({
@@ -256,7 +256,7 @@ export default function DailyCheckingForm() {
                   <input name="heartRate" value={formData.heartRate} onChange={handleChange} className="form-control" type="text" placeholder="bpm" required />
                 </div>
                 <div className="col">
-                  <p>Hurt scale</p>
+                  <p>Pain scale</p>
                   <input name="hurtScale" value={formData.hurtScale} onChange={handleChange} className="form-control" required />
                 </div>
               </div>
