@@ -87,6 +87,7 @@
 .bannerImg { height: 500px; }
 .avtIMG { margin-top: 50px; height: 200px; width: 150px; }
 .logo{height: 50px;width: 50px;}
+.h-98{height: 98%;}
 
 /* Layout / Elements */
 .roomBtn { border: none; }
@@ -98,7 +99,7 @@
 
 /* Heights / Widths */
 .h-400px { height: 305px; }
-.h-627px, .hasInformationP { height: fit-content; }
+.h-627px, .hasInformationP { height: fit-content;margin-bottom: 10px; }
 .hasInformation { height: 427px; }
 .medicineSchedule, .medicineScheduleDetail { height: 174px; }
 .login { height: 205px; }

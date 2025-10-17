@@ -56,7 +56,7 @@ export default function BedDetails() {
         <div>
             <div className="container-fluid mainBg main-content ">
                 <div className="row mainBg">
-                    <div className="col-10">
+                    <div className="col-9">
                         <div className="row">
                             <div className="col-6 ">
                                 {user && (
@@ -77,7 +77,7 @@ export default function BedDetails() {
                                 )}
                             </div>
                             <div className="col-6 noPl ">
-                                <div className="padding border whiteBg marginBottom dropShadow h-627px">
+                                <div className="padding border whiteBg marginBottom dropShadow h-98">
                                     <h5 className='blueText'>Diagnose</h5>
                                     <p className="blueText">Hospitalization diagnosis:</p>
                                     <p>{user?.hospitalizationsDiagnosis}</p>
@@ -203,7 +203,7 @@ export default function BedDetails() {
                             </div>
                         </div>
                     </div>
-                    <div className="col-2 noPl">
+                    <div className="col-3 noPl">
                         <div className="leftBody border whiteBg marginBottom dropShadow">
                             <div className="row">
                                 <div className="col-12 login ">

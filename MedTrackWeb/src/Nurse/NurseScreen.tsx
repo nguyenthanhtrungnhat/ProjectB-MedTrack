@@ -92,7 +92,7 @@ export default function NurseScreen() {
         <div>
             <div className="container-fluid mainBg main-content ">
                 <div className="row">
-                    <div className="col-10">
+                    <div className="col-9">
                         <div className="row">
                             {user && (
                                 <NurseInformation
@@ -180,7 +180,7 @@ export default function NurseScreen() {
                             </div>
                         </div>
                     </div>
-                    <div className="col-2 noPl">
+                    <div className="col-3 noPl">
                         <div className="leftBody border whiteBg marginBottom dropShadow">
                             <div className="row">
                                 <div className="col-12 login">
