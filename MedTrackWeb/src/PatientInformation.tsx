@@ -27,35 +27,33 @@ export default function PatientInformation({
   admissionDate,
   relativeNumber,
 }: PatientProps) {
-  return ( 
-    <div className="hasInformationP border padding whiteBg dropShadow ">
-      <div className="row">
-        <div className="col-8">
-          <h5 className="blueText mb-3">Patient Information</h5>
-          <InfoRow label="Full name" value={fullName} />
-          <InfoRow label="Date of birth" value={dob} />
-          <InfoRow label="Gender" value={gender} />
-          <InfoRow label="Phone number" value={phone} />
-          <InfoRow label="ID card" value={patientID} />
-          <InfoRow label="Email" value={email} />
-          <InfoRow label="Address" value={address} />
-          <InfoRow label="BHYT" value={BHYT} />
-        </div>
-        <div className="col-4 d-flex justify-content-center align-items-start">
-          {image && (
-            <img
-              src={image}
-              className="avtIMG img-fluid rounded"
-              alt={`${fullName}'s avatar`}
-              loading="lazy"
-            />
-          )}
-        </div>
-        <div className="col-12 mt-0">
-          <InfoRow label="Date of admission" value={admissionDate} />
-          <InfoRow label="Relative name" value={relativeName} />
-          <InfoRow label="Relative's phone" value={relativeNumber} />
-        </div>
+  return (
+    <div className="row">
+      <div className="col-8">
+        <h5 className="blueText mb-3">Patient Information</h5>
+        <InfoRow label="Full name" value={fullName} />
+        <InfoRow label="Date of birth" value={dob} />
+        <InfoRow label="Gender" value={gender} />
+        <InfoRow label="Phone number" value={phone} />
+        <InfoRow label="ID card" value={patientID} />
+        <InfoRow label="Email" value={email} />
+        <InfoRow label="Address" value={address} />
+        <InfoRow label="BHYT" value={BHYT} />
+      </div>
+      <div className="col-4 d-flex justify-content-center align-items-start">
+        {image && (
+          <img
+            src={image}
+            className="avtIMG img-fluid rounded"
+            alt={`${fullName}'s avatar`}
+            loading="lazy"
+          />
+        )}
+      </div>
+      <div className="col-12 mt-0">
+        <InfoRow label="Date of admission" value={admissionDate} />
+        <InfoRow label="Relative name" value={relativeName} />
+        <InfoRow label="Relative's phone" value={relativeNumber} />
       </div>
     </div>
   );

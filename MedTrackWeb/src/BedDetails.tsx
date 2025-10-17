@@ -57,27 +57,32 @@ export default function BedDetails() {
             <div className="container-fluid mainBg main-content ">
                 <div className="row mainBg">
                     <div className="col-9">
-                        <div className="row">
-                            <div className="col-6 ">
-                                {user && (
-                                    <PatientInformation
-                                        image={user.image}
-                                        fullName={user.fullName}
-                                        gender={user.gender === 1 ? 'Male' : 'Female'}
-                                        dob={user.dob?.split('T')[0]}
-                                        phone={user.phone}
-                                        patientID={user.patientID}
-                                        address={user.address}
-                                        email={user.email}
-                                        BHYT={user.BHYT}
-                                        admissionDate={user.admissionDate?.split('T')[0]}
-                                        relativeName={user.relativeName}
-                                        relativeNumber={user.relativeNumber}
-                                    />
-                                )}
+                        <div className="row align-items-stretch">
+                            {/* Left column */}
+                            <div className="col-lg-6 col-sm-12 d-flex">
+                                <div className="w-100 d-flex flex-column border whiteBg marginBottom dropShadow p-3">
+                                    {user && (
+                                        <PatientInformation
+                                            image={user.image}
+                                            fullName={user.fullName}
+                                            gender={user.gender === 1 ? 'Male' : 'Female'}
+                                            dob={user.dob?.split('T')[0]}
+                                            phone={user.phone}
+                                            patientID={user.patientID}
+                                            address={user.address}
+                                            email={user.email}
+                                            BHYT={user.BHYT}
+                                            admissionDate={user.admissionDate?.split('T')[0]}
+                                            relativeName={user.relativeName}
+                                            relativeNumber={user.relativeNumber}
+                                        />
+                                    )}
+                                </div>
                             </div>
-                            <div className="col-6 noPl">
-                                <div className="padding border whiteBg marginBottom dropShadow overflow-auto vh-100" style={{ maxHeight: "560px" }}>
+
+                            {/* Right column */}
+                            <div className="col-lg-6 col-sm-12 d-flex">
+                                <div className="w-100 d-flex flex-column border whiteBg marginBottom dropShadow p-3">
                                     <h5 className="blueText">Diagnose</h5>
 
                                     <p className="blueText">Hospitalization diagnosis:</p>
@@ -93,7 +98,6 @@ export default function BedDetails() {
                                     <p>{user?.dischargeDiagnosis}</p>
                                 </div>
                             </div>
-
                         </div>
 
                     </div>

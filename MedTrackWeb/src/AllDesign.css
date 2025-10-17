@@ -115,7 +115,7 @@
 /* Misc */
 .z-index { z-index: 1; }
 .noPl { padding-left: 0 !important; }
-
+.noPr {padding-right: 0 !important;}
 /* Form Text */
 .dlcForm p {
     color: #505F63;
