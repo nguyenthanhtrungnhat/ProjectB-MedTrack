@@ -120,16 +120,14 @@ export default function BedDetails() {
                                                 </ul>
 
                                             </div>
-                                           
-                                                <button
-                                                    type="button"
-                                                    className={`btn btn-primary ${showMore ? 'active' : ''}`}
-                                                    data-bs-toggle="button"
-                                                    onClick={() => setShowMore(!showMore)}
-                                                >
-                                                    {showMore ? 'Hide' : 'Show'}
-                                                </button>
-                                            
+                                            <button
+                                                type="button"
+                                                className={`btn btn-primary ${showMore ? 'active' : ''}`}
+                                                data-bs-toggle="button"
+                                                onClick={() => setShowMore(!showMore)}
+                                            >
+                                                {showMore ? 'Hide' : 'Show'}
+                                            </button>
                                         </div>
                                     </div>
                                     <div className="row">

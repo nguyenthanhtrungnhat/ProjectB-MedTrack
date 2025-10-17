@@ -51,8 +51,8 @@ export default function PatientInformation({
             />
           )}
         </div>
-        <div className="col-12 mt-4">
-          <InfoRow label="Date of hospital admission" value={admissionDate} />
+        <div className="col-12 mt-0">
+          <InfoRow label="Date of admission" value={admissionDate} />
           <InfoRow label="Relative name" value={relativeName} />
           <InfoRow label="Relative's phone" value={relativeNumber} />
         </div>

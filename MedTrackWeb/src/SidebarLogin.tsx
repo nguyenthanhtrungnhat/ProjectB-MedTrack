@@ -25,7 +25,7 @@ export default function SidebarLogin({ phone, fullName }: SidebarInfoProps) {
             <div className="padding">
                 <p className='blueText'>{phone}</p>
                 <p className='blueText'>{fullName}</p>
-                <div className="d-flex justify-content-center">
+                <div className="d-flex justify-content-center marginBottom">
                     <button type="button" className="btn btn-danger w-100" onClick={handleLogout}>
                         Logout
                     </button>

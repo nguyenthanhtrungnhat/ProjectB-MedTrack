@@ -36,7 +36,7 @@ export default function LoginScreen() {
 
             setTimeout(() => {
                 navigate(redirect); // Use backend-provided redirect path
-            }, 1000); // Delay navigation for the toast
+            }, 500); // Delay navigation for the toast
         } catch (err: unknown) {
             console.error("Login Error:", err);
 
@@ -62,8 +62,7 @@ export default function LoginScreen() {
                             <span className='whiteText'><b>MedTrack</b></span>
                         </div>
                         <h1 className='whiteText'>Hi there, ....</h1>
-                        <p className='mb80 whiteText'>Please sign in to start our services</p>
-                        {error && <p className="text-danger">{error}</p>}
+                       
                         <form onSubmit={handleLogin}>
                             <div className="form-group">
                                 <label htmlFor="email" className='whiteText'>Email address</label>
@@ -96,6 +95,8 @@ export default function LoginScreen() {
                                 <button type="submit" className="btn btn-success w200">Login</button>
                             </div>
                         </form>
+                         <p className='whiteText'>Please sign in to start our services</p>
+                        {error && <p className="text-danger">{error}</p>}
                     </div>
                     <div className="col-6 p-0">
                         <img src={LoginImg} className='w-100 loginPic' alt="Login" />
@@ -105,3 +106,4 @@ export default function LoginScreen() {
         </main>
     );
 }
+

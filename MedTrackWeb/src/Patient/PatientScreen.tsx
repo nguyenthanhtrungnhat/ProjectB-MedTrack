@@ -123,7 +123,7 @@ export default function PatientScreen() {
                                             </div>
                                             <div className="col-6 d-flex justify-content-center">
                                                 <div className="border border-info square170-250 padding20">
-                                                    <h5 className='medSche blueText'>Patient's requirements</h5>
+                                                    <h5 className='medSche blueText'>Requirements</h5>
                                                     <div className="d-flex bd-highlight mb-3">
                                                         <p className='p-2 bd-highlight size25'>0</p>
                                                         <i className="ml-auto p-2 bd-highlight fa fa-calendar blueText size25" />
@@ -166,16 +166,17 @@ export default function PatientScreen() {
                                                     ))}
                                                 </ul>
                                             </div>
-                                            
-
+                                             <button
+                                            type="button"
+                                            className={`btn btn-primary ${showMore ? 'active' : ''}`}
+                                            data-bs-toggle="button"
+                                            onClick={() => setShowMore(!showMore)}
+                                        >
+                                            {showMore ? 'Hide' : 'Show'}
+                                        </button>
                                         </div>
-                                        <div className="col-12">
-                                            <button type="button" className="btn btn-primary" data-bs-toggle="button">Toggle button</button>
-                                            <button type="button" className="btn btn-primary active" data-bs-toggle="button" aria-pressed="true">Active toggle button</button>
-                                            <button type="button" className="btn btn-primary" disabled data-bs-toggle="button">Disabled toggle button</button>
-                                        </div>
+                                       
                                     </div>
-
                                     <div className="container">
                                         <div className="row">
 
