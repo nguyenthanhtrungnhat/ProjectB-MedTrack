@@ -101,8 +101,8 @@
 /* Heights / Widths */
 .h-400px { height: 305px; }
 .h-627px, .hasInformationP { height: fit-content;margin-bottom: 10px; }
-.hasInformation { height: 427px; }
-.medicineSchedule, .medicineScheduleDetail { height: 174px; }
+.hasInformation { height: 437px; }
+/* .medicineSchedule, .medicineScheduleDetail { height: 174px; } */
 .login { height: 205px; }
 .h-46px { height: 46px; }
 .w200 { width: 200px; }

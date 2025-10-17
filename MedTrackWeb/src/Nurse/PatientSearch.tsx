@@ -55,9 +55,9 @@ export default function PatientSearch() {
   };
 
   return (
-    <div className="container mt-4"  ref={containerRef}>
-      <h2 className="blueText">Search Patients</h2>
-      <div className="mb-3 position-relative">
+    <div className="container w-100"  ref={containerRef}>
+      {/* <h2 className="blueText">Search Patients</h2> */}
+      <div className="position-relative">
         <input
           type="text"
           className="form-control"
@@ -98,9 +98,9 @@ export default function PatientSearch() {
           </ul>
         )}
       </div>
-      <button className="btn btn-primary w-100 mb-3" onClick={handleSearch}>
+      {/* <button className="btn btn-primary w-100 mb-3" onClick={handleSearch}>
         Search
-      </button>
+      </button> */}
     </div>
   );
 }

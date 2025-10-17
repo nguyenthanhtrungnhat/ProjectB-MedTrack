@@ -11,7 +11,7 @@ export default function NurseInformation({
     email,
 }: NurseProps) {
     return (
-        <div className="col-6">
+        <div className="col-lg-6 col-sm-12 mb-2">
             <div className="hasInformation border padding whiteBg dropShadow">
                 <div className="row">
                     <div className="col-8">

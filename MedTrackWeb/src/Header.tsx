@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {jwtDecode} from "jwt-decode"; // fixed import syntax
 import logo from "./images/logo.png";
 import { Link } from "react-router-dom";
+import PatientSearch from "./Nurse/PatientSearch";
 
 const getUserRoleFromToken = () => {
     const token = sessionStorage.getItem("token");
@@ -63,6 +64,7 @@ export default function Header() {
                                 <Link className="nav-link whiteText" to={"/home/nurse-profile"}>
                                     <h5 className="whiteText hasProfileIcon">Profile</h5>
                                 </Link>
+                                <PatientSearch/>
                             </>
                         ) : roleID === 3 ? ( // Patient
                             <>

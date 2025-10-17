@@ -106,7 +106,7 @@ export default function NurseScreen() {
                                     email={user.email}
                                 />
                             )}
-                            <div className="col-6 noPl">
+                            <div className="col-lg-6 col-sm-12 ">
                                 <div className="hasSchedule padding border whiteBg marginBottom dropShadow">
                                     <div className="row">
                                         <div className="col-12 medicineSchedule padding50">
@@ -120,51 +120,47 @@ export default function NurseScreen() {
                                     </div>
                                 </div>
                                 <div className="hasSchedule padding border whiteBg dropShadow">
-                                    <div className="row">
-                                        <div className="col-12 medicineScheduleDetail">
-                                            <div className="row">
-                                                <div className="col-6 d-flex justify-content-center">
-                                                    <div className="border border-success square170-250 padding20 d-flex flex-column justify-content-between">
-                                                        <h5 className="medSche greenText mb-3">Assigned Task</h5>
-                                                        <div className="d-flex align-items-center mb-3">
-                                                            <p className="size25 greenText mb-0 me-auto">{count}</p>
-                                                            <i
-                                                                className="fa fa-calendar size25 greenText"
-                                                                aria-hidden="true"
-                                                                style={{ marginLeft: "auto" }}
-                                                            ></i>
-                                                        </div>
-                                                        <Link to="/home/schedule" className="greenText text-decoration-none">
-                                                            More detail
-                                                        </Link>
-                                                    </div>
+                                    <div className="row medicineScheduleDetail">
+                                        <div className="col-lg-6 col-sm-12 d-flex justify-content-center mb-2">
+                                            <div className="border border-success square170-250 padding20 d-flex flex-column justify-content-between">
+                                                <h5 className="medSche greenText mb-3">Assigned Task</h5>
+                                                <div className="d-flex align-items-center mb-3">
+                                                    <p className="size25 greenText mb-0 me-auto">{count}</p>
+                                                    <i
+                                                        className="fa fa-calendar size25 greenText"
+                                                        aria-hidden="true"
+                                                        style={{ marginLeft: "auto" }}
+                                                    ></i>
                                                 </div>
-                                                <div className="col-6 d-flex justify-content-center">
-                                                    <div className="border border-info square170-250 padding20 d-flex flex-column justify-content-between">
-                                                        <h5 className="medSche blueText mb-3">Patient's requirements</h5>
-                                                        <div className="d-flex align-items-center mb-3">
-                                                            <p className="size25 blueText mb-0 me-auto">0</p>
-                                                            <i
-                                                                className="fa fa-calendar size25 blueText"
-                                                                aria-hidden="true"
-                                                                style={{ marginLeft: "auto" }}
-                                                            ></i>
-                                                        </div>
-                                                        <a href="#" className="blueText text-decoration-none">
-                                                            More detail
-                                                        </a>
-                                                    </div>
+                                                <Link to="/home/schedule" className="greenText text-decoration-none">
+                                                    More detail
+                                                </Link>
+                                            </div>
+                                        </div>
+                                        <div className="col-lg-6 col-sm-12 d-flex justify-content-center ">
+                                            <div className="border border-info square170-250 padding20 d-flex flex-column justify-content-between">
+                                                <h5 className="medSche blueText mb-3">Patient's requirements</h5>
+                                                <div className="d-flex align-items-center mb-3">
+                                                    <p className="size25 blueText mb-0 me-auto">0</p>
+                                                    <i
+                                                        className="fa fa-calendar size25 blueText"
+                                                        aria-hidden="true"
+                                                        style={{ marginLeft: "auto" }}
+                                                    ></i>
                                                 </div>
+                                                <a href="#" className="blueText text-decoration-none">
+                                                    More detail
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-12 padding pb-0 dropShadow z-index">
+                            {/* <div className="col-12 padding pb-0 dropShadow z-index">
                                 <div className="whiteBg border padding">
                                     <PatientSearch />
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="col-12 padding">
                                 <div className="hasRoomList border padding whiteBg dropShadow">
                                     <h2 className='blueText text-center marginBottom'>Room list</h2>
