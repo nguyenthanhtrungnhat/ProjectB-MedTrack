@@ -93,6 +93,7 @@ export default function NurseScreen() {
             <div className="container-fluid mainBg main-content vh-100">
                 <div className="row">
                     <div className="col-9">
+                        
                         <div className="row">
                             {user && (
                                 <NurseInformation
