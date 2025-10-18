@@ -36,6 +36,12 @@ cd MedTrackWeb
 # Navigate to the backend folder
 cd Backend
 
+create .env
+DB_HOST=
+DB_USER=
+DB_PASSWORD=
+DB_NAME=
+
 # Install dependencies
 npm i
 
