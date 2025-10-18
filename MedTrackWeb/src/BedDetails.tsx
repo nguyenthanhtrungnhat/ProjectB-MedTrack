@@ -187,11 +187,11 @@ export default function BedDetails() {
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="col-4">
+                                <div className="col-5">
                                     <div className="row">
                                         <div className="col-lg-6 col-sm-12 padding">
                                             <div className="border whiteBg dropShadow padding">
-                                                <p className="blueText">Pulse</p>
+                                                <p className="blueText">Pulse <span className="badge text-bg-success">Good</span></p>
                                                 <div className="d-flex align-items-center">
                                                     <img src={pluseImg} className="pluseImg me-2" alt="Pulse" />
                                                     <h4 className="blueText mb-0 paddingLeft20">{record?.pulse}</h4>
@@ -201,7 +201,7 @@ export default function BedDetails() {
                                         </div>
                                         <div className="col-lg-6 col-sm-12 padding">
                                             <div className="border whiteBg dropShadow padding">
-                                                <p className="blueText">Temperature</p>
+                                                <p className="blueText">Temperature <span className="badge text-bg-success">Success</span></p>
                                                 <div className="d-flex align-items-center">
                                                     <img src={tempImg} className="tempImg me-2" alt="Temperature" />
                                                     <h4 className="blueText mb-0 paddingLeft20">{record?.temperature}</h4>
@@ -213,7 +213,7 @@ export default function BedDetails() {
                                             <>
                                                 <div className="col-lg-6 col-sm-12 padding">
                                                     <div className="border whiteBg dropShadow padding">
-                                                        <p className="blueText">Height</p>
+                                                        <p className="blueText">Height </p>
                                                         <div className="d-flex align-items-center">
                                                             <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
                                                             <h4 className="blueText mb-0 paddingLeft20">{record?.height}</h4>
@@ -223,7 +223,7 @@ export default function BedDetails() {
                                                 </div>
                                                 <div className="col-lg-6 col-sm-12 padding">
                                                     <div className="border whiteBg dropShadow padding">
-                                                        <p className="blueText">Heart rate</p>
+                                                        <p className="blueText">Heart rate </p>
                                                         <div className="d-flex align-items-center">
                                                             <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
                                                             <h4 className="blueText mb-0 paddingLeft20">{record?.heartRate}</h4>
@@ -257,18 +257,18 @@ export default function BedDetails() {
                                     </div>
 
                                 </div>
-                                <div className="col-4 d-flex justify-content-center align-items-center">
+                                <div className="col-2 d-flex justify-content-center align-items-center">
                                     {record?.healthStatus === '1' ? (
                                         <img src={patientImg} className='patientImg' alt="Good Health" />
                                     ) : (
                                         <img src={notgoodpatientImg} className='patientImg' alt="Not Good Health" />
                                     )}
                                 </div>
-                                <div className="col-4">
+                                <div className="col-5">
                                     <div className="row">
                                         <div className="col-lg-6 col-sm-12 padding">
                                             <div className="border whiteBg dropShadow padding">
-                                                <p className="blueText">Respiratory Rate</p>
+                                                <p className="blueText">Respiratory Rate <span className="badge text-bg-warning">Warning</span></p>
                                                 <div className="d-flex align-items-center">
                                                     <img src={ntImg} className="ntImg me-2" alt="Respiratory Rate" />
                                                     <h4 className="blueText mb-0 paddingLeft20">{record?.respiratoryRate}</h4>
@@ -278,7 +278,7 @@ export default function BedDetails() {
                                         </div>
                                         <div className="col-lg-6 col-sm-12 padding">
                                             <div className="border whiteBg dropShadow padding">
-                                                <p className="blueText">Blood Pressure</p>
+                                                <p className="blueText">Blood Pressure <span className="badge text-bg-danger">Bad</span></p>
                                                 <div className="d-flex align-items-center">
                                                     <img src={bpImg} className="bpImg me-2" alt="Blood Pressure" />
                                                     <h4 className="blueText mb-0 paddingLeft20">{record?.bloodPressure}</h4>

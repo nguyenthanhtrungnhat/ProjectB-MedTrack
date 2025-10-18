@@ -28,7 +28,7 @@ export default function Header() {
     return (
         <header className="header dropShadow fixed-top ">
 
-            <nav className="p-3 navbar navbar-expand-lg bg-light custom-navbar">
+            <nav className="p-3 navbar navbar-expand-lg custom-navbar">
                 <div className="container-fluid">
                     <img src={logo} className="logo" alt="MedTrack Logo" />
                     <Link className="navbar-brand" to={"#"}>
@@ -76,7 +76,7 @@ export default function Header() {
                                 </ul>
                                 <form className="d-flex" role="search">
                                     <PatientSearch />
-                                    <button className="btn btn-outline-success" type="submit">Search</button>
+                                    {/* <button className="btn btn-outline-success" type="submit">Search</button> */}
                                 </form>
                             </>
                         ) : roleID === 3 ? ( // Patient
@@ -112,86 +112,3 @@ export default function Header() {
         </header >
     );
 }
-{/* <nav className="p-3 navbar navbar-expand-lg navbar-light custom-navbar">
-                <img src={logo} className="logo" alt="MedTrack Logo" />
-                <Link className="navbar-brand" to={"#"}>
-                    <h4 className="whiteText">MedTrack</h4>
-                </Link>
-                <button
-                    className="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarNavAltMarkup"
-                    aria-controls="navbarNavAltMarkup"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation"
-                >
-                    <span className="navbar-toggler-icon"></span>
-                </button>
-                <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-                    <div className="navbar-nav">
-                        {roleID === 1 ? ( // Doctor
-                            <>
-                                <Link className="nav-link active" to={"doctor"}>
-                                    <h5 className="whiteText hasHomeIcon">Home</h5>
-                                    <span className="sr-only">(current)</span>
-                                </Link>
-                                <Link className="nav-link whiteText" to={"/doctor/doctor-profile"}>
-                                    <h5 className="whiteText hasProfileIcon">Profile</h5>
-                                </Link>
-                                <li className="nav-item dropdown">
-                                    <Link className="nav-link dropdown-toggle" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Dropdown
-                                    </Link>
-                                    <ul className="dropdown-menu">
-                                        <li><Link className="dropdown-item" to="#">Action</Link></li>
-                                        <li><Link className="dropdown-item" to="#">Another action</Link></li>
-                                        <li><Link className="dropdown-item" to="#">Something else here</Link></li>
-                                    </ul>
-                                </li>
-                            </>
-                        ) : roleID === 2 ? ( // Nurse
-                            <>
-                                <Link className="nav-link active" to={"/home"}>
-                                    <h5 className="whiteText hasHomeIcon">Home</h5>
-                                    <span className="sr-only">(current)</span>
-                                </Link>
-                                <Link className="nav-link whiteText" to={"/home/nurse-profile"}>
-                                    <h5 className="whiteText hasProfileIcon">Profile</h5>
-                                </Link>
-                                <li className="nav-item dropdown ">
-                                    <Link className="nav-link dropdown-toggle whiteText" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Dropdown
-                                    </Link>
-                                    <ul className="dropdown-menu ">
-                                        <li><Link className="dropdown-item " to="#">Action</Link></li>
-                                        <li><Link className="dropdown-item " to="#">Another action</Link></li>
-                                        <li><Link className="dropdown-item " to="#">Something else here</Link></li>
-                                    </ul>
-                                </li>
-                                <PatientSearch />
-                            </>
-                        ) : roleID === 3 ? ( // Patient
-                            <>
-                                <Link className="nav-link active" to={"/patient"}>
-                                    <h5 className="whiteText hasHomeIcon">Home</h5>
-                                    <span className="sr-only">(current)</span>
-                                </Link>
-                                <Link className="nav-link whiteText" to={"/patient/patient-profile"}>
-                                    <h5 className="whiteText hasProfileIcon">Profile</h5>
-                                </Link>
-                                <li className="nav-item dropdown ">
-                                    <Link className="nav-link dropdown-toggle whiteText" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Dropdown
-                                    </Link>
-                                    <ul className="dropdown-menu ">
-                                        <li><Link className="dropdown-item " to="#">Action</Link></li>
-                                        <li><Link className="dropdown-item " to="#">Another action</Link></li>
-                                        <li><Link className="dropdown-item " to="#">Something else here</Link></li>
-                                    </ul>
-                                </li>
-                            </>
-                        ) : null}
-                    </div>
-                </div>
-            </nav> */}

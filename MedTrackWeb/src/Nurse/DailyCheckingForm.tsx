@@ -139,10 +139,10 @@ export default function DailyCheckingForm() {
     <>
       <ToastContainer />
       <Header />
-      <div className="dlcForm h1359 main-content padding">
+      <div className="mainBg h1359 main-content padding">
         <div className="d-flex justify-content-center align-items-center">
           <div className="tracking-sheet" style={{ position: "relative" }}>
-            <h1 className="whiteText">
+            <h1 className="">
               Life function tracking sheet <i className="fa fa-file-text" aria-hidden="true"></i>
             </h1>
             <span className="dlcgray">Update patient diagnostic indicators</span>
@@ -205,7 +205,7 @@ export default function DailyCheckingForm() {
                   <input name="spo2" value={formData.spo2} onChange={handleChange} className="form-control" type="text" placeholder="%" required />
                 </div>
               </div>
-
+              <hr />
               <div className="row">
                 <div className="col">
                   <p>Temperature</p>
@@ -216,7 +216,7 @@ export default function DailyCheckingForm() {
                   <input name="oxygenTherapy" value={formData.oxygenTherapy} onChange={handleChange} className="form-control" type="text" placeholder="L/min" required />
                 </div>
               </div>
-
+              <hr />
               <div className="row">
                 <div className="col">
                   <p>Blood pressure</p>
@@ -227,7 +227,7 @@ export default function DailyCheckingForm() {
                   <input name="height" value={formData.height} onChange={handleChange} className="form-control" type="text" placeholder="cm" required />
                 </div>
               </div>
-
+              <hr />
               <div className="row">
                 <div className="col">
                   <p>Weight</p>
@@ -238,7 +238,7 @@ export default function DailyCheckingForm() {
                   <input name="sensorium" value={formData.sensorium} onChange={handleChange} className="form-control" required />
                 </div>
               </div>
-
+              <hr />
               <div className="row">
                 <div className="col">
                   <p>Respiratory rate</p>
@@ -249,7 +249,7 @@ export default function DailyCheckingForm() {
                   <input name="urine" value={formData.urine} onChange={handleChange} className="form-control" type="text" placeholder="ml/h" required />
                 </div>
               </div>
-
+              <hr />
               <div className="row">
                 <div className="col">
                   <p>Heart rate</p>
@@ -260,17 +260,17 @@ export default function DailyCheckingForm() {
                   <input name="hurtScale" value={formData.hurtScale} onChange={handleChange} className="form-control" required />
                 </div>
               </div>
-
+              <hr />
               <div className="row marginBottom">
                 <div className="col">
                   <p>Current condition</p>
                   <textarea name="currentCondition" value={formData.currentCondition} onChange={handleChange} className="form-control"></textarea>
                 </div>
               </div>
-
+              <hr />
               <div className="row">
                 <div className="col padding">
-                  <button className="btn btn-outline-secondary dlcBtn w-100 dropShadow" type="submit">Submit and continue</button>
+                  <button className="btn btn-success" type="submit">Submit and continue</button>
                 </div>
               </div>
             </form>
