@@ -44,7 +44,7 @@ export default function BedDetails() {
     }, [patientByIdUrl, recordBypatientIdUrl]);
 
     const handleRecordSelect = (recordID: number) => {
-        axios.get(`http://26.184.100.176:3000/medical-records/by-recordId/${recordID}`)
+        axios.get(`http://localhost:3000/medical-records/by-recordId/${recordID}`)
             .then(response => {
                 setRecord(response.data);
                 console.log("Selected Record:", response.data);
