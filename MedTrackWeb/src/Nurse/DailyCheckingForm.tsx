@@ -42,7 +42,7 @@ export default function DailyCheckingForm() {
 
   useEffect(() => {
     // Fetch patients data once on mount
-    axios.get<Patient[]>("http://26.184.100.176:3000/patients")
+    axios.get<Patient[]>("http://localhost:3000/patients")
       .then(res => setPatients(res.data))
       .catch(err => {
         console.error("Error fetching patients:", err);
@@ -90,7 +90,7 @@ export default function DailyCheckingForm() {
     e.preventDefault();
 
     try {
-      await axios.post("http://26.184.100.176:3000/post-medical-records", {
+      await axios.post("http://localhost:3000/post-medical-records", {
         patientID: parseInt(formData.patientID),
         heartRate: parseInt(formData.heartRate),
         pulse: parseInt(formData.pulse),

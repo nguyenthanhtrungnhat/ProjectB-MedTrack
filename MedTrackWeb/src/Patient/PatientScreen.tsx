@@ -38,7 +38,7 @@ export default function PatientScreen() {
     // Fetch patients for this user
     useEffect(() => {
         if (!userID) return;
-        axios.get(`http://26.184.100.176:3000/api/patientByUserID/${userID}`)
+        axios.get(`http://localhost:3000/api/patientByUserID/${userID}`)
             .then(response => {
                 setPatients(response.data);
             })
@@ -49,7 +49,7 @@ export default function PatientScreen() {
     useEffect(() => {
         if (patients.length === 0) return;
 
-        const url = `http://26.184.100.176:3000/medical-records/${patients[0].patientID}`;
+        const url = `http://localhost:3000/medical-records/${patients[0].patientID}`;
         axios.get(url)
             .then(response => {
                 const sorted = [...response.data].sort(
@@ -62,7 +62,7 @@ export default function PatientScreen() {
     }, [patients]);
 
     const handleRecordSelect = (recordID: number) => {
-        axios.get(`http://26.184.100.176:3000/medical-records/by-recordId/${recordID}`)
+        axios.get(`http://localhost:3000/medical-records/by-recordId/${recordID}`)
             .then(response => setRecord(response.data))
             .catch(error => console.error('Error fetching selected record:', error));
     };

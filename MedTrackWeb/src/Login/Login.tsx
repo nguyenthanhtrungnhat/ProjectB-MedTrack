@@ -21,7 +21,7 @@ export default function LoginScreen() {
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const response = await axios.post("http://26.184.100.176:3000/login", { email, password });
+            const response = await axios.post("http://localhost:3000/login", { email, password });
 
             const { token, redirect } = response.data;
 

@@ -9,7 +9,7 @@ export default function PatientSearch() {
   const containerRef = useRef(null);
 
   useEffect(() => {
-    fetch("http://26.184.100.176:3000/patients")
+    fetch("http://localhost:3000/patients")
       .then((res) => res.json())
       .then((data) => setPatients(data))
       .catch((err) => console.error("Error fetching patients:", err));

@@ -78,7 +78,7 @@ export default function Schedule() {
     }
 
     axios
-      .get(`http://26.184.100.176:3000/api/schedules/${nurseID}`)
+      .get(`http://localhost:3000/api/schedules/${nurseID}`)
       .then((res) => {
         const data = res.data;
         if (isScheduleArray(data)) {

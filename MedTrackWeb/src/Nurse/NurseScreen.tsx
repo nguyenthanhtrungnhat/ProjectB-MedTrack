@@ -30,8 +30,8 @@ export default function NurseScreen() {
     const [nurseID, setNurseID] = useState<number | null>(null);
     sessionStorage.setItem("nurseID", JSON.stringify(nurseID));
     const userID = getUserIDFromToken();
-    const url = `http://26.184.100.176:3000/nurses/by-user/${userID}`;
-    const roomsUrl = 'http://26.184.100.176:3000/rooms';
+    const url = `http://localhost:3000/nurses/by-user/${userID}`;
+    const roomsUrl = 'http://localhost:3000/rooms';
     // const nurseID = sessionStorage.getItem("nurseID") || ""; // get nurseID
     const [count, setCount] = useState<number | null>(null);
     useEffect(() => {
@@ -41,7 +41,7 @@ export default function NurseScreen() {
 
         const fetchCount = async () => {
             try {
-                const res = await axios.get(`http://26.184.100.176:3000/api/schedules/${nurseID}`);
+                const res = await axios.get(`http://localhost:3000/api/schedules/${nurseID}`);
                 const data = res.data;
                 if (Array.isArray(data)) {
                     setCount(data.length);
@@ -69,7 +69,7 @@ export default function NurseScreen() {
     useEffect(() => {
         if (!nurseID) return;
 
-        axios.get(`http://26.184.100.176:3000/nurses/${nurseID}`)
+        axios.get(`http://localhost:3000/nurses/${nurseID}`)
             .then(response => {
                 setUser(response.data);
                 console.log("Nurse Data:", response.data);

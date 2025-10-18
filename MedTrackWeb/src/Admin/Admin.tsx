@@ -14,15 +14,15 @@ export default function AdminScreen() {
     const [doctors, setDoctors] = useState([]);
 
     useEffect(() => {
-        axios.get("http://26.184.100.176:3000/nurses")
+        axios.get("http://localhost:3000/nurses")
             .then(response => setNurses(response.data))
             .catch(() => toast.error("Failed to fetch nurses data"));
 
-        axios.get("http://26.184.100.176:3000/patients")
+        axios.get("http://localhost:3000/patients")
             .then(response => setPatients(response.data))
             .catch(() => toast.error("Failed to fetch patients data"));
 
-        axios.get("http://26.184.100.176:3000/doctors")
+        axios.get("http://localhost:3000/doctors")
             .then(response => setDoctors(response.data))
             .catch(() => toast.error("Failed to fetch doctors data"));
         console.log("test fetching times");
@@ -31,7 +31,7 @@ export default function AdminScreen() {
     const handleDelete = (id, type) => {
         console.log(`Deleting ${type} with ID:`, id);
         if (window.confirm("Are you sure you want to delete this record?")) {
-            axios.delete(`http://26.184.100.176:3000/${type}/${id}`)
+            axios.delete(`http://localhost:3000/${type}/${id}`)
                 .then(() => {
                     toast.success("Deleted successfully!");
                     if (type === "nurses") setNurses(nurses.filter(nurse => nurse.nurseID !== id));
