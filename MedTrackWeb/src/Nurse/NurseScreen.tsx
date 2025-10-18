@@ -157,11 +157,7 @@ export default function NurseScreen() {
                                     </div>
                                 </div>
                             </div>
-                            {/* <div className="col-12 padding pb-0 dropShadow z-index">
-                                <div className="whiteBg border padding">
-                                    <PatientSearch />
-                                </div>
-                            </div> */}
+                          
                             <div className="col-12 padding">
                                 <div className="hasRoomList border padding whiteBg dropShadow">
                                     <h2 className='blueText text-center marginBottom'>Room list</h2>
