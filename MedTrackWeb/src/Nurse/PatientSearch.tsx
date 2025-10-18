@@ -1,13 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function PatientSearch() {
   const [patients, setPatients] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredPatients, setFilteredPatients] = useState([]);
-  const [selectedPatientId, setSelectedPatientId] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const containerRef = useRef(null);
+  const navigate = useNavigate();
 
+  // Fetch patient data
   useEffect(() => {
     fetch("http://localhost:3000/patients")
       .then((res) => res.json())
@@ -15,21 +17,24 @@ export default function PatientSearch() {
       .catch((err) => console.error("Error fetching patients:", err));
   }, []);
 
+  // Filter patients by name or ID
   useEffect(() => {
-    if (searchTerm.trim() === "") {
+    if (!searchTerm.trim()) {
       setFilteredPatients([]);
       setShowDropdown(false);
-      setSelectedPatientId("");
       return;
     }
-    const filtered = patients.filter((patient) =>
-      patient.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      patient.patientID.toString().includes(searchTerm)
+
+    const filtered = patients.filter(
+      (p) =>
+        p.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        p.patientID.toString().includes(searchTerm)
     );
     setFilteredPatients(filtered);
     setShowDropdown(filtered.length > 0);
   }, [searchTerm, patients]);
 
+  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (containerRef.current && !containerRef.current.contains(event.target)) {
@@ -40,67 +45,58 @@ export default function PatientSearch() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Handle selection
   const handleSelect = (patient) => {
-    setSelectedPatientId(patient.patientID);
-    setSearchTerm(`${patient.fullName} (ID: ${patient.patientID})`);
+    setSearchTerm(`${patient.fullName} `);
     setShowDropdown(false);
-  };
-
-  const handleSearch = () => {
-    if (selectedPatientId) {
-      window.location.href = `http://localhost:5173/home/bed-details/${selectedPatientId}`;
-    } else {
-      alert("Please select a patient.");
-    }
+    navigate(`/home/bed-details/${patient.patientID}`);
   };
 
   return (
-    <div className="container w-100"  ref={containerRef}>
-      {/* <h2 className="blueText">Search Patients</h2> */}
-      <div className="position-relative">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Search by name or ID..."
-          value={searchTerm}
-          onChange={(e) => {
-            setSearchTerm(e.target.value);
-            setSelectedPatientId("");
+    <div ref={containerRef}>
+      <input
+        type="search"
+        className="form-control me-2"
+        placeholder="Search patient..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        onFocus={() => filteredPatients.length > 0 && setShowDropdown(true)}
+        autoComplete="off"
+         style={{
+           width: 500
           }}
-          onFocus={() => {
-            if (filteredPatients.length > 0) setShowDropdown(true);
+      />
+      {showDropdown && (
+        <ul
+          className="list-group position-absolute w-100 mt-1 shadow-sm"
+          style={{
+            zIndex: 2000,
+            maxHeight: "220px",
+            overflowY: "auto",
+            borderRadius: "0.5rem",
           }}
-          autoComplete="off"
-        />
-        {showDropdown && (
-          <ul
-            className="list-group position-absolute w-100 "
-            style={{ zIndex: 1000, maxHeight: "200px", overflowY: "auto" }}
-          >
-            {filteredPatients.map((patient) => (
-              <li
-                key={patient.patientID}
-                className="list-group-item list-group-item-action d-flex align-items-center "
-                style={{ cursor: "pointer" }}
-                onClick={() => handleSelect(patient)}
-              >
-                <img
-                  src={patient.image}
-                  alt={patient.fullName}
-                  style={{ width: "40px", height: "40px", borderRadius: "50%", objectFit: "cover", marginRight: "10px" }}
-                />
-                <div>
-                  <div>{patient.fullName}</div>
-                  <small className="text-muted">ID: {patient.patientID}</small>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-      {/* <button className="btn btn-primary w-100 mb-3" onClick={handleSearch}>
-        Search
-      </button> */}
+        >
+          {filteredPatients.map((p) => (  
+            <li
+              key={p.patientID}
+              className="list-group-item list-group-item-action d-flex align-items-center"
+              onClick={() => handleSelect(p)}
+              style={{ cursor: "pointer" }}
+            >
+              <img
+                src={p.image}
+                alt={p.fullName}
+                className="rounded-circle me-2"
+                style={{ width: "32px", height: "32px", objectFit: "cover" }}
+              />
+              <div>
+                <div className="fw-semibold">{p.fullName}</div>
+                <small className="text-muted">ID: {p.patientID}</small>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

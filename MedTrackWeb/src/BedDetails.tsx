@@ -293,7 +293,7 @@ export default function BedDetails() {
                                                         <p className="blueText">Weight</p>
                                                         <div className="d-flex align-items-center">
                                                             <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
-                                                            <h4 className="blueText mb-0 paddingLeft20">{record.weight}</h4>
+                                                            <h4 className="blueText mb-0 paddingLeft20">{record?.weight}</h4>
                                                             <span className="blueText"> Kg</span>
                                                         </div>
                                                     </div>

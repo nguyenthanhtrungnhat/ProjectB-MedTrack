@@ -27,7 +27,7 @@
     align-items: center;
 }
 
-.whiteText { color: #fff; }
+.whiteText { color: #fff ; }
 .blueText, .scBlue { color: #2290B0; }
 .greenText { color: green; }
 .dlcgray, .color505F63 { color: #505F63; }
