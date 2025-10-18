@@ -44,7 +44,18 @@ const getAllRecords = (tableName, res) => {
 // Generic function to fetch all records from a table
 const getAllRecords2 = (tableName, res) => {
   const query = `
-    SELECT n.*, u.*
+    SELECT 
+    n.*, 
+    u.userID,
+    u.username,
+    u.fullName,
+    u.dob,
+    u.phone,
+    u.email,
+    u.CCCD,
+    u.address,
+    u.haveTask,
+    u.gender
     FROM ${tableName} n
     JOIN User u ON n.userID = u.userID;
   `;
