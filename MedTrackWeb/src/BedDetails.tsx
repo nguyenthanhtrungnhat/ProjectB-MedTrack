@@ -151,6 +151,14 @@ export default function BedDetails() {
                             <div className="row">
                                 <div className="col-12">
                                     <div className="dropdown">
+                                         <button
+                                                type="button"
+                                                className={`btn btn-primary ${showMore ? 'active' : ''}`}
+                                                data-bs-toggle="button"
+                                                onClick={() => setShowMore(!showMore)}
+                                            >
+                                                {showMore ? 'Hide' : 'Show more'}
+                                            </button>
                                         <button
                                             className="btn border btn-secondary dropdown-toggle"
                                             type="button"
@@ -161,6 +169,7 @@ export default function BedDetails() {
                                         </button>
 
                                         <ul className="dropdown-menu">
+                                           
                                             {allRecords.map((rec) => (
                                                 <li key={rec.recordID}>
                                                     <button
@@ -176,14 +185,7 @@ export default function BedDetails() {
                                         </ul>
 
                                     </div>
-                                    <button
-                                        type="button"
-                                        className={`btn btn-primary ${showMore ? 'active' : ''}`}
-                                        data-bs-toggle="button"
-                                        onClick={() => setShowMore(!showMore)}
-                                    >
-                                        {showMore ? 'Hide' : 'Show'}
-                                    </button>
+
                                 </div>
                             </div>
                             <div className="row">

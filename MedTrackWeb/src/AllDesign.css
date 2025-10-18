@@ -72,10 +72,10 @@
 .scBlue {
     color: #002677;
 }
-
+.blueText{color: #002677;}
 /* .blueText, .scBlue { color: #2290B0; } */
 .greenText {
-    color: green;
+    color: darkgreen;
 }
 
 .dlcgray,
