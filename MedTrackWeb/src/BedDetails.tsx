@@ -249,7 +249,7 @@ export default function BedDetails() {
                                                         <p className="blueText">Sensorium</p>
                                                         <div className="d-flex align-items-center">
                                                             <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
-                                                            <h4 className="blueText mb-0 paddingLeft20">{record?.urine}</h4>
+                                                            <h4 className="blueText mb-0 paddingLeft20">{record?.sensorium}</h4>
                                                             <span className="blueText"> L/min</span>
                                                         </div>
                                                     </div>
@@ -260,7 +260,7 @@ export default function BedDetails() {
 
                                 </div>
                                 <div className="col-2 d-flex justify-content-center align-items-center">
-                                    {record?.healthStatus === '1' ? (
+                                    {record?.healthStatus == 1 ? (
                                         <img src={patientImg} className='patientImg' alt="Good Health" />
                                     ) : (
                                         <img src={notgoodpatientImg} className='patientImg' alt="Not Good Health" />
@@ -326,7 +326,7 @@ export default function BedDetails() {
                                                         <p className="blueText">Oxygen therapy</p>
                                                         <div className="d-flex align-items-center">
                                                             <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
-                                                            <h4 className="blueText mb-0 paddingLeft20">{record?.urine}</h4>
+                                                            <h4 className="blueText mb-0 paddingLeft20">{record?.oxygenTherapy}</h4>
                                                             <span className="blueText"> L/min</span>
                                                         </div>
                                                     </div>
