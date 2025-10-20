@@ -379,7 +379,7 @@ export default function DailyCheckingForm() {
                   {touched.currentCondition && errors.currentCondition && <div className="invalid-feedback">{errors.currentCondition}</div>}
                 </div>
               </div>
-              <button type="submit" className="btn btn-success">Submit and continue</button>
+              <button type="submit" className="btn btn-success mt-2">Submit and continue</button>
             </form>
           </div>
         </div>
