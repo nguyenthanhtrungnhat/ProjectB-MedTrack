@@ -19,7 +19,7 @@ const getUserRoleFromToken = () => {
 
 export default function Header() {
     const [roleID, setRoleID] = useState<number | null>(null);
-
+    const token = sessionStorage.getItem("token");
     useEffect(() => {
         const role = getUserRoleFromToken();
         setRoleID(role);
@@ -32,7 +32,7 @@ export default function Header() {
                 <div className="container-fluid">
                     <img src={logo} className="logo" alt="MedTrack Logo" />
                     <Link className="navbar-brand" to={"#"}>
-                        <h4 className="whiteText">MedTrack</h4>
+                        <h4 className="whiteText m-0">MedTrack</h4>
                     </Link>
                     <button className="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon "></span>
@@ -40,16 +40,16 @@ export default function Header() {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         {roleID === 1 ? ( // Doctor
                             <>
-                                <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                                <ul className="navbar-nav me-auto mb-lg-0">
                                     <li className="nav-item">
                                         <Link className="nav-link active" to={"doctor"}>
-                                            <h5 className="whiteText hasHomeIcon">Home</h5>
+                                            <h5 className="whiteText hasHomeIcon m-0">Home</h5>
                                             <span className="sr-only">(current)</span>
                                         </Link>
                                     </li>
                                     <li className="nav-item">
                                         <Link className="nav-link whiteText" to={"/doctor/doctor-profile"}>
-                                            <h5 className="whiteText hasProfileIcon">Profile</h5>
+                                            <h5 className="whiteText hasProfileIcon m-0">Profile</h5>
                                         </Link>
                                     </li>
 
@@ -60,36 +60,34 @@ export default function Header() {
                             </>
                         ) : roleID === 2 ? ( // Nurse
                             <>
-                                <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                                <ul className="navbar-nav me-auto mb-lg-0">
                                     <li className="nav-item">
-                                        <Link className="nav-link active" to={"/home"}>
-                                            <h5 className="whiteText hasHomeIcon">Home</h5>
+                                        <Link className="nav-link active" to={"doctor"}>
+                                            <h5 className="whiteText hasHomeIcon m-0">Home</h5>
                                             <span className="sr-only">(current)</span>
                                         </Link>
                                     </li>
                                     <li className="nav-item">
                                         <Link className="nav-link whiteText" to={"/home/nurse-profile"}>
-                                            <h5 className="whiteText hasProfileIcon">Profile</h5>
+                                            <h5 className="whiteText hasProfileIcon m-0">Profile</h5>
                                         </Link>
                                     </li>
-
                                 </ul>
                                 <form className="d-flex" role="search">
                                     <PatientSearch />
-                                    {/* <button className="btn btn-outline-success" type="submit">Search</button> */}
                                 </form>
                             </>
                         ) : roleID === 3 ? ( // Patient
-                            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                            <ul className="navbar-nav me-auto mb-lg-0">
                                 <li className="nav-item">
                                     <Link className="nav-link active" to={"/patient"}>
-                                        <h5 className="whiteText hasHomeIcon">Home</h5>
+                                        <h5 className="whiteText hasHomeIcon m-0">Home</h5>
                                         <span className="sr-only">(current)</span>
                                     </Link>
                                 </li>
                                 <li className="nav-item">
                                     <Link className="nav-link whiteText" to={"/patient/patient-profile"}>
-                                        <h5 className="whiteText hasProfileIcon">Profile</h5>
+                                        <h5 className="whiteText hasProfileIcon m-0">Profile</h5>
                                     </Link>
                                 </li>
 
@@ -105,6 +103,21 @@ export default function Header() {
                                 </li> */}
                             </ul>
                         ) : null}
+                        {!token && (
+                            <ul className="navbar-nav me-auto mb-lg-0">
+                                <li className="nav-item">
+                                    <Link className="nav-link active" to={"/patient"}>
+                                        <h5 className="whiteText hasHomeIcon m-0">Home</h5>
+                                        <span className="sr-only">(current)</span>
+                                    </Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className="nav-link whiteText" to={"/login"}>
+                                        <h5 className="whiteText hasProfileIcon m-0">Login</h5>
+                                    </Link>
+                                </li>
+                            </ul>
+                        )}
                     </div>
                 </div>
 

@@ -54,7 +54,7 @@ export default function BedDetails() {
 
     return (
         <div>
-            <div className="container-fluid mainBg main-content ">
+            <div className="container-fluid mainBg pt-5 mt-4">
                 <div className="row mainBg">
                     <div className="col-9">
                         <div className="row align-items-stretch">
@@ -65,7 +65,7 @@ export default function BedDetails() {
                                         <PatientInformation
                                             image={user.image}
                                             fullName={user.fullName}
-                                            gender={user.gender === 1 ? 'Male' : 'Female'}
+                                            gender={user.gender == "1" ? 'Male' : 'Female'}
                                             dob={user.dob?.split('T')[0]}
                                             phone={user.phone}
                                             patientID={user.patientID}

@@ -1,14 +1,12 @@
 import banner1 from './images/banner1.jpg';
 import banner2 from './images/banner2.jpg';
 import banner3 from './images/banner3.jpg';
-import avtRandom from './images/male-avatar-maker-2a7919.png';
+import prom1 from './images/Asset-1.png';
 
 export default function HomePage() {
     return (
         <>
-            <div className="container-fluid main-content h-100 padding mt-5 pt-4">
-                <h1 className="blueText padding">Healthcare</h1>
-
+            <div className="container-fluid pt-5 p-0 h-100 padding mt-5">
                 <div id="carouselExampleCaptions" className="carousel slide" data-bs-ride="carousel">
                     <div className="carousel-indicators">
                         <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
@@ -36,55 +34,103 @@ export default function HomePage() {
                     </button>
                 </div>
             </div>
+            <div className="container-fluid papdding mt-5">
+                <div className="row me-5 ms-5" >
+                    <div className="col-12">
+                        <h2 className="blueText">EASY STEPS FOR YOUR CARE</h2>
+                        <hr />
 
-            <div className="container main-content mt-4">
-                <div className="row">
-                    <div className="col-12 padding">
-                        <p className="color505F63">
-                            Our international, high-quality healthcare facilities and services, such as Example International Hospital and Example General Hospital serve the healthcare and wellness needs of the communities in our industrial parks and townships.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div className="container-fluid main-content padding mt-4">
-                <div className="row">
-                    <div className="col-md-5 mb-3">
-                        <div className="card">
-                            <div className="row g-0">
-                                <div className="col-md-4">
-                                    <img style={{ maxWidth: "100%" }} src={avtRandom} loading="lazy" alt="Avatar" />
-                                </div>
-                                <div className="col-md-8">
+                        <div className="row">
+                            <div className="col-3">
+                                <div className="card hover-shadow" >
+                                    <img src={prom1} className="img72" alt="..." />
                                     <div className="card-body">
-                                        <h5 className="card-title">Card title</h5>
-                                        <p className="card-text">
-                                            This is a wider card with supporting text below as a natural lead-in to additional content.
-                                        </p>
+                                        <p className="card-text">Healcare</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-3">
+                                <div className="card hover-shadow" >
+                                    <img src={prom1} className="img72" alt="..." />
+                                    <div className="card-body">
+                                        <p className="card-text">Make an Appointment</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-3 ">
+                                <div className="card hover-shadow" >
+                                    <img src={prom1} className="img72" alt="..." />
+                                    <div className="card-body">
+                                        <p className="card-text">Healthcare</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-3">
+                                <div className="card hover-shadow" >
+                                    <img src={prom1} className="img72" alt="..." />
+                                    <div className="card-body">
+                                        <p className="card-text">Ask Us A Question</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
 
-                    <div className="col-md-7">
-                        <div className="row">
-                            {[banner1, banner2, banner3].map((img, index) => (
-                                <div className="col-12 col-md-4 mb-3" key={index}>
-                                    <div className="card h-100">
-                                        <img src={img} className="card-img-top" alt={`Banner ${index + 1}`} loading="lazy" />
+            <div className="container-fluid padding mt-5">
+                <div className="row me-5 ms-5">
+                    <div className="col-12">
+                        <h2 className="blueText">TODAY'S TOP STORIES</h2>
+                        <hr />
+                    </div>
+                    <div className="col-lg-12 mb-4">
+                        <a href="#" className="text-decoration-none text-dark">
+                            <div className="card hover-shadow">
+                                <div className="row g-0">
+                                    <div className="col-md-4">
+                                        <img
+                                            style={{ maxWidth: "100%" }}
+                                            src='https://tse3.mm.bing.net/th/id/OIP.mPgnNcMG0Wr3pR_h3gJKbwHaE2?cb=12&rs=1&pid=ImgDetMain&o=7&rm=3' loading="lazy"
+                                            alt="Avatar"
+                                        />
+                                    </div>
+                                    <div className="col-md-8">
                                         <div className="card-body">
+                                            <h3 className="card-title">Card title</h3>
                                             <p className="card-text">
-                                                Some quick example text to build on the card title and make up the bulk of the card's content.
+                                                Our international, high-quality healthcare facilities and services, such as Example International Hospital and Example General Hospital serve the healthcare and wellness needs of the communities in our industrial parks and townships.
                                             </p>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div className="col-lg-12">
+                        <div className="row">
+                            {[banner1, banner2, banner3].map((img, index) => (
+                                <div className="col-lg-4 col-sm-6 mb-3" key={index}>
+                                    <a href="#" className="text-decoration-none text-dark">
+                                        <div className="card h-100 hover-shadow">
+                                            <img src={img} className="card-img-top" alt={`Banner ${index + 1}`} loading="lazy" />
+                                            <div className="card-body">
+                                                <p className="card-text">
+                                                    Some quick example text to build on the card title and make up the bulk of the card's content.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
                                 </div>
                             ))}
                         </div>
                     </div>
                 </div>
+
             </div>
+
+
             <footer className="text-center text-lg-start bg-body-tertiary text-muted mt-5">
                 <section className="d-flex justify-content-center justify-content-lg-between p-4 border-bottom ">
                     <div className="me-5 d-none d-lg-block">

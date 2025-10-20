@@ -38,10 +38,21 @@ const ProtectedRoute = () => {
   return <Outlet />; // Render the requested page if authenticated
 };
 const router = createBrowserRouter([
+  // {
+  //   path: "/",
+  //   children: [{ index: true, element: <LoginScreen /> }],
+  //   // children: [{ index: true, element: <Schedule /> }],
+  // },
   {
     path: "/",
-    children: [{ index: true, element: <LoginScreen /> }],
-    // children: [{ index: true, element: <Schedule /> }],
+    children: [{
+      path: "/",
+      element: <Layout />, // Wrap children with layout
+      children: [
+        { index: true, element: <HomePage /> },
+        { path: "login", element: <LoginScreen /> },
+      ],
+    },],
   },
   {
     path: "/home",
@@ -55,7 +66,7 @@ const router = createBrowserRouter([
           { path: "bed-details/:patientID", element: <BedDetails /> },
           { path: "shift-change", element: <ShiftChange /> },
           { path: "daily-checking", element: <DailyCheckingForm /> },
-           { path: "schedule", element: <Schedule /> },
+          { path: "schedule", element: <Schedule /> },
         ]
       },
     ],

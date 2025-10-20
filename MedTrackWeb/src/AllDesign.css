@@ -72,7 +72,11 @@
 .scBlue {
     color: #002677;
 }
-.blueText{color: #002677;}
+
+.blueText {
+    color: #002677;
+}
+
 /* .blueText, .scBlue { color: #2290B0; } */
 .greenText {
     color: darkgreen;
@@ -239,8 +243,8 @@
 }
 
 .logo {
-    height: 50px;
-    width: 50px;
+    height: 40px;
+    width: 40px;
 }
 
 .h-98 {
@@ -424,4 +428,20 @@
 .square170-250 {
     height: 170px;
     width: 250px;
+}
+
+.img72 {
+    height: 72px;
+    width: 72px;
+}
+
+/* home page hover  */
+/* CardHover.css */
+.hover-shadow {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.hover-shadow:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }

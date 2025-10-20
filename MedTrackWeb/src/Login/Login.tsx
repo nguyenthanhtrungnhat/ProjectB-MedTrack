@@ -52,7 +52,7 @@ export default function LoginScreen() {
     };
 
     return (
-        <section className="d-flex flex-column min-vh-100">
+        <section className="d-flex flex-column min-vh-100 pt-5">
             <ToastContainer /> {/* Add this to show notifications */}
             <div className="container-fluid h-custom">
                 <div className="row d-flex justify-content-center align-items-center h-100 mt-5">

@@ -15,8 +15,8 @@ export interface RoomProps {
 export interface PatientProps {
     image?: string;
     fullName: string;
-    gender: number;
-    dob: Date;
+    gender: string;
+    dob: string;
     phone: number;
     patientID: number; // Changed from 'id' to 'patientID' for consistency
     address: string;
@@ -25,17 +25,17 @@ export interface PatientProps {
     summaryCondition?: string;
     dischargeDiagnosis?: string;
     BHYT?: string;
-    admissionDate?: Date | null;
+    admissionDate?: string | null;
     relativeName?: string;
     relativeNumber?: number;
-    dischargeDate?: Date | null;
+    dischargeDate?: string | null;
     CCCD?: number;
     username?: string;
 }
 
 export interface RecordProps {
     recordID: string,
-    timeCreate: Date,
+    timeCreate: string,
     heartRate: number,
     pulse: number,
     height: number,
