@@ -62,7 +62,7 @@ export default function Header() {
                             <>
                                 <ul className="navbar-nav me-auto mb-lg-0">
                                     <li className="nav-item">
-                                        <Link className="nav-link active" to={"doctor"}>
+                                        <Link className="nav-link active" to={"/"}>
                                             <h5 className="whiteText hasHomeIcon m-0">Home</h5>
                                             <span className="sr-only">(current)</span>
                                         </Link>
