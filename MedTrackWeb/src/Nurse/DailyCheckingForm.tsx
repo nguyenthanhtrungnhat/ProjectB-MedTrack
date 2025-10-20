@@ -130,7 +130,9 @@ export default function DailyCheckingForm() {
         healthStatus: 1,
         respiratoryRate: parseFloat(formData.respiratoryRate),
         bloodPressure: formData.bloodPressure,
-        urine: parseFloat(formData.urine)
+        urine: parseFloat(formData.urine),
+        oxygenTherapy: parseInt(formData.oxygenTherapy),
+        sensorium: parseInt(formData.sensorium),
       }, { headers: { Authorization: `Bearer ${token}` } });
 
       toast.success("Dữ liệu đã gửi thành công!");
