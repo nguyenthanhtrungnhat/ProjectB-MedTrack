@@ -77,6 +77,17 @@
     color: #002677;
 }
 
+.headd1 {
+    color: #002677;
+    font-family: 'UHC Serif Semibold', Georgia Bold, serif;
+    font-size: 2.25rem;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    line-height: 1.3;
+}
+
 /* .blueText, .scBlue { color: #2290B0; } */
 .greenText {
     color: darkgreen;

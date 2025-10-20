@@ -37,7 +37,7 @@ export default function HomePage() {
             <div className="container-fluid papdding mt-5">
                 <div className="row me-5 ms-5" >
                     <div className="col-12">
-                        <h2 className="blueText">EASY STEPS FOR YOUR CARE</h2>
+                        <h2 className="headd1">EASY STEPS FOR YOUR CARE</h2>
                         <hr />
 
                         <div className="row">
@@ -81,7 +81,7 @@ export default function HomePage() {
             <div className="container-fluid padding mt-5">
                 <div className="row me-5 ms-5">
                     <div className="col-12">
-                        <h2 className="blueText">TODAY'S TOP STORIES</h2>
+                        <h2 className="headd1">TODAY'S TOP STORIES</h2>
                         <hr />
                     </div>
                     <div className="col-lg-12 mb-4">
@@ -127,12 +127,21 @@ export default function HomePage() {
                         </div>
                     </div>
                 </div>
+                <div className="d-flex justify-content-center align-items-center mt-5 mb-5">
+                    <div className="row text-center">
+                        <div className="col-lg-12">
+                            <h2 className='headd1'>Already a member?</h2>
+                            <p>Go to the member site to sign in or register for an account</p>
+                            <a href="/login">Member sign in</a>
+                        </div>
+                    </div>
+                </div>
 
             </div>
 
 
-            <footer className="text-center text-lg-start bg-body-tertiary text-muted mt-5">
-                <section className="d-flex justify-content-center justify-content-lg-between p-4 border-bottom ">
+            <footer className="text-center text-lg-start bg-body-tertiary text-muted mt-5 ">
+                <section className="d-flex justify-content-center justify-content-lg-between p-4 border-bottom whiteText blueBg">
                     <div className="me-5 d-none d-lg-block">
                         <span>Get connected with us on social networks:</span>
                     </div>
@@ -158,8 +167,8 @@ export default function HomePage() {
                     </div>
                 </section>
                 <section className="">
-                    <div className="container text-center text-md-start mt-5">
-                        <div className="row mt-3">
+                    <div className="container-fluid p-4 m-0 text-center text-md-start blueBg whiteText">
+                        <div className="row">
                             <div className="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
                                 <h6 className="text-uppercase fw-bold mb-4">
                                     <i className="fas fa-gem me-3"></i>Company name
@@ -203,7 +212,7 @@ export default function HomePage() {
                                     <a href="#!" className="text-reset">Help</a>
                                 </p>
                             </div>
-                            <div className="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                            <div className="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4 ">
                                 <h6 className="text-uppercase fw-bold mb-4">Contact</h6>
                                 <p><i className="fas fa-home me-3"></i> New York, NY 10012, US</p>
                                 <p>
@@ -217,7 +226,7 @@ export default function HomePage() {
                     </div>
                 </section>
                 <hr className="m-0" />
-                <div className="text-center p-4">
+                <div className="text-center p-4 blueBg whiteText">
                     © 2021 Copyright:{" "}
                     <a className="text-reset fw-bold" href="https://mdbootstrap.com/">
                         MDBootstrap.com
