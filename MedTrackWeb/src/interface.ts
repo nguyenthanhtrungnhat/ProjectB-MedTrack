@@ -50,7 +50,9 @@ export interface RecordProps {
     urine: number,
     doctorID: string,
     patientID: string,
-    nurseID: string
+    nurseID: string,
+    oxygenTherapy: number,
+    sensorium: number
 }
 export interface SidebarInfoProps {
     phone?: string;
