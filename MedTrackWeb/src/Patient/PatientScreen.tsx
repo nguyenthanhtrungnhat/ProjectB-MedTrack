@@ -79,20 +79,22 @@ export default function PatientScreen() {
                 <div className="col-9">
                     <div className="row">
                         <div className="col-6">
-                            <PatientInformation
-                                image={patient.image || ""}
-                                fullName={patient.fullName || "N/A"}
-                                gender={patient.gender === 1 ? 'Male' : 'Female'}
-                                dob={patient.dob?.split('T')[0] || ""}
-                                phone={patient.phone || ""}
-                                patientID={patient.patientID}
-                                address={patient.address || "Unknown"}
-                                email={patient.email || ""}
-                                BHYT={patient.BHYT || ""}
-                                admissionDate={patient.admissionDate?.split('T')[0] || ""}
-                                relativeName={patient.relativeName || ""}
-                                relativeNumber={patient.relativeNumber || 0}
-                            />
+                            <div className="border whiteBg marginBottom dropShadow p-3">
+                                <PatientInformation
+                                    image={patient.image || ""}
+                                    fullName={patient.fullName || "N/A"}
+                                    gender={patient.gender === 1 ? 'Male' : 'Female'}
+                                    dob={patient.dob?.split('T')[0] || ""}
+                                    phone={patient.phone || ""}
+                                    patientID={patient.patientID}
+                                    address={patient.address || "Unknown"}
+                                    email={patient.email || ""}
+                                    BHYT={patient.BHYT || ""}
+                                    admissionDate={patient.admissionDate?.split('T')[0] || ""}
+                                    relativeName={patient.relativeName || ""}
+                                    relativeNumber={patient.relativeNumber || 0}
+                                />
+                            </div>
                         </div>
                         <div className="col-6 noPl ">
                             <div className="hasSchedule padding border whiteBg marginBottom dropShadow">
@@ -166,16 +168,16 @@ export default function PatientScreen() {
                                                     ))}
                                                 </ul>
                                             </div>
-                                             <button
-                                            type="button"
-                                            className={`btn btn-primary ${showMore ? 'active' : ''}`}
-                                            data-bs-toggle="button"
-                                            onClick={() => setShowMore(!showMore)}
-                                        >
-                                            {showMore ? 'Hide' : 'Show'}
-                                        </button>
+                                            <button
+                                                type="button"
+                                                className={`btn btn-primary ${showMore ? 'active' : ''}`}
+                                                data-bs-toggle="button"
+                                                onClick={() => setShowMore(!showMore)}
+                                            >
+                                                {showMore ? 'Hide' : 'Show'}
+                                            </button>
                                         </div>
-                                       
+
                                     </div>
                                     <div className="container">
                                         <div className="row">

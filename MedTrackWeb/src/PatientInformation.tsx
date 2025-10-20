@@ -29,7 +29,7 @@ export default function PatientInformation({
 }: PatientProps) {
   return (
     <div className="row">
-      <div className="col-8">
+      <div className="col-8 ">
         <h5 className="blueText mb-3">Patient Information</h5>
         <InfoRow label="Full name" value={fullName} />
         <InfoRow label="Date of birth" value={dob} />
