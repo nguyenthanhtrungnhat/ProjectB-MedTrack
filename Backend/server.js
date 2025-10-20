@@ -15,7 +15,9 @@ const db = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
+  database: process.env.DB_NAME,
+  dateStrings: true,
+  timezone: "+07:00", // VN time
 });
 
 // Connect to the database
@@ -540,7 +542,8 @@ app.get('/api/patientByUserID/:userID', (req, res) => {
     res.json(results);
   });
 });
-// Route to get schedules for a specific nurse by nurseID
+
+//get schedule of nurse
 app.get('/api/schedules/:nurseID', (req, res) => {
   const nurseID = req.params.nurseID;
 
@@ -551,6 +554,7 @@ app.get('/api/schedules/:nurseID', (req, res) => {
         s.date,
         s.start_at,
         s.working_hours,
+        s.color,
         r.roomID,
         r.location AS room_location
     FROM schedules s
@@ -565,20 +569,11 @@ app.get('/api/schedules/:nurseID', (req, res) => {
       return res.status(500).json({ error: 'Internal Server Error' });
     }
 
-    // Map keys if needed (optional)
-    const mappedResults = results.map(row => ({
-      scheduleID: row.scheduleID,
-      subject: row.subject,
-      date: row.date,
-      start_at: row.start_at,
-      working_hours: row.working_hours,
-      roomID: row.roomID,
-      room_location: row.room_location
-    }));
-
-    res.json(mappedResults);
+    // Directly send results from DB
+    res.json(results);
   });
 });
+
 
 // Start the server
 const PORT = 3000;

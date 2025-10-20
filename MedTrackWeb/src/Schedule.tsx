@@ -1,195 +1,160 @@
 import React, { useState, useEffect } from "react";
+import { Calendar, dateFnsLocalizer, Event } from "react-big-calendar";
+import { format, parse, startOfWeek, getDay } from "date-fns";
+import { enUS } from "date-fns/locale";
 import axios from "axios";
-import "./schedule.css";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import { Modal, Button } from "react-bootstrap";
 
-type ScheduleItem = {
-  scheduleID: number;
+const locales = { "en-US": enUS };
+const localizer = dateFnsLocalizer({ format, parse, startOfWeek, getDay, locales });
+
+interface ScheduleEvent extends Event {
+  id: number;
   subject: string;
-  date: string;
-  start_at: string;
-  working_hours: number;
-  roomID: number;
-  room_location: string;
-};
-
-// Robust type guard to verify schedule data shape
-const isScheduleArray = (data: any): data is ScheduleItem[] => {
-  if (!Array.isArray(data)) return false;
-  for (const item of data) {
-    if (typeof item !== "object" || item === null) return false;
-    if (typeof item.scheduleID !== "number") return false;
-    if (typeof item.subject !== "string") return false;
-    if (typeof item.date !== "string") return false;
-    if (typeof item.start_at !== "string") return false;
-    if (typeof item.working_hours !== "number") return false;
-    if (typeof item.roomID !== "number") return false;
-    if (typeof item.room_location !== "string") return false;
-  }
-  return true;
-};
+  room: string;
+  nurseID: string | null;
+  color?: string;
+}
 
 export default function Schedule() {
   const nurseID = sessionStorage.getItem("nurseID");
-  const [schedules, setSchedules] = useState<ScheduleItem[]>([]);
+  const [events, setEvents] = useState<ScheduleEvent[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [selectedEvent, setSelectedEvent] = useState<ScheduleEvent | null>(null);
+  const [currentDate, setCurrentDate] = useState(new Date());
 
-  const days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-
-  const timeSlots = [
-    "07:30",
-    "08:30",
-    "09:30",
-    "10:30",
-    "12:30",
-    "13:30",
-    "14:30",
-    "15:30",
-    "17:30",
-  ];
-
-  const getWeekStart = (date: Date) => {
-    const copy = new Date(date);
-    copy.setHours(0, 0, 0, 0);
-    const day = copy.getDay(); // Sunday = 0
-    const diff = (day === 0 ? -6 : 1) - day; // Make Monday first day
-    copy.setDate(copy.getDate() + diff);
-    return copy;
+  // Parse DB date + start_at into Date object
+  const parseEventDate = (dateStr: string, timeStr: string) => {
+    return new Date(`${dateStr}T${timeStr}`);
   };
 
-  const [weekStart, setWeekStart] = useState(getWeekStart(new Date()));
-
-  // Fetch schedules
-  const fetchSchedules = () => {
+  const fetchSchedules = async () => {
     if (!nurseID) {
       setError("No nurse ID found in sessionStorage");
       return;
     }
 
-    axios
-      .get(`http://localhost:3000/api/schedules/${nurseID}`)
-      .then((res) => {
-        const data = res.data;
-        if (isScheduleArray(data)) {
-          setSchedules(data);
-          setError(null);
+    try {
+      const res = await axios.get(`http://localhost:3000/api/schedules/${nurseID}`);
+      const data = res.data;
+
+      const mapped: ScheduleEvent[] = data.flatMap((item: any) => {
+        const start = parseEventDate(item.date, item.start_at);
+        const end = new Date(start.getTime() + item.working_hours * 60 * 60 * 1000);
+
+        // Event crosses midnight
+        if (start.getDate() !== end.getDate()) {
+          const endOfDay = new Date(start);
+          endOfDay.setHours(23, 59, 59);
+
+          const startOfNextDay = new Date(end);
+          startOfNextDay.setHours(0, 0, 0);
+
+          return [
+            {
+              id: item.scheduleID,
+              title: item.subject,
+              subject: item.subject,
+              room: item.room_location,
+              nurseID,
+              color: item.color || "lightblue",
+              start,
+              end: endOfDay,
+            },
+            {
+              id: item.scheduleID,
+              title: item.subject,
+              subject: item.subject,
+              room: item.room_location,
+              nurseID,
+              color: item.color || "lightblue",
+              start: startOfNextDay,
+              end,
+            },
+          ];
         } else {
-          setSchedules([]);
-          setError("Invalid schedule data received from server");
-          console.warn("API response is not valid ScheduleItem[]:", data);
+          return [
+            {
+              id: item.scheduleID,
+              title: item.subject,
+              subject: item.subject,
+              room: item.room_location,
+              nurseID,
+              color: item.color || "lightblue",
+              start,
+              end,
+            },
+          ];
         }
-      })
-      .catch((err) => {
-        setError(err.message || "Failed to load schedules");
-        setSchedules([]);
       });
+
+      setEvents(mapped);
+      setError(null);
+    } catch (err: any) {
+      setError(err.message || "Failed to load schedules");
+      setEvents([]);
+    }
   };
 
   useEffect(() => {
     fetchSchedules();
   }, [nurseID]);
 
-  const formatDate = (date: Date) => date.toISOString().split("T")[0];
+  const handleSelectEvent = (event: ScheduleEvent) => setSelectedEvent(event);
+  const handleCloseModal = () => setSelectedEvent(null);
 
-  const filteredSchedules = schedules.filter((s) => {
-    const schedDate = new Date(s.date);
-    const start = new Date(weekStart);
-    const end = new Date(weekStart);
-    end.setDate(end.getDate() + 6);
-    return schedDate >= start && schedDate <= end;
+  const eventStyleGetter = (event: ScheduleEvent) => ({
+    style: {
+      backgroundColor: event.color || "lightblue",
+      color: "white",
+      borderRadius: "4px",
+      border: "none",
+      padding: "2px",
+    },
   });
-
-  const goPrevWeek = () => {
-    const newStart = new Date(weekStart);
-    newStart.setDate(newStart.getDate() - 7);
-    setWeekStart(newStart);
-  };
-
-  const goNextWeek = () => {
-    const newStart = new Date(weekStart);
-    newStart.setDate(newStart.getDate() + 7);
-    setWeekStart(newStart);
-  };
-
-  const goCurrentWeek = () => setWeekStart(getWeekStart(new Date()));
-
-  const getDateOfWeekday = (weekdayIndex: number) => {
-    const date = new Date(weekStart);
-    date.setDate(weekStart.getDate() + weekdayIndex);
-    return formatDate(date);
-  };
-
-  const findSchedule = (date: string, time: string) =>
-    filteredSchedules.find(
-      (s) => formatDate(new Date(s.date)) === date && s.start_at.startsWith(time)
-    );
 
   return (
     <div className="p-3 main-content">
-      <div className="mb-3 d-flex gap-2">
-        <button onClick={goPrevWeek} className="btn btn-outline-primary btn-sm">
-          Previous Week
-        </button>
-        <button onClick={goNextWeek} className="btn btn-outline-primary btn-sm">
-          Next Week
-        </button>
-        <button onClick={goCurrentWeek} className="btn btn-outline-success btn-sm">
-          This Week
-        </button>
-        <div className="ms-3 mt-1">
-          <strong>Week:</strong>{" "}
-          {formatDate(weekStart)} -{" "}
-          {formatDate(new Date(weekStart.getTime() + 6 * 86400000))}
-        </div>
-      </div>
+      {error && <div className="text-danger mb-3">{error}</div>}
 
-      {error && <div className="text-danger mb-3">Error: {error}</div>}
+      <Calendar
+        localizer={localizer}
+        events={events}
+        startAccessor="start"
+        endAccessor="end"
+        titleAccessor={(event: ScheduleEvent) => `${event.subject} - ${event.room}`}
+        onSelectEvent={handleSelectEvent}
+        defaultView="week"
+        views={["day", "week", "month"]}
+        step={30}
+        timeslots={2}
+        style={{ height: "80vh" }}
+        eventPropGetter={eventStyleGetter}
+        date={currentDate}
+        onNavigate={setCurrentDate}
+        toolbar={true}
+      />
 
-      <table className="table table-bordered text-center align-middle">
-        <thead className="table-light">
-          <tr>
-            <th>Time / Day</th>
-            {days.map((day, i) => (
-              <th key={i}>
-                {day} <br />
-                <small>{getDateOfWeekday(i)}</small>
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {timeSlots.map((slot, rowIdx) => (
-            <tr key={rowIdx}>
-              <td>{slot}</td>
-              {days.map((_, colIdx) => {
-                const date = getDateOfWeekday(colIdx);
-                const sched = findSchedule(date, slot);
-                const cellStyle = sched ? { backgroundColor: "lightblue" } : undefined;
-                return (
-                  <td key={colIdx} style={cellStyle}>
-                    {sched ? (
-                      <div>
-                        <strong>{sched.subject}</strong>
-                        <br />
-                        {sched.room_location}
-                        <br />
-                        Room {sched.roomID}
-                      </div>
-                    ) : null}
-                  </td>
-                );
-              })}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <Modal show={!!selectedEvent} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Task Detail</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedEvent && (
+            <div>
+              <p><strong>Subject:</strong> {selectedEvent.subject}</p>
+              <p><strong>Room:</strong> {selectedEvent.room}</p>
+              <p><strong>Start:</strong> {selectedEvent.start?.toLocaleString()}</p>
+              <p><strong>End:</strong> {selectedEvent.end?.toLocaleString()}</p>
+              <p><strong>Color:</strong> {selectedEvent.color}</p>
+            </div>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>Close</Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }
