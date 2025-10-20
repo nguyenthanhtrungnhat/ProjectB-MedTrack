@@ -12,7 +12,7 @@ type ScheduleItem = {
   room_location: string;
 };
 
-// Robust type guard
+// Type guard
 const isScheduleArray = (data: any): data is ScheduleItem[] => {
   if (!Array.isArray(data)) return false;
   for (const item of data) {
@@ -30,7 +30,7 @@ const isScheduleArray = (data: any): data is ScheduleItem[] => {
 
 // Generate a light random color
 const getRandomColor = () => {
-  const r = Math.floor(Math.random() * 156 + 100); // 100–255
+  const r = Math.floor(Math.random() * 156 + 100);
   const g = Math.floor(Math.random() * 156 + 100);
   const b = Math.floor(Math.random() * 156 + 100);
   return `rgb(${r},${g},${b})`;
@@ -41,32 +41,14 @@ export default function Schedule() {
   const [schedules, setSchedules] = useState<ScheduleItem[]>([]);
   const [error, setError] = useState<string | null>(null);
 
-  const days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
+  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-  const timeSlots = [
-    "07:30",
-    "08:30",
-    "09:30",
-    "10:30",
-    "12:30",
-    "13:30",
-    "14:30",
-    "15:30",
-    "17:30",
-  ];
+  const timeSlots = ["07:30", "08:30", "09:30", "10:30", "12:30", "13:30", "14:30", "15:30", "17:30"];
 
   const getWeekStart = (date: Date) => {
     const copy = new Date(date);
     copy.setHours(0, 0, 0, 0);
-    const day = copy.getDay(); 
+    const day = copy.getDay();
     const diff = (day === 0 ? -6 : 1) - day;
     copy.setDate(copy.getDate() + diff);
     return copy;
@@ -133,7 +115,7 @@ export default function Schedule() {
     return formatDate(date);
   };
 
-  // Return all schedules for a given date and time
+  // Return all schedules for a date and time
   const findSchedules = (date: string, time: string) =>
     filteredSchedules.filter(
       (s) => formatDate(new Date(s.date)) === date && s.start_at.startsWith(time)
@@ -173,40 +155,48 @@ export default function Schedule() {
           </tr>
         </thead>
         <tbody>
-          {timeSlots.map((slot, rowIdx) => (
-            <tr key={rowIdx}>
-              <td>{slot}</td>
-              {days.map((_, colIdx) => {
-                const date = getDateOfWeekday(colIdx);
-                const scheds = findSchedules(date, slot);
+          {timeSlots.map((slot, rowIdx) => {
+            // Keep track of tasks that already have rowspan to skip subsequent rows
+            const renderedTasks: Record<number, boolean> = {};
 
-                return (
-                  <td
-                    key={colIdx}
-                    style={scheds.length ? { backgroundColor: "#d0f0ff", verticalAlign: "top" } : undefined}
-                  >
-                    {scheds.length > 0 ? (
-                      <div className="d-flex flex-column gap-1">
-                        {scheds.map((s) => (
-                          <div
+            return (
+              <tr key={rowIdx}>
+                <td>{slot}</td>
+                {days.map((_, colIdx) => {
+                  const date = getDateOfWeekday(colIdx);
+                  const scheds = findSchedules(date, slot);
+
+                  return (
+                    <td key={colIdx} style={{ verticalAlign: "top" }}>
+                      {scheds.map((s) => {
+                        if (renderedTasks[s.scheduleID]) return null; // skip rows already rendered
+                        renderedTasks[s.scheduleID] = true;
+
+                        return (
+                          <td
                             key={s.scheduleID}
-                            className="border p-1 rounded"
-                            style={{ backgroundColor: getRandomColor() }}
+                            rowSpan={s.working_hours}
+                            className="p-0"
                           >
-                            <strong>{s.subject}</strong>
-                            <br />
-                            {s.room_location}
-                            <br />
-                            Room {s.roomID}
-                          </div>
-                        ))}
-                      </div>
-                    ) : null}
-                  </td>
-                );
-              })}
-            </tr>
-          ))}
+                            <div
+                              className="border p-1 rounded m-1"
+                              style={{ backgroundColor: getRandomColor() }}
+                            >
+                              <strong>{s.subject}</strong>
+                              <br />
+                              {s.room_location}
+                              <br />
+                              Room {s.roomID}
+                            </div>
+                          </td>
+                        );
+                      })}
+                    </td>
+                  );
+                })}
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>
