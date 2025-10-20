@@ -40,3 +40,9 @@ div.overflow-auto {
     font-size: 0.85rem;
   }
 }
+/* Stack multiple tasks nicely in a cell */
+td div.d-flex > div {
+  flex: 1 1 auto;
+  min-height: 40px;
+  color: #000; /* ensure text is readable on light backgrounds */
+}
