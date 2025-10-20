@@ -12,7 +12,7 @@ type ScheduleItem = {
   room_location: string;
 };
 
-// Type guard
+// Robust type guard to verify schedule data shape
 const isScheduleArray = (data: any): data is ScheduleItem[] => {
   if (!Array.isArray(data)) return false;
   for (const item of data) {
@@ -28,34 +28,49 @@ const isScheduleArray = (data: any): data is ScheduleItem[] => {
   return true;
 };
 
-// Generate a light random color
-const getRandomColor = () => {
-  const r = Math.floor(Math.random() * 156 + 100);
-  const g = Math.floor(Math.random() * 156 + 100);
-  const b = Math.floor(Math.random() * 156 + 100);
-  return `rgb(${r},${g},${b})`;
-};
-
 export default function Schedule() {
   const nurseID = sessionStorage.getItem("nurseID");
   const [schedules, setSchedules] = useState<ScheduleItem[]>([]);
   const [error, setError] = useState<string | null>(null);
 
-  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
 
-  const timeSlots = ["07:30", "08:30", "09:30", "10:30", "12:30", "13:30", "14:30", "15:30", "17:30"];
+  ];
+
+  const timeSlots = [
+    "07:30",
+    "08:30",
+    "09:30",
+    "10:30",
+    "12:30",
+    "13:30",
+    "14:30",
+    "15:30",
+    "17:30",
+  ];
 
   const getWeekStart = (date: Date) => {
     const copy = new Date(date);
     copy.setHours(0, 0, 0, 0);
-    const day = copy.getDay();
-    const diff = (day === 0 ? -6 : 1) - day;
+
+    // Make Monday the first day of the week
+    const day = copy.getDay(); // Sunday = 0, Monday = 1, ...
+    const diff = (day === 0 ? -6 : 1) - day; // shift back to Monday
     copy.setDate(copy.getDate() + diff);
+
     return copy;
   };
 
   const [weekStart, setWeekStart] = useState(getWeekStart(new Date()));
 
+  // Fetch schedules from API and validate response
   const fetchSchedules = () => {
     if (!nurseID) {
       setError("No nurse ID found in sessionStorage");
@@ -87,14 +102,17 @@ export default function Schedule() {
 
   const formatDate = (date: Date) => date.toISOString().split("T")[0];
 
+  // Filter schedules within the current week
   const filteredSchedules = schedules.filter((s) => {
     const schedDate = new Date(s.date);
     const start = new Date(weekStart);
     const end = new Date(weekStart);
     end.setDate(end.getDate() + 6);
+    // Normalize to dates only
     return schedDate >= start && schedDate <= end;
   });
 
+  // Navigation handlers
   const goPrevWeek = () => {
     const newStart = new Date(weekStart);
     newStart.setDate(weekStart.getDate() - 7);
@@ -103,22 +121,24 @@ export default function Schedule() {
 
   const goNextWeek = () => {
     const newStart = new Date(weekStart);
-    newStart.setDate(newStart.getDate() + 7);
+    newStart.setDate(weekStart.getDate() + 7);
     setWeekStart(newStart);
   };
 
   const goCurrentWeek = () => setWeekStart(getWeekStart(new Date()));
 
+  // Get date string of week day for headers and lookup
   const getDateOfWeekday = (weekdayIndex: number) => {
     const date = new Date(weekStart);
     date.setDate(weekStart.getDate() + weekdayIndex);
     return formatDate(date);
   };
 
-  // Return all schedules for a date and time
-  const findSchedules = (date: string, time: string) =>
-    filteredSchedules.filter(
-      (s) => formatDate(new Date(s.date)) === date && s.start_at.startsWith(time)
+  // Find a schedule matching a date and time slot
+  const findSchedule = (date: string, time: string) =>
+    filteredSchedules.find(
+      (s) =>
+        formatDate(new Date(s.date)) === date && s.start_at.startsWith(time)
     );
 
   return (
@@ -155,48 +175,33 @@ export default function Schedule() {
           </tr>
         </thead>
         <tbody>
-          {timeSlots.map((slot, rowIdx) => {
-            // Keep track of tasks that already have rowspan to skip subsequent rows
-            const renderedTasks: Record<number, boolean> = {};
+          {timeSlots.map((slot, rowIdx) => (
+            <tr key={rowIdx}>
+              <td>{slot}</td>
+              {days.map((_, colIdx) => {
+                const date = getDateOfWeekday(colIdx);
+                const sched = findSchedule(date, slot);
+                // Add a class or style to highlight
+                const cellStyle = sched
+                  ? { backgroundColor: "lightblue" } // Light green background for tasks
+                  : undefined;
 
-            return (
-              <tr key={rowIdx}>
-                <td>{slot}</td>
-                {days.map((_, colIdx) => {
-                  const date = getDateOfWeekday(colIdx);
-                  const scheds = findSchedules(date, slot);
-
-                  return (
-                    <td key={colIdx} style={{ verticalAlign: "top" }}>
-                      {scheds.map((s) => {
-                        if (renderedTasks[s.scheduleID]) return null; // skip rows already rendered
-                        renderedTasks[s.scheduleID] = true;
-
-                        return (
-                          <td
-                            key={s.scheduleID}
-                            rowSpan={s.working_hours}
-                            className="p-0"
-                          >
-                            <div
-                              className="border p-1 rounded m-1"
-                              style={{ backgroundColor: getRandomColor() }}
-                            >
-                              <strong>{s.subject}</strong>
-                              <br />
-                              {s.room_location}
-                              <br />
-                              Room {s.roomID}
-                            </div>
-                          </td>
-                        );
-                      })}
-                    </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
+                return (
+                  <td key={colIdx} style={cellStyle}>
+                    {sched ? (
+                      <div>
+                        <strong>{sched.subject}</strong>
+                        <br />
+                        {sched.room_location}
+                        <br />
+                        Room {sched.roomID}
+                      </div>
+                    ) : null}
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
