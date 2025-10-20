@@ -12,7 +12,7 @@ type ScheduleItem = {
   room_location: string;
 };
 
-// Robust type guard to verify schedule data shape
+// Robust type guard
 const isScheduleArray = (data: any): data is ScheduleItem[] => {
   if (!Array.isArray(data)) return false;
   for (const item of data) {
@@ -28,6 +28,14 @@ const isScheduleArray = (data: any): data is ScheduleItem[] => {
   return true;
 };
 
+// Generate a light random color
+const getRandomColor = () => {
+  const r = Math.floor(Math.random() * 156 + 100); // 100–255
+  const g = Math.floor(Math.random() * 156 + 100);
+  const b = Math.floor(Math.random() * 156 + 100);
+  return `rgb(${r},${g},${b})`;
+};
+
 export default function Schedule() {
   const nurseID = sessionStorage.getItem("nurseID");
   const [schedules, setSchedules] = useState<ScheduleItem[]>([]);
@@ -41,7 +49,6 @@ export default function Schedule() {
     "Thursday",
     "Friday",
     "Saturday",
-
   ];
 
   const timeSlots = [
@@ -59,18 +66,14 @@ export default function Schedule() {
   const getWeekStart = (date: Date) => {
     const copy = new Date(date);
     copy.setHours(0, 0, 0, 0);
-
-    // Make Monday the first day of the week
-    const day = copy.getDay(); // Sunday = 0, Monday = 1, ...
-    const diff = (day === 0 ? -6 : 1) - day; // shift back to Monday
+    const day = copy.getDay(); 
+    const diff = (day === 0 ? -6 : 1) - day;
     copy.setDate(copy.getDate() + diff);
-
     return copy;
   };
 
   const [weekStart, setWeekStart] = useState(getWeekStart(new Date()));
 
-  // Fetch schedules from API and validate response
   const fetchSchedules = () => {
     if (!nurseID) {
       setError("No nurse ID found in sessionStorage");
@@ -102,17 +105,14 @@ export default function Schedule() {
 
   const formatDate = (date: Date) => date.toISOString().split("T")[0];
 
-  // Filter schedules within the current week
   const filteredSchedules = schedules.filter((s) => {
     const schedDate = new Date(s.date);
     const start = new Date(weekStart);
     const end = new Date(weekStart);
     end.setDate(end.getDate() + 6);
-    // Normalize to dates only
     return schedDate >= start && schedDate <= end;
   });
 
-  // Navigation handlers
   const goPrevWeek = () => {
     const newStart = new Date(weekStart);
     newStart.setDate(weekStart.getDate() - 7);
@@ -121,24 +121,22 @@ export default function Schedule() {
 
   const goNextWeek = () => {
     const newStart = new Date(weekStart);
-    newStart.setDate(weekStart.getDate() + 7);
+    newStart.setDate(newStart.getDate() + 7);
     setWeekStart(newStart);
   };
 
   const goCurrentWeek = () => setWeekStart(getWeekStart(new Date()));
 
-  // Get date string of week day for headers and lookup
   const getDateOfWeekday = (weekdayIndex: number) => {
     const date = new Date(weekStart);
     date.setDate(weekStart.getDate() + weekdayIndex);
     return formatDate(date);
   };
 
-  // Find a schedule matching a date and time slot
-  const findSchedule = (date: string, time: string) =>
-    filteredSchedules.find(
-      (s) =>
-        formatDate(new Date(s.date)) === date && s.start_at.startsWith(time)
+  // Return all schedules for a given date and time
+  const findSchedules = (date: string, time: string) =>
+    filteredSchedules.filter(
+      (s) => formatDate(new Date(s.date)) === date && s.start_at.startsWith(time)
     );
 
   return (
@@ -180,21 +178,28 @@ export default function Schedule() {
               <td>{slot}</td>
               {days.map((_, colIdx) => {
                 const date = getDateOfWeekday(colIdx);
-                const sched = findSchedule(date, slot);
-                // Add a class or style to highlight
-                const cellStyle = sched
-                  ? { backgroundColor: "lightblue" } // Light green background for tasks
-                  : undefined;
+                const scheds = findSchedules(date, slot);
 
                 return (
-                  <td key={colIdx} style={cellStyle}>
-                    {sched ? (
-                      <div>
-                        <strong>{sched.subject}</strong>
-                        <br />
-                        {sched.room_location}
-                        <br />
-                        Room {sched.roomID}
+                  <td
+                    key={colIdx}
+                    style={scheds.length ? { backgroundColor: "#d0f0ff", verticalAlign: "top" } : undefined}
+                  >
+                    {scheds.length > 0 ? (
+                      <div className="d-flex flex-column gap-1">
+                        {scheds.map((s) => (
+                          <div
+                            key={s.scheduleID}
+                            className="border p-1 rounded"
+                            style={{ backgroundColor: getRandomColor() }}
+                          >
+                            <strong>{s.subject}</strong>
+                            <br />
+                            {s.room_location}
+                            <br />
+                            Room {s.roomID}
+                          </div>
+                        ))}
                       </div>
                     ) : null}
                   </td>
