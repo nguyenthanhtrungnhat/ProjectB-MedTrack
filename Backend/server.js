@@ -371,6 +371,8 @@ app.post("/post-medical-records", verifyToken, (req, res) => {
     respiratoryRate,
     bloodPressure,
     urine,
+    oxygenTherapy,
+    sensorium
   } = req.body;
 
   const userID = req.user.userID; // ✅ From token
@@ -378,8 +380,8 @@ app.post("/post-medical-records", verifyToken, (req, res) => {
 
   const sql = `
       INSERT INTO MedicalRecords 
-      (patientID, heartRate, pulse, height, weight, hurtScale, temperature, currentCondition, SP02, healthStatus, respiratoryRate, bloodPressure, urine) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      (patientID, heartRate, pulse, height, weight, hurtScale, temperature, currentCondition, SP02, healthStatus, respiratoryRate, bloodPressure, urine, oxygenTherapy, sensorium) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
   db.query(
@@ -398,6 +400,8 @@ app.post("/post-medical-records", verifyToken, (req, res) => {
       respiratoryRate,
       bloodPressure,
       urine,
+      oxygenTherapy,
+      sensorium
     ],
     (err, result) => {
       if (err) {
