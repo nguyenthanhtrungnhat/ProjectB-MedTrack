@@ -19,7 +19,7 @@ export default function NurseInformation({
                         <InfoRow label="Full name" value={fullName} />
                         <InfoRow label="Date of birth" value={dob} />
                         <InfoRow label="Gender" value={gender} />
-                        <InfoRow label="Phone number" value={phone} />
+                        <InfoRow label="Phone" value={phone} />
                         <InfoRow label="ID card" value={nurseID} />
                         <InfoRow label="Email" value={email} />
                         <InfoRow label="Address" value={address} />

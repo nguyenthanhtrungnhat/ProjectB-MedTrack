@@ -11,11 +11,11 @@ interface Patient {
   email: string;
   image: string;
 }
+
 const token = sessionStorage.getItem("token");
 
 export default function DailyCheckingForm() {
   const nurseID = sessionStorage.getItem("nurseID");
-  console.log("NurseID", nurseID);
 
   const [formData, setFormData] = useState<FormData>({
     patientID: "",
@@ -34,84 +34,106 @@ export default function DailyCheckingForm() {
     currentCondition: ""
   });
 
-  // For live search patients
   const [patients, setPatients] = useState<Patient[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredPatients, setFilteredPatients] = useState<Patient[]>([]);
   const [showResults, setShowResults] = useState(false);
 
+  const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
   useEffect(() => {
-    // Fetch patients data once on mount
     axios.get<Patient[]>("http://localhost:3000/patients")
       .then(res => setPatients(res.data))
-      .catch(err => {
-        console.error("Error fetching patients:", err);
-        toast.error("Failed to load patients data");
-      });
+      .catch(err => toast.error("Failed to load patients data"));
   }, []);
 
-  // Handle live search input change separately
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchTerm(value);
 
-    if (value.trim() === "") {
+    if (!value.trim()) {
       setFilteredPatients([]);
       setShowResults(false);
-      // clear patientID in form if user cleared search
       setFormData(prev => ({ ...prev, patientID: "" }));
       return;
     }
 
-    // Filter patients by fullName case-insensitive
     const filtered = patients.filter(p =>
       p.fullName.toLowerCase().includes(value.toLowerCase())
     );
-
     setFilteredPatients(filtered);
     setShowResults(true);
   };
 
-  // When user clicks a patient from the dropdown list
   const handleSelectPatient = (patient: Patient) => {
     setFormData(prev => ({ ...prev, patientID: patient.patientID.toString() }));
-    setSearchTerm(patient.fullName); // show full name in input
+    setSearchTerm(patient.fullName);
     setShowResults(false);
   };
 
+  // Validation rules for each field
+  const validateField = (name: string, value: string): string => {
+    const num = parseFloat(value);
+    switch (name) {
+      case "pulse": return (isNaN(num) || num < 30 || num > 220) ? "Pulse must be 30–220 bpm." : "";
+      case "spo2": return (isNaN(num) || num < 70 || num > 100) ? "SpO₂ must be 70–100%." : "";
+      case "temperature": return (isNaN(num) || num < 25 || num > 45) ? "Temperature must be 25–45°C." : "";
+      case "oxygenTherapy": return (isNaN(num) || num < 0 || num > 60) ? "Oxygen therapy must be 0–60 L/min." : "";
+      case "bloodPressure":
+        if (!value) return "";
+        const [sys, dia] = value.split("/").map(Number);
+        return (isNaN(sys) || isNaN(dia) || sys < 30 || sys > 250 || dia < 20 || dia > 150)
+          ? "Blood pressure must be SYS/DIA 30/20–250/150 mmHg." : "";
+      case "height": return (isNaN(num) || num < 30 || num > 250) ? "Height must be 30–250 cm." : "";
+      case "weight": return (isNaN(num) || num < 1 || num > 500) ? "Weight must be 1–500 kg." : "";
+      case "sensorium": return (isNaN(num) || num < 1 || num > 15) ? "Sensorium must be 1–15." : "";
+      case "respiratoryRate": return (isNaN(num) || num < 5 || num > 60) ? "Respiratory rate must be 5–60/min." : "";
+      case "urine": return (isNaN(num) || num < 0 || num > 5000) ? "Urine output must be 0–5000 ml/h." : "";
+      case "heartRate": return (isNaN(num) || num < 30 || num > 220) ? "Heart rate must be 30–220 bpm." : "";
+      case "hurtScale": return (isNaN(num) || num < 0 || num > 10) ? "Pain scale must be 0–10." : "";
+      default: return "";
+    }
+  };
+
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    setTouched(prev => ({ ...prev, [name]: true }));
+    setErrors(prev => ({ ...prev, [name]: validateField(name, value) }));
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
+    // Validate all fields before submit
+    const newErrors: { [key: string]: string } = {};
+    Object.keys(formData).forEach(key => {
+      newErrors[key] = validateField(key, (formData as any)[key]);
+    });
+    setErrors(newErrors);
+
+    // Stop submit if any error exists
+    if (Object.values(newErrors).some(err => err)) return;
+
     try {
       await axios.post("http://localhost:3000/post-medical-records", {
         patientID: parseInt(formData.patientID),
-        heartRate: parseInt(formData.heartRate),
-        pulse: parseInt(formData.pulse),
-        height: parseInt(formData.height),
-        weight: formData.weight,
-        hurtScale: parseInt(formData.hurtScale),
-        temperature: formData.temperature,
+        heartRate: parseFloat(formData.heartRate),
+        pulse: parseFloat(formData.pulse),
+        height: parseFloat(formData.height),
+        weight: parseFloat(formData.weight),
+        hurtScale: parseFloat(formData.hurtScale),
+        temperature: parseFloat(formData.temperature),
         currentCondition: formData.currentCondition,
-        SP02: formData.spo2,
+        SP02: parseFloat(formData.spo2),
         healthStatus: 1,
-        respiratoryRate: parseInt(formData.respiratoryRate),
+        respiratoryRate: parseFloat(formData.respiratoryRate),
         bloodPressure: formData.bloodPressure,
-        urine: formData.urine
-      },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        urine: parseFloat(formData.urine)
+      }, { headers: { Authorization: `Bearer ${token}` } });
 
-      toast.success("Dữ liệu đã gửi thành công!", { position: "top-right" });
+      toast.success("Dữ liệu đã gửi thành công!");
       setFormData({
         patientID: "",
         pulse: "",
@@ -129,9 +151,10 @@ export default function DailyCheckingForm() {
         currentCondition: ""
       });
       setSearchTerm("");
-    } catch (error) {
-      console.error("Lỗi khi gửi dữ liệu:", error);
-      toast.error("Gửi dữ liệu thất bại!", { position: "top-right" });
+      setTouched({});
+      setErrors({});
+    } catch (err) {
+      toast.error("Gửi dữ liệu thất bại!");
     }
   };
 
@@ -142,44 +165,28 @@ export default function DailyCheckingForm() {
       <div className="mainBg h1359 main-content padding">
         <div className="d-flex justify-content-center align-items-center">
           <div className="tracking-sheet" style={{ position: "relative" }}>
-            <h1 className="">
-              Life function tracking sheet <i className="fa fa-file-text" aria-hidden="true"></i>
-            </h1>
+            <h1>Life function tracking sheet <i className="fa fa-file-text" /></h1>
             <span className="dlcgray">Update patient diagnostic indicators</span>
             <div className="mb80"></div>
             <form onSubmit={handleSubmit}>
               <div className="row mb-3 position-relative">
                 <div className="col">
-                  <label htmlFor="patientSearch" className="form-label">Choose patient</label>
+                  <label>Choose patient</label>
                   <input
-                    id="patientSearch"
                     name="patientSearch"
                     value={searchTerm}
                     onChange={handleSearchChange}
                     className="form-control"
                     type="text"
                     placeholder="Search patients by name..."
-                    autoComplete="off"
-                    required
                   />
                   {showResults && filteredPatients.length > 0 && (
-                    <ul
-                      className="list-group position-absolute w-100"
-                      style={{ zIndex: 1000, maxHeight: "200px", overflowY: "auto" }}
-                    >
+                    <ul className="list-group position-absolute w-100" style={{ zIndex: 1000, maxHeight: "200px", overflowY: "auto" }}>
                       {filteredPatients.map(patient => (
-                        <li
-                          key={patient.patientID}
-                          className="list-group-item list-group-item-action d-flex align-items-center"
+                        <li key={patient.patientID} className="list-group-item list-group-item-action d-flex align-items-center"
                           style={{ cursor: "pointer" }}
-                          onClick={() => handleSelectPatient(patient)}
-                        >
-                          <img
-                            src={patient.image}
-                            alt={patient.fullName}
-                            className="rounded-circle me-2"
-                            style={{ width: "40px", height: "40px", objectFit: "cover" }}
-                          />
+                          onClick={() => handleSelectPatient(patient)}>
+                          <img src={patient.image} alt={patient.fullName} className="rounded-circle me-2" style={{ width: "40px", height: "40px" }} />
                           <div>
                             <div><strong>{patient.fullName}</strong></div>
                             <small className="text-muted">{patient.email}</small>
@@ -191,88 +198,188 @@ export default function DailyCheckingForm() {
                 </div>
               </div>
 
-              {/* Hidden field to store actual patientID */}
               <input type="hidden" name="patientID" value={formData.patientID} />
 
-              {/* Rest of your form inputs unchanged */}
+              {/* Example for one row, repeat pattern for all fields */}
               <div className="row">
                 <div className="col">
-                  <p>Pulse</p>
-                  <input name="pulse" value={formData.pulse} onChange={handleChange} className="form-control" type="text" placeholder="L/ph" required />
+                  <label>Pulse</label>
+                  <input
+                    name="pulse"
+                    value={formData.pulse}
+                    onChange={handleChange}
+                    className={`form-control ${touched.pulse && errors.pulse ? "is-invalid" : ""}`}
+                    type="number"
+                    placeholder="L/ph"
+                  />
+                  {touched.pulse && errors.pulse && <div className="invalid-feedback">{errors.pulse}</div>}
                 </div>
                 <div className="col">
-                  <p>SpO2</p>
-                  <input name="spo2" value={formData.spo2} onChange={handleChange} className="form-control" type="text" placeholder="%" required />
+                  <label>SpO₂</label>
+                  <input
+                    name="spo2"
+                    value={formData.spo2}
+                    onChange={handleChange}
+                    className={`form-control ${touched.spo2 && errors.spo2 ? "is-invalid" : ""}`}
+                    type="number"
+                    placeholder="%"
+                  />
+                  {touched.spo2 && errors.spo2 && <div className="invalid-feedback">{errors.spo2}</div>}
                 </div>
               </div>
               <hr />
+              {/* Temperature & Oxygen therapy */}
               <div className="row">
                 <div className="col">
-                  <p>Temperature</p>
-                  <input name="temperature" value={formData.temperature} onChange={handleChange} className="form-control" type="text" placeholder="℃" required />
+                  <label>Temperature</label>
+                  <input
+                    name="temperature"
+                    value={formData.temperature}
+                    onChange={handleChange}
+                    className={`form-control ${touched.temperature && errors.temperature ? "is-invalid" : ""}`}
+                    type="number"
+                    placeholder="℃"
+                  />
+                  {touched.temperature && errors.temperature && <div className="invalid-feedback">{errors.temperature}</div>}
                 </div>
+
                 <div className="col">
-                  <p>Oxygen therapy</p>
-                  <input name="oxygenTherapy" value={formData.oxygenTherapy} onChange={handleChange} className="form-control" type="text" placeholder="L/min" required />
+                  <label>Oxygen therapy</label>
+                  <input
+                    name="oxygenTherapy"
+                    value={formData.oxygenTherapy}
+                    onChange={handleChange}
+                    className={`form-control ${touched.oxygenTherapy && errors.oxygenTherapy ? "is-invalid" : ""}`}
+                    type="number"
+                    placeholder="L/min"
+                  />
+                  {touched.oxygenTherapy && errors.oxygenTherapy && <div className="invalid-feedback">{errors.oxygenTherapy}</div>}
                 </div>
               </div>
               <hr />
+              {/* Blood pressure & Height */}
               <div className="row">
                 <div className="col">
-                  <p>Blood pressure</p>
-                  <input name="bloodPressure" value={formData.bloodPressure} onChange={handleChange} className="form-control" type="text" placeholder="mmHg" required />
+                  <label>Blood pressure</label>
+                  <input
+                    name="bloodPressure"
+                    value={formData.bloodPressure}
+                    onChange={handleChange}
+                    className={`form-control ${touched.bloodPressure && errors.bloodPressure ? "is-invalid" : ""}`}
+                    placeholder="SYS/DIA"
+                  />
+                  {touched.bloodPressure && errors.bloodPressure && <div className="invalid-feedback">{errors.bloodPressure}</div>}
                 </div>
                 <div className="col">
-                  <p>Height</p>
-                  <input name="height" value={formData.height} onChange={handleChange} className="form-control" type="text" placeholder="cm" required />
+                  <label>Height</label>
+                  <input
+                    name="height"
+                    value={formData.height}
+                    onChange={handleChange}
+                    className={`form-control ${touched.height && errors.height ? "is-invalid" : ""}`}
+                    type="number"
+                    placeholder="cm"
+                  />
+                  {touched.height && errors.height && <div className="invalid-feedback">{errors.height}</div>}
                 </div>
               </div>
               <hr />
+              {/* Weight & Sensorium */}
               <div className="row">
                 <div className="col">
-                  <p>Weight</p>
-                  <input name="weight" value={formData.weight} onChange={handleChange} className="form-control" type="text" placeholder="Kg" required />
+                  <label>Weight</label>
+                  <input
+                    name="weight"
+                    value={formData.weight}
+                    onChange={handleChange}
+                    className={`form-control ${touched.weight && errors.weight ? "is-invalid" : ""}`}
+                    type="number"
+                    placeholder="Kg"
+                  />
+                  {touched.weight && errors.weight && <div className="invalid-feedback">{errors.weight}</div>}
                 </div>
                 <div className="col">
-                  <p>Sensorium</p>
-                  <input name="sensorium" value={formData.sensorium} onChange={handleChange} className="form-control" required />
+                  <label>Sensorium</label>
+                  <input
+                    name="sensorium"
+                    value={formData.sensorium}
+                    onChange={handleChange}
+                    className={`form-control ${touched.sensorium && errors.sensorium ? "is-invalid" : ""}`}
+                    type="number"
+                  />
+                  {touched.sensorium && errors.sensorium && <div className="invalid-feedback">{errors.sensorium}</div>}
                 </div>
               </div>
               <hr />
+              {/* Respiratory rate & Urine */}
               <div className="row">
                 <div className="col">
-                  <p>Respiratory rate</p>
-                  <input name="respiratoryRate" value={formData.respiratoryRate} onChange={handleChange} className="form-control" type="text" placeholder="Times/min" required />
+                  <label>Respiratory rate</label>
+                  <input
+                    name="respiratoryRate"
+                    value={formData.respiratoryRate}
+                    onChange={handleChange}
+                    className={`form-control ${touched.respiratoryRate && errors.respiratoryRate ? "is-invalid" : ""}`}
+                    type="number"
+                    placeholder="Times/min"
+                  />
+                  {touched.respiratoryRate && errors.respiratoryRate && <div className="invalid-feedback">{errors.respiratoryRate}</div>}
                 </div>
                 <div className="col">
-                  <p>Urine</p>
-                  <input name="urine" value={formData.urine} onChange={handleChange} className="form-control" type="text" placeholder="ml/h" required />
+                  <label>Urine</label>
+                  <input
+                    name="urine"
+                    value={formData.urine}
+                    onChange={handleChange}
+                    className={`form-control ${touched.urine && errors.urine ? "is-invalid" : ""}`}
+                    type="number"
+                    placeholder="ml/h"
+                  />
+                  {touched.urine && errors.urine && <div className="invalid-feedback">{errors.urine}</div>}
                 </div>
               </div>
               <hr />
+              {/* Heart rate & Pain scale */}
               <div className="row">
                 <div className="col">
-                  <p>Heart rate</p>
-                  <input name="heartRate" value={formData.heartRate} onChange={handleChange} className="form-control" type="text" placeholder="bpm" required />
+                  <label>Heart rate</label>
+                  <input
+                    name="heartRate"
+                    value={formData.heartRate}
+                    onChange={handleChange}
+                    className={`form-control ${touched.heartRate && errors.heartRate ? "is-invalid" : ""}`}
+                    type="number"
+                    placeholder="bpm"
+                  />
+                  {touched.heartRate && errors.heartRate && <div className="invalid-feedback">{errors.heartRate}</div>}
                 </div>
                 <div className="col">
-                  <p>Pain scale</p>
-                  <input name="hurtScale" value={formData.hurtScale} onChange={handleChange} className="form-control" required />
+                  <label>Pain scale</label>
+                  <input
+                    name="hurtScale"
+                    value={formData.hurtScale}
+                    onChange={handleChange}
+                    className={`form-control ${touched.hurtScale && errors.hurtScale ? "is-invalid" : ""}`}
+                    type="number"
+                  />
+                  {touched.hurtScale && errors.hurtScale && <div className="invalid-feedback">{errors.hurtScale}</div>}
                 </div>
               </div>
               <hr />
-              <div className="row marginBottom">
-                <div className="col">
-                  <p>Current condition</p>
-                  <textarea name="currentCondition" value={formData.currentCondition} onChange={handleChange} className="form-control"></textarea>
-                </div>
-              </div>
-              <hr />
+              {/* Current condition (textarea) */}
               <div className="row">
-                <div className="col padding">
-                  <button className="btn btn-success" type="submit">Submit and continue</button>
+                <div className="col">
+                  <label>Current condition</label>
+                  <textarea
+                    name="currentCondition"
+                    value={formData.currentCondition}
+                    onChange={handleChange}
+                    className={`form-control ${touched.currentCondition && errors.currentCondition ? "is-invalid" : ""}`}
+                  />
+                  {touched.currentCondition && errors.currentCondition && <div className="invalid-feedback">{errors.currentCondition}</div>}
                 </div>
               </div>
+              <button type="submit" className="btn btn-success">Submit and continue</button>
             </form>
           </div>
         </div>

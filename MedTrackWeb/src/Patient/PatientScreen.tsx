@@ -14,9 +14,6 @@ import tempImg from './../images/nhietdo.png';
 import bpImg from './../images/bloodPressure.png';
 import ntImg from './../images/nhiptho.png';
 
-// Optional: Use environment variable for API base
-// const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:3000";
-
 const getUserIDFromToken = () => {
     const token = sessionStorage.getItem("token");
     if (!token) return null;
@@ -77,13 +74,14 @@ export default function PatientScreen() {
         <div className="container-fluid mainBg main-content h-100">
             <div className="row">
                 <div className="col-9">
-                    <div className="row">
-                        <div className="col-6">
-                            <div className="border whiteBg marginBottom dropShadow p-3">
+                    <div className="row align-items-stretch mb-4">
+                         {/* Left column */}
+                        <div className="col-lg-6 col-sm-12 d-flex">
+                            <div className="w-100 d-flex flex-column border whiteBg dropShadow p-3">
                                 <PatientInformation
                                     image={patient.image || ""}
                                     fullName={patient.fullName || "N/A"}
-                                    gender={patient.gender === 1 ? 'Male' : 'Female'}
+                                    gender={patient.gender === "1" ? 'Male' : 'Female'}
                                     dob={patient.dob?.split('T')[0] || ""}
                                     phone={patient.phone || ""}
                                     patientID={patient.patientID}
@@ -96,8 +94,9 @@ export default function PatientScreen() {
                                 />
                             </div>
                         </div>
-                        <div className="col-6 noPl ">
-                            <div className="hasSchedule padding border whiteBg marginBottom dropShadow">
+
+                        <div className="col-lg-6 col-sm-12 ">
+                            <div className="hasSchedule padding border mb-3 whiteBg dropShadow">
                                 <div className="row">
                                     <div className="col-12 medicineSchedule padding50">
                                         <h5 className='blueText medSche'>Medicine schedule</h5>
@@ -109,7 +108,7 @@ export default function PatientScreen() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="hasSchedule padding border whiteBg dropShadow h-59">
+                            <div className="hasSchedule padding border whiteBg dropShadow">
                                 <div className="row">
                                     <div className="col-12 medicineScheduleDetail">
                                         <div className="row">
@@ -131,122 +130,6 @@ export default function PatientScreen() {
                                                         <i className="ml-auto p-2 bd-highlight fa fa-calendar blueText size25" />
                                                     </div>
                                                     <a href="#">More detail</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="row padding">
-                        <div className="col-12 border whiteBg dropShadow">
-                            <div className="row">
-                                <div className="col-12 padding">
-                                    <div className="row">
-                                        <div className="col-12">
-                                            <div className="dropdown">
-                                                <button
-                                                    className="btn border btn-secondary dropdown-toggle"
-                                                    type="button"
-                                                    data-bs-toggle="dropdown"
-                                                >
-                                                    Record Date
-                                                </button>
-                                                <ul className="dropdown-menu">
-                                                    {allRecords.map((rec) => (
-                                                        <li key={rec.recordID}>
-                                                            <button
-                                                                className="dropdown-item"
-                                                                type="button"
-                                                                onClick={() => handleRecordSelect(rec.recordID)}
-                                                            >
-                                                                {new Date(rec.timeCreate).toLocaleString()}
-                                                            </button>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                            <button
-                                                type="button"
-                                                className={`btn btn-primary ${showMore ? 'active' : ''}`}
-                                                data-bs-toggle="button"
-                                                onClick={() => setShowMore(!showMore)}
-                                            >
-                                                {showMore ? 'Hide' : 'Show'}
-                                            </button>
-                                        </div>
-
-                                    </div>
-                                    <div className="container">
-                                        <div className="row">
-
-                                            <div className="col-4">
-                                                <div className="row">
-                                                    <div className="col-12 padding">
-                                                        <div className="border whiteBg dropShadow padding">
-                                                            <p className="blueText">Pulse</p>
-                                                            <div className="d-flex align-items-center">
-                                                                <img src={pluseImg} className="pluseImg me-2" />
-                                                                <h4 className="blueText mb-0 paddingLeft20">{record.pulse}</h4>
-                                                                <span className='blueText'> L/ph</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-12 padding">
-                                                        <div className="border whiteBg dropShadow padding">
-                                                            <p className="blueText">Temperature</p>
-                                                            <div className="d-flex align-items-center">
-                                                                <img src={tempImg} className="tempImg me-2" />
-                                                                <h4 className="blueText mb-0 paddingLeft20">{record.temperature}</h4>
-                                                                <span className='blueText'> °C</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div className="col-4 d-flex justify-content-center align-items-center">
-                                                {record.healthStatus === '1'
-                                                    ? <img src={patientImg} className='patientImg' />
-                                                    : <img src={notgoodpatientImg} className='patientImg' />}
-                                            </div>
-
-                                            <div className="col-4">
-                                                <div className="row">
-                                                    <div className="col-12 padding">
-                                                        <div className="border whiteBg dropShadow padding">
-                                                            <p className="blueText">Respiratory Rate</p>
-                                                            <div className="d-flex align-items-center">
-                                                                <img src={ntImg} className="ntImg me-2" />
-                                                                <h4 className="blueText mb-0 paddingLeft20">{record.respiratoryRate}</h4>
-                                                                <span className='blueText'> times/min</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-12 padding">
-                                                        <div className="border whiteBg dropShadow padding">
-                                                            <p className="blueText">Blood Pressure</p>
-                                                            <div className="d-flex align-items-center">
-                                                                <img src={bpImg} className="bpImg me-2" />
-                                                                <h4 className="blueText mb-0 paddingLeft20">{record.bloodPressure}</h4>
-                                                                <span className='blueText'> mmHg</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    {showMore && (
-                                                        <div className="col-12 padding">
-                                                            <div className="border whiteBg dropShadow padding">
-                                                                <p className="blueText">Weight</p>
-                                                                <div className="d-flex align-items-center">
-                                                                    <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
-                                                                    <h4 className="blueText mb-0 paddingLeft20">{record.weight}</h4>
-                                                                    <span className="blueText"> Kg</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    )}
                                                 </div>
                                             </div>
                                         </div>
@@ -295,6 +178,316 @@ export default function PatientScreen() {
                     </div>
                 </div>
             </div>
+
+            <div className="row ">
+                <div className="col-12 padding pt-0">
+                    <div className="hasRoomList border padding whiteBg dropShadow">
+                        <div className="row">
+                            <div className="col-12">
+                                <div className="dropdown">
+                                    <button
+                                        type="button"
+                                        className={`btn btn-primary ${showMore ? 'active' : ''}`}
+                                        data-bs-toggle="button"
+                                        onClick={() => setShowMore(!showMore)}
+                                    >
+                                        {showMore ? 'Hide' : 'Show more'}
+                                    </button>
+                                    <button
+                                        className="btn border btn-secondary dropdown-toggle"
+                                        type="button"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                    >
+                                        Record Date
+                                    </button>
+
+                                    <ul className="dropdown-menu">
+
+                                        {allRecords.map((rec) => (
+                                            <li key={rec.recordID}>
+                                                <button
+                                                    className="dropdown-item"
+                                                    type="button"
+                                                    onClick={() => handleRecordSelect(rec.recordID)}
+                                                >
+                                                    {new Date(rec.timeCreate).toLocaleString()}
+
+                                                </button>
+                                            </li>
+                                        ))}
+                                    </ul>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-5">
+                                <div className="row">
+                                    <div className="col-lg-6 col-sm-12 padding">
+                                        <div className="border whiteBg dropShadow padding">
+                                            <p className="blueText">Pulse <span className="badge text-bg-success">Good</span></p>
+                                            <div className="d-flex align-items-center">
+                                                <img src={pluseImg} className="pluseImg me-2" alt="Pulse" />
+                                                <h4 className="blueText mb-0 paddingLeft20">{record?.pulse}</h4>
+                                                <span className='blueText'> L/ph</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-lg-6 col-sm-12 padding">
+                                        <div className="border whiteBg dropShadow padding">
+                                            <p className="blueText">Temperature <span className="badge text-bg-success">Success</span></p>
+                                            <div className="d-flex align-items-center">
+                                                <img src={tempImg} className="tempImg me-2" alt="Temperature" />
+                                                <h4 className="blueText mb-0 paddingLeft20">{record?.temperature}</h4>
+                                                <span className='blueText'> °C</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {showMore && (
+                                        <>
+                                            <div className="col-lg-6 col-sm-12 padding">
+                                                <div className="border whiteBg dropShadow padding">
+                                                    <p className="blueText">Height </p>
+                                                    <div className="d-flex align-items-center">
+                                                        <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
+                                                        <h4 className="blueText mb-0 paddingLeft20">{record?.height}</h4>
+                                                        <span className="blueText"> cm</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-6 col-sm-12 padding">
+                                                <div className="border whiteBg dropShadow padding">
+                                                    <p className="blueText">Heart rate </p>
+                                                    <div className="d-flex align-items-center">
+                                                        <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
+                                                        <h4 className="blueText mb-0 paddingLeft20">{record?.heartRate}</h4>
+                                                        <span className="blueText"> bpm</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-6 col-sm-12 padding">
+                                                <div className="border whiteBg dropShadow padding">
+                                                    <p className="blueText">Pain Scale</p>
+                                                    <div className="d-flex align-items-center">
+                                                        <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
+                                                        <h4 className="blueText mb-0 paddingLeft20">{record?.hurtScale}</h4>
+                                                        <span className="blueText"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="col-lg-6 col-sm-12 padding">
+                                                <div className="border whiteBg dropShadow padding">
+                                                    <p className="blueText">Sensorium</p>
+                                                    <div className="d-flex align-items-center">
+                                                        <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
+                                                        <h4 className="blueText mb-0 paddingLeft20">{record?.urine}</h4>
+                                                        <span className="blueText"> L/min</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
+
+                            </div>
+                            <div className="col-2 d-flex justify-content-center align-items-center">
+                                {record?.healthStatus === '1' ? (
+                                    <img src={patientImg} className='patientImg' alt="Good Health" />
+                                ) : (
+                                    <img src={notgoodpatientImg} className='patientImg' alt="Not Good Health" />
+                                )}
+                            </div>
+                            <div className="col-5">
+                                <div className="row">
+                                    <div className="col-lg-6 col-sm-12 padding">
+                                        <div className="border whiteBg dropShadow padding">
+                                            <p className="blueText">Respiratory Rate <span className="badge text-bg-warning">Warning</span></p>
+                                            <div className="d-flex align-items-center">
+                                                <img src={ntImg} className="ntImg me-2" alt="Respiratory Rate" />
+                                                <h4 className="blueText mb-0 paddingLeft20">{record?.respiratoryRate}</h4>
+                                                <span className='blueText'> times/min</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-lg-6 col-sm-12 padding">
+                                        <div className="border whiteBg dropShadow padding">
+                                            <p className="blueText">Blood Pressure <span className="badge text-bg-danger">Bad</span></p>
+                                            <div className="d-flex align-items-center">
+                                                <img src={bpImg} className="bpImg me-2" alt="Blood Pressure" />
+                                                <h4 className="blueText mb-0 paddingLeft20">{record?.bloodPressure}</h4>
+                                                <span className='blueText'> mmHg</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {showMore && (
+                                        <>
+                                            <div className="col-lg-6 col-sm-12 padding">
+                                                <div className="border whiteBg dropShadow padding">
+                                                    <p className="blueText">Weight</p>
+                                                    <div className="d-flex align-items-center">
+                                                        <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
+                                                        <h4 className="blueText mb-0 paddingLeft20">{record?.weight}</h4>
+                                                        <span className="blueText"> Kg</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-6 col-sm-12 padding">
+                                                <div className="border whiteBg dropShadow padding">
+                                                    <p className="blueText">SpO2</p>
+                                                    <div className="d-flex align-items-center">
+                                                        <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
+                                                        <h4 className="blueText mb-0 paddingLeft20">{record?.SP02}</h4>
+                                                        <span className="blueText"> %</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-6 col-sm-12 padding">
+                                                <div className="border whiteBg dropShadow padding">
+                                                    <p className="blueText">Urine</p>
+                                                    <div className="d-flex align-items-center">
+                                                        <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
+                                                        <h4 className="blueText mb-0 paddingLeft20">{record?.urine}</h4>
+                                                        <span className="blueText"> ml/h</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="col-lg-6 col-sm-12 padding">
+                                                <div className="border whiteBg dropShadow padding">
+                                                    <p className="blueText">Oxygen therapy</p>
+                                                    <div className="d-flex align-items-center">
+                                                        <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
+                                                        <h4 className="blueText mb-0 paddingLeft20">{record?.urine}</h4>
+                                                        <span className="blueText"> L/min</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
+{/* <div className="row padding">
+                <div className="col-12 border whiteBg dropShadow">
+                    <div className="row">
+                        <div className="col-12 padding">
+                            <div className="row">
+                                <div className="col-12">
+                                    <div className="dropdown">
+                                        <button
+                                            className="btn border btn-secondary dropdown-toggle"
+                                            type="button"
+                                            data-bs-toggle="dropdown"
+                                        >
+                                            Record Date
+                                        </button>
+                                        <ul className="dropdown-menu">
+                                            {allRecords.map((rec) => (
+                                                <li key={rec.recordID}>
+                                                    <button
+                                                        className="dropdown-item"
+                                                        type="button"
+                                                        onClick={() => handleRecordSelect(rec.recordID)}
+                                                    >
+                                                        {new Date(rec.timeCreate).toLocaleString()}
+                                                    </button>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        className={`btn btn-primary ${showMore ? 'active' : ''}`}
+                                        data-bs-toggle="button"
+                                        onClick={() => setShowMore(!showMore)}
+                                    >
+                                        {showMore ? 'Hide' : 'Show'}
+                                    </button>
+                                </div>
+
+                            </div>
+                            <div className="container">
+                                <div className="row">
+
+                                    <div className="col-4">
+                                        <div className="row">
+                                            <div className="col-12 padding">
+                                                <div className="border whiteBg dropShadow padding">
+                                                    <p className="blueText">Pulse</p>
+                                                    <div className="d-flex align-items-center">
+                                                        <img src={pluseImg} className="pluseImg me-2" />
+                                                        <h4 className="blueText mb-0 paddingLeft20">{record.pulse}</h4>
+                                                        <span className='blueText'> L/ph</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="col-12 padding">
+                                                <div className="border whiteBg dropShadow padding">
+                                                    <p className="blueText">Temperature</p>
+                                                    <div className="d-flex align-items-center">
+                                                        <img src={tempImg} className="tempImg me-2" />
+                                                        <h4 className="blueText mb-0 paddingLeft20">{record.temperature}</h4>
+                                                        <span className='blueText'> °C</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="col-4 d-flex justify-content-center align-items-center">
+                                        {record.healthStatus === '1'
+                                            ? <img src={patientImg} className='patientImg' />
+                                            : <img src={notgoodpatientImg} className='patientImg' />}
+                                    </div>
+
+                                    <div className="col-4">
+                                        <div className="row">
+                                            <div className="col-12 padding">
+                                                <div className="border whiteBg dropShadow padding">
+                                                    <p className="blueText">Respiratory Rate</p>
+                                                    <div className="d-flex align-items-center">
+                                                        <img src={ntImg} className="ntImg me-2" />
+                                                        <h4 className="blueText mb-0 paddingLeft20">{record.respiratoryRate}</h4>
+                                                        <span className='blueText'> times/min</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="col-12 padding">
+                                                <div className="border whiteBg dropShadow padding">
+                                                    <p className="blueText">Blood Pressure</p>
+                                                    <div className="d-flex align-items-center">
+                                                        <img src={bpImg} className="bpImg me-2" />
+                                                        <h4 className="blueText mb-0 paddingLeft20">{record.bloodPressure}</h4>
+                                                        <span className='blueText'> mmHg</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {showMore && (
+                                                <div className="col-12 padding">
+                                                    <div className="border whiteBg dropShadow padding">
+                                                        <p className="blueText">Weight</p>
+                                                        <div className="d-flex align-items-center">
+                                                            <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
+                                                            <h4 className="blueText mb-0 paddingLeft20">{record.weight}</h4>
+                                                            <span className="blueText"> Kg</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> */}
