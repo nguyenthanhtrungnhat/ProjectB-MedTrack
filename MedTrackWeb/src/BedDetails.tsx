@@ -64,7 +64,7 @@ export default function BedDetails() {
         <div>
             <div className="container-fluid pt-5 mt-5">
                 <div className="row ">
-                    <div className="col-9">
+                    <div className="col-lg-9">
                         <div className="row align-items-stretch">
                             {/* Left column */}
                             <div className="col-lg-6 col-sm-12 d-flex">
@@ -109,7 +109,7 @@ export default function BedDetails() {
                         </div>
 
                     </div>
-                    <div className="col-3 noPl">
+                    <div className="col-lg-3">
                         <div className="leftBody border whiteBg marginBottom dropShadow">
                             <div className="row">
                                 <div className="col-12 login ">
