@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Calendar, dateFnsLocalizer, Event } from "react-big-calendar";
+import { Calendar, dateFnsLocalizer, Event, View } from "react-big-calendar";
 import { format, parse, startOfWeek, getDay } from "date-fns";
 import { enUS } from "date-fns/locale";
 import axios from "axios";
@@ -23,11 +23,10 @@ export default function Schedule() {
   const [error, setError] = useState<string | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<ScheduleEvent | null>(null);
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [view, setView] = useState<View>("week"); // ✅ track current view
 
-  // Parse DB date + start_at into Date object
-  const parseEventDate = (dateStr: string, timeStr: string) => {
-    return new Date(`${dateStr}T${timeStr}`);
-  };
+  const parseEventDate = (dateStr: string, timeStr: string) =>
+    new Date(`${dateStr}T${timeStr}`);
 
   const fetchSchedules = async () => {
     if (!nurseID) {
@@ -43,7 +42,6 @@ export default function Schedule() {
         const start = parseEventDate(item.date, item.start_at);
         const end = new Date(start.getTime() + item.working_hours * 60 * 60 * 1000);
 
-        // Event crosses midnight
         if (start.getDate() !== end.getDate()) {
           const endOfDay = new Date(start);
           endOfDay.setHours(23, 59, 59);
@@ -125,14 +123,16 @@ export default function Schedule() {
         endAccessor="end"
         titleAccessor={(event: ScheduleEvent) => `${event.subject} - ${event.room}`}
         onSelectEvent={handleSelectEvent}
-        defaultView="week"
+        date={currentDate}
+        onNavigate={setCurrentDate}
+        view={view}                    // ✅ controlled view
+        onView={(newView) => setView(newView)} // ✅ switch view
         views={["day", "week", "month"]}
+        defaultView="week"
         step={30}
         timeslots={2}
         style={{ height: "80vh" }}
         eventPropGetter={eventStyleGetter}
-        date={currentDate}
-        onNavigate={setCurrentDate}
         toolbar={true}
       />
 
@@ -147,7 +147,7 @@ export default function Schedule() {
               <p><strong>Room:</strong> {selectedEvent.room}</p>
               <p><strong>Start:</strong> {selectedEvent.start?.toLocaleString()}</p>
               <p><strong>End:</strong> {selectedEvent.end?.toLocaleString()}</p>
-              <p><strong>Color:</strong> {selectedEvent.color}</p>
+              {/* <p><strong>Color:</strong> {selectedEvent.color}</p> */}
             </div>
           )}
         </Modal.Body>

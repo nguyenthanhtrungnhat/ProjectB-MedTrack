@@ -54,8 +54,8 @@ export default function BedDetails() {
 
     return (
         <div>
-            <div className="container-fluid mainBg pt-5 mt-4">
-                <div className="row mainBg">
+            <div className="container-fluid pt-5 mt-5">
+                <div className="row ">
                     <div className="col-9">
                         <div className="row align-items-stretch">
                             {/* Left column */}
@@ -196,11 +196,11 @@ export default function BedDetails() {
                                                 <p className="blueText">Pulse <span className="badge text-bg-success">Good</span></p>
                                                 <div className="d-flex align-items-center">
                                                     <img src={pluseImg} className="pluseImg me-2" alt="Pulse" />
-                                                    <h4 className="blueText mb-0 paddingLeft20">
+                                                    <h4 className="blueText mb-0 paddingLeft20 me-3">
                                                         {record?.pulse !== null && record?.pulse !== undefined ? (
                                                             record.pulse
                                                         ) : (
-                                                            <div className="spinner-border" role="status">
+                                                            <div className="spinner-border me-3" role="status">
                                                                 <span className="visually-hidden">Loading...</span>
                                                             </div>
                                                         )}
@@ -214,11 +214,11 @@ export default function BedDetails() {
                                                 <p className="blueText">Temperature <span className="badge text-bg-success">Success</span></p>
                                                 <div className="d-flex align-items-center">
                                                     <img src={tempImg} className="tempImg me-2" alt="Temperature" />
-                                                    <h4 className="blueText mb-0 paddingLeft20">
+                                                    <h4 className="blueText mb-0 paddingLeft20 me-3">
                                                         {record?.temperature !== null && record?.temperature !== undefined ? (
                                                             record.temperature
                                                         ) : (
-                                                            <div className="spinner-border" role="status">
+                                                            <div className="spinner-border me-3" role="status">
                                                                 <span className="visually-hidden">Loading...</span>
                                                             </div>
                                                         )}
@@ -234,11 +234,11 @@ export default function BedDetails() {
                                                         <p className="blueText">Height </p>
                                                         <div className="d-flex align-items-center">
                                                             <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
-                                                            <h4 className="blueText mb-0 paddingLeft20">
+                                                            <h4 className="blueText mb-0 paddingLeft20 me-3">
                                                                 {record?.height !== null && record?.height !== undefined ? (
                                                                     record.height
                                                                 ) : (
-                                                                    <div className="spinner-border" role="status">
+                                                                    <div className="spinner-border me-3" role="status">
                                                                         <span className="visually-hidden">Loading...</span>
                                                                     </div>
                                                                 )}
@@ -252,11 +252,11 @@ export default function BedDetails() {
                                                         <p className="blueText">Heart rate </p>
                                                         <div className="d-flex align-items-center">
                                                             <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
-                                                            <h4 className="blueText mb-0 paddingLeft20">
+                                                            <h4 className="blueText mb-0 paddingLeft20 me-3">
                                                                 {record?.heartRate !== null && record?.heartRate !== undefined ? (
                                                                     record.heartRate
                                                                 ) : (
-                                                                    <div className="spinner-border" role="status">
+                                                                    <div className="spinner-border me-3" role="status">
                                                                         <span className="visually-hidden">Loading...</span>
                                                                     </div>
                                                                 )}
@@ -270,11 +270,11 @@ export default function BedDetails() {
                                                         <p className="blueText">Pain Scale</p>
                                                         <div className="d-flex align-items-center">
                                                             <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
-                                                            <h4 className="blueText mb-0 paddingLeft20">
+                                                            <h4 className="blueText mb-0 paddingLeft20 me-3">
                                                                 {record?.hurtScale !== null && record?.hurtScale !== undefined ? (
                                                                     record.hurtScale
                                                                 ) : (
-                                                                    <div className="spinner-border" role="status">
+                                                                    <div className="spinner-border me-3" role="status">
                                                                         <span className="visually-hidden">Loading...</span>
                                                                     </div>
                                                                 )}
@@ -289,11 +289,11 @@ export default function BedDetails() {
                                                         <p className="blueText">Sensorium</p>
                                                         <div className="d-flex align-items-center">
                                                             <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
-                                                            <h4 className="blueText mb-0 paddingLeft20">
+                                                            <h4 className="blueText mb-0 paddingLeft20 me-3">
                                                                 {record?.sensorium !== null && record?.sensorium !== undefined ? (
                                                                     record.sensorium
                                                                 ) : (
-                                                                    <div className="spinner-border" role="status">
+                                                                    <div className="spinner-border me-3" role="status">
                                                                         <span className="visually-hidden">Loading...</span>
                                                                     </div>
                                                                 )}
@@ -321,11 +321,11 @@ export default function BedDetails() {
                                                 <p className="blueText">Respiratory Rate <span className="badge text-bg-warning">Warning</span></p>
                                                 <div className="d-flex align-items-center">
                                                     <img src={ntImg} className="ntImg me-2" alt="Respiratory Rate" />
-                                                    <h4 className="blueText mb-0 paddingLeft20">
+                                                    <h4 className="blueText mb-0 paddingLeft20 me-3">
                                                         {record?.respiratoryRate !== null && record?.respiratoryRate !== undefined ? (
                                                             record.respiratoryRate
                                                         ) : (
-                                                            <div className="spinner-border" role="status">
+                                                            <div className="spinner-border me-3" role="status">
                                                                 <span className="visually-hidden">Loading...</span>
                                                             </div>
                                                         )}
@@ -339,11 +339,11 @@ export default function BedDetails() {
                                                 <p className="blueText">Blood Pressure <span className="badge text-bg-danger">Bad</span></p>
                                                 <div className="d-flex align-items-center">
                                                     <img src={bpImg} className="bpImg me-2" alt="Blood Pressure" />
-                                                    <h4 className="blueText mb-0 paddingLeft20">
+                                                    <h4 className="blueText mb-0 paddingLeft20 me-3">
                                                         {record?.bloodPressure !== null && record?.bloodPressure !== undefined ? (
                                                             record.bloodPressure
                                                         ) : (
-                                                            <div className="spinner-border" role="status">
+                                                            <div className="spinner-border me-3" role="status">
                                                                 <span className="visually-hidden">Loading...</span>
                                                             </div>
                                                         )}
@@ -359,11 +359,11 @@ export default function BedDetails() {
                                                         <p className="blueText">Weight</p>
                                                         <div className="d-flex align-items-center">
                                                             <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
-                                                            <h4 className="blueText mb-0 paddingLeft20">
+                                                            <h4 className="blueText mb-0 paddingLeft20 me-3">
                                                                 {record?.weight !== null && record?.weight !== undefined ? (
                                                                     record.weight
                                                                 ) : (
-                                                                    <div className="spinner-border" role="status">
+                                                                    <div className="spinner-border me-3" role="status">
                                                                         <span className="visually-hidden">Loading...</span>
                                                                     </div>
                                                                 )}
@@ -377,11 +377,11 @@ export default function BedDetails() {
                                                         <p className="blueText">SpO2</p>
                                                         <div className="d-flex align-items-center">
                                                             <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
-                                                            <h4 className="blueText mb-0 paddingLeft20">
+                                                            <h4 className="blueText mb-0 paddingLeft20 me-3">
                                                                 {record?.SP02 !== null && record?.SP02 !== undefined ? (
                                                                     record.SP02
                                                                 ) : (
-                                                                    <div className="spinner-border" role="status">
+                                                                    <div className="spinner-border me-3" role="status">
                                                                         <span className="visually-hidden">Loading...</span>
                                                                     </div>
                                                                 )}
@@ -395,14 +395,13 @@ export default function BedDetails() {
                                                         <p className="blueText">Urine</p>
                                                         <div className="d-flex align-items-center">
                                                             <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
-                                                            <h4 className="blueText mb-0 paddingLeft20">
-                                                                {record?.urine !== null && record?.urine !== undefined ? (
-                                                                    record.urine
-                                                                ) : (
-                                                                    <div className="spinner-border" role="status">
-                                                                        <span className="visually-hidden">Loading...</span>
-                                                                    </div>
-                                                                )}
+                                                            <h4 className="blueText mb-0 paddingLeft20 me-3">                                                                {record?.urine !== null && record?.urine !== undefined ? (
+                                                                record.urine
+                                                            ) : (
+                                                                <div className="spinner-border me-3" role="status">
+                                                                    <span className="visually-hidden">Loading...</span>
+                                                                </div>
+                                                            )}
                                                             </h4>
                                                             <span className="blueText"> ml/h</span>
                                                         </div>
@@ -414,11 +413,11 @@ export default function BedDetails() {
                                                         <p className="blueText">Oxygen therapy</p>
                                                         <div className="d-flex align-items-center">
                                                             <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
-                                                            <h4 className="blueText mb-0 paddingLeft20">
+                                                            <h4 className="blueText mb-0 paddingLeft20 me-3">
                                                                 {record?.oxygenTherapy !== null && record?.oxygenTherapy !== undefined ? (
                                                                     record.oxygenTherapy
                                                                 ) : (
-                                                                    <div className="spinner-border" role="status">
+                                                                    <div className="spinner-border me-3" role="status">
                                                                         <span className="visually-hidden">Loading...</span>
                                                                     </div>
                                                                 )}

@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
 import SidebarLogin from '../SidebarLogin';
 import PatientSearch from './PatientSearch';
+import LiveToast from '../LiveToast';
 
 
 const getUserIDFromToken = () => {
@@ -90,10 +91,10 @@ export default function NurseScreen() {
 
     return (
         <div>
-            <div className="container-fluid mainBg main-content vh-100">
+            <div className="container-fluid mainBg mt-5 pt-5 vh-100">
                 <div className="row">
                     <div className="col-9">
-                        
+
                         <div className="row">
                             {user && (
                                 <NurseInformation
@@ -157,7 +158,7 @@ export default function NurseScreen() {
                                     </div>
                                 </div>
                             </div>
-                          
+
                             <div className="col-12 padding">
                                 <div className="hasRoomList border padding whiteBg dropShadow">
                                     <h2 className='blueText text-center marginBottom'>Room list</h2>
@@ -202,17 +203,7 @@ export default function NurseScreen() {
                                             </li>
                                         </ul>
                                     </div>
-                                    <h6 className='whiteText blueBg announceHead'>Latest announcements</h6>
-                                    <div className='padding20'>
-                                        {[...Array(1)].map((_, index) => (
-                                            <div key={index} className="card border-light mb-3 dropShadow">
-                                                <div className="card-body p-2 card-header">
-                                                    <p className="card-title p-0"><b>Light card title</b></p>
-                                                    <p className="card-text p-0">Description</p>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
+                                   
                                 </div>
                             </div>
                         </div>

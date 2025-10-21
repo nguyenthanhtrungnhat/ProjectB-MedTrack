@@ -22,7 +22,7 @@ export default function BedsInRoom() {
 
     return (
         <div >
-            <div className="container-fluid mainBg pt-5 vh-100">
+            <div className="container-fluid mt-5 pt-5 vh-100">
                 <div className="row">
                     <div className="col-9">
                         <div className="hasRoomList border padding whiteBg dropShadow marginBottom">
