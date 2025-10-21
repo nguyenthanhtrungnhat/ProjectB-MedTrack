@@ -52,18 +52,6 @@ export default function Header() {
                                             <h5 className="whiteText hasProfileIcon m-0">Profile</h5>
                                         </Link>
                                     </li>
-                                    {/* <li className="nav-item">
-                                        <div className="dropdown">
-                                            <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                Dropdown button
-                                            </button>
-                                            <ul className="dropdown-menu">
-                                                <li><a className="dropdown-item" href="#">Action</a></li>
-                                                <li><a className="dropdown-item" href="#">Another action</a></li>
-                                                <li><a className="dropdown-item" href="#">Something else here</a></li>
-                                            </ul>
-                                        </div>
-                                    </li> */}
                                 </ul>
                                 <form className="d-flex" role="search">
                                     <PatientSearch />
@@ -72,35 +60,6 @@ export default function Header() {
                             </>
                         ) : roleID === 2 ? ( // Nurse
                             <>
-                                {/* <ul className="navbar-nav me-auto mb-lg-0">
-                                    <li className="nav-item">
-                                        <Link className="nav-link active" to={"/"}>
-                                            <h5 className="whiteText hasHomeIcon m-0">Home</h5>
-                                            <span className="sr-only">(current)</span>
-                                        </Link>
-                                    </li>
-                                    <li className="nav-item">
-                                        <Link className="nav-link whiteText" to={"/home/nurse-profile"}>
-                                            <h5 className="whiteText hasProfileIcon m-0">Profile</h5>
-                                        </Link>
-                                    </li>
-                                    <li className="nav-item">
-                                        <div className="dropdown me-3">
-                                            <button className="btn btn-secondary dropdown-toggle  position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                Inbox
-                                                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                                    99+
-                                                    <span className="visually-hidden">unread messages</span>
-                                                </span>
-                                            </button>
-                                            <ul className="dropdown-menu">
-                                                <li><a className="dropdown-item" href="#">Action</a></li>
-                                                <li><a className="dropdown-item" href="#">Another action</a></li>
-                                                <li><a className="dropdown-item" href="#">Something else here</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                </ul> */}
                                 <ul className="navbar-nav me-auto mb-lg-0">
                                     <li className="nav-item">
                                         <Link className="nav-link active" to={"/"}>
@@ -177,17 +136,6 @@ export default function Header() {
                                         <h5 className="whiteText hasProfileIcon m-0">Profile</h5>
                                     </Link>
                                 </li>
-
-                                {/* <li className="nav-item dropdown ">
-                                    <Link className="nav-link dropdown-toggle whiteText" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Dropdown
-                                    </Link>
-                                    <ul className="dropdown-menu ">
-                                        <li><Link className="dropdown-item " to="#">Action</Link></li>
-                                        <li><Link className="dropdown-item " to="#">Another action</Link></li>
-                                        <li><Link className="dropdown-item " to="#">Something else here</Link></li>
-                                    </ul>
-                                </li> */}
                             </ul>
                         ) : null}
                         {!token && (
