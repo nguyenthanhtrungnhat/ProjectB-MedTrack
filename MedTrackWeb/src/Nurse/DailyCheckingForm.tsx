@@ -212,6 +212,7 @@ export default function DailyCheckingForm() {
                     className={`form-control ${touched.pulse && errors.pulse ? "is-invalid" : ""}`}
                     type="number"
                     placeholder="L/ph"
+                    required
                   />
                   {touched.pulse && errors.pulse && <div className="invalid-feedback">{errors.pulse}</div>}
                 </div>
@@ -224,6 +225,7 @@ export default function DailyCheckingForm() {
                     className={`form-control ${touched.spo2 && errors.spo2 ? "is-invalid" : ""}`}
                     type="number"
                     placeholder="%"
+                    required
                   />
                   {touched.spo2 && errors.spo2 && <div className="invalid-feedback">{errors.spo2}</div>}
                 </div>
@@ -240,6 +242,7 @@ export default function DailyCheckingForm() {
                     className={`form-control ${touched.temperature && errors.temperature ? "is-invalid" : ""}`}
                     type="number"
                     placeholder="℃"
+                    required
                   />
                   {touched.temperature && errors.temperature && <div className="invalid-feedback">{errors.temperature}</div>}
                 </div>
@@ -253,6 +256,7 @@ export default function DailyCheckingForm() {
                     className={`form-control ${touched.oxygenTherapy && errors.oxygenTherapy ? "is-invalid" : ""}`}
                     type="number"
                     placeholder="L/min"
+                    required
                   />
                   {touched.oxygenTherapy && errors.oxygenTherapy && <div className="invalid-feedback">{errors.oxygenTherapy}</div>}
                 </div>
@@ -268,6 +272,7 @@ export default function DailyCheckingForm() {
                     onChange={handleChange}
                     className={`form-control ${touched.bloodPressure && errors.bloodPressure ? "is-invalid" : ""}`}
                     placeholder="SYS/DIA"
+                    required
                   />
                   {touched.bloodPressure && errors.bloodPressure && <div className="invalid-feedback">{errors.bloodPressure}</div>}
                 </div>
@@ -280,6 +285,7 @@ export default function DailyCheckingForm() {
                     className={`form-control ${touched.height && errors.height ? "is-invalid" : ""}`}
                     type="number"
                     placeholder="cm"
+                    required
                   />
                   {touched.height && errors.height && <div className="invalid-feedback">{errors.height}</div>}
                 </div>
@@ -296,6 +302,7 @@ export default function DailyCheckingForm() {
                     className={`form-control ${touched.weight && errors.weight ? "is-invalid" : ""}`}
                     type="number"
                     placeholder="Kg"
+                    required
                   />
                   {touched.weight && errors.weight && <div className="invalid-feedback">{errors.weight}</div>}
                 </div>
@@ -307,6 +314,7 @@ export default function DailyCheckingForm() {
                     onChange={handleChange}
                     className={`form-control ${touched.sensorium && errors.sensorium ? "is-invalid" : ""}`}
                     type="number"
+                    required
                   />
                   {touched.sensorium && errors.sensorium && <div className="invalid-feedback">{errors.sensorium}</div>}
                 </div>
@@ -323,6 +331,7 @@ export default function DailyCheckingForm() {
                     className={`form-control ${touched.respiratoryRate && errors.respiratoryRate ? "is-invalid" : ""}`}
                     type="number"
                     placeholder="Times/min"
+                    required
                   />
                   {touched.respiratoryRate && errors.respiratoryRate && <div className="invalid-feedback">{errors.respiratoryRate}</div>}
                 </div>
@@ -335,6 +344,7 @@ export default function DailyCheckingForm() {
                     className={`form-control ${touched.urine && errors.urine ? "is-invalid" : ""}`}
                     type="number"
                     placeholder="ml/h"
+                    required
                   />
                   {touched.urine && errors.urine && <div className="invalid-feedback">{errors.urine}</div>}
                 </div>
@@ -351,6 +361,7 @@ export default function DailyCheckingForm() {
                     className={`form-control ${touched.heartRate && errors.heartRate ? "is-invalid" : ""}`}
                     type="number"
                     placeholder="bpm"
+                    required
                   />
                   {touched.heartRate && errors.heartRate && <div className="invalid-feedback">{errors.heartRate}</div>}
                 </div>
@@ -362,6 +373,7 @@ export default function DailyCheckingForm() {
                     onChange={handleChange}
                     className={`form-control ${touched.hurtScale && errors.hurtScale ? "is-invalid" : ""}`}
                     type="number"
+                    required
                   />
                   {touched.hurtScale && errors.hurtScale && <div className="invalid-feedback">{errors.hurtScale}</div>}
                 </div>
@@ -372,6 +384,7 @@ export default function DailyCheckingForm() {
                 <div className="col">
                   <label>Current condition</label>
                   <textarea
+                    required
                     name="currentCondition"
                     value={formData.currentCondition}
                     onChange={handleChange}
