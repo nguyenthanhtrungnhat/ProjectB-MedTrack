@@ -52,15 +52,27 @@ export default function Header() {
                                             <h5 className="whiteText hasProfileIcon m-0">Profile</h5>
                                         </Link>
                                     </li>
-
+                                    {/* <li className="nav-item">
+                                        <div className="dropdown">
+                                            <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Dropdown button
+                                            </button>
+                                            <ul className="dropdown-menu">
+                                                <li><a className="dropdown-item" href="#">Action</a></li>
+                                                <li><a className="dropdown-item" href="#">Another action</a></li>
+                                                <li><a className="dropdown-item" href="#">Something else here</a></li>
+                                            </ul>
+                                        </div>
+                                    </li> */}
                                 </ul>
                                 <form className="d-flex" role="search">
                                     <PatientSearch />
+
                                 </form>
                             </>
                         ) : roleID === 2 ? ( // Nurse
                             <>
-                                <ul className="navbar-nav me-auto mb-lg-0">
+                                {/* <ul className="navbar-nav me-auto mb-lg-0">
                                     <li className="nav-item">
                                         <Link className="nav-link active" to={"/"}>
                                             <h5 className="whiteText hasHomeIcon m-0">Home</h5>
@@ -72,8 +84,83 @@ export default function Header() {
                                             <h5 className="whiteText hasProfileIcon m-0">Profile</h5>
                                         </Link>
                                     </li>
+                                    <li className="nav-item">
+                                        <div className="dropdown me-3">
+                                            <button className="btn btn-secondary dropdown-toggle  position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Inbox
+                                                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                                    99+
+                                                    <span className="visually-hidden">unread messages</span>
+                                                </span>
+                                            </button>
+                                            <ul className="dropdown-menu">
+                                                <li><a className="dropdown-item" href="#">Action</a></li>
+                                                <li><a className="dropdown-item" href="#">Another action</a></li>
+                                                <li><a className="dropdown-item" href="#">Something else here</a></li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                </ul> */}
+                                <ul className="navbar-nav me-auto mb-lg-0">
+                                    <li className="nav-item">
+                                        <Link className="nav-link active" to={"/"}>
+                                            <h5 className="whiteText hasHomeIcon m-0">Home</h5>
+                                            <span className="sr-only">(current)</span>
+                                        </Link>
+                                    </li>
+
+                                    <li className="nav-item">
+                                        <Link className="nav-link whiteText" to={"/home/nurse-profile"}>
+                                            <h5 className="whiteText hasProfileIcon m-0">Profile</h5>
+                                        </Link>
+                                    </li>
+
+                                    <li className="nav-item dropdown">
+                                        <span
+                                            className="nav-link dropdown-toggle whiteText position-relative no-caret d-flex align-items-center"
+                                            role="button"
+                                            data-bs-toggle="dropdown"
+                                            data-bs-auto-close="outside"
+                                            aria-expanded="false"
+                                        >
+                                            <span className="inboxText m-0 hasInboxIcon">Inbox</span>
+                                            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                                99+
+                                                <span className="visually-hidden">unread messages</span>
+                                            </span>
+                                        </span>
+
+                                        <ul className="dropdown-menu inbox-dropdown shadow-lg">
+                                            <li><h5 className="p-3">Notifications</h5></li>
+                                            <hr className="m-2" />
+
+                                            <li>
+                                                <span className="dropdown-item tdec0">
+                                                    <div className="alert alert-success" role="alert">
+                                                        ✅ A simple success alert with{" "}
+                                                        <a href="/home" className="alert-link">
+                                                            an example link
+                                                        </a>.
+                                                    </div>
+                                                </span>
+                                            </li>
+
+                                            <li>
+                                                <span className="dropdown-item tdec0" href="#">
+                                                    <div className="alert alert-danger" role="alert">
+                                                        ⚠️ A simple danger alert with{" "}
+                                                        <a href="/home" className="alert-link">
+                                                            an example link
+                                                        </a>.
+                                                    </div>
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </li>
                                 </ul>
+
                                 <form className="d-flex" role="search">
+
                                     <PatientSearch />
                                 </form>
                             </>

@@ -88,6 +88,26 @@
     line-height: 1.3;
 }
 
+.font-20px {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.no-caret::after {
+    display: none !important;
+
+}
+
+.inboxText {
+    font-size: 1.25rem;
+    /* same as Bootstrap h5 */
+    font-weight: 500;
+    color: white;
+    margin: 0;
+    line-height: 1.2;
+    display: inline-block;
+}
+
 /* .blueText, .scBlue { color: #2290B0; } */
 .greenText {
     color: darkgreen;
@@ -174,14 +194,38 @@
 .hasProfileIcon::before,
 .loginHead::before,
 .featureHead::before,
+.hasInboxIcon::before,
 .announceHead::before {
     font-family: "FontAwesome";
     margin-right: 8px;
     color: white;
 }
 
+.hasInboxIcon::before {
+    content: "\f0f3";
+    /* envelope */
+}
+
 .hasHomeIcon::before {
     content: "\f015";
+}
+
+/* Drop Down */
+.tdec0,
+.tdec0:focus,
+.tdec0:hover,
+.tdec0:active {
+    text-decoration: none !important;
+    background-color: transparent !important;
+    color: inherit !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Optional: scrollbar if too many alerts */
+.inbox-dropdown {
+    max-height: 450px;
+    overflow-y: auto;
 }
 
 /* Home */

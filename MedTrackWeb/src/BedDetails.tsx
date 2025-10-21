@@ -1,7 +1,7 @@
 import axios from 'axios';
 import './AllDesign.css';
 import PatientInformation from './PatientInformation';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { PatientProps, RecordProps } from './interface';
 import patientImg from './images/Untitled-1.png';
 import notgoodpatientImg from './images/red_body.png';
@@ -29,7 +29,10 @@ export default function BedDetails() {
                 setUser(response.data);
                 console.log("Patient Data:", response.data);
             })
-            .catch(error => console.error('Error fetching user:', error));
+            .catch(error => {
+                console.error('Error fetching user:', error);
+
+            });
 
         axios.get(recordBypatientIdUrl)
             .then(response => {
@@ -40,7 +43,12 @@ export default function BedDetails() {
                 setRecord(sorted[0]); // default to the latest record
                 console.log("Medical Records:", sorted);
             })
-            .catch(error => console.error('Error fetching records:', error));
+            .catch(error => {
+                console.error('Error fetching records:', error);
+                setRecord({ error: "Patient not found" });
+                setAllRecords([]); // optional: clear all records on error
+            });
+
     }, [patientByIdUrl, recordBypatientIdUrl]);
 
     const handleRecordSelect = (recordID: number) => {
@@ -131,15 +139,7 @@ export default function BedDetails() {
                                             </li>
                                         </ul>
                                     </div>
-                                    <h6 className='whiteText blueBg announceHead'>Latest announcements</h6>
-                                    <div className='padding20'>
-                                        <div className="card border-light mb-3 dropShadow">
-                                            <div className="card-body p-2 card-header">
-                                                <p className="card-title p-0"><b>Light card title</b></p>
-                                                <p className="card-text p-0">Description</p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -414,6 +414,7 @@ export default function BedDetails() {
                                                         <div className="d-flex align-items-center">
                                                             <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
                                                             <h4 className="blueText mb-0 paddingLeft20 me-3">
+
                                                                 {record?.oxygenTherapy !== null && record?.oxygenTherapy !== undefined ? (
                                                                     record.oxygenTherapy
                                                                 ) : (

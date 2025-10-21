@@ -14,7 +14,7 @@ export default function Bed({fullName,patientID}:PatientProps) {
                         <div className="card-body">
                             <h5 className="card-title">Bed {patientID}</h5>
                             <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                            <h6 className='blueText text-center'>Patient's name: {fullName} - id: {patientID}</h6>
+                            <h6 className='blueText text-center'>Name: {fullName} - id: {patientID}</h6>
                         </div>
                     </div>
                 </button>
