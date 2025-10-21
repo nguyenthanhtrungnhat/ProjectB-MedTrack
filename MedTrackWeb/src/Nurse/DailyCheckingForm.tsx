@@ -164,14 +164,13 @@ export default function DailyCheckingForm() {
     <>
       <ToastContainer />
       <Header />
-      <div className="mainBg h1359 main-content padding">
+      <div className="mainBg h1359 mt-5 pt-5 padding">
         <div className="d-flex justify-content-center align-items-center">
           <div className="tracking-sheet" style={{ position: "relative" }}>
             <h1>Life function tracking sheet <i className="fa fa-file-text" /></h1>
             <span className="dlcgray">Update patient diagnostic indicators</span>
-            <div className="mb80"></div>
             <form onSubmit={handleSubmit}>
-              <div className="row mb-3 position-relative">
+              <div className="row mb-3 position-relative mt-5">
                 <div className="col">
                   <label>Choose patient</label>
                   <input
