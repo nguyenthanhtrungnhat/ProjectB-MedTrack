@@ -93,7 +93,7 @@ export default function NurseScreen() {
         <div>
             <div className="container-fluid mainBg mt-5 pt-5 vh-100">
                 <div className="row">
-                    <div className="col-9">
+                    <div className="col-lg-9 order-2 order-lg-1">
 
                         <div className="row">
                             {user && (
@@ -123,7 +123,7 @@ export default function NurseScreen() {
                                 </div>
                                 <div className="hasSchedule padding border whiteBg dropShadow">
                                     <div className="row medicineScheduleDetail">
-                                        <div className="col-lg-6 col-sm-12 d-flex justify-content-center mb-2">
+                                        <div className="col-lg-6 col-sm-6 d-flex justify-content-center mb-2">
                                             <div className="border border-success square170-250 padding20 d-flex flex-column justify-content-between">
                                                 <h5 className="medSche greenText mb-3">Assigned Task</h5>
                                                 <div className="d-flex align-items-center mb-3">
@@ -139,7 +139,7 @@ export default function NurseScreen() {
                                                 </Link>
                                             </div>
                                         </div>
-                                        <div className="col-lg-6 col-sm-12 d-flex justify-content-center ">
+                                        <div className="col-lg-6 col-sm-6 d-flex justify-content-center ">
                                             <div className="border border-info square170-250 padding20 d-flex flex-column justify-content-between">
                                                 <h5 className="medSche blueText mb-3">Patient's requirements</h5>
                                                 <div className="d-flex align-items-center mb-3">
@@ -174,7 +174,7 @@ export default function NurseScreen() {
                             </div>
                         </div>
                     </div>
-                    <div className="col-3 noPl">
+                    <div className="col-lg-3 order-1 order-lg-2">
                         <div className="leftBody border whiteBg marginBottom dropShadow">
                             <div className="row">
                                 <div className="col-12 login">

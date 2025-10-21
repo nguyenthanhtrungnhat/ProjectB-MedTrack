@@ -24,7 +24,7 @@ export default function BedsInRoom() {
         <div >
             <div className="container-fluid mt-5 pt-5 vh-100">
                 <div className="row">
-                    <div className="col-9">
+                    <div className="col-lg-9 order-2 order-lg-1">
                         <div className="hasRoomList border padding whiteBg dropShadow marginBottom">
                             {patients.length == 0 ?
                                 (
@@ -48,7 +48,7 @@ export default function BedsInRoom() {
                             }
                         </div>
                     </div>
-                    <div className="col-3 noPl">
+                    <div className="col-lg-3 order-1 order-lg-2">
                         <div className="leftBody border whiteBg marginBottom dropShadow">
                             <div className="row">
                                 <div className="col-12 login ">
