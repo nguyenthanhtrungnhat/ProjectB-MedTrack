@@ -257,25 +257,32 @@ app.post("/login", (req, res) => {
       const token = jwt.sign({ userID: user.userID, roleID }, "secretkey", { expiresIn: "1h" });
       // Determine redirect path based on roleID
       let redirectPath;
+      let roleName;
+
       switch (roleID) {
         case 1:
           redirectPath = "/doctor";
+          roleName = "Doctor";
           break;
         case 2:
           redirectPath = "/home";
+          roleName = "Nurse";
           break;
         case 3:
           redirectPath = "/patient";
+          roleName = "Patient";
           break;
         case 666:
           redirectPath = "/admin";
+          roleName = "Admin";
           break;
         default:
           return res.status(403).json({ error: "Unauthorized role. Please contact support." });
       }
 
-      console.log(`User logged in successfully: ${user.email} (ID: ${user.userID}, Role: ${roleID})`);
-
+      console.log(
+        `User logged in successfully: ${user.email} (userID: ${user.userID}, Role: ${roleName} [${roleID}])`
+      );
       res.json({
         message: "Login successful",
         token,
