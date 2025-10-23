@@ -74,3 +74,13 @@ export interface FormData {
     hurtScale: string;
     currentCondition: string;
 };
+export interface Schedule{
+    subject:string;
+    working_hours:number;
+    date:string;
+    scheduleID:string;
+    start_at:string;
+    color:string;
+    roomID:string;
+    room_location:string;
+}

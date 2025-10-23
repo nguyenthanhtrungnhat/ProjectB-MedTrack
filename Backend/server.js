@@ -291,22 +291,22 @@ app.post("/login", (req, res) => {
 });
 
 // Shift change request
-app.post("/requestShiftChange", (req, res) => {
-  const { dateTime, requestContent, nurseID, requestType } = req.body;
+// app.post("/requestShiftChange", (req, res) => {
+//   const { dateTime, requestContent, nurseID, requestType } = req.body;
 
-  if (!dateTime || !requestContent || !nurseID) {
-    return res.status(400).json({ message: "All fields are required" });
-  }
+//   if (!dateTime || !requestContent || !nurseID) {
+//     return res.status(400).json({ message: "All fields are required" });
+//   }
 
-  const query = "INSERT INTO request (dateTime, requestContent, nurseID, requestType) VALUES (?, ?, ?, ?)";
-  db.query(query, [dateTime, requestContent, nurseID, requestType], (err, result) => {
-    if (err) {
-      console.error("Error:", err);
-      return res.status(500).json({ message: "Server error" });
-    }
-    res.status(201).json({ message: "Shift change request submitted successfully", requestID: result.insertId });
-  });
-});
+//   const query = "INSERT INTO request (dateTime, requestContent, nurseID, requestType) VALUES (?, ?, ?, ?)";
+//   db.query(query, [dateTime, requestContent, nurseID, requestType], (err, result) => {
+//     if (err) {
+//       console.error("Error:", err);
+//       return res.status(500).json({ message: "Server error" });
+//     }
+//     res.status(201).json({ message: "Shift change request submitted successfully", requestID: result.insertId });
+//   });
+// });
 
 // API POST để thêm dữ liệu vào bảng MedicalRecords
 // app.post("/post-medical-records", (req, res) => {
@@ -573,7 +573,95 @@ app.get('/api/schedules/:nurseID', (req, res) => {
     res.json(results);
   });
 });
+// POST: Add new schedule
+app.post('/api/schedules', (req, res) => {
+  const {
+    scheduleID,
+    subject,
+    date,
+    start_at,
+    working_hours,
+    color,
+    roomID,
+    room_location
+  } = req.body;
 
+  // Basic validation
+  if (!subject || !date || !start_at || !working_hours || !roomID) {
+    return res.status(400).json({ message: "Missing required fields" });
+  }
+
+  const sql = `
+    INSERT INTO schedules 
+    (scheduleID, name, date, start_at, working_hours, color, roomID, room_location)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+  db.query(
+    sql,
+    [scheduleID, subject, date, start_at, working_hours, color, roomID, room_location],
+    (err, result) => {
+      if (err) {
+        console.error("Error inserting schedule:", err);
+        return res.status(500).json({ message: "Database error", error: err });
+      }
+
+      res.status(201).json({
+        message: "Schedule added successfully",
+        scheduleID: result.insertId || scheduleID,
+        data: { scheduleID, subject, date, start_at, working_hours, color, roomID, room_location },
+      });
+    }
+  );
+});
+// ✅ PUT — Edit existing schedule by ID
+app.put('/api/schedules/:id', async (req, res) => {
+  try {
+    const scheduleID = req.params.id;
+    const {
+      subject,
+      date,
+      start_at,
+      working_hours,
+      color,
+      roomID,
+      room_location
+    } = req.body;
+
+    const [rows] = await db.execute(
+      'SELECT * FROM schedules WHERE scheduleID = ?',
+      [scheduleID]
+    );
+    if (rows.length === 0) {
+      return res.status(404).json({ message: 'Schedule not found' });
+    }
+
+    const sql = `
+      UPDATE schedules
+      SET subject = ?, date = ?, start_at = ?, working_hours = ?, color = ?, roomID = ?, room_location = ?
+      WHERE scheduleID = ?
+    `;
+
+    await db.execute(sql, [
+      subject,
+      date,
+      start_at,
+      working_hours,
+      color,
+      roomID,
+      room_location,
+      scheduleID
+    ]);
+
+    res.json({
+      message: '✅ Schedule updated successfully',
+      schedule: { scheduleID, ...req.body }
+    });
+  } catch (err) {
+    console.error('Error updating schedule:', err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
 
 // Start the server
 const PORT = 3000;
