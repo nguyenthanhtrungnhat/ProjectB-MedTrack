@@ -1,7 +1,7 @@
 import axios from 'axios';
 import './AllDesign.css';
 import PatientInformation from './PatientInformation';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PatientProps, RecordProps } from './interface';
 import patientImg from './images/Untitled-1.png';
 import notgoodpatientImg from './images/red_body.png';
@@ -45,7 +45,8 @@ export default function BedDetails() {
             })
             .catch(error => {
                 console.error('Error fetching records:', error);
-                setRecord({ error: "Patient not found" });
+                // setRecord({ error: "Patient not found" });
+                setRecord(null)
                 setAllRecords([]); // optional: clear all records on error
             });
 
@@ -64,7 +65,7 @@ export default function BedDetails() {
         <div>
             <div className="container-fluid pt-5 mt-5">
                 <div className="row ">
-                     <div className="col-lg-9 order-2 order-lg-1">
+                    <div className="col-lg-9 order-2 order-lg-1">
                         <div className="row align-items-stretch">
                             {/* Left column */}
                             <div className="col-lg-6 col-sm-12 d-flex">
@@ -109,7 +110,7 @@ export default function BedDetails() {
                         </div>
 
                     </div>
-                     <div className="col-lg-3 order-1 order-lg-2">
+                    <div className="col-lg-3 order-1 order-lg-2">
                         <div className="leftBody border whiteBg marginBottom dropShadow">
                             <div className="row">
                                 <div className="col-12 login ">
@@ -143,7 +144,7 @@ export default function BedDetails() {
                                             </li>
                                         </ul>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -179,7 +180,7 @@ export default function BedDetails() {
                                                     <button
                                                         className="dropdown-item"
                                                         type="button"
-                                                        onClick={() => handleRecordSelect(rec.recordID)}
+                                                        onClick={() => handleRecordSelect(Number(rec.recordID))}
                                                     >
                                                         {new Date(rec.timeCreate).toLocaleString()}
 

@@ -34,11 +34,11 @@ export default function PatientInformation({
         <InfoRow label="Full name" value={fullName} />
         <InfoRow label="Date of birth" value={dob} />
         <InfoRow label="Gender" value={gender} />
-        <InfoRow label="Phone" value={phone} />
-        <InfoRow label="ID card" value={patientID} />
+        <InfoRow label="Phone" value={`${phone}`} />
+        <InfoRow label="ID card" value={`${patientID}`} />
         <InfoRow label="Email" value={email} />
         <InfoRow label="Address" value={address} />
-        <InfoRow label="BHYT" value={BHYT} />
+        <InfoRow label="BHYT" value={BHYT??""} />
       </div>
       <div className="col-4 d-flex justify-content-center align-items-start">
         {image ? (
@@ -57,9 +57,9 @@ export default function PatientInformation({
 
       </div>
       <div className="col-12 mt-0">
-        <InfoRow label="Date of admission" value={admissionDate} />
-        <InfoRow label="Relative name" value={relativeName} />
-        <InfoRow label="Relative's phone" value={relativeNumber} />
+        <InfoRow label="Date of admission" value={admissionDate??""} />
+        <InfoRow label="Relative name" value={relativeName??""} />
+        <InfoRow label="Relative's phone" value={`${relativeNumber}`} />
       </div>
     </div>
   );
