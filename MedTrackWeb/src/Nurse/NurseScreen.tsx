@@ -201,9 +201,14 @@ export default function NurseScreen() {
                                                     <i className="fa fa-caret-right" aria-hidden="true"></i> Daily checking health
                                                 </Link>
                                             </li>
+                                            <li>
+                                                <Link to="/home/schedule" className="text-decoration-none">
+                                                    <i className="fa fa-caret-right" aria-hidden="true"></i> Schedule
+                                                </Link>
+                                            </li>
                                         </ul>
                                     </div>
-                                   
+
                                 </div>
                             </div>
                         </div>

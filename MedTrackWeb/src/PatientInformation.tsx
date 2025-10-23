@@ -41,14 +41,20 @@ export default function PatientInformation({
         <InfoRow label="BHYT" value={BHYT} />
       </div>
       <div className="col-4 d-flex justify-content-center align-items-start">
-        {image && (
+        {image ? (
           <img
             src={image}
             className="avtIMG img-fluid rounded"
             alt={`${fullName}'s avatar`}
             loading="lazy"
           />
-        )}
+        ) : (<img
+          src="https://www.kindpng.com/picc/m/421-4212275_transparent-default-avatar-png-avatar-img-png-download.png"
+          className="avtIMG img-fluid rounded"
+          alt={`${fullName}'s avatar`}
+          loading="lazy"
+        />)}
+
       </div>
       <div className="col-12 mt-0">
         <InfoRow label="Date of admission" value={admissionDate} />

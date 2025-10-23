@@ -128,13 +128,17 @@ export default function BedDetails() {
                                         <ul className='list-unstyled'>
                                             <li>
                                                 <Link to="/home/shift-change" className="text-decoration-none">
-                                                    Shift change registration
+                                                    <i className="fa fa-caret-right" aria-hidden="true"></i> Shift change registration
                                                 </Link>
                                             </li>
-
                                             <li>
                                                 <Link to="/home/daily-checking" className="text-decoration-none">
-                                                    Daily checking health
+                                                    <i className="fa fa-caret-right" aria-hidden="true"></i> Daily checking health
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link to="/home/schedule" className="text-decoration-none">
+                                                    <i className="fa fa-caret-right" aria-hidden="true"></i> Schedule
                                                 </Link>
                                             </li>
                                         </ul>

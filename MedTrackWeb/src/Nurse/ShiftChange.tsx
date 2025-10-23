@@ -74,15 +74,15 @@ export default function ShiftChange() {
 
     return (
         <div>
-            <div className="container-fluid scBg main-content padding vh-100">
+            <div className="container-fluid pt-5 mt-5 padding vh-100">
                 <div className="row">
-                    <div className="col-9">
+                    <div className="col-lg-9 col-sm-12 mb-5 mt-5 order-2 order-lg-1">
                         <div className="d-flex flex-column justify-content-center align-items-center">
-                            <h1 className="scBlue h1Sc d-inline w-50">
+                            <h1 className="scBlue d-inline">
                                 Shift change registration
                                 <i className="fa fa-hand-paper-o" aria-hidden="true"></i>
                             </h1>
-                            <form className='w-50'>
+                            <form className='w-75'>
                                 <div className="form-group">
                                     <label htmlFor="workingDate">Expected working date</label>
                                     <input
@@ -117,7 +117,7 @@ export default function ShiftChange() {
                             </form>
                         </div>
                     </div>
-                    <div className="col-3 noPl">
+                    <div className="col-lg-3 col-sm-12 order-1 order-lg-2">
                         <div className="leftBody border whiteBg marginBottom dropShadow">
                             <div className="row">
                                 <div className="col-12 login">
@@ -136,12 +136,17 @@ export default function ShiftChange() {
                                         <ul className='list-unstyled'>
                                             <li>
                                                 <Link to="/home/shift-change" className="text-decoration-none">
-                                                    Shift change registration
+                                                    <i className="fa fa-caret-right" aria-hidden="true"></i> Shift change registration
                                                 </Link>
                                             </li>
                                             <li>
                                                 <Link to="/home/daily-checking" className="text-decoration-none">
-                                                    Daily checking health
+                                                    <i className="fa fa-caret-right" aria-hidden="true"></i> Daily checking health
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link to="/home/schedule" className="text-decoration-none">
+                                                    <i className="fa fa-caret-right" aria-hidden="true"></i> Schedule
                                                 </Link>
                                             </li>
                                         </ul>
