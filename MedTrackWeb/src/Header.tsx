@@ -105,7 +105,7 @@ export default function Header() {
                                             </li>
 
                                             <li>
-                                                <span className="dropdown-item tdec0" href="#">
+                                                <span className="dropdown-item tdec0">
                                                     <div className="alert alert-danger" role="alert">
                                                         ⚠️ A simple danger alert with{" "}
                                                         <a href="/home" className="alert-link">

@@ -187,9 +187,7 @@ export default function BedDetails() {
                                                 </li>
                                             ))}
                                         </ul>
-
                                     </div>
-
                                 </div>
                             </div>
                             <div className="row">
