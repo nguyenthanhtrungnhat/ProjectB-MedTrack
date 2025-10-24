@@ -35,7 +35,7 @@ export default function HomePage() {
                 </div>
             </div>
             <div className="container-fluid papdding mt-5">
-                <div className="row me-5 ms-5" >
+                <div className="row p-3">
                     <div className="col-12">
                         <h2 className="headd1">EASY STEPS FOR YOUR CARE</h2>
                         <hr />
@@ -79,7 +79,7 @@ export default function HomePage() {
             </div>
 
             <div className="container-fluid padding mt-5">
-                <div className="row me-5 ms-5">
+                <div className="row p-3">
                     <div className="col-12">
                         <h2 className="headd1">TODAY'S TOP STORIES</h2>
                         <hr />
@@ -107,23 +107,22 @@ export default function HomePage() {
                             </div>
                         </a>
                     </div>
-
-                    <div className="row">
-                        {[banner1, banner2, banner3].map((img, index) => (
-                            <div className="col-lg-4 col-sm-6 mb-3" key={index}>
-                                <a href="#" className="text-decoration-none text-dark">
-                                    <div className="card h-100 hover-shadow">
-                                        <img src={img} className="card-img-top" alt={`Banner ${index + 1}`} loading="lazy" />
-                                        <div className="card-body">
-                                            <p className="card-text">
-                                                Some quick example text to build on the card title and make up the bulk of the card's content.
-                                            </p>
-                                        </div>
+                </div>
+                <div className="row p-3">
+                    {[banner1, banner2, banner3, banner3].map((img, index) => (
+                        <div className="col-lg-3 col-sm-6 mb-3" key={index}>
+                            <a href="#" className="text-decoration-none text-dark">
+                                <div className="card h-100 hover-shadow">
+                                    <img src={img} className="card-img-top" alt={`Banner ${index + 1}`} loading="lazy" />
+                                    <div className="card-body">
+                                        <p className="card-text">
+                                            Some quick example text to build on the card title and make up the bulk of the card's content.
+                                        </p>
                                     </div>
-                                </a>
-                            </div>
-                        ))}
-                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    ))}
                 </div>
                 <div className="d-flex justify-content-center align-items-center mt-5 mb-5">
                     <div className="row text-center">
@@ -178,7 +177,7 @@ export default function HomePage() {
                             </div>
                             <div className="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
                                 <h6 className="text-uppercase fw-bold mb-4">Products</h6>
-                                <div className="row row-cols-2 row-cols-sm-4 row-cols-md-1 g-2">
+                                <div className="row row-cols-sm-4 row-cols-md-1 g-2">
                                     <div className="col">
                                         <a href="#!" className="text-reset">Angular</a>
                                     </div>
@@ -199,7 +198,7 @@ export default function HomePage() {
                                 <h6 className="text-uppercase fw-bold mb-4">
                                     Useful links
                                 </h6>
-                                <div className="row row-cols-2 row-cols-sm-4 row-cols-md-1 g-2">
+                                <div className="row row-cols-sm-4 row-cols-md-1 g-2">
                                     <div className="col"><a href="#!" className="text-reset">Pricing</a></div>
                                     <div className="col"><a href="#!" className="text-reset">Settings</a></div>
                                     <div className="col"><a href="#!" className="text-reset">Orders</a></div>

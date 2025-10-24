@@ -2,16 +2,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import './../AllDesign.css';
-import LoginImg from './../images/LoginImg.png';
-import Logo from './../images/logo.png';
-import { jwtDecode } from "jwt-decode";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { JwtPayload } from "jwt-decode";
 
-interface CustomJwtPayload extends JwtPayload {
-    roleID: number; // Define the expected roleID property
-}
+
 export default function LoginScreen() {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
