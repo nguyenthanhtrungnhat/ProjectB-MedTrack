@@ -41,7 +41,7 @@ export default function HomePage() {
                         <hr />
 
                         <div className="row">
-                            <div className="col-3">
+                            <div className="col-lg-3 col-sm-6 mb-2">
                                 <div className="card hover-shadow" >
                                     <img src={prom1} className="img72" alt="..." />
                                     <div className="card-body">
@@ -49,7 +49,7 @@ export default function HomePage() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-3">
+                            <div className="col-lg-3 col-sm-6 mb-2">
                                 <div className="card hover-shadow" >
                                     <img src={prom1} className="img72" alt="..." />
                                     <div className="card-body">
@@ -57,7 +57,7 @@ export default function HomePage() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-3 ">
+                            <div className="col-lg-3 col-sm-6 mb-2">
                                 <div className="card hover-shadow" >
                                     <img src={prom1} className="img72" alt="..." />
                                     <div className="card-body">
@@ -65,7 +65,7 @@ export default function HomePage() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-3">
+                            <div className="col-lg-3 col-sm-6 mb-2">
                                 <div className="card hover-shadow" >
                                     <img src={prom1} className="img72" alt="..." />
                                     <div className="card-body">
@@ -108,23 +108,21 @@ export default function HomePage() {
                         </a>
                     </div>
 
-                    <div className="col-lg-12">
-                        <div className="row">
-                            {[banner1, banner2, banner3].map((img, index) => (
-                                <div className="col-lg-4 col-sm-6 mb-3" key={index}>
-                                    <a href="#" className="text-decoration-none text-dark">
-                                        <div className="card h-100 hover-shadow">
-                                            <img src={img} className="card-img-top" alt={`Banner ${index + 1}`} loading="lazy" />
-                                            <div className="card-body">
-                                                <p className="card-text">
-                                                    Some quick example text to build on the card title and make up the bulk of the card's content.
-                                                </p>
-                                            </div>
+                    <div className="row">
+                        {[banner1, banner2, banner3].map((img, index) => (
+                            <div className="col-lg-4 col-sm-6 mb-3" key={index}>
+                                <a href="#" className="text-decoration-none text-dark">
+                                    <div className="card h-100 hover-shadow">
+                                        <img src={img} className="card-img-top" alt={`Banner ${index + 1}`} loading="lazy" />
+                                        <div className="card-body">
+                                            <p className="card-text">
+                                                Some quick example text to build on the card title and make up the bulk of the card's content.
+                                            </p>
                                         </div>
-                                    </a>
-                                </div>
-                            ))}
-                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        ))}
                     </div>
                 </div>
                 <div className="d-flex justify-content-center align-items-center mt-5 mb-5">

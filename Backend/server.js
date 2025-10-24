@@ -297,73 +297,9 @@ app.post("/login", (req, res) => {
   });
 });
 
-// Shift change request
-// app.post("/requestShiftChange", (req, res) => {
-//   const { dateTime, requestContent, nurseID, requestType } = req.body;
 
-//   if (!dateTime || !requestContent || !nurseID) {
-//     return res.status(400).json({ message: "All fields are required" });
-//   }
-
-//   const query = "INSERT INTO request (dateTime, requestContent, nurseID, requestType) VALUES (?, ?, ?, ?)";
-//   db.query(query, [dateTime, requestContent, nurseID, requestType], (err, result) => {
-//     if (err) {
-//       console.error("Error:", err);
-//       return res.status(500).json({ message: "Server error" });
-//     }
-//     res.status(201).json({ message: "Shift change request submitted successfully", requestID: result.insertId });
-//   });
-// });
 
 // API POST để thêm dữ liệu vào bảng MedicalRecords
-// app.post("/post-medical-records", (req, res) => {
-//   const {
-//     patientID,
-//     heartRate,
-//     pulse,
-//     height,
-//     weight,
-//     hurtScale,
-//     temperature,
-//     currentCondition,
-//     SP02,
-//     healthStatus,
-//     respiratoryRate,
-//     bloodPressure,
-//     urine,
-//   } = req.body;
-
-//   const sql = `
-//     INSERT INTO MedicalRecords 
-//     (patientID, heartRate, pulse, height, weight, hurtScale, temperature, currentCondition, SP02, healthStatus, respiratoryRate, bloodPressure, urine) 
-//     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-
-//   db.query(
-//     sql,
-//     [
-//       patientID,
-//       heartRate,
-//       pulse,
-//       height,
-//       weight,
-//       hurtScale,
-//       temperature,
-//       currentCondition,
-//       SP02,
-//       healthStatus,
-//       respiratoryRate,
-//       bloodPressure,
-//       urine,
-//     ],
-//     (err, result) => {
-//       if (err) {
-//         console.error("Lỗi khi thêm dữ liệu:", err);
-//         return res.status(500).json({ message: "Lỗi server", error: err });
-//       }
-//       res.status(201).json({ message: "Thêm thành công", recordID: result.insertId });
-//     }
-//   );
-// });
 app.post("/post-medical-records", verifyToken, (req, res) => {
   // 🔹 Giờ mới thực hiện thêm dữ liệu
   const {
