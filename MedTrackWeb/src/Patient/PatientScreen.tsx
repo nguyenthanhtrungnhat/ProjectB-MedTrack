@@ -11,6 +11,10 @@ import patientImg from './../images/Untitled-1.png';
 import notgoodpatientImg from './../images/red_body.png';
 import pluseImg from './../images/pulseReal.png';
 import tempImg from './../images/nhietdo.png';
+import heightImg from './../images/pulseReal.png';
+import weightImg from './../images/pulseReal.png';
+import urineImg from './../images/pulseReal.png';
+import spo2Img from './../images/pulseReal.png';
 import bpImg from './../images/bloodPressure.png';
 import ntImg from './../images/nhiptho.png';
 
@@ -32,6 +36,90 @@ export default function PatientScreen() {
     const [record, setRecord] = useState<RecordProps | null>(null);
     const userID = getUserIDFromToken();
     const [showMore, setShowMore] = useState(false);
+    // 🩺 Dynamic badge generator
+    const getHealthBadge = (type: string, value?: number | string | null) => {
+        if (value === null || value === undefined) return { color: "text-bg-secondary", label: "N/A" };
+
+        switch (type) {
+            case "pulse":
+                if (Number(value) > 100) return { color: "text-bg-danger", label: "High" };
+                if (Number(value) < 60) return { color: "text-bg-warning", label: "Low" };
+                return { color: "text-bg-success", label: "Good" };
+
+            case "temperature":
+                if (Number(value) > 38) return { color: "text-bg-danger", label: "Fever" };
+                if (Number(value) < 36) return { color: "text-bg-warning", label: "Low" };
+                return { color: "text-bg-success", label: "Normal" };
+
+            case "respiratory":
+                if (Number(value) > 25) return { color: "text-bg-danger", label: "Fast" };
+                if (Number(value) < 12) return { color: "text-bg-warning", label: "Slow" };
+                return { color: "text-bg-success", label: "Good" };
+
+            case "bloodPressure":
+                if (typeof value === "string" && value.includes("/")) {
+                    const [systolicStr, diastolicStr] = (value as string).split("/");
+                    const systolic = Number(systolicStr);
+                    const diastolic = Number(diastolicStr);
+                    if (isNaN(systolic) || isNaN(diastolic)) return { color: "text-bg-secondary", label: "Invalid" };
+                    if (systolic > 140 || diastolic > 90) return { color: "text-bg-danger", label: "High" };
+                    if (systolic < 90 || diastolic < 60) return { color: "text-bg-warning", label: "Low" };
+                    return { color: "text-bg-success", label: "Normal" };
+                }
+                return { color: "text-bg-secondary", label: "N/A" };
+
+            case "spO2":
+                if (Number(value) < 90) return { color: "text-bg-danger", label: "Low" };
+                if (Number(value) < 95) return { color: "text-bg-warning", label: "Slightly Low" };
+                return { color: "text-bg-success", label: "Good" };
+
+            case "heartRate":
+                if (Number(value) > 100) return { color: "text-bg-danger", label: "High" };
+                if (Number(value) < 60) return { color: "text-bg-warning", label: "Low" };
+                return { color: "text-bg-success", label: "Normal" };
+
+            case "oxygenTherapy":
+                if (String(value).toLowerCase().includes("mask")) return { color: "text-bg-warning", label: "On Mask" };
+                if (String(value).toLowerCase().includes("oxygen")) return { color: "text-bg-danger", label: "Required" };
+                return { color: "text-bg-success", label: "Room Air" };
+
+            case "sensorium":
+                if (String(value).toLowerCase() === "alert") return { color: "text-bg-success", label: "Alert" };
+                if (String(value).toLowerCase() === "drowsy") return { color: "text-bg-warning", label: "Drowsy" };
+                return { color: "text-bg-danger", label: "Abnormal" };
+
+            case "painScale":
+                if (Number(value) <= 3) return { color: "text-bg-success", label: "Mild" };
+                if (Number(value) <= 6) return { color: "text-bg-warning", label: "Moderate" };
+                return { color: "text-bg-danger", label: "Severe" };
+
+            default:
+                return { color: "text-bg-secondary", label: "" };
+        }
+    };
+    const renderVital = (label: string, imgSrc: string, unit: string, type: string, value?: number | string | null) => {
+        const { color, label: status } = getHealthBadge(type, value);
+        return (
+            <div className="border whiteBg dropShadow padding">
+                <p className="blueText">
+                    {label} <span className={`badge ${color}`}>{status}</span>
+                </p>
+                <div className="d-flex align-items-center">
+                    <img src={imgSrc} className="pluseImg me-2" alt={label} />
+                    <h4 className="blueText mb-0 paddingLeft20 me-3">
+                        {value !== null && value !== undefined ? (
+                            value
+                        ) : (
+                            <div className="spinner-border me-3" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                            </div>
+                        )}
+                    </h4>
+                    <span className="blueText">{unit}</span>
+                </div>
+            </div>
+        );
+    };
     // Fetch patients for this user
     useEffect(() => {
         if (!userID) return;
@@ -73,9 +161,9 @@ export default function PatientScreen() {
     return (
         <div className="container-fluid mainBg pt-5 mt-5 h-100">
             <div className="row">
-                <div className="col-9">
+                <div className="col-lg-9 col-sm-12 order-2 order-lg-1">
                     <div className="row align-items-stretch mb-4">
-                         {/* Left column */}
+                        {/* Left column */}
                         <div className="col-lg-6 col-sm-12 d-flex">
                             <div className="w-100 d-flex flex-column border whiteBg dropShadow p-3">
                                 <PatientInformation
@@ -96,7 +184,7 @@ export default function PatientScreen() {
                         </div>
 
                         <div className="col-lg-6 col-sm-12 ">
-                            <div className="hasSchedule padding border mb-3 whiteBg dropShadow">
+                            <div className="hasSchedule padding border mt-3 mb-3 whiteBg dropShadow">
                                 <div className="row">
                                     <div className="col-12 medicineSchedule padding50">
                                         <h5 className='blueText medSche'>Medicine schedule</h5>
@@ -140,10 +228,10 @@ export default function PatientScreen() {
                     </div>
                 </div>
 
-                <div className="col-3 noPl">
+                <div className="col-lg-3 order-1 order-lg-2 col-sm-12">
                     <div className="leftBody border whiteBg marginBottom dropShadow">
                         <div className="row">
-                            <div className="col-12 login">
+                            <div className="col-lg-12 login">
                                 <SidebarLogin
                                     phone={patient.phone}
                                     fullName={patient.fullName}
@@ -163,15 +251,6 @@ export default function PatientScreen() {
                                             </Link>
                                         </li>
                                     </ul>
-                                </div>
-                                <h6 className='whiteText blueBg announceHead'>Latest announcements</h6>
-                                <div className='padding20'>
-                                    <div className="card border-light mb-3 dropShadow">
-                                        <div className="card-body p-2 card-header">
-                                            <p className="card-title p-0"><b>Light card title</b></p>
-                                            <p className="card-text p-0">Description</p>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -226,144 +305,59 @@ export default function PatientScreen() {
                             <div className="col-5">
                                 <div className="row">
                                     <div className="col-lg-6 col-sm-12 padding">
-                                        <div className="border whiteBg dropShadow padding">
-                                            <p className="blueText">Pulse <span className="badge text-bg-success">Good</span></p>
-                                            <div className="d-flex align-items-center">
-                                                <img src={pluseImg} className="pluseImg me-2" alt="Pulse" />
-                                                <h4 className="blueText mb-0 paddingLeft20">{record?.pulse}</h4>
-                                                <span className='blueText'> L/ph</span>
-                                            </div>
-                                        </div>
+                                        {renderVital("Pulse", pluseImg, "L/ph", "pulse", record?.pulse)}
                                     </div>
                                     <div className="col-lg-6 col-sm-12 padding">
-                                        <div className="border whiteBg dropShadow padding">
-                                            <p className="blueText">Temperature <span className="badge text-bg-success">Success</span></p>
-                                            <div className="d-flex align-items-center">
-                                                <img src={tempImg} className="tempImg me-2" alt="Temperature" />
-                                                <h4 className="blueText mb-0 paddingLeft20">{record?.temperature}</h4>
-                                                <span className='blueText'> °C</span>
-                                            </div>
-                                        </div>
+                                        {renderVital("Temperature", tempImg, "°C", "temperature", record?.temperature)}
                                     </div>
+                                    {/* --- Show More Section --- */}
                                     {showMore && (
                                         <>
                                             <div className="col-lg-6 col-sm-12 padding">
-                                                <div className="border whiteBg dropShadow padding">
-                                                    <p className="blueText">Height </p>
-                                                    <div className="d-flex align-items-center">
-                                                        <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
-                                                        <h4 className="blueText mb-0 paddingLeft20">{record?.height}</h4>
-                                                        <span className="blueText"> cm</span>
-                                                    </div>
-                                                </div>
+                                                {renderVital("Height", heightImg, "cm", "other", record?.height)}
                                             </div>
                                             <div className="col-lg-6 col-sm-12 padding">
-                                                <div className="border whiteBg dropShadow padding">
-                                                    <p className="blueText">Heart rate </p>
-                                                    <div className="d-flex align-items-center">
-                                                        <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
-                                                        <h4 className="blueText mb-0 paddingLeft20">{record?.heartRate}</h4>
-                                                        <span className="blueText"> bpm</span>
-                                                    </div>
-                                                </div>
+                                                {renderVital("Weight", weightImg, "kg", "other", record?.weight)}
                                             </div>
                                             <div className="col-lg-6 col-sm-12 padding">
-                                                <div className="border whiteBg dropShadow padding">
-                                                    <p className="blueText">Pain Scale</p>
-                                                    <div className="d-flex align-items-center">
-                                                        <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
-                                                        <h4 className="blueText mb-0 paddingLeft20">{record?.hurtScale}</h4>
-                                                        <span className="blueText"></span>
-                                                    </div>
-                                                </div>
+                                                {renderVital("Sensorium", tempImg, "", "sensorium", record?.sensorium)}
                                             </div>
-
                                             <div className="col-lg-6 col-sm-12 padding">
-                                                <div className="border whiteBg dropShadow padding">
-                                                    <p className="blueText">Sensorium</p>
-                                                    <div className="d-flex align-items-center">
-                                                        <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
-                                                        <h4 className="blueText mb-0 paddingLeft20">{record?.urine}</h4>
-                                                        <span className="blueText"> L/min</span>
-                                                    </div>
-                                                </div>
+                                                {renderVital("Pain Scale", bpImg, "/10", "painScale", record?.hurtScale)}
                                             </div>
                                         </>
                                     )}
                                 </div>
+                            </div>
 
-                            </div>
                             <div className="col-2 d-flex justify-content-center align-items-center">
-                                {record?.healthStatus === '1' ? (
-                                    <img src={patientImg} className='patientImg' alt="Good Health" />
-                                ) : (
-                                    <img src={notgoodpatientImg} className='patientImg' alt="Not Good Health" />
-                                )}
+                                {record?.healthStatus == 1
+                                    ? <img src={patientImg} className="patientImg" alt="Good Health" />
+                                    : <img src={notgoodpatientImg} className="patientImg" alt="Not Good Health" />}
                             </div>
+
                             <div className="col-5">
                                 <div className="row">
                                     <div className="col-lg-6 col-sm-12 padding">
-                                        <div className="border whiteBg dropShadow padding">
-                                            <p className="blueText">Respiratory Rate <span className="badge text-bg-warning">Warning</span></p>
-                                            <div className="d-flex align-items-center">
-                                                <img src={ntImg} className="ntImg me-2" alt="Respiratory Rate" />
-                                                <h4 className="blueText mb-0 paddingLeft20">{record?.respiratoryRate}</h4>
-                                                <span className='blueText'> times/min</span>
-                                            </div>
-                                        </div>
+                                        {renderVital("Respiratory Rate", ntImg, "times/min", "respiratory", record?.respiratoryRate)}
                                     </div>
                                     <div className="col-lg-6 col-sm-12 padding">
-                                        <div className="border whiteBg dropShadow padding">
-                                            <p className="blueText">Blood Pressure <span className="badge text-bg-danger">Bad</span></p>
-                                            <div className="d-flex align-items-center">
-                                                <img src={bpImg} className="bpImg me-2" alt="Blood Pressure" />
-                                                <h4 className="blueText mb-0 paddingLeft20">{record?.bloodPressure}</h4>
-                                                <span className='blueText'> mmHg</span>
-                                            </div>
-                                        </div>
+                                        {renderVital("Blood Pressure", bpImg, "mmHg", "bloodPressure", record?.bloodPressure)}
                                     </div>
+                                    {/* --- Show More Section --- */}
                                     {showMore && (
                                         <>
                                             <div className="col-lg-6 col-sm-12 padding">
-                                                <div className="border whiteBg dropShadow padding">
-                                                    <p className="blueText">Weight</p>
-                                                    <div className="d-flex align-items-center">
-                                                        <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
-                                                        <h4 className="blueText mb-0 paddingLeft20">{record?.weight}</h4>
-                                                        <span className="blueText"> Kg</span>
-                                                    </div>
-                                                </div>
+                                                {renderVital("Urine", urineImg, "ml", "other", record?.urine)}
                                             </div>
                                             <div className="col-lg-6 col-sm-12 padding">
-                                                <div className="border whiteBg dropShadow padding">
-                                                    <p className="blueText">SpO2</p>
-                                                    <div className="d-flex align-items-center">
-                                                        <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
-                                                        <h4 className="blueText mb-0 paddingLeft20">{record?.SP02}</h4>
-                                                        <span className="blueText"> %</span>
-                                                    </div>
-                                                </div>
+                                                {renderVital("SpO₂", spo2Img, "%", "spO2", record?.SP02)}
                                             </div>
                                             <div className="col-lg-6 col-sm-12 padding">
-                                                <div className="border whiteBg dropShadow padding">
-                                                    <p className="blueText">Urine</p>
-                                                    <div className="d-flex align-items-center">
-                                                        <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
-                                                        <h4 className="blueText mb-0 paddingLeft20">{record?.urine}</h4>
-                                                        <span className="blueText"> ml/h</span>
-                                                    </div>
-                                                </div>
+                                                {renderVital("Heart Rate", pluseImg, "bpm", "heartRate", record?.heartRate)}
                                             </div>
-
                                             <div className="col-lg-6 col-sm-12 padding">
-                                                <div className="border whiteBg dropShadow padding">
-                                                    <p className="blueText">Oxygen therapy</p>
-                                                    <div className="d-flex align-items-center">
-                                                        <img src={pluseImg} className="pluseImg me-2" alt="pulse" />
-                                                        <h4 className="blueText mb-0 paddingLeft20">{record?.urine}</h4>
-                                                        <span className="blueText"> L/min</span>
-                                                    </div>
-                                                </div>
+                                                {renderVital("Oxygen Therapy", spo2Img, "", "oxygenTherapy", record?.oxygenTherapy)}
                                             </div>
                                         </>
                                     )}
