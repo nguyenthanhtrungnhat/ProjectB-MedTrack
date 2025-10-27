@@ -71,7 +71,7 @@ export default function PatientScreen() {
     const patient = patients[0];
 
     return (
-        <div className="container-fluid mainBg main-content h-100">
+        <div className="container-fluid mainBg pt-5 mt-5 h-100">
             <div className="row">
                 <div className="col-9">
                     <div className="row align-items-stretch mb-4">
