@@ -46,7 +46,7 @@ export interface RecordProps {
     healthStatus: number,
     SP02: number,
     respiratoryRate: number,
-    bloodPressure: number,
+    bloodPressure: string,
     urine: number,
     doctorID: string,
     patientID: string,
@@ -60,18 +60,18 @@ export interface SidebarInfoProps {
 }
 export interface FormData {
     patientID: string;
-    pulse: string;
-    spo2: string;
-    temperature: string;
-    oxygenTherapy: string;
+    pulse: number;
+    spo2: number;
+    temperature: number;
+    oxygenTherapy: number;
     bloodPressure: string;
-    height: string;
-    weight: string;
-    sensorium: string;
-    respiratoryRate: string;
-    urine: string;
-    heartRate: string;
-    hurtScale: string;
+    height: number;
+    weight: number;
+    sensorium: number;
+    respiratoryRate: number;
+    urine: number;
+    heartRate: number;
+    hurtScale: number;
     currentCondition: string;
 };
 export interface Schedule{

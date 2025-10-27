@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { PatientProps } from "../interface";
 
 export default function PatientSearch() {
-  const [patients, setPatients] = useState([]);
+  const [patients, setPatients] = useState<PatientProps>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredPatients, setFilteredPatients] = useState([]);
+  const [filteredPatients, setFilteredPatients] = useState<PatientProps[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const containerRef = useRef(null);
   const navigate = useNavigate();

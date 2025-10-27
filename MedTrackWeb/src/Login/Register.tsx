@@ -69,19 +69,6 @@ export default function RegisterScreen() {
                         <form onSubmit={handleRegister}>
                             <h3 className="mb-4 fw-bold text-center">Create an Account</h3>
 
-                            {/* Name */}
-                            <div className="form-outline mb-4">
-                                <input
-                                    type="text"
-                                    className="form-control form-control-lg"
-                                    placeholder="Enter your full name"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    required
-                                />
-                                <label className="form-label">Full Name</label>
-                            </div>
-
                             {/* Email */}
                             <div className="form-outline mb-4">
                                 <input

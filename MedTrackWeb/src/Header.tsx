@@ -3,6 +3,7 @@ import { jwtDecode } from "jwt-decode"; // fixed import syntax
 import logo from "./images/logo.png";
 import { Link } from "react-router-dom";
 import PatientSearch from "./Nurse/PatientSearch";
+import Noti from "./Noti";
 
 const getUserRoleFromToken = () => {
     const token = sessionStorage.getItem("token");
@@ -52,6 +53,7 @@ export default function Header() {
                                             <h5 className="whiteText hasProfileIcon m-0">Profile</h5>
                                         </Link>
                                     </li>
+                                    <Noti />
                                 </ul>
                                 <form className="d-flex" role="search">
                                     <PatientSearch />
@@ -73,49 +75,7 @@ export default function Header() {
                                             <h5 className="whiteText hasProfileIcon m-0">Profile</h5>
                                         </Link>
                                     </li>
-
-                                    <li className="nav-item dropdown">
-                                        <span
-                                            className="nav-link dropdown-toggle whiteText position-relative no-caret d-flex align-items-center"
-                                            role="button"
-                                            data-bs-toggle="dropdown"
-                                            data-bs-auto-close="outside"
-                                            aria-expanded="false"
-                                        >
-                                            <span className="inboxText m-0 hasInboxIcon">Inbox</span>
-                                            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                                99+
-                                                <span className="visually-hidden">unread messages</span>
-                                            </span>
-                                        </span>
-
-                                        <ul className="dropdown-menu inbox-dropdown shadow-lg">
-                                            <li><h5 className="p-3">Notifications</h5></li>
-                                            <hr className="m-2" />
-
-                                            <li>
-                                                <span className="dropdown-item tdec0">
-                                                    <div className="alert alert-success" role="alert">
-                                                        ✅ A simple success alert with{" "}
-                                                        <a href="/home" className="alert-link">
-                                                            an example link
-                                                        </a>.
-                                                    </div>
-                                                </span>
-                                            </li>
-
-                                            <li>
-                                                <span className="dropdown-item tdec0">
-                                                    <div className="alert alert-danger" role="alert">
-                                                        ⚠️ A simple danger alert with{" "}
-                                                        <a href="/home" className="alert-link">
-                                                            an example link
-                                                        </a>.
-                                                    </div>
-                                                </span>
-                                            </li>
-                                        </ul>
-                                    </li>
+                                    <Noti />
                                 </ul>
 
                                 <form className="d-flex" role="search">
@@ -136,6 +96,7 @@ export default function Header() {
                                         <h5 className="whiteText hasProfileIcon m-0">Profile</h5>
                                     </Link>
                                 </li>
+                                <Noti />
                             </ul>
                         ) : null}
                         {!token && (

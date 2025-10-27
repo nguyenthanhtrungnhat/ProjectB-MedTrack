@@ -20,6 +20,7 @@ import PatientScreen from "./Patient/PatientScreen";
 import Schedule from "./Schedule";
 import 'bootstrap/dist/css/bootstrap.min.css';        // Bootstrap CSS
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';   // Bootstrap JS with Popper
+import Register from "./Login/Register";
 
 
 const Layout = () => (
@@ -38,11 +39,6 @@ const ProtectedRoute = () => {
   return <Outlet />; // Render the requested page if authenticated
 };
 const router = createBrowserRouter([
-  // {
-  //   path: "/",
-  //   children: [{ index: true, element: <LoginScreen /> }],
-  //   // children: [{ index: true, element: <Schedule /> }],
-  // },
   {
     path: "/",
     children: [{
@@ -51,6 +47,7 @@ const router = createBrowserRouter([
       children: [
         { index: true, element: <HomePage /> },
         { path: "login", element: <LoginScreen /> },
+        { path: "register", element: <Register /> },
       ],
     },],
   },
@@ -67,6 +64,7 @@ const router = createBrowserRouter([
           { path: "shift-change", element: <ShiftChange /> },
           { path: "daily-checking", element: <DailyCheckingForm /> },
           { path: "schedule", element: <Schedule /> },
+          { path: "register", element: <Register /> },
         ]
       },
     ],
