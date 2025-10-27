@@ -98,7 +98,6 @@ export default function Health() {
         );
     };
     const { patientID } = useParams();
-    
     const [allRecords, setAllRecords] = useState<RecordProps[]>([]);
     const [record, setRecord] = useState<RecordProps | null>(null);
     const [showMore, setShowMore] = useState(false);

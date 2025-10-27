@@ -184,7 +184,7 @@ export default function PatientScreen() {
                         </div>
 
                         <div className="col-lg-6 col-sm-12 ">
-                            <div className="hasSchedule padding border mt-3 mb-3 whiteBg dropShadow">
+                            <div className="hasSchedule padding border mb-3 whiteBg dropShadow">
                                 <div className="row">
                                     <div className="col-12 medicineSchedule padding50">
                                         <h5 className='blueText medSche'>Medicine schedule</h5>

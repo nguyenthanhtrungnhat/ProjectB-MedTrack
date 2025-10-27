@@ -1,0 +1,5 @@
+@media print {
+  .whiteBg { page-break-inside: avoid; }
+  .dropShadow { box-shadow: none !important; }
+  .btn, .dropdown, .dropdown-menu { display: none !important; }
+}
