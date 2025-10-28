@@ -1,13 +1,14 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { PatientProps } from "../interface";
 
 export default function PatientSearch() {
-  const [patients, setPatients] = useState<PatientProps>([]);
+  const [patients, setPatients] = useState<PatientProps[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredPatients, setFilteredPatients] = useState<PatientProps[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
-  const containerRef = useRef(null);
+  // const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
 
   // Fetch patient data
@@ -37,17 +38,17 @@ export default function PatientSearch() {
 
   // Close dropdown when clicking outside
   useEffect(() => {
-    function handleClickOutside(event) {
+    function handleClickOutside(event:any) {
       if (containerRef.current && !containerRef.current.contains(event.target)) {
         setShowDropdown(false);
-      }
+      } 
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   // Handle selection
-  const handleSelect = (patient) => {
+  const handleSelect = (patient: PatientProps) => {
     setSearchTerm(`${patient.fullName} `);
     setShowDropdown(false);
     navigate(`/home/bed-details/${patient.patientID}`);

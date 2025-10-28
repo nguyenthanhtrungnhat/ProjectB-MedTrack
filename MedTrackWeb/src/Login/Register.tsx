@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default function RegisterScreen() {
     const navigate = useNavigate();
-    const [name, setName] = useState("");
+    // const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -26,11 +26,11 @@ export default function RegisterScreen() {
 
         try {
             // ✅ Call backend API
-            const response = await axios.post("http://localhost:3000/register", {
-                name,
-                email,
-                password,
-            });
+            // const response = await axios.post("http://localhost:3000/register", {
+            //     name,
+            //     email,
+            //     password,
+            // });
 
             // Expect backend to return { message: "User created successfully" }
             toast.success("Registration successful! Redirecting to login...", {

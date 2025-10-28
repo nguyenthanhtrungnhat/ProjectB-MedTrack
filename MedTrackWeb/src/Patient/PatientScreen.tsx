@@ -288,7 +288,7 @@ export default function PatientScreen() {
                                                 <button
                                                     className="dropdown-item"
                                                     type="button"
-                                                    onClick={() => handleRecordSelect(rec.recordID)}
+                                                    onClick={() => handleRecordSelect(Number(rec.recordID))}
                                                 >
                                                     {new Date(rec.timeCreate).toLocaleString()}
 

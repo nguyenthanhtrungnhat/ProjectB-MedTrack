@@ -17,7 +17,7 @@ export interface PatientProps {
     fullName: string;
     gender: string;
     dob: string;
-    phone: number;
+    phone: number|string;
     patientID: number; // Changed from 'id' to 'patientID' for consistency
     address: string;
     email: string;
@@ -55,7 +55,7 @@ export interface RecordProps {
     sensorium: number
 }
 export interface SidebarInfoProps {
-    phone?: string;
+    phone?: string|number;
     fullName?: string;
 }
 export interface FormData {

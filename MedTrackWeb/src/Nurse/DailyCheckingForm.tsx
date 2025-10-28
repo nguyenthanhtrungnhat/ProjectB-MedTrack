@@ -15,22 +15,22 @@ interface Patient {
 const token = sessionStorage.getItem("token");
 
 export default function DailyCheckingForm() {
-  const nurseID = sessionStorage.getItem("nurseID");
+  // const nurseID = sessionStorage.getItem("nurseID");
 
   const [formData, setFormData] = useState<FormData>({
     patientID: "",
-    pulse: "",
-    spo2: "",
-    temperature: "",
-    oxygenTherapy: "",
+    pulse: 0,
+    spo2: 0,
+    temperature: 0,
+    oxygenTherapy:0,
     bloodPressure: "",
-    height: "",
-    weight: "",
-    sensorium: "",
-    respiratoryRate: "",
-    urine: "",
-    heartRate: "",
-    hurtScale: "",
+    height: 0,
+    weight: 0,
+    sensorium: 0,
+    respiratoryRate: 0,
+    urine: 0,
+    heartRate: 0,
+    hurtScale: 0,
     currentCondition: ""
   });
 
@@ -45,7 +45,7 @@ export default function DailyCheckingForm() {
   useEffect(() => {
     axios.get<Patient[]>("http://localhost:3000/patients")
       .then(res => setPatients(res.data))
-      .catch(err => toast.error("Failed to load patients data"));
+      .catch(err => toast.error(`Failed to load patients data: ${err}`));
   }, []);
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -119,37 +119,37 @@ export default function DailyCheckingForm() {
     try {
       await axios.post("http://localhost:3000/post-medical-records", {
         patientID: parseInt(formData.patientID),
-        heartRate: parseFloat(formData.heartRate),
-        pulse: parseFloat(formData.pulse),
-        height: parseFloat(formData.height),
-        weight: parseFloat(formData.weight),
-        hurtScale: parseFloat(formData.hurtScale),
-        temperature: parseFloat(formData.temperature),
+        heartRate: parseFloat(String(formData.heartRate)),
+        pulse: parseFloat(String(formData.pulse) ),
+        height: parseFloat(String(formData.height)),
+        weight: parseFloat(String(formData.weight)),
+        hurtScale: parseFloat(String(formData.hurtScale)),
+        temperature: parseFloat(String(formData.temperature)),
         currentCondition: formData.currentCondition,
-        SP02: parseFloat(formData.spo2),
+        SP02: parseFloat(String(formData.spo2)),
         healthStatus: 1,
-        respiratoryRate: parseFloat(formData.respiratoryRate),
+        respiratoryRate: parseFloat(String(formData.respiratoryRate)),
         bloodPressure: formData.bloodPressure,
-        urine: parseFloat(formData.urine),
-        oxygenTherapy: parseInt(formData.oxygenTherapy),
-        sensorium: parseInt(formData.sensorium),
+        urine: parseFloat(String(formData.urine)),
+        oxygenTherapy: parseInt(String(formData.oxygenTherapy)),
+        sensorium: parseInt(String(formData.sensorium)),
       }, { headers: { Authorization: `Bearer ${token}` } });
 
       toast.success("Dữ liệu đã gửi thành công!");
       setFormData({
         patientID: "",
-        pulse: "",
-        spo2: "",
-        temperature: "",
-        oxygenTherapy: "",
-        bloodPressure: "",
-        height: "",
-        weight: "",
-        sensorium: "",
-        respiratoryRate: "",
-        urine: "",
-        heartRate: "",
-        hurtScale: "",
+        pulse: 0,
+        spo2: 0,
+        temperature: 0,
+        oxygenTherapy:0,
+        bloodPressure:"",
+        height:0,
+        weight:0,
+        sensorium:0,
+        respiratoryRate:0,
+        urine:0,
+        heartRate:0,
+        hurtScale:0,
         currentCondition: ""
       });
       setSearchTerm("");

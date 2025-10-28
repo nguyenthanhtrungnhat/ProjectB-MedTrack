@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import './../AllDesign.css';
 import SidebarLogin from "../SidebarLogin";
@@ -12,9 +11,6 @@ export default function ShiftChange() {
     const info = storedInfo ? JSON.parse(storedInfo) : null;
     const [workingDate, setWorkingDate] = useState("");
     const [reason, setReason] = useState("");
-    const [loading, setLoading] = useState(false); // Prevent double submission
-
-    const token = sessionStorage.getItem("token");
     const nurseID = JSON.parse(sessionStorage.getItem("nurseID") || "null"); // Ensure correct data type
     const [selectedScheduleID, setSelectedScheduleID] = useState("");
     const [schedules, setSchedules] = useState<Schedule[]>([]);
@@ -97,10 +93,7 @@ export default function ShiftChange() {
                                     <button
                                         type="button"
                                         className="btn btn-success w-100"
-                                        // onClick={postData}
-                                        disabled={loading} // Disable button while submitting
                                     >
-                                        {loading ? "Submitting..." : "Submit"}
                                     </button>
                                 </div>
                             </form>

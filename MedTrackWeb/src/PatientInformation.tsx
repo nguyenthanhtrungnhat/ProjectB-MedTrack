@@ -42,8 +42,8 @@ export default function PatientInformation({
         <InfoRow label="Full name" value={fullName} />
         <InfoRow label="Date of birth" value={dob} />
         <InfoRow label="Gender" value={gender} />
-        <InfoRow label="Phone" value={phone} />
-        <InfoRow label="ID card" value={patientID} />
+        <InfoRow label="Phone" value={String(phone)} />
+        <InfoRow label="ID card" value={String(patientID)} />
         <InfoRow label="Email" value={email} />
         <InfoRow label="Address" value={address} />
         <InfoRow label="BHYT" value={BHYT} />
@@ -70,9 +70,9 @@ export default function PatientInformation({
 
       {/* Bottom section: Admission + Relatives */}
       <div className="col-12 mt-0">
-        <InfoRow label="Date of admission" value={admissionDate} />
+        <InfoRow label="Date of admission" value={String(admissionDate)} />
         <InfoRow label="Relative name" value={relativeName} />
-        <InfoRow label="Relative's phone" value={relativeNumber} />
+        <InfoRow label="Relative's phone" value={String(relativeNumber)} />
       </div>
     </div>
   );
