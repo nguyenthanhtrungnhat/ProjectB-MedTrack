@@ -1,6 +1,6 @@
 {
   "name": "medtrackweb",
-  "homepage": "https://nguyenthanhtrungnhat.github.io/ProjectB-MedTrack",
+  "homepage": "https://nguyenthanhtrungnhat.github.io/MedTrackWeb/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,7 +9,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "predeploy": "npm run build",
+    "predeploy": "npm run build ",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
