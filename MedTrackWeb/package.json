@@ -1,7 +1,5 @@
 {
   "name": "medtrackweb",
-  "homepage": "https://nguyenthanhtrungnhat.github.io/MedTrackWeb/",
-  "deploy": "gh-pages -d dist",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,16 +7,13 @@
     "dev": "vite --host",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "predeploy": "npm run build ",
-    "deploy": "gh-pages -d dist -r https://github.com/nguyenthanhtrungnhat/ProjectB-MedTrack.git"
+    "preview": "vite preview"
   },
   "dependencies": {
     "axios": "^1.7.9",
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
     "date-fns": "^4.1.0",
-    "gh-pages": "^6.3.0",
     "jquery": "^3.7.1",
     "jwt-decode": "^4.0.0",
     "react": "^19.0.0",
