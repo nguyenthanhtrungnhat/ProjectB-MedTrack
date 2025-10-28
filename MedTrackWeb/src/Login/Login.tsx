@@ -22,7 +22,7 @@ export default function LoginScreen() {
                 setError("Invalid server response. Please try again.");
                 return;
             }
-
+            
             sessionStorage.setItem("token", token);
 
             toast.success("Login successful!", { position: "top-right" });
@@ -36,6 +36,7 @@ export default function LoginScreen() {
             if (err instanceof Error) {
                 const axiosError = err as any;
                 setError(axiosError.response?.data?.error || "Server error. Please try again later.");
+                console.error("Axios error message:", error);
             } else {
                 setError("An unexpected error occurred.");
             }
