@@ -152,9 +152,9 @@ export default function PatientScreen() {
             .catch(error => console.error('Error fetching selected record:', error));
     };
 
-    if (!userID) return <div>Unauthorized. Please log in.</div>;
-    if (patients.length === 0) return <div>Loading patient data...</div>;
-    if (!record) return <div>Loading medical record...</div>;
+    if (!userID) return <h1 className='p-5 mt-5'>Unauthorized. Please log in.</h1>;
+    if (patients.length === 0) return <h1 className='p-5 mt-5'>Please update your persoonal data</h1>;
+    if (!record) return <h3>Loading medical record...</h3>;
 
     const patient = patients[0];
 
