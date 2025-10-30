@@ -17,6 +17,7 @@ import urineImg from './../images/pulseReal.png';
 import spo2Img from './../images/pulseReal.png';
 import bpImg from './../images/bloodPressure.png';
 import ntImg from './../images/nhiptho.png';
+import CompleteData from './CompleteData';
 
 const getUserIDFromToken = () => {
     const token = sessionStorage.getItem("token");
@@ -153,7 +154,8 @@ export default function PatientScreen() {
     };
 
     if (!userID) return <h1 className='p-5 mt-5'>Unauthorized. Please log in.</h1>;
-    if (patients.length === 0) return <h1 className='p-5 mt-5'>Please update your persoonal data</h1>;
+    if (patients.length === 0) return <CompleteData />;
+    //  if (patients.length === 0) return <h1 className='p-5 mt-5'>Please update your persoonal data</h1>;
     if (!record) return <h3>Loading medical record...</h3>;
 
     const patient = patients[0];
