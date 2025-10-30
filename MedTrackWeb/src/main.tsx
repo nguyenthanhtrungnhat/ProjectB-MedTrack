@@ -90,7 +90,7 @@ const router = createBrowserRouter([
         path: "/patient", element: <Layout />, children: [
           { index: true, element: <HomePage /> },
           { path: "patient-profile", element: <PatientScreen /> },
-          { path: "complete-data", element: <CompleteData /> },
+          // { path: "complete-data", element: <CompleteData /> },
         ]
       },
     ],
