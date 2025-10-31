@@ -27,7 +27,7 @@ export interface PatientProps {
     BHYT?: string;
     admissionDate?: string | null;
     relativeName?: string;
-    relativeNumber?: number;
+    relativeNumber?: number|null;
     dischargeDate?: string | null;
     CCCD?: number;
     username?: string;

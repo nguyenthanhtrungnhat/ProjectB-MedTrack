@@ -160,6 +160,7 @@ export default function PatientScreen() {
 
     const patient = patients[0];
 
+
     return (
         <div className="container-fluid mainBg pt-5 mt-5 h-100">
             <div className="row">
@@ -171,16 +172,22 @@ export default function PatientScreen() {
                                 <PatientInformation
                                     image={patient.image || ""}
                                     fullName={patient.fullName || "N/A"}
-                                    gender={patient.gender === "1" ? 'Male' : 'Female'}
+                                    gender={
+                                        patient.gender === "1"
+                                            ? "Male"
+                                            : patient.gender === "2"
+                                                ? "Female"
+                                                : "N/A"
+                                    }
                                     dob={patient.dob?.split('T')[0] || ""}
                                     phone={patient.phone || ""}
                                     patientID={patient.patientID}
-                                    address={patient.address || "Unknown"}
+                                    address={patient.address || "N/A"}
                                     email={patient.email || ""}
                                     BHYT={patient.BHYT || ""}
                                     admissionDate={patient.admissionDate?.split('T')[0] || ""}
                                     relativeName={patient.relativeName || ""}
-                                    relativeNumber={patient.relativeNumber || 0}
+                                    relativeNumber={patient.relativeNumber}
                                 />
                             </div>
                         </div>
