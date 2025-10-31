@@ -19,7 +19,7 @@ const db = mysql.createConnection({
   dateStrings: true,
   timezone: "+07:00", // VN time
    ssl: {
-    rejectUnauthorized: false, // ✅ Required by Railway
+    rejectUnauthorized: true, // ✅ Required by Railway
   },
 });
 
