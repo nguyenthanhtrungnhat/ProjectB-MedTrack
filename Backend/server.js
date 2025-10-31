@@ -18,9 +18,6 @@ const db = mysql.createConnection({
   database: process.env.DB_NAME,
   dateStrings: true,
   timezone: "+07:00", // VN time
-   ssl: {
-    rejectUnauthorized: true, // ✅ Required by Railway
-  },
 });
 
 // Connect to the database
