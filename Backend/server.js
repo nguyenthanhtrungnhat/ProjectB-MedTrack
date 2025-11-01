@@ -7,6 +7,7 @@ const app = express();
 const verifyToken = require("./verifyToken");
 require("dotenv").config({ path: "JWT.env" });
 require('dotenv').config();
+
 // Enable CORS
 app.use(cors());
 
@@ -16,9 +17,9 @@ const db = mysql.createConnection({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-   port: process.env.DB_PORT, // Add this
+  port: process.env.DB_PORT,
   dateStrings: true,
-  timezone: "+07:00", // VN time
+  timezone: "+07:00",
 });
 
 // Connect to the database
@@ -35,7 +36,6 @@ app.use(express.json());
 
 // Generic function to fetch all records from a table
 const getAllRecords = (tableName, res) => {
-
   db.query(`SELECT * FROM ${tableName}`, (err, results) => {
     if (err) {
       res.status(500).send({ error: 'Failed to retrieve records from ' + tableName });
@@ -44,7 +44,8 @@ const getAllRecords = (tableName, res) => {
     }
   });
 };
-// Generic function to fetch all records from a table
+
+// Generic function to fetch all records with join to user table
 const getAllRecords2 = (tableName, res) => {
   const query = `
     SELECT 
@@ -70,52 +71,44 @@ const getAllRecords2 = (tableName, res) => {
     }
   });
 };
-// API routes for each table
+
+// API routes
 app.get('/nurses', (req, res) => getAllRecords2('nurse', res));
-app.get('/doctors', (req, res) => getAllRecords2('Doctor', res));
-app.get('/medical-records', (req, res) => getAllRecords('MedicalRecords', res));
-app.get('/patients', (req, res) => getAllRecords2('Patient', res));
-app.get('/rooms', (req, res) => getAllRecords('Room', res));
-app.get('/requests', (req, res) => getAllRecords('Request', res));
-app.get('/users', (req, res) => getAllRecords('User', res));
-app.get('/appointments', (req, res) => getAllRecords('Appointment', res));
-app.get('/roles', (req, res) => getAllRecords('Role', res));
-app.get('/user-roles', (req, res) => getAllRecords('UserRole', res));
-app.get('/feedback', (req, res) => getAllRecords('Feedback', res));
+app.get('/doctors', (req, res) => getAllRecords2('doctor', res));
+app.get('/medical-records', (req, res) => getAllRecords('medicalrecords', res));
+app.get('/patients', (req, res) => getAllRecords2('patient', res));
+app.get('/rooms', (req, res) => getAllRecords('room', res));
+app.get('/requests', (req, res) => getAllRecords('request', res));
+app.get('/users', (req, res) => getAllRecords('user', res));
+app.get('/appointments', (req, res) => getAllRecords('appointment', res));
+app.get('/roles', (req, res) => getAllRecords('role', res));
+app.get('/user-roles', (req, res) => getAllRecords('userrole', res));
+app.get('/feedback', (req, res) => getAllRecords('feedback', res));
 app.get('/nursepatient', (req, res) => getAllRecords('nursepatient', res));
+
 // Get patient by nurseID
 app.get("/nursepatient/:nurseID", (req, res) => {
   const { nurseID } = req.params;
-
-  const query = `
-    SELECT np.*
-    FROM nursepatient np
-    WHERE nurseID = ?;
-  `;
-
+  const query = `SELECT np.* FROM nursepatient np WHERE nurseID = ?;`;
   db.query(query, [nurseID], (err, results) => {
     if (err) return res.status(500).json({ error: "Database error", details: err });
     if (results.length === 0) return res.status(404).json({ error: "No patients found for this nurse" });
-
-    res.json(results); // ✅ Return full list of patients
+    res.json(results);
   });
 });
 
 // Get nurse by ID
 app.get("/nurses/:nurseID", (req, res) => {
   const { nurseID } = req.params;
-
   const query = `
     SELECT n.*, u.*
-    FROM Nurse n
-    JOIN User u ON n.userID = u.userID
+    FROM nurse n
+    JOIN user u ON n.userID = u.userID
     WHERE n.nurseID = ?;
   `;
-
   db.query(query, [nurseID], (err, results) => {
     if (err) return res.status(500).json({ error: "Database error", details: err });
-    if (results.length === 0) return res.status(404).json({ error: "Patient not found" });
-
+    if (results.length === 0) return res.status(404).json({ error: "Nurse not found" });
     res.json(results[0]);
   });
 });
@@ -123,105 +116,76 @@ app.get("/nurses/:nurseID", (req, res) => {
 // Get full nurse details by userID
 app.get("/nurses/by-user/:userID", (req, res) => {
   const { userID } = req.params;
-
   const query = `
     SELECT n.*, u.*
-    FROM Nurse n
-    JOIN User u ON n.userID = u.userID
+    FROM nurse n
+    JOIN user u ON n.userID = u.userID
     WHERE n.userID = ?;
   `;
-
   db.query(query, [userID], (err, results) => {
     if (err) return res.status(500).json({ error: "Database error", details: err });
     if (results.length === 0) return res.status(404).json({ error: "Nurse not found" });
-
-    res.json(results[0]); // Send full nurse data
+    res.json(results[0]);
   });
 });
 
 // API to get patients by roomID
 app.get("/rooms/:roomID/patients", (req, res) => {
   const { roomID } = req.params;
-
   const query = `
       SELECT p.*, u.fullName, u.email, u.phone
-      FROM Patient p
-      JOIN RoomPatient rp ON p.patientID = rp.patientID
-      JOIN User u ON p.userID = u.userID 
+      FROM patient p
+      JOIN roompatient rp ON p.patientID = rp.patientID
+      JOIN user u ON p.userID = u.userID 
       WHERE rp.roomID = ?;
   `;
-
   db.query(query, [roomID], (err, results) => {
-    if (err) {
-      return res.status(500).json({ error: "Database error", details: err });
-    }
+    if (err) return res.status(500).json({ error: "Database error", details: err });
     res.json(results);
   });
 });
 
-//get patient by id
+// Get patient by ID
 app.get("/patients/:patientID", (req, res) => {
   const { patientID } = req.params;
-
   const query = `
     SELECT p.*, u.*
-    FROM Patient p
-    JOIN User u ON p.userID = u.userID
+    FROM patient p
+    JOIN user u ON p.userID = u.userID
     WHERE p.patientID = ?;
   `;
-
   db.query(query, [patientID], (err, results) => {
     if (err) return res.status(500).json({ error: "Database error", details: err });
     if (results.length === 0) return res.status(404).json({ error: "Patient not found" });
-
     res.json(results[0]);
   });
 });
 
-//get medical-record by id
+// Get medical record by patientID
 app.get("/medical-records/:patientID", (req, res) => {
   const { patientID } = req.params;
-
-  const query = `
-    SELECT *
-    FROM MEDICALRECORDS 
-    WHERE MEDICALRECORDS.patientID = ?;
-  `;
-
+  const query = `SELECT * FROM medicalrecords WHERE patientID = ?;`;
   db.query(query, [patientID], (err, results) => {
     if (err) return res.status(500).json({ error: "Database error", details: err });
-    if (results.length === 0) return res.status(404).json({ error: "Patient not found" });
-
-    res.json(results);  // return all records
+    if (results.length === 0) return res.status(404).json({ error: "No records found" });
+    res.json(results);
   });
 });
 
 // GET: Get medical record by recordID
 app.get('/medical-records/by-recordId/:recordID', (req, res) => {
   const recordID = parseInt(req.params.recordID);
+  if (isNaN(recordID)) return res.status(400).json({ error: 'Invalid recordID' });
 
-  if (isNaN(recordID)) {
-    return res.status(400).json({ error: 'Invalid recordID' });
-  }
-
-  const query = 'SELECT * FROM MEDICALRECORDS WHERE recordID = ?';
-
+  const query = 'SELECT * FROM medicalrecords WHERE recordID = ?';
   db.query(query, [recordID], (err, results) => {
-    if (err) {
-      console.error('Query error:', err);
-      return res.status(500).json({ error: 'Database error' });
-    }
-
-    if (results.length === 0) {
-      return res.status(404).json({ message: 'Record not found' });
-    }
-
+    if (err) return res.status(500).json({ error: 'Database error' });
+    if (results.length === 0) return res.status(404).json({ message: 'Record not found' });
     res.json(results[0]);
   });
 });
 
-//login API
-
+// Login API
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
   if (!email || !password)
@@ -229,80 +193,44 @@ app.post("/login", (req, res) => {
 
   const query = "SELECT * FROM user WHERE email = ?";
   db.query(query, [email], (err, results) => {
-    if (err) {
-      console.error("Database error:", err);
-      return res.status(500).json({ error: "Internal server error" });
-    }
-    if (results.length === 0) {
-      console.log(`Failed login attempt for email: ${email}`);
-      return res.status(401).json({ error: "Invalid email or password" });
-    }
+    if (err) return res.status(500).json({ error: "Internal server error" });
+    if (results.length === 0) return res.status(401).json({ error: "Invalid email or password" });
 
     const user = results[0];
-
-    if (password !== user.password) {
-      console.log(`Failed login attempt for email: ${email}`);
+    if (password !== user.password)
       return res.status(401).json({ error: "Invalid email or password" });
-    }
 
-    db.query("SELECT roleID FROM userRole WHERE userID = ?", [user.userID], (err, roleResults) => {
-      if (err) {
-        console.error("Database error:", err);
-        return res.status(500).json({ error: "Internal server error" });
-      }
-      if (roleResults.length === 0) {
-        return res.status(401).json({ error: "Role not found" });
-      }
+    db.query("SELECT roleID FROM userrole WHERE userID = ?", [user.userID], (err, roleResults) => {
+      if (err) return res.status(500).json({ error: "Internal server error" });
+      if (roleResults.length === 0) return res.status(401).json({ error: "Role not found" });
 
       const roleID = roleResults[0].roleID;
       const token = jwt.sign({ userID: user.userID, roleID }, "secretkey", { expiresIn: "1h" });
-      // Determine redirect path based on roleID
+
       let redirectPath;
       let roleName;
 
       switch (roleID) {
-        case 1:
-          redirectPath = "/doctor";
-          roleName = "Doctor";
-          break;
-        case 2:
-          redirectPath = "/home";
-          roleName = "Nurse";
-          break;
-        case 3:
-          redirectPath = "/patient";
-          roleName = "Patient";
-          break;
-        case 666:
-          redirectPath = "/admin";
-          roleName = "Admin";
-          break;
+        case 1: redirectPath = "/doctor"; roleName = "Doctor"; break;
+        case 2: redirectPath = "/home"; roleName = "Nurse"; break;
+        case 3: redirectPath = "/patient"; roleName = "Patient"; break;
+        case 666: redirectPath = "/admin"; roleName = "Admin"; break;
         default:
           return res.status(403).json({ error: "Unauthorized role. Please contact support." });
       }
 
-      console.log(
-        `User logged in successfully: ${user.email} (userID: ${user.userID}, Role: ${roleName} [${roleID}])`
-      );
       res.json({
         message: "Login successful",
         token,
-        redirect: redirectPath, // Include the redirect path
-        user: {
-          userID: user.userID,
-          email: user.email,
-          roleID,
-        }
+        redirect: redirectPath,
+        user: { userID: user.userID, email: user.email, roleID },
       });
     });
   });
 });
 
-
-
-// API POST để thêm dữ liệu vào bảng MedicalRecords
+// POST: Add medical record
 app.post("/post-medical-records", verifyToken, (req, res) => {
-  // 🔹 Giờ mới thực hiện thêm dữ liệu
   const {
     patientID,
     heartRate,
@@ -321,106 +249,64 @@ app.post("/post-medical-records", verifyToken, (req, res) => {
     sensorium
   } = req.body;
 
-  const userID = req.user.userID; // ✅ From token
+  const userID = req.user.userID;
   const roleID = req.user.roleID;
 
   const sql = `
-      INSERT INTO MedicalRecords 
+      INSERT INTO medicalrecords 
       (patientID, heartRate, pulse, height, weight, hurtScale, temperature, currentCondition, SP02, healthStatus, respiratoryRate, bloodPressure, urine, oxygenTherapy, sensorium) 
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
-  db.query(
-    sql,
-    [
-      patientID,
-      heartRate,
-      pulse,
-      height,
-      weight,
-      hurtScale,
-      temperature,
-      currentCondition,
-      SP02,
-      healthStatus,
-      respiratoryRate,
-      bloodPressure,
-      urine,
-      oxygenTherapy,
-      sensorium
-    ],
-    (err, result) => {
-      if (err) {
-        console.error("Lỗi khi thêm dữ liệu:", err);
-        return res.status(500).json({ message: "Lỗi server", error: err });
-      }
+  db.query(sql, [
+    patientID, heartRate, pulse, height, weight, hurtScale, temperature,
+    currentCondition, SP02, healthStatus, respiratoryRate, bloodPressure,
+    urine, oxygenTherapy, sensorium
+  ], (err, result) => {
+    if (err) return res.status(500).json({ message: "Server error", error: err });
 
-      res.status(201).json({
-        message: "Medical record added successfully",
-        recordID: result.insertId,
-        addedBy: userID,
-        roleID,
-      });
-    }
-  );
+    res.status(201).json({
+      message: "Medical record added successfully",
+      recordID: result.insertId,
+      addedBy: userID,
+      roleID,
+    });
+  });
 });
-//delete nurse by nurseID
+
+// Delete nurse
 app.delete("/nurses/:nurseID", (req, res) => {
   const nurseID = req.params.nurseID;
-
-  console.log("Attempting to delete nurse with ID:", nurseID);  // Debugging log
-
   const sql = "DELETE FROM nurse WHERE nurseID = ?";
-
   db.query(sql, [nurseID], (err, result) => {
-    if (err) {
-      console.error("Database error:", err);  // Log the exact MySQL error
-      return res.status(500).json({ message: "Failed to delete nurse", error: err });
-    }
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ message: "Nurse not found" });
-    }
+    if (err) return res.status(500).json({ message: "Failed to delete nurse", error: err });
+    if (result.affectedRows === 0) return res.status(404).json({ message: "Nurse not found" });
     res.status(200).json({ message: "Nurse deleted successfully" });
   });
 });
-//delete doctor by doctorID
+
+// Delete doctor
 app.delete("/doctors/:doctorID", (req, res) => {
-  const nurseID = req.params.nurseID;
-
-  console.log("Attempting to delete doctor with ID:", doctorID);  // Debugging log
-
+  const doctorID = req.params.doctorID;
   const sql = "DELETE FROM doctor WHERE doctorID = ?";
-
   db.query(sql, [doctorID], (err, result) => {
-    if (err) {
-      console.error("Database error:", err);  // Log the exact MySQL error
-      return res.status(500).json({ message: "Failed to delete doctor", error: err });
-    }
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ message: "Doctor not found" });
-    }
+    if (err) return res.status(500).json({ message: "Failed to delete doctor", error: err });
+    if (result.affectedRows === 0) return res.status(404).json({ message: "Doctor not found" });
     res.status(200).json({ message: "Doctor deleted successfully" });
   });
 });
-//delete patient by doctorID
+
+// Delete patient
 app.delete("/patients/:patientID", (req, res) => {
-  const nurseID = req.params.nurseID;
-
-  console.log("Attempting to delete patient with ID:", patientID);  // Debugging log
-
+  const patientID = req.params.patientID;
   const sql = "DELETE FROM patient WHERE patientID = ?";
-
   db.query(sql, [patientID], (err, result) => {
-    if (err) {
-      console.error("Database error:", err);  // Log the exact MySQL error
-      return res.status(500).json({ message: "Failed to delete patient", error: err });
-    }
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ message: "Patient not found" });
-    }
+    if (err) return res.status(500).json({ message: "Failed to delete patient", error: err });
+    if (result.affectedRows === 0) return res.status(404).json({ message: "Patient not found" });
     res.status(200).json({ message: "Patient deleted successfully" });
   });
 });
+
 // Update user by ID
 app.put("/users/:id", (req, res) => {
   const userID = req.params.id;
@@ -437,11 +323,10 @@ app.put("/users/:id", (req, res) => {
     gender
   } = req.body;
 
-  // Convert date fields from ISO to MySQL format (YYYY-MM-DD HH:MM:SS)
   const formatDate = (isoDate) => {
-    if (!isoDate) return null; // Handle null cases
+    if (!isoDate) return null;
     const date = new Date(isoDate);
-    return date.toISOString().slice(0, 19).replace("T", " "); // Convert to MySQL DATETIME format
+    return date.toISOString().slice(0, 19).replace("T", " ");
   };
 
   dob = formatDate(dob);
@@ -453,44 +338,31 @@ app.put("/users/:id", (req, res) => {
           email = ?, CCCD = ?, address = ?, haveTask = ?, gender = ? 
       WHERE userID = ?`;
 
-  db.query(
-    sql,
-    [username, password, fullName, dob, phone, email, CCCD, address, haveTask, gender, userID],
-    (err, result) => {
-      if (err) {
-        console.error("Error updating user:", err);
-        return res.status(500).json({ error: "Failed to update user" });
-      }
-      if (result.affectedRows === 0) {
-        return res.status(404).json({ error: "User not found" });
-      }
-      console.log(result);
-      res.json({ message: "User updated successfully!" });
-    }
-  );
+  db.query(sql, [username, password, fullName, dob, phone, email, CCCD, address, haveTask, gender, userID], (err, result) => {
+    if (err) return res.status(500).json({ error: "Failed to update user" });
+    if (result.affectedRows === 0) return res.status(404).json({ error: "User not found" });
+    res.json({ message: "User updated successfully!" });
+  });
 });
-// get patient by userID
+
+// Get patient by userID
 app.get('/api/patientByUserID/:userID', (req, res) => {
   const userID = req.params.userID;
-  // const query = "SELECT * FROM patient WHERE userID = ?";
   const query = `
-  SELECT p.*, u.*
-  FROM Patient p
-  JOIN User u ON p.userID = u.userID
-  WHERE p.userID = ?;
-`;
+    SELECT p.*, u.*
+    FROM patient p
+    JOIN user u ON p.userID = u.userID
+    WHERE p.userID = ?;
+  `;
   db.query(query, [userID], (err, results) => {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
+    if (err) return res.status(500).json({ error: err.message });
     res.json(results);
   });
 });
 
-//get schedule of nurse
+// Get schedule of nurse
 app.get('/api/schedules/:nurseID', (req, res) => {
   const nurseID = req.params.nurseID;
-
   const query = `
     SELECT 
         s.scheduleID,
@@ -506,17 +378,12 @@ app.get('/api/schedules/:nurseID', (req, res) => {
     WHERE s.nurseID = ?
     ORDER BY s.date, s.start_at
   `;
-
   db.query(query, [nurseID], (err, results) => {
-    if (err) {
-      console.error('Query error: ', err);
-      return res.status(500).json({ error: 'Internal Server Error' });
-    }
-
-    // Directly send results from DB
+    if (err) return res.status(500).json({ error: 'Internal Server Error' });
     res.json(results);
   });
 });
+
 // POST: Add new schedule
 app.post('/api/schedules', (req, res) => {
   const {
@@ -530,10 +397,8 @@ app.post('/api/schedules', (req, res) => {
     room_location
   } = req.body;
 
-  // Basic validation
-  if (!subject || !date || !start_at || !working_hours || !roomID) {
+  if (!subject || !date || !start_at || !working_hours || !roomID)
     return res.status(400).json({ message: "Missing required fields" });
-  }
 
   const sql = `
     INSERT INTO schedules 
@@ -541,24 +406,17 @@ app.post('/api/schedules', (req, res) => {
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
-  db.query(
-    sql,
-    [scheduleID, subject, date, start_at, working_hours, color, roomID, room_location],
-    (err, result) => {
-      if (err) {
-        console.error("Error inserting schedule:", err);
-        return res.status(500).json({ message: "Database error", error: err });
-      }
-
-      res.status(201).json({
-        message: "Schedule added successfully",
-        scheduleID: result.insertId || scheduleID,
-        data: { scheduleID, subject, date, start_at, working_hours, color, roomID, room_location },
-      });
-    }
-  );
+  db.query(sql, [scheduleID, subject, date, start_at, working_hours, color, roomID, room_location], (err, result) => {
+    if (err) return res.status(500).json({ message: "Database error", error: err });
+    res.status(201).json({
+      message: "Schedule added successfully",
+      scheduleID: result.insertId || scheduleID,
+      data: { scheduleID, subject, date, start_at, working_hours, color, roomID, room_location },
+    });
+  });
 });
-// ✅ PUT — Edit existing schedule by ID
+
+// PUT: Edit schedule
 app.put('/api/schedules/:id', async (req, res) => {
   try {
     const scheduleID = req.params.id;
@@ -572,13 +430,8 @@ app.put('/api/schedules/:id', async (req, res) => {
       room_location
     } = req.body;
 
-    const [rows] = await db.execute(
-      'SELECT * FROM schedules WHERE scheduleID = ?',
-      [scheduleID]
-    );
-    if (rows.length === 0) {
-      return res.status(404).json({ message: 'Schedule not found' });
-    }
+    const [rows] = await db.execute('SELECT * FROM schedules WHERE scheduleID = ?', [scheduleID]);
+    if (rows.length === 0) return res.status(404).json({ message: 'Schedule not found' });
 
     const sql = `
       UPDATE schedules
@@ -586,21 +439,8 @@ app.put('/api/schedules/:id', async (req, res) => {
       WHERE scheduleID = ?
     `;
 
-    await db.execute(sql, [
-      subject,
-      date,
-      start_at,
-      working_hours,
-      color,
-      roomID,
-      room_location,
-      scheduleID
-    ]);
-
-    res.json({
-      message: '✅ Schedule updated successfully',
-      schedule: { scheduleID, ...req.body }
-    });
+    await db.execute(sql, [subject, date, start_at, working_hours, color, roomID, room_location, scheduleID]);
+    res.json({ message: '✅ Schedule updated successfully', schedule: { scheduleID, ...req.body } });
   } catch (err) {
     console.error('Error updating schedule:', err);
     res.status(500).json({ message: 'Internal server error' });
@@ -608,7 +448,7 @@ app.put('/api/schedules/:id', async (req, res) => {
 });
 
 // Start the server
-const PORT = process.env.PORT ||  3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
