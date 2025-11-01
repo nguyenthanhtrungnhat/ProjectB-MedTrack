@@ -60,7 +60,7 @@ const getAllRecords2 = (tableName, res) => {
     u.haveTask,
     u.gender
     FROM ${tableName} n
-    JOIN User u ON n.userID = u.userID;
+    JOIN user u ON n.userID = u.userID;
   `;
   db.query(query, (err, results) => {
     if (err) {
