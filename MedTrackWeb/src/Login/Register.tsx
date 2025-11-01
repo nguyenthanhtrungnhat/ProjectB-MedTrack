@@ -32,7 +32,7 @@ export default function RegisterScreen() {
                 email,
                 password,
             });
-
+            console.log(response);
             toast.success("Registration successful! Redirecting to login...", {
                 position: "top-right",
             });
