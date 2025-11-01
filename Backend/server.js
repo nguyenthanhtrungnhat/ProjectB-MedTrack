@@ -71,7 +71,7 @@ const getAllRecords2 = (tableName, res) => {
   });
 };
 // API routes for each table
-app.get('/nurses', (req, res) => getAllRecords2('Nurse', res));
+app.get('/nurses', (req, res) => getAllRecords2('nurse', res));
 app.get('/doctors', (req, res) => getAllRecords2('Doctor', res));
 app.get('/medical-records', (req, res) => getAllRecords('MedicalRecords', res));
 app.get('/patients', (req, res) => getAllRecords2('Patient', res));
