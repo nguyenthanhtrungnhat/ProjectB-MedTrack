@@ -78,8 +78,7 @@ export default function Header() {
                                     <Noti />
                                 </ul>
 
-                                <form className="d-flex" role="search">
-
+                                <form className="w-25" role="search">
                                     <PatientSearch />
                                 </form>
                             </>

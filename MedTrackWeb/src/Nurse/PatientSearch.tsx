@@ -64,9 +64,6 @@ export default function PatientSearch() {
         onChange={(e) => setSearchTerm(e.target.value)}
         onFocus={() => filteredPatients.length > 0 && setShowDropdown(true)}
         autoComplete="off"
-         style={{
-           width: 500
-          }}
       />
       {showDropdown && (
         <ul
