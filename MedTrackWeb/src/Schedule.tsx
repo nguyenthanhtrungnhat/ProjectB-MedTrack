@@ -113,7 +113,7 @@ export default function Schedule() {
   });
 
   return (
-    <div className="p-3 main-content">
+    <div className="p-3 pt-5 mt-5">
       {error && <div className="text-danger mb-3">{error}</div>}
 
       <Calendar

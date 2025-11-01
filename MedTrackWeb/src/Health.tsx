@@ -77,7 +77,7 @@ export default function Health() {
     const renderVital = (label: string, imgSrc: string, unit: string, type: string, value?: number | string | null) => {
         const { color, label: status } = getHealthBadge(type, value);
         return (
-            <div className="border whiteBg dropShadow padding">
+            <div className="vitalCard border whiteBg dropShadow padding">
                 <p className="blueText">
                     {label} <span className={`badge ${color}`}>{status}</span>
                 </p>

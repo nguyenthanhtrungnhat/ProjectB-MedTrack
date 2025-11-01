@@ -447,6 +447,68 @@ app.put('/api/schedules/:id', async (req, res) => {
   }
 });
 
+app.post("/register", (req, res) => {
+  const { username, email, password } = req.body;
+
+  if (!username || !email || !password) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+
+  // Step 1: Check if email already exists
+  db.query("SELECT * FROM user WHERE email = ?", [email], (err, result) => {
+    if (err) {
+      console.error("Select error:", err);
+      return res.status(500).json({ message: "Database error on SELECT" });
+    }
+
+    if (result.length > 0) {
+      return res.status(400).json({ message: "Email already registered" });
+    }
+
+    // Step 2: Insert new user
+    db.query(
+      "INSERT INTO user (username, email, password) VALUES (?, ?, ?)",
+      [username, email, password],
+      (err, result) => {
+        if (err) {
+          console.error("Insert user error:", err);
+          return res.status(500).json({ message: "Error inserting user" });
+        }
+
+        const userID = result.insertId;
+
+        // Step 3: Assign roleID = 3 (Patient)
+        db.query(
+          "INSERT INTO userRole (userID, roleID) VALUES (?, ?)",
+          [userID, 3],
+          (err2) => {
+            if (err2) {
+              console.error("Insert userRole error:", err2);
+              return res.status(500).json({ message: "Error assigning role" });
+            }
+
+            // Step 4: Create an empty patient record linked to userID
+            db.query(
+              "INSERT INTO patient (userID) VALUES (?)",
+              [userID],
+              (err3) => {
+                if (err3) {
+                  console.error("Insert patient error:", err3);
+                  return res.status(500).json({ message: "Error creating patient" });
+                }
+
+                console.log("✅ New patient registered with userID:", userID);
+                res.json({ message: "User (Patient) created successfully", userID });
+              }
+            );
+          }
+        );
+      }
+    );
+  });
+});
+
+
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

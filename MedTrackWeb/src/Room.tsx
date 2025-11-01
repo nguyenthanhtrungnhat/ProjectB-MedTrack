@@ -9,7 +9,7 @@ export default function Room({department,roomID}:RoomProps) {
     };
     return (
         <>
-            <div className="col-4 marginBottom">
+            <div className="col-lg-4 col-sm-12 marginBottom">
                 <button className="roomBtn"onClick={handleClick}>
                     <div className="card room">
                         <div className="card-body">

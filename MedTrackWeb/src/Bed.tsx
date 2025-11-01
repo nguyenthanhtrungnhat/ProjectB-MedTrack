@@ -8,7 +8,7 @@ export default function Bed({fullName,patientID}:PatientProps) {
     };
     return (
         <>
-            <div className="col-4 marginBottom">
+            <div className="col-lg-4 marginBottom">
                 <button className="roomBtn"onClick={handleClick}>
                     <div className="card room">
                         <div className="card-body">

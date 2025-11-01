@@ -481,3 +481,96 @@
     transform: scale(1.03);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
+
+@media (max-width: 768px) {
+    .inbox-dropdown {
+        position: fixed !important;
+        /* escape navbar container */
+        top: 60px;
+        /* adjust to just below your navbar height */
+        width: 100vw;
+        max-height: 80vh;
+        overflow-y: auto;
+        /* allow scrolling if long */
+        z-index: 1055;
+        /* above navbar */
+        border-radius: 10px;
+    }
+
+    .inbox-dropdown .alert {
+        font-size: 0.9rem;
+        word-wrap: break-word;
+    }
+
+    .badge {
+        font-size: 0.7rem;
+        padding: 0.35em 0.5em;
+    }
+
+    .navbar {
+        overflow: visible !important;
+        /* let dropdown float out */
+    }
+}
+
+/* 📱 Make each vitalCard responsive on small screens */
+@media (max-width: 768px) {
+    .vitalCard {
+        padding: 0.5rem !important;
+        margin-bottom: 0.75rem !important;
+        border-radius: 0.5rem;
+    }
+
+    .vitalCard {
+        height: 120px;
+    }
+
+    .vitalCard p {
+        font-size: 0.85rem !important;
+        margin-bottom: 0.3rem !important;
+    }
+
+    .vitalCard .blueText {
+        font-size: 0.9rem !important;
+    }
+
+    .vitalCard img {
+        display: none !important;
+    }
+
+    .vitalCard .pluseImg {
+        width: 24px !important;
+        height: 24px !important;
+    }
+
+    .vitalCard h4 {
+        font-size: 1.1rem !important;
+        margin: 0 0.25rem !important;
+        padding: 0;
+    }
+
+    .vitalCard span.blueText:last-child {
+        font-size: 0.8rem !important;
+    }
+
+    .vitalCard .badge {
+        font-size: 0.7rem !important;
+        padding: 0.25em 0.4em !important;
+    }
+}
+
+/* 📱 For very small screens (<576px), stack vertically */
+@media (max-width: 576px) {
+    .vitalCard .d-flex {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .vitalCard h4 {
+        font-size: 1rem !important;
+    }
+
+    .vitalCard .blueText {
+        text-align: center;
+    }
+}

@@ -94,6 +94,7 @@ export default function ShiftChange() {
                                         type="button"
                                         className="btn btn-success w-100"
                                     >
+                                        Submit
                                     </button>
                                 </div>
                             </form>
@@ -132,21 +133,6 @@ export default function ShiftChange() {
                                                 </Link>
                                             </li>
                                         </ul>
-                                    </div>
-                                    <h6 className='whiteText blueBg announceHead'>Latest announcements</h6>
-                                    <div className='padding20'>
-                                        <div className="card border-light mb-3 dropShadow">
-                                            <div className="card-body p-2 card-header">
-                                                <p className="card-title p-0"><b>Light card title</b></p>
-                                                <p className="card-text p-0">Description</p>
-                                            </div>
-                                        </div>
-                                        <div className="card border-light mb-3 dropShadow">
-                                            <div className="card-body p-2 card-header">
-                                                <p className="card-title p-0"><b>Light card title</b></p>
-                                                <p className="card-text p-0">Description</p>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>

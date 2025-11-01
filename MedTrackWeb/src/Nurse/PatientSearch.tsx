@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { PatientProps } from "../interface";
 
 export default function PatientSearch() {
@@ -7,9 +7,7 @@ export default function PatientSearch() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredPatients, setFilteredPatients] = useState<PatientProps[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
-  // const containerRef = useRef(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const navigate = useNavigate();
 
   // Fetch patient data
   useEffect(() => {
@@ -38,24 +36,17 @@ export default function PatientSearch() {
 
   // Close dropdown when clicking outside
   useEffect(() => {
-    function handleClickOutside(event:any) {
+    function handleClickOutside(event: any) {
       if (containerRef.current && !containerRef.current.contains(event.target)) {
         setShowDropdown(false);
-      } 
+      }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Handle selection
-  const handleSelect = (patient: PatientProps) => {
-    setSearchTerm(`${patient.fullName} `);
-    setShowDropdown(false);
-    navigate(`/home/bed-details/${patient.patientID}`);
-  };
-
   return (
-    <div ref={containerRef}>
+    <div ref={containerRef} className="position-relative" style={{ flexShrink: 0 }}>
       <input
         type="search"
         className="form-control me-2"
@@ -65,22 +56,28 @@ export default function PatientSearch() {
         onFocus={() => filteredPatients.length > 0 && setShowDropdown(true)}
         autoComplete="off"
       />
+
       {showDropdown && (
         <ul
-          className="list-group position-absolute w-100 mt-1 shadow-sm"
+          className="list-group position-absolute start-0 mt-1 shadow-sm"
           style={{
+            width: "100%",
             zIndex: 2000,
             maxHeight: "220px",
             overflowY: "auto",
             borderRadius: "0.5rem",
+            backgroundColor: "white",
           }}
         >
-          {filteredPatients.map((p) => (  
-            <li
+          {filteredPatients.map((p) => (
+            <Link
               key={p.patientID}
-              className="list-group-item list-group-item-action d-flex align-items-center"
-              onClick={() => handleSelect(p)}
-              style={{ cursor: "pointer" }}
+              to={`/home/bed-details/${p.patientID}`}
+              className="list-group-item list-group-item-action d-flex align-items-center text-decoration-none"
+              onClick={() => {
+                setShowDropdown(false);
+                setSearchTerm(""); // optional: clear after navigation
+              }}
             >
               <img
                 src={p.image}
@@ -89,10 +86,10 @@ export default function PatientSearch() {
                 style={{ width: "32px", height: "32px", objectFit: "cover" }}
               />
               <div>
-                <div className="fw-semibold">{p.fullName}</div>
+                <div className="fw-semibold text-dark">{p.fullName}</div>
                 <small className="text-muted">ID: {p.patientID}</small>
               </div>
-            </li>
+            </Link>
           ))}
         </ul>
       )}
