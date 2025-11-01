@@ -479,7 +479,7 @@ app.post("/register", (req, res) => {
 
         // Step 3: Assign roleID = 3 (Patient)
         db.query(
-          "INSERT INTO userRole (userID, roleID) VALUES (?, ?)",
+          "INSERT INTO userrole (userID, roleID) VALUES (?, ?)",
           [userID, 3],
           (err2) => {
             if (err2) {
