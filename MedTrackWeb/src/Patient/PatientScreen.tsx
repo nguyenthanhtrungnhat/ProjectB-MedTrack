@@ -17,7 +17,6 @@ import urineImg from './../images/pulseReal.png';
 import spo2Img from './../images/pulseReal.png';
 import bpImg from './../images/bloodPressure.png';
 import ntImg from './../images/nhiptho.png';
-import CompleteData from './CompleteData';
 
 const getUserIDFromToken = () => {
     const token = sessionStorage.getItem("token");
@@ -37,6 +36,7 @@ export default function PatientScreen() {
     const [record, setRecord] = useState<RecordProps | null>(null);
     const userID = getUserIDFromToken();
     const [showMore, setShowMore] = useState(false);
+
     // 🩺 Dynamic badge generator
     const getHealthBadge = (type: string, value?: number | string | null) => {
         if (value === null || value === undefined) return { color: "text-bg-secondary", label: "N/A" };
@@ -108,19 +108,14 @@ export default function PatientScreen() {
                 <div className="d-flex align-items-center">
                     <img src={imgSrc} className="pluseImg me-2" alt={label} />
                     <h4 className="blueText mb-0 paddingLeft20 me-3">
-                        {value !== null && value !== undefined ? (
-                            value
-                        ) : (
-                            <div className="spinner-border me-3" role="status">
-                                <span className="visually-hidden">Loading...</span>
-                            </div>
-                        )}
+                        {value !== null && value !== undefined ? value : "N/A"}
                     </h4>
                     <span className="blueText">{unit}</span>
                 </div>
             </div>
         );
     };
+
     // Fetch patients for this user
     useEffect(() => {
         if (!userID) return;
@@ -133,7 +128,12 @@ export default function PatientScreen() {
 
     // Fetch records for the first patient
     useEffect(() => {
-        if (patients.length === 0) return;
+        // Removed check for patients.length === 0 here
+        if (patients.length === 0) {
+            setAllRecords([]);
+            setRecord(null);
+            return;
+        }
 
         const url = `http://localhost:3000/medical-records/${patients[0].patientID}`;
         axios.get(url)
@@ -153,13 +153,9 @@ export default function PatientScreen() {
             .catch(error => console.error('Error fetching selected record:', error));
     };
 
-    if (!userID) return <h1 className='p-5 mt-5'>Unauthorized. Please log in.</h1>;
-    if (patients.length === 0) return <CompleteData />;
-    //  if (patients.length === 0) return <h1 className='p-5 mt-5'>Please update your persoonal data</h1>;
-    // if (!record) return <h3>Loading medical record...</h3>;
-
     const patient = patients[0];
 
+    if (!userID) return <h1 className='p-5 mt-5'>Unauthorized. Please log in.</h1>;
 
     return (
         <div className="container-fluid mainBg pt-5 mt-5 h-100">
@@ -169,26 +165,30 @@ export default function PatientScreen() {
                         {/* Left column */}
                         <div className="col-lg-6 col-sm-12 d-flex">
                             <div className="w-100 d-flex flex-column border whiteBg dropShadow p-3">
-                                <PatientInformation
-                                    image={patient.image || ""}
-                                    fullName={patient.fullName || "N/A"}
-                                    gender={
-                                        patient.gender === "1"
-                                            ? "Male"
-                                            : patient.gender === "2"
-                                                ? "Female"
-                                                : "N/A"
-                                    }
-                                    dob={patient.dob?.split('T')[0] || ""}
-                                    phone={patient.phone || ""}
-                                    patientID={patient.patientID}
-                                    address={patient.address || "N/A"}
-                                    email={patient.email || ""}
-                                    BHYT={patient.BHYT || ""}
-                                    admissionDate={patient.admissionDate?.split('T')[0] || ""}
-                                    relativeName={patient.relativeName || ""}
-                                    relativeNumber={patient.relativeNumber}
-                                />
+                                {patient ? (
+                                    <PatientInformation
+                                        image={patient.image || ""}
+                                        fullName={patient.fullName || ""}
+                                        gender={
+                                            patient.gender === "1"
+                                                ? "Male"
+                                                : patient.gender === "2"
+                                                    ? "Female"
+                                                    : ""
+                                        }
+                                        dob={patient.dob?.split('T')[0] || ""}
+                                        phone={patient.phone || ""}
+                                        patientID={patient.patientID}
+                                        address={patient.address || ""}
+                                        email={patient.email || ""}
+                                        BHYT={patient.BHYT || ""}
+                                        admissionDate={patient.admissionDate?.split('T')[0] || ""}
+                                        relativeName={patient.relativeName || ""}
+                                        relativeNumber={Number(patient.relativeNumber) || ""}
+                                    />
+                                ) : (
+                                    <p>No patient data available</p>
+                                )}
                             </div>
                         </div>
 
@@ -242,8 +242,8 @@ export default function PatientScreen() {
                         <div className="row">
                             <div className="col-lg-12 login">
                                 <SidebarLogin
-                                    phone={patient.phone}
-                                    fullName={patient.fullName}
+                                    phone={patient?.phone}
+                                    fullName={patient?.fullName}
                                 />
                             </div>
                         </div>

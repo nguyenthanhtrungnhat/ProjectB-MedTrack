@@ -1,7 +1,7 @@
 export default function completeData() {
     return (
         <>
-            <div className="container p-5 mt-5">
+            {/* <div className="container p-5 mt-5">
                 <div className="row">
                     <div className="col-lg-12">
                         <form className="row g-3">
@@ -20,7 +20,7 @@ export default function completeData() {
                         </form>
                     </div>
                 </div>
-            </div>
+            </div> */}
         </>
     )
 }

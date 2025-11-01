@@ -74,29 +74,47 @@ export default function Health() {
                 return { color: "text-bg-secondary", label: "" };
         }
     };
+    // const renderVital = (label: string, imgSrc: string, unit: string, type: string, value?: number | string | null) => {
+    //     const { color, label: status } = getHealthBadge(type, value);
+    //     return (
+    //         <div className="vitalCard border whiteBg dropShadow padding">
+    //             <p className="blueText">
+    //                 {label} <span className={`badge ${color}`}>{status}</span>
+    //             </p>
+    //             <div className="d-flex align-items-center">
+    //                 <img src={imgSrc} className="pluseImg me-2" alt={label} />
+    //                 <h4 className="blueText mb-0 paddingLeft20 me-3">
+    //                     {value !== null && value !== undefined ? (
+    //                         value
+    //                     ) : (
+    //                         <div className="spinner-border me-3" role="status">
+    //                             <span className="visually-hidden">Loading...</span>
+    //                         </div>
+    //                     )}
+    //                 </h4>
+    //                 <span className="blueText">{unit}</span>
+    //             </div>
+    //         </div>
+    //     );
+    // };
     const renderVital = (label: string, imgSrc: string, unit: string, type: string, value?: number | string | null) => {
         const { color, label: status } = getHealthBadge(type, value);
         return (
-            <div className="vitalCard border whiteBg dropShadow padding">
+            <div className="border whiteBg dropShadow padding">
                 <p className="blueText">
                     {label} <span className={`badge ${color}`}>{status}</span>
                 </p>
                 <div className="d-flex align-items-center">
                     <img src={imgSrc} className="pluseImg me-2" alt={label} />
                     <h4 className="blueText mb-0 paddingLeft20 me-3">
-                        {value !== null && value !== undefined ? (
-                            value
-                        ) : (
-                            <div className="spinner-border me-3" role="status">
-                                <span className="visually-hidden">Loading...</span>
-                            </div>
-                        )}
+                        {value !== null && value !== undefined ? value : "N/A"}
                     </h4>
                     <span className="blueText">{unit}</span>
                 </div>
             </div>
         );
     };
+
     const { patientID } = useParams();
     const [allRecords, setAllRecords] = useState<RecordProps[]>([]);
     const [record, setRecord] = useState<RecordProps | null>(null);

@@ -10,9 +10,10 @@ function InfoRow({ label, value }: { label: string; value?: string }) {
         {value ? (
           value
         ) : (
-          <span className="placeholder-glow">
-            <span className="placeholder col-8"></span>
-          </span>
+          // <span className="placeholder-glow">
+          //   <span className="placeholder col-8"></span>
+          // </span>
+          <small>not updating ...</small>
         )}
       </div>
     </div>
