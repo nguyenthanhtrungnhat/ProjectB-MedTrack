@@ -36,6 +36,7 @@ export default function PatientScreen() {
     const [record, setRecord] = useState<RecordProps | null>(null);
     const userID = getUserIDFromToken();
     const [showMore, setShowMore] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     // 🩺 Dynamic badge generator
     const getHealthBadge = (type: string, value?: number | string | null) => {
@@ -123,13 +124,24 @@ export default function PatientScreen() {
     };
 
     // Fetch patients for this user
+    // useEffect(() => {
+    //     if (!userID) return;
+    //     axios.get(`https://projectb-medtrack.onrender.com/api/patientByUserID/${userID}`)
+    //         .then(response => {
+    //             setPatients(response.data);
+    //         })
+    //         .catch(() => toast.error("Failed to fetch patients data"));
+    // }, [userID]);
     useEffect(() => {
         if (!userID) return;
-        axios.get(`https://projectb-medtrack.onrender.com/api/patientByUserID/${userID}`)
+        setLoading(true); // start loading
+        axios
+            .get(`https://projectb-medtrack.onrender.com/api/patientByUserID/${userID}`)
             .then(response => {
                 setPatients(response.data);
             })
-            .catch(() => toast.error("Failed to fetch patients data"));
+            .catch(() => toast.error("Failed to fetch patients data"))
+            .finally(() => setLoading(false)); // stop loading
     }, [userID]);
 
     // Fetch records for the first patient
@@ -173,25 +185,27 @@ export default function PatientScreen() {
                             <div className="w-100 d-flex flex-column border whiteBg dropShadow p-3">
                                 {patient ? (
                                     <PatientInformation
-                                        image={patient.image || ""}
-                                        fullName={patient.fullName || ""}
+                                        image={patient?.image || ""}
+                                        fullName={patient?.fullName || ""}
                                         gender={
-                                            patient.gender === "1"
+                                            patient?.gender === "1"
                                                 ? "Male"
-                                                : patient.gender === "2"
+                                                : patient?.gender === "2"
                                                     ? "Female"
                                                     : ""
                                         }
-                                        dob={patient.dob?.split('T')[0] || ""}
-                                        phone={patient.phone || ""}
-                                        patientID={patient.patientID}
-                                        address={patient.address || ""}
-                                        email={patient.email || ""}
-                                        BHYT={patient.BHYT || ""}
-                                        admissionDate={patient.admissionDate?.split('T')[0] || ""}
-                                        relativeName={patient.relativeName || ""}
-                                        relativeNumber={Number(patient.relativeNumber) || ""}
+                                        dob={patient?.dob?.split("T")[0] || ""}
+                                        phone={patient?.phone || ""}
+                                        patientID={patient?.patientID}
+                                        address={patient?.address || ""}
+                                        email={patient?.email || ""}
+                                        BHYT={patient?.BHYT || ""}
+                                        admissionDate={patient?.admissionDate?.split("T")[0] || ""}
+                                        relativeName={patient?.relativeName || ""}
+                                        relativeNumber={Number(patient?.relativeNumber) || ""}
+                                        loading={loading}
                                     />
+
                                 ) : (
                                     <p>No patient data available</p>
                                 )}
