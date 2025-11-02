@@ -101,15 +101,21 @@ export default function PatientScreen() {
     const renderVital = (label: string, imgSrc: string, unit: string, type: string, value?: number | string | null) => {
         const { color, label: status } = getHealthBadge(type, value);
         return (
-            <div className="border whiteBg dropShadow padding">
+            <div className="vitalCard border whiteBg dropShadow padding">
                 <p className="blueText">
                     {label} <span className={`badge ${color}`}>{status}</span>
                 </p>
                 <div className="d-flex align-items-center">
                     <img src={imgSrc} className="pluseImg me-2" alt={label} />
-                    <h4 className="blueText mb-0 paddingLeft20 me-3">
+                    {/* <h4 className="blueText mb-0 paddingLeft20 me-3">
                         {value !== null && value !== undefined ? value : "N/A"}
-                    </h4>
+                    </h4> */}
+                    {value !== null && value !== undefined && value !== "" ? (
+                        <h4 className="blueText mb-0 paddingLeft20 me-3">{value}</h4>
+                    ) : (
+                        <small className="text-muted paddingLeft20">N/A</small>
+                    )}
+
                     <span className="blueText">{unit}</span>
                 </div>
             </div>
@@ -242,8 +248,8 @@ export default function PatientScreen() {
                         <div className="row">
                             <div className="col-lg-12 login">
                                 <SidebarLogin
-                                    phone={patient?.phone ||"N/A"}
-                                    fullName={patient?.fullName||"N/A"}
+                                    phone={patient?.phone || "N/A"}
+                                    fullName={patient?.fullName || "N/A"}
                                 />
                             </div>
                         </div>
