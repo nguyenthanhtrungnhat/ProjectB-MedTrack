@@ -32,6 +32,7 @@ export default function NurseScreen() {
     const roomsUrl = 'https://projectb-medtrack.onrender.com/rooms';
     // const nurseID = sessionStorage.getItem("nurseID") || ""; // get nurseID
     const [count, setCount] = useState<number | null>(null);
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
         if (!nurseID) {
             return;
@@ -66,7 +67,7 @@ export default function NurseScreen() {
 
     useEffect(() => {
         if (!nurseID) return;
-
+        setLoading(true)
         axios.get(`https://projectb-medtrack.onrender.com/nurses/${nurseID}`)
             .then(response => {
                 setUser(response.data);
@@ -79,7 +80,8 @@ export default function NurseScreen() {
                 setRooms(response.data);
                 console.log("Room Data:", response.data);
             })
-            .catch(error => console.error("Error fetching rooms:", error));
+            .catch(error => console.error("Error fetching rooms:", error))
+            .finally(() => setLoading(false)); // stop loading
     }, [nurseID]);
 
     if (!userID) {
@@ -93,16 +95,41 @@ export default function NurseScreen() {
                     <div className="col-lg-9 order-2 order-lg-1">
 
                         <div className="row">
-                            {user && (
+                            {loading ? (
                                 <NurseInformation
-                                    image={user.image}
-                                    fullName={user.fullName}
-                                    gender={user.gender = 1 ? 'Male' : 'Female'}
-                                    dob={user.dob?.split('T')[0]}
-                                    phone={user.phone}
-                                    nurseID={user.nurseID}
-                                    address={user.address}
-                                    email={user.email}
+                                    image={user?.image || ""}
+                                    fullName={user?.fullName || ""}
+                                    gender={
+                                        user?.gender === "1"
+                                            ? "Male"
+                                            : user?.gender === "2"
+                                                ? "Female"
+                                                : ""
+                                    }
+                                    dob={user?.dob?.split("T")[0] || ""}
+                                    phone={user?.phone || ""}
+                                    nurseID={String(user?.nurseID)}
+                                    address={user?.address || ""}
+                                    email={user?.email || ""}
+                                    loading={loading}
+                                />
+                            ) : (
+                                <NurseInformation
+                                    image={user?.image || ""}
+                                    fullName={user?.fullName || ""}
+                                    gender={
+                                        user?.gender === "1"
+                                            ? "Male"
+                                            : user?.gender === "2"
+                                                ? "Female"
+                                                : ""
+                                    }
+                                    dob={user?.dob?.split("T")[0] || ""}
+                                    phone={user?.phone || ""}
+                                    nurseID={String(user?.nurseID)}
+                                    address={user?.address || ""}
+                                    email={user?.email || ""}
+                                    loading={loading}
                                 />
                             )}
                             <div className="col-lg-6 col-sm-12 ">

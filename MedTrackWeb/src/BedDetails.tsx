@@ -32,22 +32,7 @@ export default function BedDetails() {
                         {/* Left column */}
                         <div className="col-lg-6 col-sm-12 d-flex">
                             <div className="w-100 d-flex flex-column border whiteBg marginBottom dropShadow p-3">
-                                {/* {user && (
-                                    <PatientInformation
-                                        image={user.image}
-                                        fullName={user.fullName}
-                                        gender={user.gender == "1" ? 'Male' : 'Female'}
-                                        dob={user.dob?.split('T')[0]}
-                                        phone={user.phone}
-                                        patientID={user.patientID}
-                                        address={user.address}
-                                        email={user.email}
-                                        BHYT={user.BHYT}
-                                        admissionDate={user.admissionDate?.split('T')[0]}
-                                        relativeName={user.relativeName}
-                                        relativeNumber={user.relativeNumber}
-                                    />
-                                )} */}
+                               
                                 {loading ? (
                                     <PatientInformation
                                         image={user?.image || ""}

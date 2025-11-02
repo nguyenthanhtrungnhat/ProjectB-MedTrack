@@ -1,18 +1,20 @@
 import { NurseProps } from "./interface";
 
-function InfoRow({ label, value }: { label: string; value?: string }) {
+function InfoRow({ label, value, loading }: { label: string; value?: string; loading?: boolean }) {
   return (
     <div className="row mb-3">
       <div className="col-5 text-start blueText">
         <strong>{label}:</strong>
       </div>
       <div className="col-7 text-end">
-        {value ? (
-          value
-        ) : (
+        {loading ? (
           <span className="placeholder-glow">
             <span className="placeholder col-8"></span>
           </span>
+        ) : value ? (
+          <span className="mb-0">{value}</span>
+        ) : (
+          <small className="text-muted fst-italic">N/A</small>
         )}
       </div>
     </div>
@@ -28,7 +30,8 @@ export default function NurseInformation({
   nurseID,
   address,
   email,
-}: NurseProps) {
+  loading
+}: NurseProps & { loading?: boolean }) {
   return (
     <div className="col-lg-6 col-sm-12 d-flex">
       <div className="w-100 d-flex flex-column border whiteBg marginBottom dropShadow p-3">
@@ -37,13 +40,13 @@ export default function NurseInformation({
           <div className="col-8">
             <h5 className="blueText mb-3">Nurse Information</h5>
 
-            <InfoRow label="Full name" value={fullName} />
-            <InfoRow label="Date of birth" value={dob} />
-            <InfoRow label="Gender" value={gender} />
-            <InfoRow label="Phone" value={phone} />
-            <InfoRow label="ID card" value={nurseID} />
-            <InfoRow label="Email" value={email} />
-            <InfoRow label="Address" value={address} />
+            <InfoRow label="Full name" value={fullName} loading={loading}/>
+            <InfoRow label="Date of birth" value={dob} loading={loading}/>
+            <InfoRow label="Gender" value={gender} loading={loading}/>
+            <InfoRow label="Phone" value={phone} loading={loading}/>
+            <InfoRow label="ID card" value={nurseID} loading={loading}/>
+            <InfoRow label="Email" value={email} loading={loading}/>
+            <InfoRow label="Address" value={address} loading={loading}/>
           </div>
 
           {/* Right section: Avatar */}
