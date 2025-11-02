@@ -108,14 +108,7 @@ export default function PatientScreen() {
                 </p>
                 <div className="d-flex align-items-center">
                     <img src={imgSrc} className="pluseImg me-2" alt={label} />
-                    {/* <h4 className="blueText mb-0 paddingLeft20 me-3">
-                        {value !== null && value !== undefined ? value : "N/A"}
-                    </h4> */}
-                    {/* {value !== null && value !== undefined && value !== "" ? (
-                        <h4 className="blueText mb-0 paddingLeft20 me-3">{value}</h4>
-                    ) : (
-                        <small className="text-muted paddingLeft20">N/A</small>
-                    )} */}
+                  
                     <h4 className="blueText mb-0 paddingLeft20 me-3">
                         {loading ? (
                             <div className="spinner-border me-3" role="status">
@@ -124,7 +117,7 @@ export default function PatientScreen() {
                         ) : (
                             "N/A"
                         )}
-                        {/* {value !== null && value !== undefined ? value : "N/A"} */}
+                      
                     </h4>
                     <span className="blueText">{unit}</span>
                 </div>
