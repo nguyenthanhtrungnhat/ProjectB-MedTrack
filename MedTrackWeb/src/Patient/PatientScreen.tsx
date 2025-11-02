@@ -111,12 +111,21 @@ export default function PatientScreen() {
                     {/* <h4 className="blueText mb-0 paddingLeft20 me-3">
                         {value !== null && value !== undefined ? value : "N/A"}
                     </h4> */}
-                    {value !== null && value !== undefined && value !== "" ? (
+                    {/* {value !== null && value !== undefined && value !== "" ? (
                         <h4 className="blueText mb-0 paddingLeft20 me-3">{value}</h4>
                     ) : (
                         <small className="text-muted paddingLeft20">N/A</small>
-                    )}
-
+                    )} */}
+                    <h4 className="blueText mb-0 paddingLeft20 me-3">
+                        {loading ? (
+                            <div className="spinner-border me-3" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                            </div>
+                        ) : (
+                            "N/A"
+                        )}
+                        {/* {value !== null && value !== undefined ? value : "N/A"} */}
+                    </h4>
                     <span className="blueText">{unit}</span>
                 </div>
             </div>
@@ -124,15 +133,7 @@ export default function PatientScreen() {
     };
 
     // Fetch patients for this user
-    // useEffect(() => {
-    //     if (!userID) return;
-    //     axios.get(`https://projectb-medtrack.onrender.com/api/patientByUserID/${userID}`)
-    //         .then(response => {
-    //             setPatients(response.data);
-    //         })
-    //         .catch(() => toast.error("Failed to fetch patients data"));
-    // }, [userID]);
-    useEffect(() => {
+       useEffect(() => {
         if (!userID) return;
         setLoading(true); // start loading
         axios
@@ -141,7 +142,6 @@ export default function PatientScreen() {
                 setPatients(response.data);
             })
             .catch(() => toast.error("Failed to fetch patients data"))
-            .finally(() => setLoading(false)); // stop loading
     }, [userID]);
 
     // Fetch records for the first patient
@@ -162,7 +162,8 @@ export default function PatientScreen() {
                 setAllRecords(sorted);
                 setRecord(sorted[0]);
             })
-            .catch(error => console.error('Error fetching records:', error));
+            .catch(error => console.error('Error fetching records:', error))
+            .finally(() => setLoading(false)); // stop loading
     }, [patients]);
 
     const handleRecordSelect = (recordID: number) => {
