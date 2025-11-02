@@ -13,6 +13,7 @@ import { RecordProps } from './interface';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 export default function Health() {
+    const [loading, setLoading] = useState(true);
     // 🩺 Dynamic badge generator
     const getHealthBadge = (type: string, value?: number | string | null) => {
         if (value === null || value === undefined) return { color: "text-bg-secondary", label: "N/A" };
@@ -107,7 +108,14 @@ export default function Health() {
                 <div className="d-flex align-items-center">
                     <img src={imgSrc} className="pluseImg me-2" alt={label} />
                     <h4 className="blueText mb-0 paddingLeft20 me-3">
-                        {value !== null && value !== undefined ? value : "N/A"}
+                        {loading ? (
+                            <div className="spinner-border me-3" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                            </div>
+                        ) : (
+                            "N/A"
+                        )}
+                        {/* {value !== null && value !== undefined ? value : "N/A"} */}
                     </h4>
                     <span className="blueText">{unit}</span>
                 </div>
@@ -122,7 +130,7 @@ export default function Health() {
     const patientByIdUrl = `https://projectb-medtrack.onrender.com/patients/${patientID}`;
     const recordBypatientIdUrl = `https://projectb-medtrack.onrender.com/medical-records/${patientID}`;
     useEffect(() => {
-
+        setLoading(true); // start loading
         axios.get(recordBypatientIdUrl)
             .then(response => {
                 const sorted = [...response.data].sort(
@@ -135,7 +143,8 @@ export default function Health() {
                 console.error('Error fetching records:', error);
                 setRecord(null);
                 setAllRecords([]);
-            });
+            })
+            .finally(() => setLoading(false)); // stop loading
     }, [patientByIdUrl, recordBypatientIdUrl]);
 
     const handleRecordSelect = (recordID: number) => {
