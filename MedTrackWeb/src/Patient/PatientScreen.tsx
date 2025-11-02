@@ -193,9 +193,9 @@ export default function PatientScreen() {
                         </div>
 
                         <div className="col-lg-6 col-sm-12 ">
-                            <div className="hasSchedule padding border mb-3 whiteBg dropShadow">
+                            <div className="hasSchedule padding border mb-3 whiteBg dropShadow mt-3">
                                 <div className="row">
-                                    <div className="col-12 medicineSchedule padding50 mt-3">
+                                    <div className="col-12 medicineSchedule padding50">
                                         <h5 className='blueText medSche'>Medicine schedule</h5>
                                         <div className="d-flex bd-highlight mb-3">
                                             <p className='p-2 bd-highlight size50'>0</p>
@@ -242,8 +242,8 @@ export default function PatientScreen() {
                         <div className="row">
                             <div className="col-lg-12 login">
                                 <SidebarLogin
-                                    phone={patient.phone ||"N/A"}
-                                    fullName={patient.fullName||"N/A"}
+                                    phone={patient?.phone ||"N/A"}
+                                    fullName={patient?.fullName||"N/A"}
                                 />
                             </div>
                         </div>
