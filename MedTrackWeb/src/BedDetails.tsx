@@ -13,11 +13,15 @@ export default function BedDetails() {
     const storedInfo = sessionStorage.getItem("info");
     const info = storedInfo ? JSON.parse(storedInfo) : null;
     const patientByIdUrl = `https://projectb-medtrack.onrender.com/patients/${patientID}`;
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        if (!patientID) return;
+        setLoading(true); // start loading
         axios.get(patientByIdUrl)
             .then(response => setUser(response.data))
-            .catch(error => console.error('Error fetching user:', error));
+            .catch(error => console.error('Error fetching user:', error))
+            .finally(() => setLoading(false)); // stop loading
     }, [patientByIdUrl]);
     return (
         <div className="container-fluid pt-5 mt-5">
@@ -28,7 +32,7 @@ export default function BedDetails() {
                         {/* Left column */}
                         <div className="col-lg-6 col-sm-12 d-flex">
                             <div className="w-100 d-flex flex-column border whiteBg marginBottom dropShadow p-3">
-                                {user && (
+                                {/* {user && (
                                     <PatientInformation
                                         image={user.image}
                                         fullName={user.fullName}
@@ -42,6 +46,52 @@ export default function BedDetails() {
                                         admissionDate={user.admissionDate?.split('T')[0]}
                                         relativeName={user.relativeName}
                                         relativeNumber={user.relativeNumber}
+                                    />
+                                )} */}
+                                {loading ? (
+                                    <PatientInformation
+                                        image={user?.image || ""}
+                                        fullName={user?.fullName || ""}
+                                        gender={
+                                            user?.gender === "1"
+                                                ? "Male"
+                                                : user?.gender === "2"
+                                                    ? "Female"
+                                                    : ""
+                                        }
+                                        dob={user?.dob?.split("T")[0] || ""}
+                                        phone={user?.phone || ""}
+                                        patientID={Number(user?.patientID)}
+                                        address={user?.address || ""}
+                                        email={user?.email || ""}
+                                        BHYT={user?.BHYT || ""}
+                                        admissionDate={user?.admissionDate?.split("T")[0] || ""}
+                                        relativeName={user?.relativeName || ""}
+                                        relativeNumber={Number(user?.relativeNumber) || ""}
+                                        loading={loading}
+                                    />
+
+                                ) : (
+                                    <PatientInformation
+                                        image={user?.image || ""}
+                                        fullName={user?.fullName || ""}
+                                        gender={
+                                            user?.gender === "1"
+                                                ? "Male"
+                                                : user?.gender === "2"
+                                                    ? "Female"
+                                                    : ""
+                                        }
+                                        dob={user?.dob?.split("T")[0] || ""}
+                                        phone={user?.phone || ""}
+                                        patientID={Number(user?.patientID)}
+                                        address={user?.address || ""}
+                                        email={user?.email || ""}
+                                        BHYT={user?.BHYT || ""}
+                                        admissionDate={user?.admissionDate?.split("T")[0] || ""}
+                                        relativeName={user?.relativeName || ""}
+                                        relativeNumber={Number(user?.relativeNumber) || ""}
+                                        loading={loading}
                                     />
                                 )}
                             </div>

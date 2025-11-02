@@ -183,7 +183,7 @@ export default function PatientScreen() {
                         {/* Left column */}
                         <div className="col-lg-6 col-sm-12 d-flex">
                             <div className="w-100 d-flex flex-column border whiteBg dropShadow p-3">
-                                {patient ? (
+                                {loading ? (
                                     <PatientInformation
                                         image={patient?.image || ""}
                                         fullName={patient?.fullName || ""}
@@ -207,7 +207,27 @@ export default function PatientScreen() {
                                     />
 
                                 ) : (
-                                    <p>No patient data available</p>
+                                    <PatientInformation
+                                        image={patient?.image || ""}
+                                        fullName={patient?.fullName || ""}
+                                        gender={
+                                            patient?.gender === "1"
+                                                ? "Male"
+                                                : patient?.gender === "2"
+                                                    ? "Female"
+                                                    : ""
+                                        }
+                                        dob={patient?.dob?.split("T")[0] || ""}
+                                        phone={patient?.phone || ""}
+                                        patientID={patient?.patientID}
+                                        address={patient?.address || ""}
+                                        email={patient?.email || ""}
+                                        BHYT={patient?.BHYT || ""}
+                                        admissionDate={patient?.admissionDate?.split("T")[0] || ""}
+                                        relativeName={patient?.relativeName || ""}
+                                        relativeNumber={Number(patient?.relativeNumber) || ""}
+                                        loading={loading}
+                                    />
                                 )}
                             </div>
                         </div>

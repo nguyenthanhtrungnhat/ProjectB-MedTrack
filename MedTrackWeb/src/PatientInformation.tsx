@@ -19,17 +19,7 @@ import { PatientProps } from "./interface";
 //     </div>
 //   );
 // }
-function InfoRow({
-  label,
-  value,
-  loading,
-}: {
-  label: string;
-  value?: string;
-  loading?: boolean;
-}) {
-  const isEmpty = !value || value.trim() === "" || value === "null";
-
+function InfoRow({ label, value, loading }: { label: string; value?: string; loading?: boolean }) {
   return (
     <div className="row mb-3">
       <div className="col-5 text-start blueText">
@@ -40,10 +30,10 @@ function InfoRow({
           <span className="placeholder-glow">
             <span className="placeholder col-8"></span>
           </span>
-        ) : !isEmpty ? (
-          <h6 className="mb-0">{value}</h6>
+        ) : value ? (
+          <span className="mb-0">{value}</span>
         ) : (
-          <small className="text-muted fst-italic">not updating...</small>
+          <small className="text-muted fst-italic">N/A</small>
         )}
       </div>
     </div>
