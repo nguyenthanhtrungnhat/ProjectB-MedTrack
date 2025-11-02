@@ -11,7 +11,7 @@ export default function PatientSearch() {
 
   // Fetch patient data
   useEffect(() => {
-    fetch("http://localhost:3000/patients")
+    fetch("https://projectb-medtrack.onrender.com/patients")
       .then((res) => res.json())
       .then((data) => setPatients(data))
       .catch((err) => console.error("Error fetching patients:", err));

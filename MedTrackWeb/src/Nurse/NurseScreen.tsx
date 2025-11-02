@@ -28,8 +28,8 @@ export default function NurseScreen() {
     const [nurseID, setNurseID] = useState<number | null>(null);
     sessionStorage.setItem("nurseID", JSON.stringify(nurseID));
     const userID = getUserIDFromToken();
-    const url = `http://localhost:3000/nurses/by-user/${userID}`;
-    const roomsUrl = 'http://localhost:3000/rooms';
+    const url = `https://projectb-medtrack.onrender.com/nurses/by-user/${userID}`;
+    const roomsUrl = 'https://projectb-medtrack.onrender.com/rooms';
     // const nurseID = sessionStorage.getItem("nurseID") || ""; // get nurseID
     const [count, setCount] = useState<number | null>(null);
     useEffect(() => {
@@ -39,7 +39,7 @@ export default function NurseScreen() {
 
         const fetchCount = async () => {
             try {
-                const res = await axios.get(`http://localhost:3000/api/schedules/${nurseID}`);
+                const res = await axios.get(`https://projectb-medtrack.onrender.com/api/schedules/${nurseID}`);
                 const data = res.data;
                 if (Array.isArray(data)) {
                     setCount(data.length);
@@ -67,7 +67,7 @@ export default function NurseScreen() {
     useEffect(() => {
         if (!nurseID) return;
 
-        axios.get(`http://localhost:3000/nurses/${nurseID}`)
+        axios.get(`https://projectb-medtrack.onrender.com/nurses/${nurseID}`)
             .then(response => {
                 setUser(response.data);
                 console.log("Nurse Data:", response.data);

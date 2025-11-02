@@ -12,7 +12,7 @@ export default function BedDetails() {
     const { patientID } = useParams();
     const storedInfo = sessionStorage.getItem("info");
     const info = storedInfo ? JSON.parse(storedInfo) : null;
-    const patientByIdUrl = `http://localhost:3000/patients/${patientID}`;
+    const patientByIdUrl = `https://projectb-medtrack.onrender.com/patients/${patientID}`;
 
     useEffect(() => {
         axios.get(patientByIdUrl)
