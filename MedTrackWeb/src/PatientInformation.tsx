@@ -1,24 +1,4 @@
 import { PatientProps } from "./interface";
-
-// function InfoRow({ label, value }: { label: string; value?: string }) {
-//   return (
-//     <div className="row mb-3">
-//       <div className="col-5 text-start blueText">
-//         <strong>{label}:</strong>
-//       </div>
-//       <div className="col-7 text-end">
-//         {value ? (
-//           value
-//         ) : (
-//           // <span className="placeholder-glow">
-//           //   <span className="placeholder col-8"></span>
-//           // </span>
-//           <small>not updating ...</small>
-//         )}
-//       </div>
-//     </div>
-//   );
-// }
 function InfoRow({ label, value, loading }: { label: string; value?: string; loading?: boolean }) {
   return (
     <div className="row mb-3">
@@ -68,14 +48,6 @@ export default function PatientInformation({
         <InfoRow label="Email" value={email} loading={loading} />
         <InfoRow label="Address" value={address} loading={loading} />
         <InfoRow label="BHYT" value={BHYT} loading={loading} />
-        {/* <InfoRow label="Full name" value={fullName} />
-        <InfoRow label="Date of birth" value={dob} />
-        <InfoRow label="Gender" value={gender} />
-        <InfoRow label="Phone" value={String(phone)} />
-        <InfoRow label="ID card" value={String(patientID)} />
-        <InfoRow label="Email" value={email} />
-        <InfoRow label="Address" value={address} />
-        <InfoRow label="BHYT" value={BHYT} /> */}
       </div>
 
       {/* Right section: Avatar */}
