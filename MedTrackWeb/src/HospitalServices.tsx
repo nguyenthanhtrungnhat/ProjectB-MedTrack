@@ -4,14 +4,14 @@ import "./HospitalServices.css";
 
 const HospitalServices = () => {
     return (
-        <div className="container-fluid mt-5">
+        <div className="container-fluid">
             <hr />
             <h2 className="text-center mb-4 headd1 blueText">
                 Becamex International Hospital Services
             </h2>
-            <div className="row">
+            <div className="row p-3">
                 {/* Sidebar list */}
-                <div className="col-md-4 mb-3">
+                <div className="col-md-3 mb-3">
                     <div
                         id="list-example"
                         className="list-group shadow-sm rounded-3 sticky-sidebar"
@@ -38,7 +38,7 @@ const HospitalServices = () => {
                 </div>
 
                 {/* Scrollable content */}
-                <div className="col-md-8">
+                <div className="col-md-9">
                     <div
                         data-bs-spy="scroll"
                         data-bs-target="#list-example"
