@@ -7,7 +7,7 @@ const HospitalServices = () => {
     
     <div className="container-fluid mt-5">
         <hr />
-      <h2 className="text-center mb-4 headd1 blueText">
+      <h2 className="text-center mb-4 headd1 text-primary">
         Becamex International Hospital Services
       </h2>
       <div className="row">
