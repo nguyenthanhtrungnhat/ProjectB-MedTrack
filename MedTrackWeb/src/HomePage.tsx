@@ -8,7 +8,32 @@ import prom4 from './images/Asset-5.webp';
 import HospitalServices from './HospitalServices';
 import Introduce from './Introduce';
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 export default function HomePage() {
+    const banners = [banner1, banner2, banner3, banner3];
+
+    const [visibleCount, setVisibleCount] = useState(4);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkScreen = () => {
+            const mobile = window.innerWidth <= 576;
+            setIsMobile(mobile);
+            setVisibleCount(mobile ? 2 : 4);
+        };
+
+        checkScreen();
+        window.addEventListener("resize", checkScreen);
+        return () => window.removeEventListener("resize", checkScreen);
+    }, []);
+
+    const handleToggle = () => {
+        setVisibleCount((prev) =>
+            prev === (isMobile ? 2 : 4) ? banners.length : isMobile ? 2 : 4
+        );
+    };
+
+    const showToggleBtn = banners.length > (isMobile ? 2 : 4);
     return (
         <>
             <div className="container-fluid pt-5 p-0 h-100 padding mt-5">
@@ -114,20 +139,37 @@ export default function HomePage() {
                     </div>
                 </div>
                 <div className="row p-3">
-                    {[banner1, banner2, banner3, banner3].map((img, index) => (
+                    {banners.slice(0, visibleCount).map((img, index) => (
                         <div className="col-lg-3 col-sm-6 mb-3" key={index}>
                             <a href="#" className="text-decoration-none text-dark">
                                 <div className="card h-100 hover-shadow">
-                                    <img src={img} className="card-img-top" alt={`Banner ${index + 1}`} loading="lazy" />
+                                    <img
+                                        src={img}
+                                        className="card-img-top"
+                                        alt={`Banner ${index + 1}`}
+                                        loading="lazy"
+                                    />
                                     <div className="card-body">
                                         <p className="card-text">
-                                            Some quick example text to build on the card title and make up the bulk of the card's content.
+                                            Some quick example text to build on the card title and make
+                                            up the bulk of the card's content.
                                         </p>
                                     </div>
                                 </div>
                             </a>
                         </div>
                     ))}
+
+                    {showToggleBtn && (
+                        <div className="text-center mb-3">
+                            <button
+                                className="btn btn-outline-primary"
+                                onClick={handleToggle}
+                            >
+                                {visibleCount === (isMobile ? 2 : 4) ? "Show More" : "Show Less"}
+                            </button>
+                        </div>
+                    )}
                 </div>
                 <div className="d-flex justify-content-center align-items-center mt-5 mb-5">
                     <div className="row text-center">
@@ -141,7 +183,7 @@ export default function HomePage() {
                 {/*here */}
                 <Introduce />
                 <HospitalServices />
-            </div>
+            </div >
 
 
             <footer className="text-center text-lg-start bg-body-tertiary text-muted mt-5 ">

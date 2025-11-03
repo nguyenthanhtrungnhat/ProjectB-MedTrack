@@ -1,6 +1,6 @@
 export default function Services() {
   return (
-    <div className="container mt-5 pt-5 mb-5">
+    <div className="container mt-5 pt-5 pb-5 mb-5">
       <h4 className="blueText headd1">Hospital Service Fees</h4>
       <p>
         Below is the price list for medical services at Becamex International Hospital.
