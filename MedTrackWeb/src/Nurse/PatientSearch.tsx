@@ -13,7 +13,13 @@ export default function PatientSearch() {
   useEffect(() => {
     fetch("https://projectb-medtrack.onrender.com/patients")
       .then((res) => res.json())
-      .then((data) => setPatients(data))
+      .then((data) => {
+        // Filter out invalid patients (no ID or fullName)
+        const validPatients = data.filter(
+          (p: any) => p && p.patientID && p.fullName
+        );
+        setPatients(validPatients);
+      })
       .catch((err) => console.error("Error fetching patients:", err));
   }, []);
 
@@ -25,11 +31,15 @@ export default function PatientSearch() {
       return;
     }
 
-    const filtered = patients.filter(
-      (p) =>
-        p.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        p.patientID.toString().includes(searchTerm)
-    );
+    const filtered = patients.filter((p) => {
+      const name = p.fullName ? p.fullName.toLowerCase() : "";
+      const id = p.patientID ? p.patientID.toString() : "";
+      return (
+        name.includes(searchTerm.toLowerCase()) ||
+        id.includes(searchTerm)
+      );
+    });
+
     setFilteredPatients(filtered);
     setShowDropdown(filtered.length > 0);
   }, [searchTerm, patients]);
@@ -80,17 +90,23 @@ export default function PatientSearch() {
               }}
             >
               <img
-                src={p.image}
-                alt={p.fullName}
+                src={p.image || "https://via.placeholder.com/32?text=N/A"}
+                alt={p.fullName || "N/A"}
                 className="rounded-circle me-2"
                 style={{ width: "32px", height: "32px", objectFit: "cover" }}
               />
               <div>
-                <div className="fw-semibold text-dark">{p.fullName}</div>
-                <small className="text-muted">ID: {p.patientID}</small>
+                <div className="fw-semibold text-dark">{p.fullName || "N/A"}</div>
+                <small className="text-muted">ID: {p.patientID || "N/A"}</small>
               </div>
             </Link>
           ))}
+
+          {filteredPatients.length === 0 && (
+            <li className="list-group-item text-center text-muted py-2">
+              No matching patients found
+            </li>
+          )}
         </ul>
       )}
     </div>
