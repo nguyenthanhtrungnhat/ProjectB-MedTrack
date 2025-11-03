@@ -149,10 +149,16 @@ export default function HomePage() {
                         <span>Get connected with us on social networks:</span>
                     </div>
                     <div>
-                        <a href="" className="me-4 text-reset">
+                        <a
+                            href="https://www.facebook.com/becamexih"
+                            className="me-4 text-reset"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
                             <i className="fa-brands fa-facebook"></i>
                         </a>
-                        <a href="" className="me-4 text-reset">
+
+                        {/* <a href="" className="me-4 text-reset">
                             <i className="fab fa-twitter"></i>
                         </a>
                         <a href="" className="me-4 text-reset">
@@ -166,7 +172,7 @@ export default function HomePage() {
                         </a>
                         <a href="" className="me-4 text-reset">
                             <i className="fab fa-github"></i>
-                        </a>
+                        </a> */}
                     </div>
                 </section>
                 <section className="">
@@ -174,7 +180,7 @@ export default function HomePage() {
                         <div className="row">
                             <div className="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
                                 <h6 className="text-uppercase fw-bold mb-4">
-                                    <i className="fas fa-gem me-3"></i>Company name
+                                    <i className="fas fa-gem me-3"></i>Becamex International General Hospital Joint Stock Company
                                 </h6>
                                 <p>
                                     Here you can use rows and columns to organize your footer content. Lorem ipsum
@@ -182,19 +188,28 @@ export default function HomePage() {
                                 </p>
                             </div>
                             <div className="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-                                <h6 className="text-uppercase fw-bold mb-4">Products</h6>
+                                <h6 className="text-uppercase fw-bold mb-4">Deparment</h6>
                                 <div className="row row-cols-sm-4 row-cols-md-1 g-2">
                                     <div className="col">
-                                        <a href="#!" className="text-reset">Angular</a>
+                                        <a href="#!" className="text-reset">General Medicine</a>
                                     </div>
                                     <div className="col">
-                                        <a href="#!" className="text-reset">React</a>
+                                        <a href="#!" className="text-reset">Dermatology</a>
                                     </div>
                                     <div className="col">
-                                        <a href="#!" className="text-reset">Vue</a>
+                                        <a href="#!" className="text-reset">Rehabilitation Medicine</a>
                                     </div>
                                     <div className="col">
-                                        <a href="#!" className="text-reset">Laravel</a>
+                                        <a href="#!" className="text-reset">Obstetrics & Gynecology</a>
+                                    </div>
+                                    <div className="col">
+                                        <a href="#!" className="text-reset">Pediatrics</a>
+                                    </div>
+                                    <div className="col">
+                                        <a href="#!" className="text-reset">Odontology (Dentistry)</a>
+                                    </div>
+                                    <div className="col">
+                                        <a href="#!" className="text-reset">Odontology</a>
                                     </div>
                                 </div>
                             </div>
@@ -214,13 +229,13 @@ export default function HomePage() {
 
                             <div className="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4 ">
                                 <h6 className="text-uppercase fw-bold mb-4">Contact</h6>
-                                <p><i className="fas fa-home me-3"></i> New York, NY 10012, US</p>
+                                <p><i className="fas fa-home me-3"></i> Đại lộ Bình Dương, Khu Gò Cát, Phường Lái Thiêu, Thành phố Thuận An, Tỉnh Bình Dương, Việt Nam</p>
                                 <p>
                                     <i className="fas fa-envelope me-3"></i>
-                                    info@example.com
+                                    contact@bih.vn
                                 </p>
-                                <p><i className="fas fa-phone me-3"></i> + 01 234 567 88</p>
-                                <p><i className="fas fa-print me-3"></i> + 01 234 567 89</p>
+                                <p><i className="fas fa-phone me-3"></i> + 	(0274)3969.647</p>
+                                <p><i className="fas fa-print me-3"></i>(tax number) + 3702291330</p>
                             </div>
                         </div>
                     </div>
@@ -228,8 +243,8 @@ export default function HomePage() {
                 <hr className="m-0" />
                 <div className="text-center p-4 blueBg whiteText">
                     © 2021 Copyright:{" "}
-                    <a className="text-reset fw-bold" href="https://mdbootstrap.com/">
-                        MDBootstrap.com
+                    <a className="text-reset fw-bold" href="https://bih.vn/">
+                        bih.vn
                     </a>
                 </div>
             </footer>

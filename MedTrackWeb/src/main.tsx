@@ -21,6 +21,7 @@ import Schedule from "./Schedule";
 import 'bootstrap/dist/css/bootstrap.min.css';        // Bootstrap CSS
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';   // Bootstrap JS with Popper
 import Register from "./Login/Register";
+import Services from "./Services";
 
 const Layout = () => (
   <>
@@ -47,6 +48,7 @@ const router = createBrowserRouter([
         { index: true, element: <HomePage /> },
         { path: "login", element: <LoginScreen /> },
         { path: "register", element: <Register /> },
+        { path: "services", element: <Services /> },
       ],
     },],
   },
@@ -88,6 +90,7 @@ const router = createBrowserRouter([
         path: "/patient", element: <Layout />, children: [
           { index: true, element: <HomePage /> },
           { path: "patient-profile", element: <PatientScreen /> },
+          { path: "services", element: <Services /> },
         ]
       },
     ],

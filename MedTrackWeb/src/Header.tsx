@@ -91,6 +91,11 @@ export default function Header() {
                                     </Link>
                                 </li>
                                 <li className="nav-item">
+                                    <Link className="nav-link whiteText" to={"/services"}>
+                                        <h5 className="whiteText hasFeeIcon m-0">Medical Service fee</h5>
+                                    </Link>
+                                </li>
+                                <li className="nav-item">
                                     <Link className="nav-link whiteText" to={"/patient/patient-profile"}>
                                         <h5 className="whiteText hasProfileIcon m-0">Profile</h5>
                                     </Link>
@@ -104,6 +109,11 @@ export default function Header() {
                                     <Link className="nav-link active" to={"/patient"}>
                                         <h5 className="whiteText hasHomeIcon m-0">Home</h5>
                                         <span className="sr-only">(current)</span>
+                                    </Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className="nav-link whiteText" to={"/services"}>
+                                        <h5 className="whiteText hasFeeIcon m-0">Service fee</h5>
                                     </Link>
                                 </li>
                                 <li className="nav-item">

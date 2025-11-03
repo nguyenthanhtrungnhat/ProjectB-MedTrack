@@ -186,6 +186,7 @@
 }
 
 /* FontAwesome Icons */
+.hasFeeIcon::before,
 .hasHomeIcon::before,
 .hasProfileIcon::before,
 .loginHead::before,
@@ -196,7 +197,9 @@
     margin-right: 8px;
     color: white;
 }
-
+.hasFeeIcon::before{
+    content: '\f51e';
+}
 .hasInboxIcon::before {
     content: "\f0f3";
     /* envelope */
