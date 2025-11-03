@@ -108,16 +108,16 @@ export default function PatientScreen() {
                 </p>
                 <div className="d-flex align-items-center">
                     <img src={imgSrc} className="pluseImg me-2" alt={label} />
-                  
+
                     <h4 className="blueText mb-0 paddingLeft20 me-3">
                         {loading ? (
                             <div className="spinner-border me-3" role="status">
                                 <span className="visually-hidden">Loading...</span>
                             </div>
                         ) : (
-                            "N/A"
+                            value ? value : "N/A"
                         )}
-                      
+
                     </h4>
                     <span className="blueText">{unit}</span>
                 </div>
@@ -126,7 +126,7 @@ export default function PatientScreen() {
     };
 
     // Fetch patients for this user
-       useEffect(() => {
+    useEffect(() => {
         if (!userID) return;
         setLoading(true); // start loading
         axios
