@@ -7,16 +7,16 @@ import { jwtDecode } from "jwt-decode";
 import SidebarLogin from '../SidebarLogin';
 import { toast } from 'react-toastify';
 import PatientInformation from '../PatientInformation';
-import patientImg from './../images/Untitled-1.png';
-import notgoodpatientImg from './../images/red_body.png';
-import pluseImg from './../images/pulseReal.png';
-import tempImg from './../images/nhietdo.png';
-import heightImg from './../images/pulseReal.png';
-import weightImg from './../images/pulseReal.png';
-import urineImg from './../images/pulseReal.png';
-import spo2Img from './../images/pulseReal.png';
-import bpImg from './../images/bloodPressure.png';
-import ntImg from './../images/nhiptho.png';
+import patientImg from './../images/Untitled-1.webp';
+import notgoodpatientImg from './../images/red_body.webp';
+import pluseImg from './../images/pulseReal.webp';
+import tempImg from './../images/nhietdo.webp';
+import heightImg from './../images/pulseReal.webp';
+import weightImg from './../images/pulseReal.webp';
+import urineImg from './../images/pulseReal.webp';
+import spo2Img from './../images/pulseReal.webp';
+import bpImg from './../images/bloodPressure.webp';
+import ntImg from './../images/nhiptho.webp';
 
 const getUserIDFromToken = () => {
     const token = sessionStorage.getItem("token");
