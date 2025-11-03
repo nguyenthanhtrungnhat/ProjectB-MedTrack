@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode"; // fixed import syntax
-import logo from "./images/logo.png";
+import logo from "./images/logo.webp";
 import { Link } from "react-router-dom";
 import PatientSearch from "./Nurse/PatientSearch";
 import Noti from "./Noti";

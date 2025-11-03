@@ -1,7 +1,7 @@
-import banner1 from './images/banner1.jpg';
-import banner2 from './images/banner2.jpg';
-import banner3 from './images/banner3.jpg';
-import prom1 from './images/Asset-1.png';
+import banner1 from './images/banner1.webp';
+import banner2 from './images/banner2.webp';
+import banner3 from './images/banner3.webp';
+import prom1 from './images/Asset-1.webp';
 
 export default function HomePage() {
     return (
