@@ -75,7 +75,7 @@ export default function Health() {
                 return { color: "text-bg-secondary", label: "" };
         }
     };
-   
+
     const renderVital = (label: string, imgSrc: string, unit: string, type: string, value?: number | string | null) => {
         const { color, label: status } = getHealthBadge(type, value);
         return (
@@ -91,7 +91,7 @@ export default function Health() {
                                 <span className="visually-hidden">Loading...</span>
                             </div>
                         ) : (
-                            "N/A"
+                            value ? value : "N/A"
                         )}
                     </h4>
                     <span className="blueText">{unit}</span>
