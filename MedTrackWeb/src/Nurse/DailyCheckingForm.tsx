@@ -156,7 +156,8 @@ export default function DailyCheckingForm() {
       setTouched({});
       setErrors({});
     } catch (err) {
-      toast.error("Gửi dữ liệu thất bại!");
+      toast.error("Gửi dữ liệu thất bại!")
+      console.log(token)
     }
   };
 
