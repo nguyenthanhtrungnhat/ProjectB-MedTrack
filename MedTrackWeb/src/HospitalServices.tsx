@@ -18,6 +18,12 @@ const HospitalServices = () => {
                     >
                         <a
                             className="list-group-item list-group-item-action"
+                            href="#Guidelines"
+                        >
+                            Medical Examination Guidelines
+                        </a>
+                        <a
+                            className="list-group-item list-group-item-action"
                             href="#departments"
                         >
                             Departments
@@ -46,6 +52,17 @@ const HospitalServices = () => {
                         className="scrollspy-example border rounded-3 p-4 bg-light"
                         tabIndex={0}
                     >
+                        {/* ---------------- Guidelines ---------------- */}
+                        <h4 id="Guidelines" className="fw-bold text-primary">
+                            Guidelines
+                        </h4>
+                        <ul>
+                            <li>Identity card or citizen identification card (or photo identification). For foreign customers, a passport is required.</li>
+                            <li>Health insurance card (if any)</li>
+                            <li>Medical records and prescriptions from previous examinations and at other hospitals (if any).</li>
+                            <li>Appointment paper from previous examination (if any).</li>
+                            <li>Customers who have made an appointment by phone, please come to the registration counter 15 minutes before the appointment time to receive an examination number.</li>
+                        </ul>
                         {/* ---------------- Departments ---------------- */}
                         <h4 id="departments" className="fw-bold text-primary">
                             Departments

@@ -7,6 +7,7 @@ import prom3 from './images/Asset-4.webp';
 import prom4 from './images/Asset-5.webp';
 import HospitalServices from './HospitalServices';
 import Introduce from './Introduce';
+import { Link } from 'react-router-dom';
 export default function HomePage() {
     return (
         <>
@@ -19,14 +20,14 @@ export default function HomePage() {
                     </div>
                     <div className="carousel-inner">
                         <div className="carousel-item active">
-                            <img src={banner1} className="d-block w-100 bannerImg" loading="lazy" alt="Slide 1" />
+                            <img src='https://cdn-healthcare.hellohealthgroup.com/2022/09/1663228689_6322db118d3b34.31779223.jpg?w=1080&q=75' className="d-block w-100 bannerImg" loading="lazy" alt="Slide 1" />
                         </div>
                         <div className="carousel-item">
-                            <img src={banner2} className="d-block w-100 bannerImg" loading="lazy" alt="Slide 2" />
+                            <img src='https://cdn-healthcare.hellohealthgroup.com/2022/09/1663228690_6322db123be5a9.03555194.jpg?w=1080&q=75' className="d-block w-100 bannerImg" loading="lazy" alt="Slide 2" />
                         </div>
-                        <div className="carousel-item">
+                        {/* <div className="carousel-item">
                             <img src={banner3} className="d-block w-100 bannerImg" loading="lazy" alt="Slide 3" />
-                        </div>
+                        </div> */}
                     </div>
                     <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
                         <span className="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -220,7 +221,7 @@ export default function HomePage() {
                                     Useful links
                                 </h6>
                                 <div className="row row-cols-sm-4 row-cols-md-1 g-2">
-                                    <div className="col"><a href="#!" className="text-reset">Pricing</a></div>
+                                    <div className="col"><Link to="services" className="text-reset">Pricing</Link></div>
                                     <div className="col"><a href="#!" className="text-reset">Settings</a></div>
                                     <div className="col"><a href="#!" className="text-reset">Orders</a></div>
                                     <div className="col"><a href="#!" className="text-reset">Help</a></div>

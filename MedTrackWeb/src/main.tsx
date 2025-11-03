@@ -66,6 +66,7 @@ const router = createBrowserRouter([
           { path: "daily-checking", element: <DailyCheckingForm /> },
           { path: "schedule", element: <Schedule /> },
           { path: "register", element: <Register /> },
+          { path: "services", element: <Services /> },
         ]
       },
     ],
@@ -78,6 +79,7 @@ const router = createBrowserRouter([
         path: "/doctor", element: <Layout />, children: [
           { index: true, element: <HomePage /> },
           { path: "doctor-profile", element: <DoctorScreen /> },
+          { path: "services", element: <Services /> },
         ]
       },
     ],
