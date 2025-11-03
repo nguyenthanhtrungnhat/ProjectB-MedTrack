@@ -38,9 +38,9 @@ export default function BedDetails() {
                                         image={user?.image || ""}
                                         fullName={user?.fullName || ""}
                                         gender={
-                                            user?.gender === "1"
+                                            user?.gender == "1"
                                                 ? "Male"
-                                                : user?.gender === "2"
+                                                : user?.gender == "2"
                                                     ? "Female"
                                                     : ""
                                         }
@@ -61,9 +61,9 @@ export default function BedDetails() {
                                         image={user?.image || ""}
                                         fullName={user?.fullName || ""}
                                         gender={
-                                            user?.gender === "1"
+                                            user?.gender == "1"
                                                 ? "Male"
-                                                : user?.gender === "2"
+                                                : user?.gender == "2"
                                                     ? "Female"
                                                     : ""
                                         }

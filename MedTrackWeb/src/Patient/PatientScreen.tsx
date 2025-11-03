@@ -182,9 +182,9 @@ export default function PatientScreen() {
                                         image={patient?.image || ""}
                                         fullName={patient?.fullName || ""}
                                         gender={
-                                            patient?.gender === "1"
+                                            patient?.gender == "1"
                                                 ? "Male"
-                                                : patient?.gender === "2"
+                                                : patient?.gender == "2"
                                                     ? "Female"
                                                     : ""
                                         }
@@ -205,9 +205,9 @@ export default function PatientScreen() {
                                         image={patient?.image || ""}
                                         fullName={patient?.fullName || ""}
                                         gender={
-                                            patient?.gender === "1"
+                                            patient?.gender == "1"
                                                 ? "Male"
-                                                : patient?.gender === "2"
+                                                : patient?.gender == "2"
                                                     ? "Female"
                                                     : ""
                                         }
