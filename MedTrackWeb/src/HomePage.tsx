@@ -2,7 +2,10 @@ import banner1 from './images/banner1.webp';
 import banner2 from './images/banner2.webp';
 import banner3 from './images/banner3.webp';
 import prom1 from './images/Asset-1.webp';
-
+import prom2 from './images/Asset-3.webp';
+import prom3 from './images/Asset-4.webp';
+import prom4 from './images/Asset-5.webp';
+import HospitalServices from './HospitalServices';
 export default function HomePage() {
     return (
         <>
@@ -42,7 +45,7 @@ export default function HomePage() {
 
                         <div className="row">
                             <div className="col-lg-3 col-sm-6 mb-2">
-                                <div className="card hover-shadow" >
+                                <div className="card hover-shadow center" >
                                     <img src={prom1} className="img72" alt="..." />
                                     <div className="card-body">
                                         <p className="card-text">Healcare</p>
@@ -50,24 +53,24 @@ export default function HomePage() {
                                 </div>
                             </div>
                             <div className="col-lg-3 col-sm-6 mb-2">
-                                <div className="card hover-shadow" >
-                                    <img src={prom1} className="img72" alt="..." />
+                                <div className="card hover-shadow center" >
+                                    <img src={prom2} className="img72" alt="..." />
                                     <div className="card-body">
                                         <p className="card-text">Make an Appointment</p>
                                     </div>
                                 </div>
                             </div>
                             <div className="col-lg-3 col-sm-6 mb-2">
-                                <div className="card hover-shadow" >
-                                    <img src={prom1} className="img72" alt="..." />
+                                <div className="card hover-shadow center" >
+                                    <img src={prom4} className="img72" alt="..." />
                                     <div className="card-body">
-                                        <p className="card-text">Healthcare</p>
+                                        <p className="card-text">Medical Services</p>
                                     </div>
                                 </div>
                             </div>
                             <div className="col-lg-3 col-sm-6 mb-2">
-                                <div className="card hover-shadow" >
-                                    <img src={prom1} className="img72" alt="..." />
+                                <div className="card hover-shadow center" >
+                                    <img src={prom3} className="img72" alt="..." />
                                     <div className="card-body">
                                         <p className="card-text">Ask Us A Question</p>
                                     </div>
@@ -133,7 +136,8 @@ export default function HomePage() {
                         </div>
                     </div>
                 </div>
-
+                {/*here */}
+                <HospitalServices/>
             </div>
 
 
