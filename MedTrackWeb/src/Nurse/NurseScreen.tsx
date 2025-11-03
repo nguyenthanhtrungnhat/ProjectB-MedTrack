@@ -89,8 +89,8 @@ export default function NurseScreen() {
     }
 
     return (
-        <div>
-            <div className="container-fluid mainBg mt-5 pt-5 vh-100">
+        <div className='mainBg h-100'>
+            <div className="container-fluid mt-5 pt-5">
                 <div className="row">
                     <div className="col-lg-9 order-2 order-lg-1">
 
