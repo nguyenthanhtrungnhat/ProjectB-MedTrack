@@ -15,7 +15,6 @@ interface Patient {
 const token = sessionStorage.getItem("token");
 
 export default function DailyCheckingForm() {
-  // const nurseID = sessionStorage.getItem("nurseID");
 
   const [formData, setFormData] = useState<FormData>({
     patientID: "",

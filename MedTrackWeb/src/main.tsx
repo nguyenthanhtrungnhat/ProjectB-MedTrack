@@ -21,8 +21,6 @@ import Schedule from "./Schedule";
 import 'bootstrap/dist/css/bootstrap.min.css';        // Bootstrap CSS
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';   // Bootstrap JS with Popper
 import Register from "./Login/Register";
-// import CompleteData from "./Patient/CompleteData";
-
 
 const Layout = () => (
   <>
@@ -90,7 +88,6 @@ const router = createBrowserRouter([
         path: "/patient", element: <Layout />, children: [
           { index: true, element: <HomePage /> },
           { path: "patient-profile", element: <PatientScreen /> },
-          // { path: "complete-data", element: <CompleteData /> },
         ]
       },
     ],

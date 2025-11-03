@@ -30,7 +30,7 @@ export default function PatientSearch() {
       setShowDropdown(false);
       return;
     }
-
+    
     const filtered = patients.filter((p) => {
       const name = p.fullName ? p.fullName.toLowerCase() : "";
       const id = p.patientID ? p.patientID.toString() : "";
