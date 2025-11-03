@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const app = express();
 const verifyToken = require("./verifyToken");
-require("dotenv").config({ path: "JWT.env" });
+require("dotenv").config();
 require('dotenv').config();
 
 // Enable CORS
@@ -18,6 +18,7 @@ const db = mysql.createConnection({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   port: process.env.DB_PORT,
+  JWT_SECRET: process.env.JWT_SECRET,
   dateStrings: true,
   timezone: "+07:00",
 });
