@@ -60,18 +60,18 @@ export interface SidebarInfoProps {
 }
 export interface FormData {
     patientID: string;
-    pulse: number;
-    spo2: number;
-    temperature: number;
-    oxygenTherapy: number;
+    pulse: number|string;
+    spo2: number|string;
+    temperature: number|string;
+    oxygenTherapy: number|string;
     bloodPressure: string;
-    height: number;
-    weight: number;
-    sensorium: number;
-    respiratoryRate: number;
-    urine: number;
-    heartRate: number;
-    hurtScale: number;
+    height: number|string;
+    weight: number|string;
+    sensorium: number|string;
+    respiratoryRate: number|string;
+    urine: number|string;
+    heartRate: number|string;
+    hurtScale: number|string;
     currentCondition: string;
 };
 export interface Schedule{

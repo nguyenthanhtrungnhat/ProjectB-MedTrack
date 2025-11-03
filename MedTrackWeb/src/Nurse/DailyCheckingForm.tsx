@@ -18,18 +18,18 @@ export default function DailyCheckingForm() {
 
   const [formData, setFormData] = useState<FormData>({
     patientID: "",
-    pulse: 0,
-    spo2: 0,
-    temperature: 0,
-    oxygenTherapy:0,
+    pulse: "",
+    spo2: "",
+    temperature: "",
+    oxygenTherapy: "",
     bloodPressure: "",
-    height: 0,
-    weight: 0,
-    sensorium: 0,
-    respiratoryRate: 0,
-    urine: 0,
-    heartRate: 0,
-    hurtScale: 0,
+    height: "",
+    weight: "",
+    sensorium: "",
+    respiratoryRate: "",
+    urine: "",
+    heartRate: "",
+    hurtScale: "",
     currentCondition: ""
   });
 
@@ -59,8 +59,9 @@ export default function DailyCheckingForm() {
     }
 
     const filtered = patients.filter(p =>
-      p.fullName.toLowerCase().includes(value.toLowerCase())
+      (p.fullName || "").toLowerCase().includes(value.toLowerCase())
     );
+
     setFilteredPatients(filtered);
     setShowResults(true);
   };
@@ -119,7 +120,7 @@ export default function DailyCheckingForm() {
       await axios.post("https://projectb-medtrack.onrender.com/post-medical-records", {
         patientID: parseInt(formData.patientID),
         heartRate: parseFloat(String(formData.heartRate)),
-        pulse: parseFloat(String(formData.pulse) ),
+        pulse: parseFloat(String(formData.pulse)),
         height: parseFloat(String(formData.height)),
         weight: parseFloat(String(formData.weight)),
         hurtScale: parseFloat(String(formData.hurtScale)),
@@ -137,18 +138,18 @@ export default function DailyCheckingForm() {
       toast.success("Dữ liệu đã gửi thành công!");
       setFormData({
         patientID: "",
-        pulse: 0,
-        spo2: 0,
-        temperature: 0,
-        oxygenTherapy:0,
-        bloodPressure:"",
-        height:0,
-        weight:0,
-        sensorium:0,
-        respiratoryRate:0,
-        urine:0,
-        heartRate:0,
-        hurtScale:0,
+        pulse: "",
+        spo2: "",
+        temperature: "",
+        oxygenTherapy: "",
+        bloodPressure: "",
+        height: "",
+        weight: "",
+        sensorium: "",
+        respiratoryRate: "",
+        urine: "",
+        heartRate: "",
+        hurtScale: "",
         currentCondition: ""
       });
       setSearchTerm("");
