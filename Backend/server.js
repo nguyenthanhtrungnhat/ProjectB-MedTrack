@@ -470,8 +470,8 @@ app.post("/register", (req, res) => {
   });
 });
 
-// POST: Complete patient information (protected)
-app.post("/api/patient/complete", verifyToken, (req, res) => {
+// PUT: Update (edit) patient information (protected)
+app.put("/api/patient/complete", verifyToken, (req, res) => {
   const {
     userID,
     fullName,
@@ -484,11 +484,12 @@ app.post("/api/patient/complete", verifyToken, (req, res) => {
     relativeNumber
   } = req.body;
 
+  // ✅ Validate required fields
   if (!userID || !fullName || !gender || !dob || !phone || !address) {
     return res.status(400).json({ message: "Missing required fields" });
   }
 
-  // First, ensure user table is updated with personal info
+  // ✅ Update user personal info
   const updateUserSql = `
     UPDATE user
     SET fullName = ?, gender = ?, dob = ?, phone = ?, address = ?
@@ -496,9 +497,14 @@ app.post("/api/patient/complete", verifyToken, (req, res) => {
   `;
 
   db.query(updateUserSql, [fullName, gender, dob, phone, address, userID], (err1) => {
-    if (err1) return res.status(500).json({ message: "Failed to update user info", error: err1 });
+    if (err1) {
+      return res.status(500).json({
+        message: "Failed to update user info",
+        error: err1
+      });
+    }
 
-    // Then, either update or insert into patient table
+    // ✅ Upsert (insert or update) patient data
     const updatePatientSql = `
       INSERT INTO patient (userID, BHYT, relativeName, relativeNumber)
       VALUES (?, ?, ?, ?)
@@ -509,11 +515,18 @@ app.post("/api/patient/complete", verifyToken, (req, res) => {
     `;
 
     db.query(updatePatientSql, [userID, BHYT, relativeName, relativeNumber], (err2) => {
-      if (err2) return res.status(500).json({ message: "Failed to save patient info", error: err2 });
-      res.status(200).json({ message: "Patient information saved successfully" });
+      if (err2) {
+        return res.status(500).json({
+          message: "Failed to save patient info",
+          error: err2
+        });
+      }
+
+      res.status(200).json({ message: "Patient information updated successfully" });
     });
   });
 });
+
 
 // Start the server
 const PORT = process.env.PORT || 3000;

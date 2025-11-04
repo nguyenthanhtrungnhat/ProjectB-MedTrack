@@ -25,10 +25,10 @@ export interface PatientProps {
     summaryCondition?: string;
     dischargeDiagnosis?: string;
     BHYT?: string;
-    admissionDate?: string | null;
+    admissionDate?: string;
     relativeName?: string;
-    relativeNumber?: number|null|string
-    dischargeDate?: string | null;
+    relativeNumber?: number|string
+    dischargeDate?: string;
     CCCD?: number;
     username?: string;
 }

@@ -47,7 +47,7 @@ export default function CompletePatientForm({ onCompleted }: { onCompleted?: () 
             }
 
             // ✅ Call protected API (userID extracted from token server-side)
-            await axios.post(
+            await axios.put(
                 `https://projectb-medtrack.onrender.com/api/patient/complete`,
                 { ...form, userID },
                 { headers: { Authorization: `Bearer ${token}` } }
