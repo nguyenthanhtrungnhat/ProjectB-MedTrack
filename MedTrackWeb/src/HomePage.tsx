@@ -7,7 +7,6 @@ import prom3 from './images/Asset-4.webp';
 import prom4 from './images/Asset-5.webp';
 import Introduce from './Introduce';
 import { useEffect, useState } from 'react';
-import Footer from './Footer';
 export default function HomePage() {
     const banners = [banner1, banner2, banner3, banner3];
 

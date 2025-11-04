@@ -474,6 +474,12 @@
     }
 }
 
+@media (min-width: 992px) {
+  .carousel-item img {
+    max-height: 660px; /* smaller banner on desktop */
+  }
+}
+
 /* Fixed Size Box */
 .square170-250 {
     height: 170px;
