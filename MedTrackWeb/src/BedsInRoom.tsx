@@ -82,17 +82,6 @@ export default function BedsInRoom() {
                                             </li>
                                         </ul>
                                     </div>
-                                    <h6 className='whiteText blueBg announceHead'>Lastes announcements</h6>
-                                    <div className='padding20'>
-                                        <div className="card border-light mb-3 dropShadow">
-                                            <div className="card-body p-2 card-header">
-                                                <p className="card-title p-0"><b>Light card title</b></p>
-                                                <p className="card-text p-0">Description</p>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
                                 </div>
                             </div>
                         </div>

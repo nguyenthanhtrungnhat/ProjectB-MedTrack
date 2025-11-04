@@ -16,7 +16,7 @@ export default function ShiftChange() {
     const [schedules, setSchedules] = useState<Schedule[]>([]);
     useEffect(() => {
         axios
-            .get(`http://localhost:3000/api/schedules/${nurseID}`)
+            .get(`https://projectb-medtrack.onrender.com/api/schedules/${nurseID}`)
             .then(res => setSchedules(res.data))
             .catch(err => console.error("Error fetching schedules:", err));
     }, [nurseID]);

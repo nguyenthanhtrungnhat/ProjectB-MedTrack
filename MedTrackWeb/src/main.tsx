@@ -23,11 +23,13 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';   // Bootstrap JS with Poppe
 import Register from "./Login/Register";
 import Services from "./Services";
 import HospitalServices from "./HospitalServices";
+import Footer from "./Footer";
 
 const Layout = () => (
   <>
     <Header />
     <Outlet />
+    <Footer />
   </>
 );
 const ProtectedRoute = () => {
