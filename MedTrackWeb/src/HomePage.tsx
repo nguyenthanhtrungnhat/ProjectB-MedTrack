@@ -67,7 +67,8 @@ export default function HomePage() {
             <div className="container-fluid papdding mt-5">
                 <div className="row p-3">
                     <div className="col-12">
-                        <h2 className="headd1">EASY STEPS FOR YOUR CARE</h2>
+                        {/* <h2 className="headd1">EASY STEPS FOR YOUR CARE</h2> */}
+                         <h2 className="headd1">Easy steps for your care</h2>
                         <hr />
 
                         <div className="row">
@@ -111,7 +112,8 @@ export default function HomePage() {
             <div className="container-fluid padding mt-5">
                 <div className="row p-3">
                     <div className="col-12">
-                        <h2 className="headd1">TODAY'S TOP STORIES</h2>
+                        {/* <h2 className="headd1">TODAY'S TOP STORIES</h2> */}
+                        <h2 className="headd1">Today's top stories</h2>
                         <hr />
                     </div>
                     <div className="col-lg-12 mb-4">
