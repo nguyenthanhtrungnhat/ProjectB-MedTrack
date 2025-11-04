@@ -291,10 +291,6 @@
     width: 39px;
 }
 
-/* .bannerImg {
-    height: 500px;
-} */
-
 .avtIMG {
     margin-top: 50px;
     height: 200px;
@@ -464,11 +460,6 @@
         height: 130px;
         width: 180px;
     }
-
-    /* .bannerImg {
-        height: 250px;
-        width: 100%;
-    } */
 
     /* Grid adjustments */
     .grid-container {

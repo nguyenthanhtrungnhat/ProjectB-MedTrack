@@ -44,10 +44,10 @@ export default function HomePage() {
                     </div>
                     <div className="carousel-inner">
                         <div className="carousel-item active">
-                            <img src='https://marketplace.canva.com/EAGgZ8Npo0w/1/0/1600w/canva-blue-and-white-simple-medical-center-banner-hPVBVEoLtMY.jpg' className="d-block w-100 bannerImg" loading="lazy" alt="Slide 1" />
+                            <img src='https://marketplace.canva.com/EAGgZ8Npo0w/1/0/1600w/canva-blue-and-white-simple-medical-center-banner-hPVBVEoLtMY.jpg' className="d-block w-100" loading="lazy" alt="Slide 1" />
                         </div>
                         <div className="carousel-item">
-                            <img src='https://marketplace.canva.com/EAGKRVPLHsU/1/0/1600w/canva-green-and-white-modern-gradient-health-banner-fWIvneHZsvs.jpg' className="d-block w-100 bannerImg" loading="lazy" alt="Slide 2" />
+                            <img src='https://marketplace.canva.com/EAGKRVPLHsU/1/0/1600w/canva-green-and-white-modern-gradient-health-banner-fWIvneHZsvs.jpg' className="d-block w-100" loading="lazy" alt="Slide 2" />
                         </div>
                         {/* <div className="carousel-item">
                             <img src={banner3} className="d-block w-100 bannerImg" loading="lazy" alt="Slide 3" />
