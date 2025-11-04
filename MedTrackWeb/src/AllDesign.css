@@ -186,6 +186,7 @@
 }
 
 /* FontAwesome Icons */
+.hasServiceIcon::before,
 .date-with-icon::before,
 .hasFeeIcon::before,
 .hasHomeIcon::before,
@@ -198,9 +199,11 @@
     margin-right: 8px;
     color: white;
 }
-.hasFeeIcon::before{
+
+.hasFeeIcon::before {
     content: '\f51e';
 }
+
 .hasInboxIcon::before {
     content: "\f0f3";
     /* envelope */
@@ -209,11 +212,17 @@
 .hasHomeIcon::before {
     content: "\f015";
 }
-.date-with-icon::before{
+
+.date-with-icon::before {
     content: '\f1ec';
     color: grey;
     font-size: 14px;
 }
+
+.hasServiceIcon::before {
+    content: '\f4be';
+}
+
 /* Drop Down */
 .tdec0,
 .tdec0:focus,

@@ -95,6 +95,11 @@ export default function Header() {
                                         <h5 className="whiteText hasFeeIcon m-0">Medical Service fee</h5>
                                     </Link>
                                 </li>
+                                 <li className="nav-item">
+                                    <Link className="nav-link whiteText" to={"/hservices"}>
+                                        <h5 className="whiteText hasServiceIcon m-0">Service</h5>
+                                    </Link>
+                                </li>
                                 <li className="nav-item">
                                     <Link className="nav-link whiteText" to={"/patient/patient-profile"}>
                                         <h5 className="whiteText hasProfileIcon m-0">Profile</h5>
@@ -113,7 +118,12 @@ export default function Header() {
                                 </li>
                                 <li className="nav-item">
                                     <Link className="nav-link whiteText" to={"/services"}>
-                                        <h5 className="whiteText hasFeeIcon m-0">Service fee</h5>
+                                        <h5 className="whiteText hasFeeIcon m-0">Hospital fee</h5>
+                                    </Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className="nav-link whiteText" to={"/hservices"}>
+                                        <h5 className="whiteText hasServiceIcon m-0">Service</h5>
                                     </Link>
                                 </li>
                                 <li className="nav-item">
@@ -121,6 +131,7 @@ export default function Header() {
                                         <h5 className="whiteText hasProfileIcon m-0">Login</h5>
                                     </Link>
                                 </li>
+
                             </ul>
                         )}
                     </div>

@@ -190,7 +190,7 @@ export default function HomePage() {
                 </div>
                 {/*here */}
                 <Introduce />
-                <HospitalServices />
+                {/* <HospitalServices /> */}
             </div >
 
 

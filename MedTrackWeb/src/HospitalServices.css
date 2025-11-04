@@ -1,33 +1,27 @@
+/* Make sidebar sticky only on larger screens */
+@media (min-width: 992px) {
+  .sticky-sidebar {
+    position: sticky;
+    top: 100px;
+  }
+}
+
+/* On mobile, sidebar becomes full-width and scrollspy loses sticky */
+@media (max-width: 991px) {
+  .sticky-sidebar {
+    position: static;
+  }
+}
+
+/* Improve spacing for mobile */
 .scrollspy-example {
-  position: relative;
-  height: 500px;
+  max-height: 80vh;
   overflow-y: auto;
-  scroll-behavior: smooth;
 }
 
-/* Sidebar stays visible */
-.sticky-sidebar {
-  position: sticky;
-  top: 100px;
-}
-
-/* Active highlight — clearly shows current section */
-.list-group-item.active {
-  background-color: #0d6efd !important;
-  color: #fff !important;
-  border-color: #0d6efd !important;
-  font-weight: 600;
-  box-shadow: inset 3px 0 0 #0b5ed7;
-  transition: all 0.2s ease-in-out;
-}
-
-/* Subtle hover effect */
-.list-group-item:hover {
-  background-color: #e9ecef;
-  color: #0d6efd;
-}
-
-/* Smooth section transitions */
-.scrollspy-example h4 {
-  scroll-margin-top: 100px;
+/* Ensure images scale properly */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
