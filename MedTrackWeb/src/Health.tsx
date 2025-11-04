@@ -66,7 +66,7 @@ export default function Health() {
                 if (String(value).toLowerCase() === "drowsy") return { color: "text-bg-warning", label: "Drowsy" };
                 return { color: "text-bg-danger", label: "Abnormal" };
 
-            case "painScale":
+            case "hurtScale":
                 if (Number(value) <= 3) return { color: "text-bg-success", label: "Mild" };
                 if (Number(value) <= 6) return { color: "text-bg-warning", label: "Moderate" };
                 return { color: "text-bg-danger", label: "Severe" };
@@ -184,7 +184,7 @@ export default function Health() {
                                                 {renderVital("Sensorium", tempImg, "", "sensorium", record?.sensorium)}
                                             </div>
                                             <div className="col-lg-6 col-sm-12 padding">
-                                                {renderVital("Pain Scale", bpImg, "/10", "painScale", record?.hurtScale)}
+                                                {renderVital("Pain Scale", bpImg, "/10", "hurtScale", record?.hurtScale)}
                                             </div>
                                         </>
                                     )}
