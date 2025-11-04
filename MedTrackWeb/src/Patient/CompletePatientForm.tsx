@@ -1,4 +1,3 @@
-// 📄 src/components/CompletePatientForm.tsx
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -20,17 +19,21 @@ export default function CompletePatientForm({ userID, onCompleted }: CompletePat
         relativeNumber: "",
     });
 
+    const [loading, setLoading] = useState(false); // <-- added
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true); // show loading state
 
         try {
             const token = localStorage.getItem("token");
             if (!token) {
                 toast.error("You must be logged in to complete your information");
+                setLoading(false);
                 return;
             }
 
@@ -52,6 +55,8 @@ export default function CompletePatientForm({ userID, onCompleted }: CompletePat
             } else {
                 toast.error("Failed to save information");
             }
+        } finally {
+            setLoading(false); // hide loading after done
         }
     };
 
@@ -62,7 +67,7 @@ export default function CompletePatientForm({ userID, onCompleted }: CompletePat
                     Please Complete Your Personal Information to Access Other Functions
                 </h4>
 
-                <form onSubmit={handleSubmit} className="row g-3 mt-">
+                <form onSubmit={handleSubmit} className="row g-3">
                     <div className="col-md-6">
                         <label className="form-label">Full Name</label>
                         <input
@@ -160,8 +165,23 @@ export default function CompletePatientForm({ userID, onCompleted }: CompletePat
                     </div>
 
                     <div className="col-12">
-                        <button type="submit" className="btn btn-primary w-100">
-                            Save Information
+                        <button
+                            type="submit"
+                            className="btn btn-primary w-100"
+                            disabled={loading}
+                        >
+                            {loading ? (
+                                <>
+                                    <span
+                                        className="spinner-border spinner-border-sm me-2"
+                                        role="status"
+                                        aria-hidden="true"
+                                    ></span>
+                                    Saving...
+                                </>
+                            ) : (
+                                "Save Information"
+                            )}
                         </button>
                     </div>
                 </form>
