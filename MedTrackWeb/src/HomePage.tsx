@@ -5,7 +5,6 @@ import prom1 from './images/Asset-1.webp';
 import prom2 from './images/Asset-3.webp';
 import prom3 from './images/Asset-4.webp';
 import prom4 from './images/Asset-5.webp';
-import HospitalServices from './HospitalServices';
 import Introduce from './Introduce';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
