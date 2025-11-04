@@ -7,8 +7,7 @@ import { jwtDecode } from "jwt-decode";
 import SidebarLogin from '../SidebarLogin';
 import { toast } from 'react-toastify';
 import PatientInformation from '../PatientInformation';
-import patientImg from './../images/Untitled-1.webp';
-import notgoodpatientImg from './../images/red_body.webp';
+import patientImg from './../images/human-body-vector-healthy-body-sleeve-clothing-apparel-back-transparent-png-999585.webp';
 import pluseImg from './../images/pulseReal.webp';
 import tempImg from './../images/nhietdo.webp';
 import heightImg from './../images/pulseReal.webp';
@@ -374,9 +373,7 @@ export default function PatientScreen() {
                             </div>
 
                             <div className="col-2 d-flex justify-content-center align-items-center">
-                                {record?.healthStatus == 1
-                                    ? <img src={patientImg} className="patientImg" alt="Good Health" />
-                                    : <img src={notgoodpatientImg} className="patientImg" alt="Not Good Health" />}
+                                <img src={patientImg} className="patientImg" alt="Good Health" />
                             </div>
 
                             <div className="col-5">
