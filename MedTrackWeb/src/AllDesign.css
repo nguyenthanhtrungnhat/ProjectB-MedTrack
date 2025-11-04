@@ -186,6 +186,7 @@
 }
 
 /* FontAwesome Icons */
+.date-with-icon::before,
 .hasFeeIcon::before,
 .hasHomeIcon::before,
 .hasProfileIcon::before,
@@ -208,7 +209,11 @@
 .hasHomeIcon::before {
     content: "\f015";
 }
-
+.date-with-icon::before{
+    content: '\f1ec';
+    color: grey;
+    font-size: 14px;
+}
 /* Drop Down */
 .tdec0,
 .tdec0:focus,
@@ -271,9 +276,9 @@
     width: 39px;
 }
 
-.bannerImg {
+/* .bannerImg {
     height: 500px;
-}
+} */
 
 .avtIMG {
     margin-top: 50px;
@@ -445,10 +450,10 @@
         width: 180px;
     }
 
-    .bannerImg {
+    /* .bannerImg {
         height: 250px;
         width: 100%;
-    }
+    } */
 
     /* Grid adjustments */
     .grid-container {

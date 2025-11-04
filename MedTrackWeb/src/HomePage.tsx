@@ -36,19 +36,19 @@ export default function HomePage() {
     const showToggleBtn = banners.length > (isMobile ? 2 : 4);
     return (
         <>
-            <div className="container-fluid pt-5 p-0 h-100 padding mt-5">
+            <div className="container-fluid pt-5 p-0 h-100 padding">
                 <div id="carouselExampleCaptions" className="carousel slide" data-bs-ride="carousel">
                     <div className="carousel-indicators">
                         <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
                         <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                        {/* <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button> */}
                     </div>
                     <div className="carousel-inner">
                         <div className="carousel-item active">
-                            <img src='https://cdn-healthcare.hellohealthgroup.com/2022/09/1663228689_6322db118d3b34.31779223.jpg?w=1080&q=75' className="d-block w-100 bannerImg" loading="lazy" alt="Slide 1" />
+                            <img src='https://marketplace.canva.com/EAGgZ8Npo0w/1/0/1600w/canva-blue-and-white-simple-medical-center-banner-hPVBVEoLtMY.jpg' className="d-block w-100 bannerImg" loading="lazy" alt="Slide 1" />
                         </div>
                         <div className="carousel-item">
-                            <img src='https://cdn-healthcare.hellohealthgroup.com/2022/09/1663228690_6322db123be5a9.03555194.jpg?w=1080&q=75' className="d-block w-100 bannerImg" loading="lazy" alt="Slide 2" />
+                            <img src='https://marketplace.canva.com/EAGKRVPLHsU/1/0/1600w/canva-green-and-white-modern-gradient-health-banner-fWIvneHZsvs.jpg' className="d-block w-100 bannerImg" loading="lazy" alt="Slide 2" />
                         </div>
                         {/* <div className="carousel-item">
                             <img src={banner3} className="d-block w-100 bannerImg" loading="lazy" alt="Slide 3" />
@@ -64,11 +64,11 @@ export default function HomePage() {
                     </button>
                 </div>
             </div>
-            <div className="container-fluid papdding mt-5">
+            <div className="container papdding mt-5">
                 <div className="row p-3">
                     <div className="col-12">
                         {/* <h2 className="headd1">EASY STEPS FOR YOUR CARE</h2> */}
-                         <h2 className="headd1">Easy steps for your care</h2>
+                        <h2 className="headd1">Easy steps for your care</h2>
                         <hr />
 
                         <div className="row">
@@ -109,7 +109,7 @@ export default function HomePage() {
                 </div>
             </div>
 
-            <div className="container-fluid padding mt-5">
+            <div className="container padding mt-5">
                 <div className="row p-3">
                     <div className="col-12">
                         {/* <h2 className="headd1">TODAY'S TOP STORIES</h2> */}
@@ -152,10 +152,16 @@ export default function HomePage() {
                                         loading="lazy"
                                     />
                                     <div className="card-body">
-                                        <p className="card-text">
-                                            Some quick example text to build on the card title and make
-                                            up the bulk of the card's content.
-                                        </p>
+                                        <div className="d-flex flex-column mb-2">
+                                            <time dateTime="2003-01-01" className="text-muted small date-with-icon">
+                                                1/1/2003
+                                            </time>
+                                        </div>
+                                        <div>
+                                            <p className="card-text">
+                                               New's title
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </a>
@@ -287,7 +293,7 @@ export default function HomePage() {
                 </section>
                 <hr className="m-0" />
                 <div className="text-center p-4 blueBg whiteText">
-                    © 2021 Copyright:{" "}
+                    © 2025 Copyright:{" "}
                     <a className="text-reset fw-bold" href="https://bih.vn/">
                         bih.vn
                     </a>

@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./HospitalServices.css";
-
+import guild from './images/20240530-Quy-trinh-kham-suc-khoe-TRANS-e1720236138920.webp'
 const HospitalServices = () => {
     return (
         <div className="container-fluid">
@@ -63,6 +63,7 @@ const HospitalServices = () => {
                             <li>Appointment paper from previous examination (if any).</li>
                             <li>Customers who have made an appointment by phone, please come to the registration counter 15 minutes before the appointment time to receive an examination number.</li>
                         </ul>
+                        <img src={guild} alt="quy trinh khamm benh" />
                         {/* ---------------- Departments ---------------- */}
                         <h4 id="departments" className="fw-bold text-primary">
                             Departments
