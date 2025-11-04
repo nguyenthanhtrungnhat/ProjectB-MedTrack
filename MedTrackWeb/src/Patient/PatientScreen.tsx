@@ -209,7 +209,7 @@ export default function PatientScreen() {
                                                 // Show Complete Form if info is missing
                                                 <div className="alert alert-warning" role="alert">
                                                     Please complete data to use other funtions!
-                                                    <Link to=''>Here</Link>
+                                                    <Link to='completedata'>Here</Link>
                                                 </div>
                                             )}
 
