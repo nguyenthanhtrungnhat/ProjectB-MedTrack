@@ -265,6 +265,12 @@
     width: 142px;
 }
 
+@media (max-width: 768px) {
+    .patientImg {
+        visibility: hidden;
+    }
+}
+
 .pluseImg {
     height: 39px;
     width: 41px;
