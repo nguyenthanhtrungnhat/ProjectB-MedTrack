@@ -508,6 +508,46 @@ app.post("/register", (req, res) => {
   });
 });
 
+// POST: Complete patient information (protected)
+app.post("/api/patient/complete", verifyToken, (req, res) => {
+  const {
+    userID,
+    fullName,
+    gender,
+    dob,
+    phone,
+    address,
+    BHYT,
+    relativeName,
+    relativeNumber
+  } = req.body;
+
+  if (!userID || !fullName || !gender || !dob || !phone || !address) {
+    return res.status(400).json({ message: "Missing required fields" });
+  }
+
+  // Check if this user already has patient info completed
+  const checkSql = "SELECT * FROM patient WHERE userID = ?";
+  db.query(checkSql, [userID], (err, results) => {
+    if (err) return res.status(500).json({ message: "Database error", error: err });
+
+    if (results.length > 0 && results[0].fullName) {
+      return res.status(400).json({ message: "Patient information already completed" });
+    }
+
+    const updateSql = `
+      UPDATE patient
+      SET fullName = ?, gender = ?, dob = ?, phone = ?, address = ?, BHYT = ?, relativeName = ?, relativeNumber = ?
+      WHERE userID = ?
+    `;
+
+    db.query(updateSql, [fullName, gender, dob, phone, address, BHYT, relativeName, relativeNumber, userID], (err2) => {
+      if (err2) return res.status(500).json({ message: "Failed to update patient info", error: err2 });
+
+      res.status(200).json({ message: "Patient information saved successfully" });
+    });
+  });
+});
 
 // Start the server
 const PORT = process.env.PORT || 3000;

@@ -16,6 +16,7 @@ import urineImg from './../images/pulseReal.webp';
 import spo2Img from './../images/pulseReal.webp';
 import bpImg from './../images/bloodPressure.webp';
 import ntImg from './../images/nhiptho.webp';
+import CompletePatientForm from './CompletePatientForm';
 
 const getUserIDFromToken = () => {
     const token = sessionStorage.getItem("token");
@@ -167,7 +168,15 @@ export default function PatientScreen() {
     const patient = patients[0];
 
     if (!userID) return <h1 className='p-5 mt-5'>Unauthorized. Please log in.</h1>;
-
+    // Check if patient info is missing
+    if (!patients[0] || !patients[0].fullName || !patients[0].gender || !patients[0].dob) {
+        return (
+            <CompletePatientForm
+                userID={Number(userID)}
+                onCompleted={() => window.location.reload()}
+            />
+        );
+    }
     return (
         <div className="container-fluid mainBg pt-5 mt-5 h-100">
             <div className="row">
