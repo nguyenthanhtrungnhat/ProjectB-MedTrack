@@ -91,7 +91,7 @@ export default function Health() {
                                 <span className="visually-hidden">Loading...</span>
                             </div>
                         ) : (
-                            value ? value : "N/A"
+                            value!=null ? value : "N/A"
                         )}
                     </h4>
                     <span className="blueText">{unit}</span>
