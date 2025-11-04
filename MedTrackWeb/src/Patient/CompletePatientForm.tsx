@@ -1,13 +1,21 @@
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { jwtDecode } from "jwt-decode";
 
-interface CompletePatientFormProps {
-    userID: number;
-    onCompleted: () => void;
-}
+const getUserIDFromToken = () => {
+    const token = sessionStorage.getItem("token"); // use same storage as your PatientScreen
+    if (!token) return null;
+    try {
+        const decoded: any = jwtDecode(token);
+        return decoded.userID;
+    } catch (error) {
+        console.error("Invalid token:", error);
+        return null;
+    }
+};
 
-export default function CompletePatientForm({ userID, onCompleted }: CompletePatientFormProps) {
+export default function CompletePatientForm({ onCompleted }: { onCompleted?: () => void }) {
     const [form, setForm] = useState({
         fullName: "",
         gender: "",
@@ -19,7 +27,8 @@ export default function CompletePatientForm({ userID, onCompleted }: CompletePat
         relativeNumber: "",
     });
 
-    const [loading, setLoading] = useState(false); // <-- added
+    const [loading, setLoading] = useState(false);
+    const userID = getUserIDFromToken();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -27,45 +36,48 @@ export default function CompletePatientForm({ userID, onCompleted }: CompletePat
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setLoading(true); // show loading state
+        setLoading(true);
 
         try {
-            const token = localStorage.getItem("token");
+            const token = sessionStorage.getItem("token");
             if (!token) {
                 toast.error("You must be logged in to complete your information");
                 setLoading(false);
                 return;
             }
 
+            // ✅ Call protected API (userID extracted from token server-side)
             await axios.post(
                 `https://projectb-medtrack.onrender.com/api/patient/complete`,
-                { userID, ...form },
-                {
-                    headers: { Authorization: `Bearer ${token}` },
-                }
+                form,
+                { headers: { Authorization: `Bearer ${token}` } }
             );
 
             toast.success("Personal information saved successfully!");
-            onCompleted();
+            if (onCompleted) onCompleted();
         } catch (err: any) {
-            if (err.response?.status === 401) {
+            if (err.response?.status === 401 || err.response?.status === 403) {
                 toast.error("Session expired. Please log in again.");
+                sessionStorage.removeItem("token");
+                setTimeout(() => (window.location.href = "/login"), 2000);
             } else if (err.response?.status === 400) {
                 toast.error(err.response.data?.message || "Missing required fields");
             } else {
                 toast.error("Failed to save information");
             }
         } finally {
-            setLoading(false); // hide loading after done
+            setLoading(false);
         }
     };
 
+    if (!userID) {
+        return <h4 className="p-5 mt-5 text-center text-danger">Unauthorized. Please log in again.</h4>;
+    }
+
     return (
-        <div className="container pt-5 mt-5 mb-5 pt-5">
+        <div className="container pt-5 mt-5 mb-5">
             <div className="row border whiteBg dropShadow padding">
-                <h4 className="blueText">
-                    Please Complete Your Personal Information to Access Other Functions
-                </h4>
+                <h4 className="blueText mb-3">Complete Your Personal Information</h4>
 
                 <form onSubmit={handleSubmit} className="row g-3">
                     <div className="col-md-6">
