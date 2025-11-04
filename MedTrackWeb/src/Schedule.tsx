@@ -113,48 +113,55 @@ export default function Schedule() {
   });
 
   return (
-    <div className="p-3 pt-5 mt-5">
-      {error && <div className="text-danger mb-3">{error}</div>}
+    <div className="container">
+      <div className="row">
+        <div className="col-12">
+          <div className="p-3 pt-5 mt-5">
+            {error && <div className="text-danger mb-3">{error}</div>}
 
-      <Calendar
-        localizer={localizer}
-        events={events}
-        startAccessor="start"
-        endAccessor="end"
-        titleAccessor={(event: ScheduleEvent) => `${event.subject} - ${event.room}`}
-        onSelectEvent={handleSelectEvent}
-        date={currentDate}
-        onNavigate={setCurrentDate}
-        view={view}                    // ✅ controlled view
-        onView={(newView) => setView(newView)} // ✅ switch view
-        views={["day", "week", "month"]}
-        defaultView="week"
-        step={30}
-        timeslots={2}
-        style={{ height: "80vh" }}
-        eventPropGetter={eventStyleGetter}
-        toolbar={true}
-      />
+            <Calendar
+              localizer={localizer}
+              events={events}
+              startAccessor="start"
+              endAccessor="end"
+              titleAccessor={(event: ScheduleEvent) => `${event.subject} - ${event.room}`}
+              onSelectEvent={handleSelectEvent}
+              date={currentDate}
+              onNavigate={setCurrentDate}
+              view={view}                    // ✅ controlled view
+              onView={(newView) => setView(newView)} // ✅ switch view
+              views={["day", "week", "month"]}
+              defaultView="week"
+              step={30}
+              timeslots={2}
+              style={{ height: "80vh" }}
+              eventPropGetter={eventStyleGetter}
+              toolbar={true}
+            />
 
-      <Modal show={!!selectedEvent} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Task Detail</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {selectedEvent && (
-            <div>
-              <p><strong>Subject:</strong> {selectedEvent.subject}</p>
-              <p><strong>Room:</strong> {selectedEvent.room}</p>
-              <p><strong>Start:</strong> {selectedEvent.start?.toLocaleString()}</p>
-              <p><strong>End:</strong> {selectedEvent.end?.toLocaleString()}</p>
-              {/* <p><strong>Color:</strong> {selectedEvent.color}</p> */}
-            </div>
-          )}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>Close</Button>
-        </Modal.Footer>
-      </Modal>
+            <Modal show={!!selectedEvent} onHide={handleCloseModal}>
+              <Modal.Header closeButton>
+                <Modal.Title>Task Detail</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                {selectedEvent && (
+                  <div>
+                    <p><strong>Subject:</strong> {selectedEvent.subject}</p>
+                    <p><strong>Room:</strong> {selectedEvent.room}</p>
+                    <p><strong>Start:</strong> {selectedEvent.start?.toLocaleString()}</p>
+                    <p><strong>End:</strong> {selectedEvent.end?.toLocaleString()}</p>
+                    {/* <p><strong>Color:</strong> {selectedEvent.color}</p> */}
+                  </div>
+                )}
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseModal}>Close</Button>
+              </Modal.Footer>
+            </Modal>
+          </div>
+        </div>
+      </div>
     </div>
+
   );
 }
