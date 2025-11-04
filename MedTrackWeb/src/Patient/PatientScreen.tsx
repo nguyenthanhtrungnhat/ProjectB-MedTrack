@@ -165,6 +165,12 @@ export default function PatientScreen() {
     };
 
     const patient = patients[0];
+    function isPatientInfoIncomplete(patient: any) {
+        if (!patient) return true; // no patient object at all
+
+        const requiredFields = ["fullName", "gender", "dob"];
+        return requiredFields.some((field) => !patient[field]);
+    }
 
     if (!userID) return <h1 className='p-5 mt-5'>Unauthorized. Please log in.</h1>;
 
@@ -175,7 +181,7 @@ export default function PatientScreen() {
                     <div className="row align-items-stretch mb-4">
                         {/* Left column */}
                         <div className="col-lg-6 col-sm-12 d-flex">
-                            <div className="w-100 d-flex flex-column border whiteBg dropShadow p-3">
+                            <div className="w-100 d-flex flex-column border whiteBg dropShadow p-3 mb-3">
 
                                 {loading ? (
                                     <PatientInformation
@@ -202,16 +208,13 @@ export default function PatientScreen() {
 
                                 ) : (
                                     <>
-                                        {(!patients[0] ||
-                                            !patients[0].fullName ||
-                                            !patients[0].gender ||
-                                            !patients[0].dob) && (
-                                                // Show Complete Form if info is missing
-                                                <div className="alert alert-warning" role="alert">
-                                                    Please complete data to use other funtions!
-                                                    <Link to="/patient/completedata">Here</Link>
-                                                </div>
-                                            )}
+                                        {isPatientInfoIncomplete(patients[0]) && (
+                                            // Show Complete Form if info is missing
+                                            <div className="alert alert-warning" role="alert">
+                                                Please complete data to use other funtions! 
+                                                <Link to="/patient/completedata">Click here</Link>
+                                            </div>
+                                        )}
 
                                         <PatientInformation
                                             image={patient?.image || ""}
@@ -240,7 +243,7 @@ export default function PatientScreen() {
                         </div>
 
                         <div className="col-lg-6 col-sm-12 ">
-                            <div className="hasSchedule padding border mb-3 whiteBg dropShadow mt-3">
+                            <div className="hasSchedule padding border mb-3 whiteBg dropShadow">
                                 <div className="row">
                                     <div className="col-12 medicineSchedule padding50">
                                         <h5 className='blueText medSche'>Medicine schedule</h5>
@@ -248,7 +251,16 @@ export default function PatientScreen() {
                                             <p className='p-2 bd-highlight size50'>0</p>
                                             <i className="ml-auto p-2 bd-highlight fa fa-bell-o blueText size50" />
                                         </div>
-                                        <a href="#">More detail</a>
+                                        {isPatientInfoIncomplete(patients[0]) ? (
+                                            // Show Complete Form if info is missing
+                                            <span >
+                                                Access not allowed
+                                            </span>
+                                        ) : (
+                                            <Link to="#" className="text-decoration-none">
+                                                More detail
+                                            </Link>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -258,12 +270,21 @@ export default function PatientScreen() {
                                         <div className="row">
                                             <div className="col-6 d-flex justify-content-center">
                                                 <div className="border border-success square170-250 padding20">
-                                                    <h5 className='medSche greenText'>Assigned Task</h5>
+                                                    <h5 className='medSche greenText'>Appoiment</h5>
                                                     <div className="d-flex bd-highlight mb-3">
                                                         <p className='p-2 bd-highlight size25'>0</p>
                                                         <i className="ml-auto p-2 bd-highlight fa fa-calendar size25 greenText" />
                                                     </div>
-                                                    <a href="#" className='greenText'>More detail</a>
+                                                    {isPatientInfoIncomplete(patients[0]) ? (
+                                                        // Show Complete Form if info is missing
+                                                        <span >
+                                                            Access not allowed
+                                                        </span>
+                                                    ) : (
+                                                        <Link to="#" className="text-decoration-none">
+                                                            More detail
+                                                        </Link>
+                                                    )}
                                                 </div>
                                             </div>
                                             <div className="col-6 d-flex justify-content-center">
@@ -273,7 +294,16 @@ export default function PatientScreen() {
                                                         <p className='p-2 bd-highlight size25'>0</p>
                                                         <i className="ml-auto p-2 bd-highlight fa fa-calendar blueText size25" />
                                                     </div>
-                                                    <a href="#">More detail</a>
+                                                    {isPatientInfoIncomplete(patients[0]) ? (
+                                                        // Show Complete Form if info is missing
+                                                        <span >
+                                                            Access not allowed
+                                                        </span>
+                                                    ) : (
+                                                        <Link to="#" className="text-decoration-none">
+                                                            More detail
+                                                        </Link>
+                                                    )}
                                                 </div>
                                             </div>
                                         </div>
@@ -302,9 +332,17 @@ export default function PatientScreen() {
                                 <div className="padding">
                                     <ul className='list-unstyled'>
                                         <li>
-                                            <Link to="#" className="text-decoration-none">
-                                                <i className="fa fa-caret-right" /> Developing ...
-                                            </Link>
+                                            {isPatientInfoIncomplete(patients[0]) ? (
+                                                // Show Complete Form if info is missing
+                                                <div className="alert alert-warning" role="alert">
+                                                    Access not allowed
+                                                </div>
+                                            ) : (
+                                                <Link to="#" className="text-decoration-none">
+                                                    <i className="fa fa-caret-right" /> Developing ...
+                                                </Link>
+                                            )}
+
                                         </li>
                                     </ul>
                                 </div>

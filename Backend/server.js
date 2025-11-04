@@ -307,44 +307,6 @@ app.delete("/patients/:patientID", (req, res) => {
   });
 });
 
-// Update user by ID
-app.put("/users/:id", (req, res) => {
-  const userID = req.params.id;
-  let {
-    username,
-    password,
-    fullName,
-    dob,
-    phone,
-    email,
-    CCCD,
-    address,
-    haveTask,
-    gender
-  } = req.body;
-
-  const formatDate = (isoDate) => {
-    if (!isoDate) return null;
-    const date = new Date(isoDate);
-    return date.toISOString().slice(0, 19).replace("T", " ");
-  };
-
-  dob = formatDate(dob);
-  haveTask = formatDate(haveTask);
-
-  const sql = `
-      UPDATE user
-      SET username = ?, password = ?, fullName = ?, dob = ?, phone = ?, 
-          email = ?, CCCD = ?, address = ?, haveTask = ?, gender = ? 
-      WHERE userID = ?`;
-
-  db.query(sql, [username, password, fullName, dob, phone, email, CCCD, address, haveTask, gender, userID], (err, result) => {
-    if (err) return res.status(500).json({ error: "Failed to update user" });
-    if (result.affectedRows === 0) return res.status(404).json({ error: "User not found" });
-    res.json({ message: "User updated successfully!" });
-  });
-});
-
 // Get patient by userID
 app.get('/api/patientByUserID/:userID', (req, res) => {
   const userID = req.params.userID;
@@ -526,24 +488,28 @@ app.post("/api/patient/complete", verifyToken, (req, res) => {
     return res.status(400).json({ message: "Missing required fields" });
   }
 
-  // Check if this user already has patient info completed
-  const checkSql = "SELECT * FROM patient WHERE userID = ?";
-  db.query(checkSql, [userID], (err, results) => {
-    if (err) return res.status(500).json({ message: "Database error", error: err });
+  // First, ensure user table is updated with personal info
+  const updateUserSql = `
+    UPDATE user
+    SET fullName = ?, gender = ?, dob = ?, phone = ?, address = ?
+    WHERE userID = ?
+  `;
 
-    if (results.length > 0 && results[0].fullName) {
-      return res.status(400).json({ message: "Patient information already completed" });
-    }
+  db.query(updateUserSql, [fullName, gender, dob, phone, address, userID], (err1) => {
+    if (err1) return res.status(500).json({ message: "Failed to update user info", error: err1 });
 
-    const updateSql = `
-      UPDATE patient
-      SET fullName = ?, gender = ?, dob = ?, phone = ?, address = ?, BHYT = ?, relativeName = ?, relativeNumber = ?
-      WHERE userID = ?
+    // Then, either update or insert into patient table
+    const updatePatientSql = `
+      INSERT INTO patient (userID, BHYT, relativeName, relativeNumber)
+      VALUES (?, ?, ?, ?)
+      ON DUPLICATE KEY UPDATE
+        BHYT = VALUES(BHYT),
+        relativeName = VALUES(relativeName),
+        relativeNumber = VALUES(relativeNumber)
     `;
 
-    db.query(updateSql, [fullName, gender, dob, phone, address, BHYT, relativeName, relativeNumber, userID], (err2) => {
-      if (err2) return res.status(500).json({ message: "Failed to update patient info", error: err2 });
-
+    db.query(updatePatientSql, [userID, BHYT, relativeName, relativeNumber], (err2) => {
+      if (err2) return res.status(500).json({ message: "Failed to save patient info", error: err2 });
       res.status(200).json({ message: "Patient information saved successfully" });
     });
   });
