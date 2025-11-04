@@ -164,7 +164,6 @@ export default function DailyCheckingForm() {
   return (
     <>
       <ToastContainer />
-      <Header />
       <div className="mainBg h1359 mt-5 pt-5 padding">
         <div className="d-flex justify-content-center align-items-center">
           <div className="tracking-sheet" style={{ position: "relative" }}>
