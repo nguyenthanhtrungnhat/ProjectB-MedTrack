@@ -185,6 +185,7 @@ export default function PatientScreen() {
 
                                 {loading ? (
                                     <PatientInformation
+                                        patientID={patient?.patientID}
                                         image={patient?.image || ""}
                                         fullName={patient?.fullName || ""}
                                         gender={
@@ -196,7 +197,7 @@ export default function PatientScreen() {
                                         }
                                         dob={patient?.dob?.split("T")[0] || ""}
                                         phone={patient?.phone || ""}
-                                        patientID={patient?.patientID}
+                                        CCCD={patient?.CCCD}
                                         address={patient?.address || ""}
                                         email={patient?.email || ""}
                                         BHYT={patient?.BHYT || ""}
@@ -211,12 +212,13 @@ export default function PatientScreen() {
                                         {isPatientInfoIncomplete(patients[0]) && (
                                             // Show Complete Form if info is missing
                                             <div className="alert alert-warning" role="alert">
-                                                Please complete data to use other funtions! 
+                                                Please complete data to use other funtions!
                                                 <Link to="/patient/completedata">Click here</Link>
                                             </div>
                                         )}
 
                                         <PatientInformation
+                                            patientID={patient?.patientID}
                                             image={patient?.image || ""}
                                             fullName={patient?.fullName || ""}
                                             gender={
@@ -228,7 +230,7 @@ export default function PatientScreen() {
                                             }
                                             dob={patient?.dob?.split("T")[0] || ""}
                                             phone={patient?.phone || ""}
-                                            patientID={patient?.patientID}
+                                            CCCD={patient?.CCCD}
                                             address={patient?.address || ""}
                                             email={patient?.email || ""}
                                             BHYT={patient?.BHYT || ""}

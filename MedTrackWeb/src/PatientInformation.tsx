@@ -26,7 +26,7 @@ export default function PatientInformation({
   gender,
   dob,
   phone,
-  patientID,
+  CCCD,
   address,
   email,
   BHYT,
@@ -44,7 +44,7 @@ export default function PatientInformation({
         <InfoRow label="Date of birth" value={dob} loading={loading} />
         <InfoRow label="Gender" value={gender} loading={loading} />
         <InfoRow label="Phone" value={String(phone)} loading={loading} />
-        <InfoRow label="ID card" value={String(patientID)} loading={loading} />
+        <InfoRow label="ID card" value={String(CCCD)} loading={loading} />
         <InfoRow label="Email" value={email} loading={loading} />
         <InfoRow label="Address" value={address} loading={loading} />
         <InfoRow label="BHYT" value={BHYT} loading={loading} />
