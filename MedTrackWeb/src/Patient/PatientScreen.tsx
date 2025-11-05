@@ -333,19 +333,23 @@ export default function PatientScreen() {
                                 <h6 className='whiteText blueBg featureHead'>Feature</h6>
                                 <div className="padding">
                                     <ul className='list-unstyled'>
-                                        <li>
-                                            {isPatientInfoIncomplete(patients[0]) ? (
-                                                // Show Complete Form if info is missing
-                                                <div className="alert alert-warning" role="alert">
-                                                    Access not allowed
-                                                </div>
-                                            ) : (
+                                        {isPatientInfoIncomplete(patients[0]) ? (
+                                            // Show Complete Form if info is missing
+                                            <div className="alert alert-warning" role="alert">
+                                                Access not allowed
+                                            </div>
+                                        ) : (<>
+                                            {/* <li>
+                                                <Link to="completedata" className="text-decoration-none">
+                                                    <i className="fa fa-caret-right" /> Update personal data
+                                                </Link>
+                                            </li> */}
+                                            <li>
                                                 <Link to="#" className="text-decoration-none">
                                                     <i className="fa fa-caret-right" /> Developing ...
                                                 </Link>
-                                            )}
-
-                                        </li>
+                                            </li></>
+                                        )}
                                     </ul>
                                 </div>
                             </div>

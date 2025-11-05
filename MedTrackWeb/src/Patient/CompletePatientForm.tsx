@@ -77,7 +77,7 @@ export default function CompletePatientForm({ onCompleted }: { onCompleted?: () 
                 return;
             }
 
-            await axios.put(
+            const res = await axios.put(
                 `https://projectb-medtrack.onrender.com/api/patient/complete`,
                 {
                     ...form,
@@ -87,27 +87,40 @@ export default function CompletePatientForm({ onCompleted }: { onCompleted?: () 
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
-            // ✅ Success toast + reset
-            setToast({ message: "Personal information saved successfully!", type: "success" });
-            setForm({
-                cccd: "",
-                fullName: "",
-                gender: "",
-                dob: "",
-                phone: "",
-                address: "",
-                BHYT: "",
-                relativeName: "",
-                relativeNumber: "",
-            });
-            if (onCompleted) onCompleted();
+            // ✅ Check status explicitly
+            if (res.status === 200 || res.status === 201) {
+                setToast({ message: "Personal information saved successfully!", type: "success" });
+
+                setForm({
+                    cccd: "",
+                    fullName: "",
+                    gender: "",
+                    dob: "",
+                    phone: "",
+                    address: "",
+                    BHYT: "",
+                    relativeName: "",
+                    relativeNumber: "",
+                });
+
+                if (onCompleted) onCompleted();
+            } else {
+                setToast({
+                    message: res.data?.message || "Unexpected response from server",
+                    type: "error",
+                });
+            }
         } catch (err: any) {
+            console.error("❌ Error:", err.response || err);
             if (err.response?.status === 401 || err.response?.status === 403) {
                 setToast({ message: "Session expired. Please log in again.", type: "error" });
                 sessionStorage.removeItem("token");
                 setTimeout(() => (window.location.href = "/login"), 2000);
             } else if (err.response?.status === 400) {
-                setToast({ message: err.response.data?.message || "Missing required fields", type: "error" });
+                setToast({
+                    message: err.response.data?.message || "Missing required fields",
+                    type: "error",
+                });
             } else {
                 setToast({ message: "Failed to save information", type: "error" });
             }
@@ -215,7 +228,7 @@ export default function CompletePatientForm({ onCompleted }: { onCompleted?: () 
                         <div className="col-md-6">
                             <label className="form-label">Phone</label>
                             <input
-                                type="text"
+                                type="number"
                                 name="phone"
                                 className="form-control"
                                 value={form.phone}
@@ -250,7 +263,7 @@ export default function CompletePatientForm({ onCompleted }: { onCompleted?: () 
                         <div className="col-md-6">
                             <label className="form-label">Relative’s Phone</label>
                             <input
-                                type="text"
+                                type="number"
                                 name="relativeNumber"
                                 className="form-control"
                                 value={form.relativeNumber}
