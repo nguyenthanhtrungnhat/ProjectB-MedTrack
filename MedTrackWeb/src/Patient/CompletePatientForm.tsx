@@ -1,6 +1,5 @@
 import { useState } from "react";
 import axios from "axios";
-import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
 import QRScanner from "../QRScanner";
 
@@ -16,13 +15,9 @@ const getUserIDFromToken = () => {
     }
 };
 
-export default function CompletePatientForm({
-    onCompleted,
-}: {
-    onCompleted?: () => void;
-}) {
+export default function CompletePatientForm({ onCompleted }: { onCompleted?: () => void }) {
     const [form, setForm] = useState({
-        cccd: "", // 🔹 NEW field
+        cccd: "",
         fullName: "",
         gender: "",
         dob: "",
@@ -34,19 +29,20 @@ export default function CompletePatientForm({
     });
 
     const [loading, setLoading] = useState(false);
+    const [toast, setToast] = useState<{ message: string; type: "success" | "error" | null }>({
+        message: "",
+        type: null,
+    });
+
     const userID = getUserIDFromToken();
 
-    const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-    ) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
-    // 🔹 Handle QR scan result (CCCD + others)
+    // ✅ Handle QR scan result
     const handleQRScan = (decodedText: string) => {
         const data = decodedText.split("|");
-
-        // Vietnamese ID card format: [0]=CCCD, [1]=BHYT, [2]=Full name, [3]=DOB, [4]=Gender, [5]=Address, [6]=Create date
         setForm((prev) => ({
             ...prev,
             cccd: data[0] || prev.cccd,
@@ -65,43 +61,55 @@ export default function CompletePatientForm({
             address: data[5] || prev.address,
         }));
 
-        toast.info("QR data filled into the form!");
+        setToast({ message: "QR data filled into the form!", type: "success" });
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
+        setToast({ message: "", type: null });
 
         try {
             const token = sessionStorage.getItem("token");
             if (!token) {
-                toast.error("You must be logged in to complete your information");
+                setToast({ message: "You must be logged in to complete your information", type: "error" });
                 setLoading(false);
                 return;
             }
 
-            // ✅ Send correct field names (CCCD uppercase + include userID)
             await axios.put(
                 `https://projectb-medtrack.onrender.com/api/patient/complete`,
                 {
                     ...form,
-                    CCCD: form.cccd, // ✅ backend expects uppercase
-                    userID,           // ✅ needed for query WHERE userID
+                    CCCD: form.cccd,
+                    userID,
                 },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
-            toast.success("Personal information saved successfully!");
+            // ✅ Success toast + reset
+            setToast({ message: "Personal information saved successfully!", type: "success" });
+            setForm({
+                cccd: "",
+                fullName: "",
+                gender: "",
+                dob: "",
+                phone: "",
+                address: "",
+                BHYT: "",
+                relativeName: "",
+                relativeNumber: "",
+            });
             if (onCompleted) onCompleted();
         } catch (err: any) {
             if (err.response?.status === 401 || err.response?.status === 403) {
-                toast.error("Session expired. Please log in again.");
+                setToast({ message: "Session expired. Please log in again.", type: "error" });
                 sessionStorage.removeItem("token");
                 setTimeout(() => (window.location.href = "/login"), 2000);
             } else if (err.response?.status === 400) {
-                toast.error(err.response.data?.message || "Missing required fields");
+                setToast({ message: err.response.data?.message || "Missing required fields", type: "error" });
             } else {
-                toast.error("Failed to save information");
+                setToast({ message: "Failed to save information", type: "error" });
             }
         } finally {
             setLoading(false);
@@ -121,15 +129,27 @@ export default function CompletePatientForm({
             <div className="row border whiteBg dropShadow padding">
                 <h4 className="blueText mb-3">Complete Your Personal Information</h4>
 
-                {/* 🔹 Left side: QR scanner */}
+                {/* Toast (Bootstrap style) */}
+                {toast.message && (
+                    <div
+                        className={`alert alert-${toast.type === "success" ? "success" : "danger"} alert-dismissible fade show`}
+                        role="alert"
+                    >
+                        {toast.message}
+                        <button
+                            type="button"
+                            className="btn-close"
+                            onClick={() => setToast({ message: "", type: null })}
+                        ></button>
+                    </div>
+                )}
+
                 <div className="col-lg-6">
                     <QRScanner onScanComplete={handleQRScan} />
                 </div>
 
-                {/* 🔹 Right side: Manual form */}
                 <div className="col-lg-6">
                     <form onSubmit={handleSubmit} className="row g-3">
-                        {/* CCCD field */}
                         <div className="col-md-6">
                             <label className="form-label">Citizen ID (CCCD)</label>
                             <input
@@ -138,7 +158,7 @@ export default function CompletePatientForm({
                                 className="form-control"
                                 value={form.cccd}
                                 onChange={handleChange}
-                                readOnly // since scanned data should not be edited
+                                readOnly
                             />
                         </div>
 
