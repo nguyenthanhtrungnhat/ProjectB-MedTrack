@@ -2,12 +2,29 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
+import QRScanner from "../QRScanner";
 
-const getUserIDFromToken = () => {
-    const token = sessionStorage.getItem("token"); // use same storage as your PatientScreen
+interface DecodedToken {
+    userID: string;
+    [key: string]: any;
+}
+
+interface FormData {
+    fullName: string;
+    gender: string;
+    dob: string;
+    phone: string;
+    address: string;
+    BHYT: string;
+    relativeName: string;
+    relativeNumber: string;
+}
+
+const getUserIDFromToken = (): string | null => {
+    const token = sessionStorage.getItem("token");
     if (!token) return null;
     try {
-        const decoded: any = jwtDecode(token);
+        const decoded = jwtDecode<DecodedToken>(token);
         return decoded.userID;
     } catch (error) {
         console.error("Invalid token:", error);
@@ -15,8 +32,12 @@ const getUserIDFromToken = () => {
     }
 };
 
-export default function CompletePatientForm({ onCompleted }: { onCompleted?: () => void }) {
-    const [form, setForm] = useState({
+export default function CompletePatientForm({
+    onCompleted,
+}: {
+    onCompleted?: () => void;
+}) {
+    const [form, setForm] = useState<FormData>({
         fullName: "",
         gender: "",
         dob: "",
@@ -30,8 +51,47 @@ export default function CompletePatientForm({ onCompleted }: { onCompleted?: () 
     const [loading, setLoading] = useState(false);
     const userID = getUserIDFromToken();
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    // ✅ Handle change for manual typing
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    ) => {
         setForm({ ...form, [e.target.name]: e.target.value });
+    };
+
+    // ✅ When QR code scanned → auto-fill form
+    const handleQRScan = (decodedText: string) => {
+        const parts = decodedText.split("|");
+        if (parts.length < 7) {
+            toast.warning("Invalid QR code format!");
+            return;
+        }
+
+        const [idNumber, code, fullName, dob, gender, address, createDate] =
+            parts;
+
+        setForm((prev) => ({
+            ...prev,
+            fullName: fullName || prev.fullName,
+            gender:
+                gender === "Nam" || gender === "1"
+                    ? "1"
+                    : gender === "Nữ" || gender === "2"
+                    ? "2"
+                    : prev.gender,
+            dob: convertToISODate(dob) || prev.dob,
+            address: address || prev.address,
+        }));
+
+        toast.success("QR data imported successfully!");
+    };
+
+    // ✅ Convert DDMMYYYY → YYYY-MM-DD
+    const convertToISODate = (dateStr: string): string => {
+        if (!dateStr || dateStr.length !== 8) return "";
+        const dd = dateStr.slice(0, 2);
+        const mm = dateStr.slice(2, 4);
+        const yyyy = dateStr.slice(4, 8);
+        return `${yyyy}-${mm}-${dd}`;
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -46,8 +106,12 @@ export default function CompletePatientForm({ onCompleted }: { onCompleted?: () 
                 return;
             }
 
+<<<<<<< Updated upstream
             // ✅ Call protected API (userID extracted from token server-side)
             await axios.put(
+=======
+            await axios.post(
+>>>>>>> Stashed changes
                 `https://projectb-medtrack.onrender.com/api/patient/complete`,
                 { ...form, userID },
                 { headers: { Authorization: `Bearer ${token}` } }
@@ -71,13 +135,22 @@ export default function CompletePatientForm({ onCompleted }: { onCompleted?: () 
     };
 
     if (!userID) {
-        return <h4 className="p-5 mt-5 text-center text-danger">Unauthorized. Please log in again.</h4>;
+        return (
+            <h4 className="p-5 mt-5 text-center text-danger">
+                Unauthorized. Please log in again.
+            </h4>
+        );
     }
 
     return (
         <div className="container pt-5 mt-5 mb-5">
             <div className="row border whiteBg dropShadow padding">
-                <h4 className="blueText mb-3">Complete Your Personal Information</h4>
+                <h4 className="blueText mb-3">
+                    Complete Your Personal Information
+                </h4>
+
+                {/* ✅ Pass callback to QRScanner */}
+                <QRScanner onScan={handleQRScan} />
 
                 <form onSubmit={handleSubmit} className="row g-3">
                     <div className="col-md-6">
