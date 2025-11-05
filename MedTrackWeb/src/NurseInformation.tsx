@@ -22,7 +22,6 @@ function InfoRow({ label, value, loading }: { label: string; value?: string; loa
 }
 
 export default function NurseInformation({
-  nurseID,
   image,
   fullName,
   gender,
