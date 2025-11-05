@@ -1,0 +1,3 @@
+#reader video {
+  transform: scaleX(-1); /* Flip horizontally */
+}

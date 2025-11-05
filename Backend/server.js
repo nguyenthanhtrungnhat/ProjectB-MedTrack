@@ -481,30 +481,32 @@ app.put("/api/patient/complete", verifyToken, (req, res) => {
     address,
     BHYT,
     relativeName,
-    relativeNumber
+    relativeNumber,
+    CCCD
   } = req.body;
 
   // ✅ Validate required fields
-  if (!userID || !fullName || !gender || !dob || !phone || !address) {
+  if (!userID || !fullName || !gender || !dob || !phone || !address || !CCCD) {
     return res.status(400).json({ message: "Missing required fields" });
   }
 
-  // ✅ Update user personal info
+  // ✅ Update user basic info (CCCD required)
   const updateUserSql = `
     UPDATE user
-    SET fullName = ?, gender = ?, dob = ?, phone = ?, address = ?
+    SET fullName = ?, gender = ?, dob = ?, phone = ?, address = ?, CCCD = ?
     WHERE userID = ?
   `;
 
-  db.query(updateUserSql, [fullName, gender, dob, phone, address, userID], (err1) => {
+  db.query(updateUserSql, [fullName, gender, dob, phone, address, CCCD, userID], (err1) => {
     if (err1) {
+      console.error("❌ Error updating user:", err1);
       return res.status(500).json({
         message: "Failed to update user info",
         error: err1
       });
     }
 
-    // ✅ Upsert (insert or update) patient data
+    // ✅ Upsert patient details
     const updatePatientSql = `
       INSERT INTO patient (userID, BHYT, relativeName, relativeNumber)
       VALUES (?, ?, ?, ?)
@@ -516,16 +518,18 @@ app.put("/api/patient/complete", verifyToken, (req, res) => {
 
     db.query(updatePatientSql, [userID, BHYT, relativeName, relativeNumber], (err2) => {
       if (err2) {
+        console.error("❌ Error updating patient:", err2);
         return res.status(500).json({
           message: "Failed to save patient info",
           error: err2
         });
       }
 
-      res.status(200).json({ message: "Patient information updated successfully" });
+      res.status(200).json({ message: "✅ Patient information updated successfully" });
     });
   });
 });
+
 
 
 // Start the server
