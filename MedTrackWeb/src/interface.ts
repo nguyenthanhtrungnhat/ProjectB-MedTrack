@@ -6,7 +6,8 @@ export interface NurseProps {
     phone: string,
     nurseID: string,
     address: string,
-    email: string
+    email: string,
+    CCCD:number
 }
 export interface RoomProps {
     department: string,

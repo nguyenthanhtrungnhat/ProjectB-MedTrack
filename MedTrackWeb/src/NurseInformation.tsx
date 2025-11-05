@@ -22,12 +22,13 @@ function InfoRow({ label, value, loading }: { label: string; value?: string; loa
 }
 
 export default function NurseInformation({
+  nurseID,
   image,
   fullName,
   gender,
   dob,
   phone,
-  nurseID,
+  CCCD,
   address,
   email,
   loading
@@ -40,13 +41,13 @@ export default function NurseInformation({
           <div className="col-8">
             <h5 className="blueText mb-3">Nurse Information</h5>
 
-            <InfoRow label="Full name" value={fullName} loading={loading}/>
-            <InfoRow label="Date of birth" value={dob} loading={loading}/>
-            <InfoRow label="Gender" value={gender} loading={loading}/>
-            <InfoRow label="Phone" value={phone} loading={loading}/>
-            <InfoRow label="ID card" value={nurseID} loading={loading}/>
-            <InfoRow label="Email" value={email} loading={loading}/>
-            <InfoRow label="Address" value={address} loading={loading}/>
+            <InfoRow label="Full name" value={fullName} loading={loading} />
+            <InfoRow label="Date of birth" value={dob} loading={loading} />
+            <InfoRow label="Gender" value={gender} loading={loading} />
+            <InfoRow label="Phone" value={phone} loading={loading} />
+            <InfoRow label="ID card" value={String(CCCD)} loading={loading} />
+            <InfoRow label="Email" value={email} loading={loading} />
+            <InfoRow label="Address" value={address} loading={loading} />
           </div>
 
           {/* Right section: Avatar */}

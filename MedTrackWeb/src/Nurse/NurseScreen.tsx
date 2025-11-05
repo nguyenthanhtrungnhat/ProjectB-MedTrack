@@ -97,6 +97,7 @@ export default function NurseScreen() {
                         <div className="row">
                             {loading ? (
                                 <NurseInformation
+                                    nurseID={String(user?.nurseID)}
                                     image={user?.image || ""}
                                     fullName={user?.fullName || ""}
                                     gender={
@@ -108,13 +109,14 @@ export default function NurseScreen() {
                                     }
                                     dob={user?.dob?.split("T")[0] || ""}
                                     phone={user?.phone || ""}
-                                    nurseID={String(user?.nurseID)}
+                                    CCCD={Number(user?.CCCD)}
                                     address={user?.address || ""}
                                     email={user?.email || ""}
                                     loading={loading}
                                 />
                             ) : (
                                 <NurseInformation
+                                    nurseID={String(user?.nurseID)}
                                     image={user?.image || ""}
                                     fullName={user?.fullName || ""}
                                     gender={
@@ -126,7 +128,7 @@ export default function NurseScreen() {
                                     }
                                     dob={user?.dob?.split("T")[0] || ""}
                                     phone={user?.phone || ""}
-                                    nurseID={String(user?.nurseID)}
+                                    CCCD={Number(user?.CCCD)}
                                     address={user?.address || ""}
                                     email={user?.email || ""}
                                     loading={loading}
