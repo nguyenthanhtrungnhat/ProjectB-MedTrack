@@ -482,54 +482,63 @@ app.put("/api/patient/complete", verifyToken, (req, res) => {
     BHYT,
     relativeName,
     relativeNumber,
-    CCCD, // ✅ keep uppercase - matches DB column
+    CCCD, // must match DB column name
   } = req.body;
 
   // ✅ Validate required fields
   if (!userID || !fullName || !gender || !dob || !phone || !address || !CCCD) {
-    console.log("❌ Missing field(s):", req.body); // helpful for debug
+    console.log("❌ Missing field(s):", req.body);
     return res.status(400).json({ message: "Missing required fields" });
   }
 
-  // ✅ Update user basic info
+  // ✅ Step 1: Update user info
   const updateUserSql = `
     UPDATE user
     SET fullName = ?, gender = ?, dob = ?, phone = ?, address = ?, CCCD = ?
     WHERE userID = ?
   `;
 
-  db.query(updateUserSql, [fullName, gender, dob, phone, address, CCCD, userID], (err1) => {
+  db.query(updateUserSql, [fullName, gender, dob, phone, address, CCCD, userID], (err1, result1) => {
     if (err1) {
       console.error("❌ Error updating user:", err1);
-      return res.status(500).json({
-        message: "Failed to update user info",
-        error: err1,
-      });
+      return res.status(500).json({ message: "Failed to update user info", error: err1 });
     }
 
-    // ✅ Upsert patient details
-    const updatePatientSql = `
-      INSERT INTO patient (userID, BHYT, relativeName, relativeNumber)
-      VALUES (?, ?, ?, ?)
-      ON DUPLICATE KEY UPDATE
-        BHYT = VALUES(BHYT),
-        relativeName = VALUES(relativeName),
-        relativeNumber = VALUES(relativeNumber)
-    `;
+    // ✅ Step 2: Ensure patient record exists
+    const checkPatientSql = `SELECT patientID FROM patient WHERE userID = ? LIMIT 1`;
 
-    db.query(updatePatientSql, [userID, BHYT, relativeName, relativeNumber], (err2) => {
+    db.query(checkPatientSql, [userID], (err2, rows) => {
       if (err2) {
-        console.error("❌ Error updating patient:", err2);
-        return res.status(500).json({
-          message: "Failed to save patient info",
-          error: err2,
-        });
+        console.error("❌ Error checking patient:", err2);
+        return res.status(500).json({ message: "Database error", error: err2 });
       }
 
-      res.status(200).json({ message: "✅ Patient information updated successfully" });
+      if (rows.length === 0) {
+        console.warn(`⚠️ No patient record found for userID=${userID}`);
+        return res.status(404).json({ message: "No patient record found for this user" });
+      }
+
+      const patientID = rows[0].patientID;
+
+      // ✅ Step 3: Update patient record
+      const updatePatientSql = `
+        UPDATE patient
+        SET BHYT = ?, relativeName = ?, relativeNumber = ?
+        WHERE patientID = ?
+      `;
+
+      db.query(updatePatientSql, [BHYT, relativeName, relativeNumber, patientID], (err3) => {
+        if (err3) {
+          console.error("❌ Error updating patient:", err3);
+          return res.status(500).json({ message: "Failed to update patient info", error: err3 });
+        }
+
+        return res.status(200).json({ message: "✅ Patient information updated successfully" });
+      });
     });
   });
 });
+
 
 // Start the server
 const PORT = process.env.PORT || 3000;
