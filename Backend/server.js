@@ -482,15 +482,16 @@ app.put("/api/patient/complete", verifyToken, (req, res) => {
     BHYT,
     relativeName,
     relativeNumber,
-    CCCD
+    CCCD, // ✅ keep uppercase - matches DB column
   } = req.body;
 
   // ✅ Validate required fields
   if (!userID || !fullName || !gender || !dob || !phone || !address || !CCCD) {
+    console.log("❌ Missing field(s):", req.body); // helpful for debug
     return res.status(400).json({ message: "Missing required fields" });
   }
 
-  // ✅ Update user basic info (CCCD required)
+  // ✅ Update user basic info
   const updateUserSql = `
     UPDATE user
     SET fullName = ?, gender = ?, dob = ?, phone = ?, address = ?, CCCD = ?
@@ -502,7 +503,7 @@ app.put("/api/patient/complete", verifyToken, (req, res) => {
       console.error("❌ Error updating user:", err1);
       return res.status(500).json({
         message: "Failed to update user info",
-        error: err1
+        error: err1,
       });
     }
 
@@ -521,7 +522,7 @@ app.put("/api/patient/complete", verifyToken, (req, res) => {
         console.error("❌ Error updating patient:", err2);
         return res.status(500).json({
           message: "Failed to save patient info",
-          error: err2
+          error: err2,
         });
       }
 
@@ -529,8 +530,6 @@ app.put("/api/patient/complete", verifyToken, (req, res) => {
     });
   });
 });
-
-
 
 // Start the server
 const PORT = process.env.PORT || 3000;
