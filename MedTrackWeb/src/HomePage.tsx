@@ -74,7 +74,7 @@ export default function HomePage() {
                                 <div className="card hover-shadow center" >
                                     <img src={prom1} className="img72" alt="..." />
                                     <div className="card-body">
-                                        <p className="card-text">Healcare</p>
+                                        <p className="card-text">Health care</p>
                                     </div>
                                 </div>
                             </div>
