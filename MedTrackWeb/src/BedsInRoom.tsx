@@ -10,7 +10,7 @@ export default function BedsInRoom() {
     const info = storedInfo ? JSON.parse(storedInfo) : null;
     const { roomID } = useParams();
     const [patients, setPatients] = useState<PatientProps[]>([]);
-    const url = `localhost:3000/rooms/${roomID}/patients`;
+    const url = `http://localhost:3000/rooms/${roomID}/patients`;
     useEffect(() => {
         axios.get(url)
             .then(response => {

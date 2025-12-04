@@ -78,7 +78,7 @@ export default function CompletePatientForm({ onCompleted }: { onCompleted?: () 
             }
 
             const res = await axios.put(
-                `localhost:3000/api/patient/complete`,
+                `http://localhost:3000/api/patient/complete`,
                 {
                     ...form,
                     CCCD: form.cccd,
