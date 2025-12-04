@@ -115,10 +115,10 @@ export default function LoginScreen() {
                             </div>
 
                             <div className="d-flex justify-content-between align-items-center">
-                                <div className="form-check mb-0">
+                                {/* <div className="form-check mb-0">
                                     <input className="form-check-input me-2" type="checkbox" id="form2Example3" />
                                     <label className="form-check-label" htmlFor="form2Example3">Remember me</label>
-                                </div>
+                                </div> */}
                                 <a href="#!" className="text-body">Forgot password?</a>
                             </div>
 
@@ -151,18 +151,6 @@ export default function LoginScreen() {
                 </div>
             </div>
 
-            {/* Footer */}
-            <div className="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 blueBg mt-auto">
-                <div className="text-white mb-3 mb-md-0">
-                    Copyright © 2020. All rights reserved.
-                </div>
-                <div>
-                    <a href="#!" className="text-white me-4"><i className="fab fa-facebook-f"></i></a>
-                    <a href="#!" className="text-white me-4"><i className="fab fa-twitter"></i></a>
-                    <a href="#!" className="text-white me-4"><i className="fab fa-google"></i></a>
-                    <a href="#!" className="text-white"><i className="fab fa-linkedin-in"></i></a>
-                </div>
-            </div>
         </section>
     );
 }
