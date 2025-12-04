@@ -85,6 +85,7 @@ app.get('/roles', (req, res) => getAllRecords('role', res));
 app.get('/user-roles', (req, res) => getAllRecords('userrole', res));
 app.get('/feedback', (req, res) => getAllRecords('feedback', res));
 app.get('/nursepatient', (req, res) => getAllRecords('nursepatient', res));
+app.get('/news', (req, res) => getAllRecords('news', res));
 
 // Get patient by nurseID
 app.get("/nursepatient/:nurseID", (req, res) => {

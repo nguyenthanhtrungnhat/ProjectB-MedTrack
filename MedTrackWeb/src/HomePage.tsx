@@ -1,37 +1,23 @@
-import banner1 from './images/banner1.webp';
-import banner2 from './images/banner2.webp';
-import banner3 from './images/banner3.webp';
+import { useEffect, useState } from 'react';
 import prom1 from './images/Asset-1.webp';
 import prom2 from './images/Asset-3.webp';
 import prom3 from './images/Asset-4.webp';
 import prom4 from './images/Asset-5.webp';
 import Introduce from './Introduce';
-import { useEffect, useState } from 'react';
+import axios from 'axios';
 export default function HomePage() {
-    const banners = [banner1, banner2, banner3, banner3];
-
-    const [visibleCount, setVisibleCount] = useState(4);
-    const [isMobile, setIsMobile] = useState(false);
+    const [news, setNews] = useState<any[]>([]);
 
     useEffect(() => {
-        const checkScreen = () => {
-            const mobile = window.innerWidth <= 576;
-            setIsMobile(mobile);
-            setVisibleCount(mobile ? 2 : 4);
-        };
-
-        checkScreen();
-        window.addEventListener("resize", checkScreen);
-        return () => window.removeEventListener("resize", checkScreen);
+        // Call your API
+        axios.get('http://localhost:3000/news') // adjust to your actual endpoint
+            .then((res) => {
+                setNews(res.data);
+            })
+            .catch((err) => {
+                console.error("Error fetching news:", err);
+            });
     }, []);
-
-    const handleToggle = () => {
-        setVisibleCount((prev) =>
-            prev === (isMobile ? 2 : 4) ? banners.length : isMobile ? 2 : 4
-        );
-    };
-
-    const showToggleBtn = banners.length > (isMobile ? 2 : 4);
     return (
         <>
             <div className="container-fluid pt-5 p-0 h-100 padding">
@@ -139,44 +125,32 @@ export default function HomePage() {
                     </div>
                 </div>
                 <div className="row p-3">
-                    {banners.slice(0, visibleCount).map((img, index) => (
-                        <div className="col-lg-3 col-sm-6 mb-3" key={index}>
-                            <a href="#" className="text-decoration-none text-dark">
-                                <div className="card h-100 hover-shadow">
+                    {news.map((item) => (
+                        <div key={item.newID} className="col-lg-3 col-md-4 col-sm-6 mb-4 d-flex">
+                            <a href="#" className="text-decoration-none text-dark w-100">
+                                <div className="card hover-shadow h-100 d-flex flex-column">
                                     <img
-                                        src={img}
+                                        src={`${item.image}`}
+                                        alt={item.title || 'No title'}
                                         className="card-img-top"
-                                        alt={`Banner ${index + 1}`}
-                                        loading="lazy"
+                                        style={{ objectFit: 'cover', height: '200px' }}
                                     />
-                                    <div className="card-body">
-                                        <div className="d-flex flex-column mb-2">
-                                            <time dateTime="2003-01-01" className="text-muted small date-with-icon">
-                                                1/1/2003
-                                            </time>
-                                        </div>
-                                        <div>
-                                            <p className="card-text">
-                                                New's title
-                                            </p>
+
+                                    <div className="card-body d-flex flex-column">
+                                        <h5 className="card-title">{item.title}</h5>
+                                        <p className="card-text flex-grow-1">{item.body || 'No description available.'}</p>
+                                        <div className="text-muted small mt-auto">
+                                            <time dateTime={item.date}>{new Date(item.date).toLocaleDateString()}</time>
+                                            {item.author ? ` | By ${item.author}` : ''}
                                         </div>
                                     </div>
                                 </div>
                             </a>
                         </div>
                     ))}
-
-                    {showToggleBtn && (
-                        <div className="text-center mb-3">
-                            <button
-                                className="btn btn-outline-primary"
-                                onClick={handleToggle}
-                            >
-                                {visibleCount === (isMobile ? 2 : 4) ? "Show More" : "Show Less"}
-                            </button>
-                        </div>
-                    )}
                 </div>
+
+
                 <div className="d-flex justify-content-center align-items-center mt-5 mb-5">
                     <div className="row text-center">
                         <div className="col-lg-12">
