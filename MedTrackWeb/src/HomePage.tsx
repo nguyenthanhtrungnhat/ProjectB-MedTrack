@@ -150,7 +150,6 @@ export default function HomePage() {
                     ))}
                 </div>
 
-
                 <div className="d-flex justify-content-center align-items-center mt-5 mb-5">
                     <div className="row text-center">
                         <div className="col-lg-12">
@@ -160,9 +159,7 @@ export default function HomePage() {
                         </div>
                     </div>
                 </div>
-                {/*here */}
                 <Introduce />
-                {/* <HospitalServices /> */}
             </div >
         </>
     );
