@@ -11,7 +11,7 @@ export default function PatientSearch() {
 
   // Fetch patient data
   useEffect(() => {
-    fetch("https://projectb-medtrack.onrender.com/patients")
+    fetch("localhost:3000/patients")
       .then((res) => res.json())
       .then((data) => {
         // Filter out invalid patients (no ID or fullName)

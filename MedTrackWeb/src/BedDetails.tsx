@@ -12,7 +12,7 @@ export default function BedDetails() {
     const { patientID } = useParams();
     const storedInfo = sessionStorage.getItem("info");
     const info = storedInfo ? JSON.parse(storedInfo) : null;
-    const patientByIdUrl = `https://projectb-medtrack.onrender.com/patients/${patientID}`;
+    const patientByIdUrl = `localhost:3000/patients/${patientID}`;
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
