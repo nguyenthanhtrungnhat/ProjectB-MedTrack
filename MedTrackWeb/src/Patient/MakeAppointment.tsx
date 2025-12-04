@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const getUserIDFromToken = (): number | null => {
     const token = sessionStorage.getItem("token");
     if (!token) return null;
     try {
-        return (jwtDecode(token) as { userID: number }).userID;
+        const decoded = jwtDecode(token) as { userID: number };
+        return decoded.userID;
     } catch {
         return null;
     }
@@ -19,57 +22,70 @@ export default function MakeAppointment() {
     const [dateTime, setDateTime] = useState("");
     const [location, setLocation] = useState("");
 
-    const userID = getUserIDFromToken(); // auto get from token
+    const userID = getUserIDFromToken();
 
     useEffect(() => {
         if (!userID) {
-            alert("You must login first!");
-            window.location.href = "/login";
+            toast.error("You must login first!");
+            setTimeout(() => (window.location.href = "/login"), 1500); // <-- no return
             return;
         }
         loadDoctors();
         loadAppointments();
     }, []);
 
+
     const loadDoctors = () => {
-        axios.get("http://localhost:3000/doctors")
-            .then(res => setDoctors(res.data))
-            .catch(console.error);
+        axios.get("http://localhost:3000/doctors").then(res => setDoctors(res.data));
     };
 
     const loadAppointments = () => {
-        axios.get(`http://localhost:3000/appointments/${userID}`)
-            .then(res => setAppointments(res.data))
-            .catch(console.error);
+        axios.get(`http://localhost:3000/appointments/${userID}`).then(res => setAppointments(res.data));
     };
 
     const handleDoctorChange = (id: string) => {
         setDoctorID(Number(id));
         const doctor = doctors.find(d => d.doctorID == id);
-        setLocation(doctor?.office ?? ""); // auto office update
+        setLocation(doctor?.office ?? "");
     };
 
     const handleCreate = async () => {
-        if (!doctorID || !dateTime) return alert("Please select doctor + date!");
 
-        await axios.post("http://localhost:3000/appointments", {
-            doctorID,
-            userID,     // UPDATED ✔ matches your appointment table
-            dateTime,
-            location
-        });
+        if (!doctorID || !dateTime) return toast.warning("Please select doctor and date!");
 
-        alert("Appointment booked successfully!");
-        loadAppointments();
+        // 🚫 Prevent duplicate booking (Client Side)
+        const duplicate = appointments.some(a =>
+            a.doctorID === doctorID && a.dateTime === dateTime
+        );
+        if (duplicate) {
+            return toast.error("You already booked this doctor on that date!");
+        }
+
+        try {
+            await axios.post("http://localhost:3000/appointments", { doctorID, userID, dateTime, location });
+            toast.success("Appointment booked successfully!");
+
+            setDoctorID(null);
+            setDateTime("");
+            setLocation("");
+            loadAppointments();
+        } catch (err: any) {
+            if (err.response?.status === 400) toast.error(err.response.data.message);
+            else toast.error("Booking failed, try again!");
+        }
     };
 
     return (
-        <div className="container mt-5 pt-3">
+        <div className="container mt-5 pt-5">
+            <ToastContainer position="top-right" autoClose={2000} />
+
             <h2>Make Appointment</h2>
 
             <div className="card p-3 mb-4">
                 <label><b>Doctor</b></label>
-                <select className="form-control mb-3" onChange={(e) => handleDoctorChange(e.target.value)}>
+                <select className="form-control mb-3"
+                    value={doctorID ?? ""}
+                    onChange={(e) => handleDoctorChange(e.target.value)}>
                     <option value="">-- Select Doctor --</option>
                     {doctors.map(d => (
                         <option key={d.doctorID} value={d.doctorID}>
@@ -79,33 +95,33 @@ export default function MakeAppointment() {
                 </select>
 
                 <label><b>Date</b></label>
-                <input type="date" className="form-control mb-3"
-                    value={dateTime} onChange={(e) => setDateTime(e.target.value)} />
+                <input
+                    type="date"
+                    className="form-control mb-3"
+                    value={dateTime}
+                    onChange={(e) => setDateTime(e.target.value)}
+                />
 
-                <label><b>Location (auto)</b></label>
+                <label><b>Location (Auto)</b></label>
                 <input type="text" className="form-control mb-3" value={location} disabled />
 
-                <button className="btn btn-primary" onClick={handleCreate}>
+                <button className="btn btn-success" onClick={handleCreate}>
                     Book Appointment
                 </button>
             </div>
 
-            <h4>My Appointments</h4>
+            <h4>Your Appointments</h4>
             <table className="table table-bordered">
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Doctor</th>
-                        <th>Date</th>
-                        <th>Location</th>
-                        <th>Status</th>
+                        <th>#</th><th>Doctor</th><th>Date</th><th>Location</th><th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     {appointments.map(a => (
                         <tr key={a.appointmentID}>
                             <td>{a.appointmentID}</td>
-                            <td>{a.doctorName}</td> {/* comes from backend JOIN */}
+                            <td>{a.doctorName}</td>
                             <td>{a.dateTime}</td>
                             <td>{a.location}</td>
                             <td>{a.appointmentStatus ? "Approved" : "Pending"}</td>

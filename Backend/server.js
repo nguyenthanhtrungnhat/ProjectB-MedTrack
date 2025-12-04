@@ -552,6 +552,34 @@ app.get("/appointments/:userID", (req, res) => {
         res.send(result);
     });
 });
+app.post("/appointments", (req, res) => {
+    const { doctorID, userID, dateTime, location } = req.body;
+
+    // 🔥 Check duplicate before insert
+    db.query(
+        "SELECT * FROM appointment WHERE doctorID=? AND userID=? AND dateTime=?",
+        [doctorID, userID, dateTime],
+        (err, result) => {
+
+            if (err) return res.status(500).send(err);
+
+            if (result.length > 0) {
+                return res.status(400).json({
+                    message: "⚠ You already have an appointment with this doctor on this date."
+                });
+            }
+
+            db.query(
+                "INSERT INTO appointment (doctorID, userID, dateTime, location) VALUES (?,?,?,?)",
+                [doctorID, userID, dateTime, location],
+                (err2) => {
+                    if (err2) return res.status(500).send(err2);
+                    res.status(201).json({ message: "Appointment created successfully!" });
+                }
+            );
+        }
+    );
+});
 
 // Start the server
 const PORT = process.env.PORT || 3000;
