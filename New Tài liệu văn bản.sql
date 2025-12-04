@@ -289,3 +289,10 @@ INSERT INTO `schedules` (`scheduleID`,`name`,`date`,`start_at`,`working_hours`,`
 INSERT INTO `appointment` (`appointmentID`,`dateTime`,`location`,`appointmentStatus`,`doctorID`,`userID`) VALUES
 (1,'2025-10-22','208B11',0,1,2),
 (2,'2025-10-23','208B11',0,1,3);
+
+-- 14. NEWS table
+INSERT INTO `news` (`newID`, `title`, `body`, `date`, `author`, `image`) VALUES
+(1, '11th BIH Voluntary Blood Donation', NULL, '2025-08-18', NULL, './images/banner2.webp'),
+(2, 'Spreading Knowledge – Celebrating Vietnamese Women''s Day 20/10', NULL, '2025-10-20', NULL, './images/banner4.webp'),
+(3, 'Signing ceremony of cooperation with Ho Chi Minh City Oncology Hospital', NULL, '2025-09-11', NULL, './images/banner3.webp'),
+(4, 'Health Club No. 4 – 2025: When Breath is Short – How to Live Longer?', NULL, '2025-10-28', NULL, './images/banner1.webp');
