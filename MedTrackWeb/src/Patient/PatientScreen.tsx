@@ -30,6 +30,7 @@ const getUserIDFromToken = () => {
 };
 
 export default function PatientScreen() {
+    const [appointments, setAppointments] = useState<any[]>([]);
     const [patients, setPatients] = useState<PatientProps[]>([]);
     const [allRecords, setAllRecords] = useState<RecordProps[]>([]);
     const [record, setRecord] = useState<RecordProps | null>(null);
@@ -128,6 +129,7 @@ export default function PatientScreen() {
     useEffect(() => {
         if (!userID) return;
         setLoading(true); // start loading
+        axios.get(`http://localhost:3000/appointments/${userID}`).then(res => setAppointments(res.data));
         axios
             .get(`http://localhost:3000/api/patientByUserID/${userID}`)
             .then(response => {
@@ -274,7 +276,7 @@ export default function PatientScreen() {
                                                 <div className="border border-success square170-250 padding20">
                                                     <h5 className='medSche greenText'>Appoiment</h5>
                                                     <div className="d-flex bd-highlight mb-3">
-                                                        <p className='p-2 bd-highlight size25'>0</p>
+                                                        <p className='p-2 bd-highlight size25'>{appointments.length}</p>
                                                         <i className="ml-auto p-2 bd-highlight fa fa-calendar size25 greenText" />
                                                     </div>
                                                     {isPatientInfoIncomplete(patients[0]) ? (
@@ -283,9 +285,10 @@ export default function PatientScreen() {
                                                             Access not allowed
                                                         </span>
                                                     ) : (
-                                                        <Link to="#" className="text-decoration-none">
-                                                            More detail
-                                                        </Link>
+                                                        // <Link to="#" className="text-decoration-none">
+                                                        //     More detail
+                                                        // </Link>
+                                                        <></>
                                                     )}
                                                 </div>
                                             </div>
@@ -349,7 +352,7 @@ export default function PatientScreen() {
                                                     <i className="fa fa-caret-right" /> Developing ...
                                                 </Link>
                                             </li>
-                                             <li>
+                                            <li>
                                                 <Link to="/patient/make-appointment" className="text-decoration-none">
                                                     <i className="fa fa-caret-right" /> Make Appointment
                                                 </Link>
