@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import QRScanner from "../QRScanner";
@@ -16,6 +17,7 @@ const getUserIDFromToken = () => {
 };
 
 export default function CompletePatientForm({ onCompleted }: { onCompleted?: () => void }) {
+    const navigate = useNavigate();
     const [form, setForm] = useState({
         cccd: "",
         fullName: "",
@@ -104,6 +106,7 @@ export default function CompletePatientForm({ onCompleted }: { onCompleted?: () 
                 });
 
                 if (onCompleted) onCompleted();
+                navigate("/patient/patient-profile");
             } else {
                 setToast({
                     message: res.data?.message || "Unexpected response from server",
