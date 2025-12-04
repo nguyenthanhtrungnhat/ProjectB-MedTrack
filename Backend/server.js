@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const app = express();
 const verifyToken = require("./verifyToken");
+const axios = require("axios");
 require("dotenv").config({ path: "JWT.env" });
 require('dotenv').config();
 
@@ -408,138 +409,145 @@ app.put('/api/schedules/:id', async (req, res) => {
   }
 });
 
-const axios = require("axios");
-
-app.post("/register", async (req, res) => {
-  const { username, email, password, captchaToken } = req.body;
-
-  // Validate input
-  if (!username || !email || !password) {
-    return res.status(400).json({ message: "All fields are required" });
-  }
-  if (!captchaToken) {
-    return res.status(400).json({ message: "Captcha verification required" });
-  }
-
-  try {
-    // Step 1: Verify reCAPTCHA v3
-    const captchaVerify = await axios.post(
-      "https://www.google.com/recaptcha/api/siteverify",
-      {},
-      {
-        params: {
-          secret: process.env.RECAPTCHA_SECRET_KEY, // keep secret in .env!
-          response: captchaToken,
-        }
-      }
-    );
-
-    // Validate result — recommended score >= 0.5 means real human
-    if (!captchaVerify.data.success || captchaVerify.data.score < 0.5) {
-      return res.status(403).json({ message: "Captcha failed — possible bot detected" });
-    }
-
-    // Step 2: Check if email already exists
-    db.query("SELECT * FROM user WHERE email = ?", [email], (err, result) => {
-      if (err) return res.status(500).json({ message: "Database SELECT error" });
-
-      if (result.length > 0) {
-        return res.status(400).json({ message: "Email already registered" });
-      }
-
-      // Step 3: Insert user WITHOUT hashing password
-      db.query(
-        "INSERT INTO user (username, email, password) VALUES (?, ?, ?)",
-        [username, email, password],
-        (err, result) => {
-          if (err) return res.status(500).json({ message: "Error inserting user" });
-
-          const userID = result.insertId;
-
-          // Step 4: Assign default role = Patient
-          db.query("INSERT INTO userrole (userID, roleID) VALUES (?, ?)", [userID, 3], (err) => {
-            if (err) return res.status(500).json({ message: "Error assigning role" });
-
-            // Step 5: Create patient record
-            db.query("INSERT INTO patient (userID) VALUES (?)", [userID], (err) => {
-              if (err) return res.status(500).json({ message: "Error creating patient record" });
-
-              return res.json({
-                message: "Registration successful 🎉",
-                userID,
-              });
-            });
-          });
-        }
-      );
-    });
-
-  } catch (error) {
-    console.error("reCAPTCHA error:", error.response?.data || error);
-    return res.status(500).json({ message: "Captcha verification server error" });
-  }
-});
-
-// app.post("/register", (req, res) => {
-//   const { username, email, password } = req.body;
+// app.post("/register", async (req, res) => {
+//   const { username, email, password, captchaToken } = req.body;
+//   console.log("Register request received:", { username, email, password: password ? "******" : null, captchaToken });
 
 //   if (!username || !email || !password) {
 //     return res.status(400).json({ message: "All fields are required" });
 //   }
 
-//   // Step 1: Check if email already exists
-//   db.query("SELECT * FROM user WHERE email = ?", [email], (err, result) => {
-//     if (err) {
-//       console.error("Select error:", err);
-//       return res.status(500).json({ message: "Database error on SELECT" });
+//   if (!captchaToken) {
+//     return res.status(400).json({ message: "Captcha verification required" });
+//   }
+
+//   try {
+//     // Verify reCAPTCHA
+//     const captchaVerify = await axios.post(
+//       "https://www.google.com/recaptcha/api/siteverify",
+//       {},
+//       {
+//         params: {
+//           secret: process.env.RECAPTCHA_SECRET_KEY,
+//           response: captchaToken,
+//         },
+//       }
+//     );
+//     console.log("Captcha verification response:", captchaVerify.data);
+
+//     if (!captchaVerify.data.success || captchaVerify.data.score < 0.5) {
+//       return res.status(403).json({ message: "Captcha failed — possible bot detected" });
 //     }
 
-//     if (result.length > 0) {
-//       return res.status(400).json({ message: "Email already registered" });
-//     }
+//     // Check email
+//     db.query("SELECT * FROM user WHERE email = ?", [email], (err, result) => {
+//       if (err) {
+//         console.error("Database SELECT error:", err);
+//         return res.status(500).json({ message: "Database SELECT error" });
+//       }
 
-//     // Step 2: Insert new user
-//     db.query(
-//       "INSERT INTO user (username, email, password) VALUES (?, ?, ?)",
-//       [username, email, password],
-//       (err, result) => {
+//       if (result.length > 0) {
+//         return res.status(400).json({ message: "Email already registered" });
+//       }
+
+//       // Insert user
+//       db.query("INSERT INTO user (username, email, password) VALUES (?, ?, ?)", [username, email, password], (err, result) => {
 //         if (err) {
-//           console.error("Insert user error:", err);
-//           return res.status(500).json({ message: "Error inserting user" });
+//           console.error("Database INSERT error:", err);
+//           return res.status(500).json({ message: "Database INSERT error" });
 //         }
 
 //         const userID = result.insertId;
+//         console.log("User created with ID:", userID);
 
-//         // Step 3: Assign roleID = 3 (Patient)
-//         db.query(
-//           "INSERT INTO userrole (userID, roleID) VALUES (?, ?)",
-//           [userID, 3],
-//           (err2) => {
-//             if (err2) {
-//               console.error("Insert userRole error:", err2);
-//               return res.status(500).json({ message: "Error assigning role" });
+//         // Assign role
+//         db.query("INSERT INTO userrole (userID, roleID) VALUES (?, ?)", [userID, 3], (err) => {
+//           if (err) {
+//             console.error("Assign role error:", err);
+//             return res.status(500).json({ message: "Assign role error" });
+//           }
+
+//           // Create patient
+//           db.query("INSERT INTO patient (userID) VALUES (?)", [userID], (err) => {
+//             if (err) {
+//               console.error("Create patient error:", err);
+//               return res.status(500).json({ message: "Create patient error" });
 //             }
 
-//             // Step 4: Create an empty patient record linked to userID
-//             db.query(
-//               "INSERT INTO patient (userID) VALUES (?)",
-//               [userID],
-//               (err3) => {
-//                 if (err3) {
-//                   console.error("Insert patient error:", err3);
-//                   return res.status(500).json({ message: "Error creating patient" });
-//                 }
+//             console.log("Patient record created for userID:", userID);
+//             return res.json({ message: "Registration successful", userID });
+//           });
+//         });
+//       });
+//     });
 
-//                 console.log("✅ New patient registered with userID:", userID);
-//                 res.json({ message: "User (Patient) created successfully", userID });
-//               }
-//             );
-//           }
-//         );
-//       }
-//     );
-//   });
+//   } catch (error) {
+//     console.error("reCAPTCHA / backend error:", error.response?.data || error);
+//     return res.status(500).json({ message: "Captcha or server error" });
+//   }
 // });
+
+
+app.post("/register", (req, res) => {
+  const { username, email, password } = req.body;
+
+  if (!username || !email || !password) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+
+  // Step 1: Check if email already exists
+  db.query("SELECT * FROM user WHERE email = ?", [email], (err, result) => {
+    if (err) {
+      console.error("Select error:", err);
+      return res.status(500).json({ message: "Database error on SELECT" });
+    }
+
+    if (result.length > 0) {
+      return res.status(400).json({ message: "Email already registered" });
+    }
+
+    // Step 2: Insert new user
+    db.query(
+      "INSERT INTO user (username, email, password) VALUES (?, ?, ?)",
+      [username, email, password],
+      (err, result) => {
+        if (err) {
+          console.error("Insert user error:", err);
+          return res.status(500).json({ message: "Error inserting user" });
+        }
+
+        const userID = result.insertId;
+
+        // Step 3: Assign roleID = 3 (Patient)
+        db.query(
+          "INSERT INTO userrole (userID, roleID) VALUES (?, ?)",
+          [userID, 3],
+          (err2) => {
+            if (err2) {
+              console.error("Insert userRole error:", err2);
+              return res.status(500).json({ message: "Error assigning role" });
+            }
+
+            // Step 4: Create an empty patient record linked to userID
+            db.query(
+              "INSERT INTO patient (userID) VALUES (?)",
+              [userID],
+              (err3) => {
+                if (err3) {
+                  console.error("Insert patient error:", err3);
+                  return res.status(500).json({ message: "Error creating patient" });
+                }
+
+                console.log("✅ New patient registered with userID:", userID);
+                res.json({ message: "User (Patient) created successfully", userID });
+              }
+            );
+          }
+        );
+      }
+    );
+  });
+});
 
 // PUT: Update (edit) patient information (protected)
 app.put("/api/patient/complete", verifyToken, (req, res) => {
@@ -611,7 +619,7 @@ app.put("/api/patient/complete", verifyToken, (req, res) => {
 });
 
 app.get("/appointments/:userID", (req, res) => {
-    const sql = `
+  const sql = `
         SELECT a.*, u.fullName AS doctorName 
         FROM appointment a
         JOIN doctor d ON a.doctorID = d.doctorID
@@ -619,38 +627,38 @@ app.get("/appointments/:userID", (req, res) => {
         WHERE a.userID = ?
         ORDER BY a.dateTime DESC
     `;
-    db.query(sql, [req.params.userID], (err, result) => {
-        if (err) return res.status(500).send(err);
-        res.send(result);
-    });
+  db.query(sql, [req.params.userID], (err, result) => {
+    if (err) return res.status(500).send(err);
+    res.send(result);
+  });
 });
 app.post("/appointments", (req, res) => {
-    const { doctorID, userID, dateTime, location } = req.body;
+  const { doctorID, userID, dateTime, location } = req.body;
 
-    // 🔥 Check duplicate before insert
-    db.query(
-        "SELECT * FROM appointment WHERE doctorID=? AND userID=? AND dateTime=?",
-        [doctorID, userID, dateTime],
-        (err, result) => {
+  // 🔥 Check duplicate before insert
+  db.query(
+    "SELECT * FROM appointment WHERE doctorID=? AND userID=? AND dateTime=?",
+    [doctorID, userID, dateTime],
+    (err, result) => {
 
-            if (err) return res.status(500).send(err);
+      if (err) return res.status(500).send(err);
 
-            if (result.length > 0) {
-                return res.status(400).json({
-                    message: "⚠ You already have an appointment with this doctor on this date."
-                });
-            }
+      if (result.length > 0) {
+        return res.status(400).json({
+          message: "⚠ You already have an appointment with this doctor on this date."
+        });
+      }
 
-            db.query(
-                "INSERT INTO appointment (doctorID, userID, dateTime, location) VALUES (?,?,?,?)",
-                [doctorID, userID, dateTime, location],
-                (err2) => {
-                    if (err2) return res.status(500).send(err2);
-                    res.status(201).json({ message: "Appointment created successfully!" });
-                }
-            );
+      db.query(
+        "INSERT INTO appointment (doctorID, userID, dateTime, location) VALUES (?,?,?,?)",
+        [doctorID, userID, dateTime, location],
+        (err2) => {
+          if (err2) return res.status(500).send(err2);
+          res.status(201).json({ message: "Appointment created successfully!" });
         }
-    );
+      );
+    }
+  );
 });
 
 // Start the server
