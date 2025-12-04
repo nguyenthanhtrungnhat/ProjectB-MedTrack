@@ -11,7 +11,7 @@ USE hospitaldb;
 -- 1. USER table
 CREATE TABLE `user` (
   `userID` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) DEFAULT NOT NULL,
+  `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `fullName` varchar(255) NULL,
   `dob` date DEFAULT NULL,
