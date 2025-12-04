@@ -25,15 +25,24 @@ export default function MakeAppointment() {
     const userID = getUserIDFromToken();
 
     useEffect(() => {
-        if (!userID) {
-            toast.error("You must login first!");
-            setTimeout(() => (window.location.href = "/login"), 1500); // <-- no return
-            return;
-        }
+        if (!userID) return;
+
+        axios.put("http://localhost:3000/appointments/check-overdue")
+            .then(() => loadAppointments())
+            .catch(err => console.error(err));
+
         loadDoctors();
-        loadAppointments();
     }, []);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            axios.put("http://localhost:3000/appointments/check-overdue")
+                .then(() => loadAppointments())
+                .catch(err => console.error(err));
+        }, 60 * 1000);
+
+        return () => clearInterval(interval);
+    }, []);
 
     const loadDoctors = () => {
         axios.get("http://localhost:3000/doctors").then(res => setDoctors(res.data));
@@ -53,7 +62,7 @@ export default function MakeAppointment() {
 
         if (!doctorID || !dateTime) return toast.warning("Please select doctor and date!");
 
-        // 🚫 Prevent duplicate booking (Client Side)
+        //Prevent duplicate booking (Client Side)
         const duplicate = appointments.some(a =>
             a.doctorID === doctorID && a.dateTime === dateTime
         );
@@ -119,12 +128,14 @@ export default function MakeAppointment() {
                 </thead>
                 <tbody>
                     {appointments.map(a => (
-                        <tr key={a.appointmentID}>
-                            <td>{a.appointmentID}</td>
-                            <td>{a.doctorName}</td>
-                            <td>{a.dateTime}</td>
-                            <td>{a.location}</td>
-                            <td>{a.appointmentStatus ? "Approved" : "Pending"}</td>
+                        <tr key={a.appointmentID} >
+                            <td className={a.appointmentStatus ? 'bg-danger' : 'bg-success'}>{a.appointmentID}</td>
+                            <td className={a.appointmentStatus ? 'bg-danger' : 'bg-success'}>{a.doctorName}</td>
+                            <td className={a.appointmentStatus ? 'bg-danger' : 'bg-success'}>{a.dateTime}</td>
+                            <td className={a.appointmentStatus ? 'bg-danger' : 'bg-success'}>{a.location}</td>
+                            <td className={a.appointmentStatus ? 'bg-danger' : 'bg-success'}>
+                                {a.appointmentStatus ? "Overdue" : "Coming"}
+                            </td>
                         </tr>
                     ))}
                 </tbody>

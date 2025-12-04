@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const app = express();
 const verifyToken = require("./verifyToken");
 const axios = require("axios");
+
 require("dotenv").config({ path: "JWT.env" });
 require('dotenv').config();
 
@@ -660,6 +661,36 @@ app.post("/appointments", (req, res) => {
       );
     }
   );
+});
+
+//appointments/check-overdue
+app.get("/update-overdue", (req, res) => {
+  const sql = `
+    UPDATE appointment
+    SET appointmentStatus = 1
+    WHERE DATE(dateTime) < CURDATE() AND appointmentStatus = 0
+  `;
+  db.query(sql, (err, result) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ message: "Overdue appointments updated", affectedRows: result.affectedRows });
+  });
+});
+
+// PUT /appointments/check-overdue
+app.put("/appointments/check-overdue", (req, res) => {
+  const sql = `
+    UPDATE appointment
+    SET appointmentStatus = 1
+    WHERE appointmentStatus = 0 AND dateTime < CURDATE();
+  `;
+
+  db.query(sql, (err, result) => {
+    if (err) return res.status(500).json({ error: "Database error", details: err });
+    res.json({
+      message: "Overdue appointments updated",
+      updatedCount: result.affectedRows
+    });
+  });
 });
 
 // Start the server
