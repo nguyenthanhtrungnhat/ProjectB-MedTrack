@@ -166,6 +166,17 @@ CREATE TABLE `appointment` (
   PRIMARY KEY (`appointmentID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- 15. NEWS table
+SELECT * FROM hospitaldb.news;CREATE TABLE `news` (
+  `newID` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) DEFAULT NULL,
+  `body` varchar(500) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `author` varchar(45) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`newID`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 -- ===================== ADD FOREIGN KEYS =====================
 
 ALTER TABLE `userrole`
