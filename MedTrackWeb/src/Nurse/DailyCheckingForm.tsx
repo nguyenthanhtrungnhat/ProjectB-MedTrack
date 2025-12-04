@@ -2,7 +2,6 @@ import { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Header from "../Header";
 import { FormData } from '../interface';
 
 interface Patient {

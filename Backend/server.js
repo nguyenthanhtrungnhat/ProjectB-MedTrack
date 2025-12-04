@@ -538,6 +538,20 @@ app.put("/api/patient/complete", verifyToken, (req, res) => {
   });
 });
 
+app.get("/appointments/:userID", (req, res) => {
+    const sql = `
+        SELECT a.*, u.fullName AS doctorName 
+        FROM appointment a
+        JOIN doctor d ON a.doctorID = d.doctorID
+        JOIN user u ON d.userID = u.userID
+        WHERE a.userID = ?
+        ORDER BY a.dateTime DESC
+    `;
+    db.query(sql, [req.params.userID], (err, result) => {
+        if (err) return res.status(500).send(err);
+        res.send(result);
+    });
+});
 
 // Start the server
 const PORT = process.env.PORT || 3000;

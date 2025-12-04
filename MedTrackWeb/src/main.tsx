@@ -25,6 +25,7 @@ import Services from "./Services";
 import HospitalServices from "./HospitalServices";
 import Footer from "./Footer";
 import CompletePatientForm from "./Patient/CompletePatientForm";
+import MakeAppointment from "./Patient/MakeAppointment";
 
 const Layout = () => (
   <>
@@ -98,6 +99,7 @@ const router = createBrowserRouter([
       {
         path: "/patient", element: <Layout />, children: [
           { index: true, element: <HomePage /> },
+          { path: "make-appointment", element: <MakeAppointment /> },
           { path: "patient-profile", element: <PatientScreen /> },
           { path: "services", element: <Services /> },
           { path: "hservices", element: <HospitalServices /> },

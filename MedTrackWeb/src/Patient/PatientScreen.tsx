@@ -348,7 +348,13 @@ export default function PatientScreen() {
                                                 <Link to="#" className="text-decoration-none">
                                                     <i className="fa fa-caret-right" /> Developing ...
                                                 </Link>
-                                            </li></>
+                                            </li>
+                                             <li>
+                                                <Link to="/patient/make-appointment" className="text-decoration-none">
+                                                    <i className="fa fa-caret-right" /> Make Appointment
+                                                </Link>
+                                            </li>
+                                        </>
                                         )}
                                     </ul>
                                 </div>
