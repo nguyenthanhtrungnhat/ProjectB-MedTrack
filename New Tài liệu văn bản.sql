@@ -167,7 +167,7 @@ CREATE TABLE `appointment` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- 15. NEWS table
-SELECT * FROM hospitaldb.news;CREATE TABLE `news` (
+CREATE TABLE `news` (
   `newID` int NOT NULL AUTO_INCREMENT,
   `title` varchar(255) DEFAULT NULL,
   `body` varchar(500) DEFAULT NULL,
