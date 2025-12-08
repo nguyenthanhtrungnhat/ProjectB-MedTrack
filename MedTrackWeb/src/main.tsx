@@ -1,31 +1,34 @@
+import 'bootstrap/dist/css/bootstrap.min.css'; // Bootstrap CSS
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Bootstrap JS with Popper
+import { jwtDecode } from "jwt-decode";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import {
   createBrowserRouter,
-  RouterProvider,
+  Navigate,
   Outlet,
-  Navigate
+  RouterProvider
 } from "react-router-dom";
-import NurseScreen from "./Nurse/NurseScreen";
-import BedsInRoom from "./BedsInRoom";
-import BedDetails from "./BedDetails";
-import ShiftChange from "./Nurse/ShiftChange";
-import DailyCheckingForm from "./Nurse/DailyCheckingForm";
-import HomePage from "./HomePage";
-import Header from "./Header";
-import LoginScreen from "./Login/Login";
-import DoctorScreen from "./Doctor/DoctorScreen";
 import AdminScreen from "./Admin/Admin";
-import PatientScreen from "./Patient/PatientScreen";
-import Schedule from "./Schedule";
-import 'bootstrap/dist/css/bootstrap.min.css';        // Bootstrap CSS
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';   // Bootstrap JS with Popper
-import Register from "./Login/Register";
-import Services from "./Services";
-import HospitalServices from "./HospitalServices";
+import BedDetails from "./BedDetails";
+import BedsInRoom from "./BedsInRoom";
+import DoctorScreen from "./Doctor/DoctorScreen";
 import Footer from "./Footer";
+import Header from "./Header";
+import HomePage from "./HomePage";
+import HospitalServices from "./HospitalServices";
+import LoginScreen from "./Login/Login";
+import Register from "./Login/Register";
+import DailyCheckingForm from "./Nurse/DailyCheckingForm";
+import NurseScreen from "./Nurse/NurseScreen";
+import ShiftChange from "./Nurse/ShiftChange";
 import CompletePatientForm from "./Patient/CompletePatientForm";
 import MakeAppointment from "./Patient/MakeAppointment";
+import PatientScreen from "./Patient/PatientScreen";
+import Schedule from "./Schedule";
+import Services from "./Services";
+
+
 
 const Layout = () => (
   <>
@@ -34,15 +37,46 @@ const Layout = () => (
     <Footer />
   </>
 );
+// const ProtectedRoute = () => {
+//   const token = sessionStorage.getItem("token");
+
+//   if (!token) {
+//     return <Navigate to="/" replace />; // Redirect to login if no token
+//   }
+
+//   return <Outlet />; // Render the requested page if authenticated
+// };
 const ProtectedRoute = () => {
   const token = sessionStorage.getItem("token");
 
   if (!token) {
-    return <Navigate to="/" replace />; // Redirect to login if no token
+    return <Navigate to="/login" replace />; // trước đây là "/"
   }
 
-  return <Outlet />; // Render the requested page if authenticated
+  return <Outlet />;
 };
+
+const AdminRoute = () => {
+  const token = sessionStorage.getItem("token");
+
+  if (!token) {
+    return <Navigate to="/login" replace />; // bắt login trước
+  }
+
+  try {
+    const decoded: any = jwtDecode(token);
+    if (decoded.roleID !== 666) {
+      // không phải admin thì đá về home
+      return <Navigate to="/" replace />;
+    }
+  } catch (e) {
+    console.error("Invalid token:", e);
+    return <Navigate to="/login" replace />;
+  }
+
+  return <Outlet />;
+};
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -110,16 +144,19 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <ProtectedRoute />, // Wrap in ProtectedRoute
+    element: <AdminRoute />,
     children: [
       {
-        path: "/admin", children: [
+        path: "/admin",
+        element: <Layout />,
+        children: [
           { index: true, element: <AdminScreen /> },
-        ]
+        ],
       },
     ],
   },
 ]);
+
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

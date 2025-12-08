@@ -7,6 +7,12 @@ const app = express();
 const verifyToken = require("./verifyToken");
 const axios = require("axios");
 
+function isAdmin(req, res, next) {
+  if (!req.user || req.user.roleID !== 666) {
+    return res.status(403).json({ message: "Forbidden: Admin only" });
+  }
+  next();
+}
 
 require("dotenv").config({ path: "JWT.env" });
 require('dotenv').config();
@@ -691,6 +697,204 @@ app.put("/appointments/check-overdue", (req, res) => {
       message: "Overdue appointments updated",
       updatedCount: result.affectedRows
     });
+  });
+});
+
+// Create account for nurse
+app.post("/admin/nurses", verifyToken, isAdmin, (req, res) => {
+  const {
+    username,
+    password,
+    fullName,
+    dob,
+    phone,
+    email,
+    CCCD,
+    address,
+    gender,
+    department,
+    roomID,
+    image,
+  } = req.body;
+
+  if (!username || !password || !email || !fullName) {
+    return res.status(400).json({ message: "Missing required fields" });
+  }
+
+  //  Check email trùng
+  db.query("SELECT * FROM user WHERE email = ?", [email], (err, existing) => {
+    if (err) return res.status(500).json({ message: "Database error", error: err });
+    if (existing.length > 0) {
+      return res.status(400).json({ message: "Email already in use" });
+    }
+
+    const insertUserSql = `
+      INSERT INTO user (username, password, fullName, dob, phone, email, CCCD, address, gender)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+    db.query(
+      insertUserSql,
+      [username, password, fullName, dob, phone, email, CCCD, address, gender],
+      (err2, resultUser) => {
+        if (err2) return res.status(500).json({ message: "Insert user failed", error: err2 });
+
+        const newUserID = resultUser.insertId;
+
+        db.query(
+          "INSERT INTO userrole (userID, roleID) VALUES (?, ?)",
+          [newUserID, 2],
+          (err3) => {
+            if (err3) return res.status(500).json({ message: "Assign role failed", error: err3 });
+
+            const insertNurseSql = `
+              INSERT INTO nurse (department, userID, roomID, image)
+              VALUES (?, ?, ?, ?)
+            `;
+            db.query(
+              insertNurseSql,
+              [department, newUserID, roomID, image],
+              (err4, resultNurse) => {
+                if (err4)
+                  return res.status(500).json({ message: "Insert nurse failed", error: err4 });
+
+                return res.status(201).json({
+                  message: "Nurse account created successfully",
+                  userID: newUserID,
+                  nurseID: resultNurse.insertId,
+                });
+              }
+            );
+          }
+        );
+      }
+    );
+  });
+});
+
+
+// Create account for doctor
+app.post("/admin/doctors", verifyToken, isAdmin, (req, res) => {
+  const {
+    username,
+    password,
+    fullName,
+    dob,
+    phone,
+    email,
+    CCCD,
+    address,
+    gender,
+    department,
+    nurseID,
+    office,
+  } = req.body;
+
+  if (!username || !password || !email || !fullName) {
+    return res.status(400).json({ message: "Missing required fields" });
+  }
+
+  db.query("SELECT * FROM user WHERE email = ?", [email], (err, existing) => {
+    if (err) return res.status(500).json({ message: "Database error", error: err });
+    if (existing.length > 0) {
+      return res.status(400).json({ message: "Email already in use" });
+    }
+
+    const insertUserSql = `
+      INSERT INTO user (username, password, fullName, dob, phone, email, CCCD, address, gender)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+    db.query(
+      insertUserSql,
+      [username, password, fullName, dob, phone, email, CCCD, address, gender],
+      (err2, resultUser) => {
+        if (err2) return res.status(500).json({ message: "Insert user failed", error: err2 });
+
+        const newUserID = resultUser.insertId;
+
+        db.query(
+          "INSERT INTO userrole (userID, roleID) VALUES (?, ?)",
+          [newUserID, 1],
+          (err3) => {
+            if (err3) return res.status(500).json({ message: "Assign role failed", error: err3 });
+
+            const insertDoctorSql = `
+              INSERT INTO doctor (department, nurseID, userID, office)
+              VALUES (?, ?, ?, ?)
+            `;
+            db.query(
+              insertDoctorSql,
+              [department, nurseID || null, newUserID, office],
+              (err4, resultDoctor) => {
+                if (err4)
+                  return res.status(500).json({ message: "Insert doctor failed", error: err4 });
+
+                return res.status(201).json({
+                  message: "Doctor account created successfully",
+                  userID: newUserID,
+                  doctorID: resultDoctor.insertId,
+                });
+              }
+            );
+          }
+        );
+      }
+    );
+  });
+});
+
+
+// CRUD for news
+//Post
+app.post("/admin/news", verifyToken, isAdmin, (req, res) => {
+  const { title, body, date, author, image } = req.body;
+
+  if (!title) {
+    return res.status(400).json({ message: "Title is required" });
+  }
+
+  const sql = `
+    INSERT INTO news (title, body, date, author, image)
+    VALUES (?, ?, ?, ?, ?)
+  `;
+  db.query(sql, [title, body || null, date || new Date(), author || null, image || null], (err, result) => {
+    if (err) return res.status(500).json({ message: "Insert news failed", error: err });
+
+    res.status(201).json({
+      message: "News created successfully",
+      newID: result.insertId,
+    });
+  });
+});
+
+//Put
+app.put("/admin/news/:id", verifyToken, isAdmin, (req, res) => {
+  const newID = req.params.id;
+  const { title, body, date, author, image } = req.body;
+
+  const sql = `
+    UPDATE news
+    SET title = ?, body = ?, date = ?, author = ?, image = ?
+    WHERE newID = ?
+  `;
+
+  db.query(sql, [title, body, date, author, image, newID], (err, result) => {
+    if (err) return res.status(500).json({ message: "Update news failed", error: err });
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "News not found" });
+    }
+    res.json({ message: "News updated successfully" });
+  });
+});
+//Delete
+app.delete("/admin/news/:id", verifyToken, isAdmin, (req, res) => {
+  const newID = req.params.id;
+
+  db.query("DELETE FROM news WHERE newID = ?", [newID], (err, result) => {
+    if (err) return res.status(500).json({ message: "Delete news failed", error: err });
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "News not found" });
+    }
+    res.json({ message: "News deleted successfully" });
   });
 });
 
