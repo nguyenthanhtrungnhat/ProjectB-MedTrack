@@ -470,6 +470,16 @@ app.get("/api/appointment/doctor/:doctorID", (req, res) => {
   });
 });
 
+// GET total pending shift requests count
+app.get("/schedule-request/pending/count", (req, res) => {
+    const sql = `SELECT COUNT(*) AS count FROM scheduleRequest WHERE status = 0`; // 0 = Pending
+    db.query(sql, (err, result) => {
+        if (err) return res.status(500).json({ message: "DB error", err });
+        res.json({ count: result[0].count });
+    });
+});
+
+
 //reject, approve schedule request
 app.patch("/schedule-request/:id/status", (req, res) => {
     const requestID = req.params.id;
