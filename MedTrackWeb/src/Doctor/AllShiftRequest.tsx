@@ -6,8 +6,6 @@ import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { ScheduleRequest } from "../interface";
 
-
-
 export default function AllShiftRequest() {
     const storedInfo = sessionStorage.getItem("info");
     const info = storedInfo ? JSON.parse(storedInfo) : null;
@@ -27,26 +25,16 @@ export default function AllShiftRequest() {
             .catch(err => console.error("Failed to load requests:", err));
     };
 
-    const handleReject = (requestID: number) => {
-        axios.patch(`http://localhost:3000/schedule-request/${requestID}/reject`)
-            .then(() => {
-                toast.success("Request rejected successfully!");
-                fetchRequests();
+    // Unified function for approve/reject
+    const handleStatusChange = (requestID: number, status: 1 | 2) => {
+        axios
+            .patch(`http://localhost:3000/schedule-request/${requestID}/status`, { status })
+            .then(res => {
+                toast.success(res.data.message);
+                fetchRequests(); // reload table
             })
             .catch(err => {
-                toast.error("Failed to reject request.");
-                console.error(err);
-            });
-    };
-
-    const handleApprove = (requestID: number) => {
-        axios.patch(`http://localhost:3000/schedule-request/${requestID}/approve`)
-            .then(() => {
-                toast.success("Request approved and schedule updated!");
-                fetchRequests();
-            })
-            .catch(err => {
-                toast.error("Failed to approve request.");
+                toast.error("Failed to update request");
                 console.error(err);
             });
     };
@@ -88,13 +76,13 @@ export default function AllShiftRequest() {
                                                 <>
                                                     <button
                                                         className="btn btn-sm btn-success me-2"
-                                                        onClick={() => handleApprove(r.requestID)}
+                                                        onClick={() => handleStatusChange(r.requestID, 1)}
                                                     >
                                                         Approve
                                                     </button>
                                                     <button
                                                         className="btn btn-sm btn-danger"
-                                                        onClick={() => handleReject(r.requestID)}
+                                                        onClick={() => handleStatusChange(r.requestID, 2)}
                                                     >
                                                         Reject
                                                     </button>
