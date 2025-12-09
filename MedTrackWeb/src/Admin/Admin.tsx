@@ -8,7 +8,6 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
 interface News {
     newID?: number;
     title: string;
@@ -19,6 +18,22 @@ interface News {
     isActive?: number; // 1 = active, 0 = inactive
 }
 
+type DoctorFormState = {
+    username: string;
+    password: string;
+    fullName: string;
+    dob: string;
+    phone: string;
+    email: string;
+    CCCD: string;
+    address: string;
+    gender: string; // "0" hoặc "1"
+};
+
+type NurseFormState = DoctorFormState & {
+    image: string;
+};
+
 export default function AdminScreen() {
     const [activeTab, setActiveTab] = useState<
         "doctors" | "nurses" | "patients" | "news"
@@ -26,19 +41,21 @@ export default function AdminScreen() {
 
     const token = sessionStorage.getItem("token");
 
-    // ======================= TOGGLE FORM =========================
+    // ======= TOGGLE FORM =======
     const [showDoctorForm, setShowDoctorForm] = useState(false);
     const [showNurseForm, setShowNurseForm] = useState(false);
 
-    // ======================= DOCTOR FORM =========================
-    const [doctorForm, setDoctorForm] = useState({
+    // ===================== DOCTOR FORM ======================
+    const [doctorForm, setDoctorForm] = useState<DoctorFormState>({
         username: "",
         password: "",
         fullName: "",
+        dob: "",
+        phone: "",
         email: "",
-        department: "",
-        nurseID: "",
-        office: "",
+        CCCD: "",
+        address: "",
+        gender: "0",
     });
     const [doctorReloadKey, setDoctorReloadKey] = useState(0);
 
@@ -49,18 +66,14 @@ export default function AdminScreen() {
         setDoctorForm((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleCreateDoctor = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleCreateDoctor = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!token) {
             toast.error("Unauthorized - please log in as admin");
             return;
         }
-        if (
-            !doctorForm.username ||
-            !doctorForm.password ||
-            !doctorForm.fullName ||
-            !doctorForm.email
-        ) {
+        const { username, password, fullName, email } = doctorForm;
+        if (!username || !password || !fullName || !email) {
             toast.error("Username, Password, Full Name, Email are required");
             return;
         }
@@ -70,7 +83,7 @@ export default function AdminScreen() {
                 "http://localhost:3000/admin/doctors",
                 {
                     ...doctorForm,
-                    nurseID: doctorForm.nurseID ? Number(doctorForm.nurseID) : null,
+                    gender: Number(doctorForm.gender),
                 },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -80,10 +93,12 @@ export default function AdminScreen() {
                 username: "",
                 password: "",
                 fullName: "",
+                dob: "",
+                phone: "",
                 email: "",
-                department: "",
-                nurseID: "",
-                office: "",
+                CCCD: "",
+                address: "",
+                gender: "0",
             });
             setDoctorReloadKey((k) => k + 1);
             setShowDoctorForm(false);
@@ -93,15 +108,18 @@ export default function AdminScreen() {
         }
     };
 
-    // ======================= NURSE FORM ==========================
-    const [nurseForm, setNurseForm] = useState({
+    // ===================== NURSE FORM ======================
+    const [nurseForm, setNurseForm] = useState<NurseFormState>({
         username: "",
         password: "",
         fullName: "",
+        dob: "",
+        phone: "",
         email: "",
-        department: "",
-        roomID: "",
-        image: "",
+        CCCD: "",
+        address: "",
+        gender: "0",
+        image: "./images/nurse-1.jpg",
     });
     const [nurseReloadKey, setNurseReloadKey] = useState(0);
 
@@ -112,18 +130,15 @@ export default function AdminScreen() {
         setNurseForm((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleCreateNurse = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleCreateNurse = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!token) {
             toast.error("Unauthorized - please log in as admin");
             return;
         }
-        if (
-            !nurseForm.username ||
-            !nurseForm.password ||
-            !nurseForm.fullName ||
-            !nurseForm.email
-        ) {
+
+        const { username, password, fullName, email } = nurseForm;
+        if (!username || !password || !fullName || !email) {
             toast.error("Username, Password, Full Name, Email are required");
             return;
         }
@@ -133,7 +148,7 @@ export default function AdminScreen() {
                 "http://localhost:3000/admin/nurses",
                 {
                     ...nurseForm,
-                    roomID: nurseForm.roomID ? Number(nurseForm.roomID) : null,
+                    gender: Number(nurseForm.gender),
                 },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -143,10 +158,13 @@ export default function AdminScreen() {
                 username: "",
                 password: "",
                 fullName: "",
+                dob: "",
+                phone: "",
                 email: "",
-                department: "",
-                roomID: "",
-                image: "",
+                CCCD: "",
+                address: "",
+                gender: "0",
+                image: "./images/nurse-1.jpg",
             });
             setNurseReloadKey((k) => k + 1);
             setShowNurseForm(false);
@@ -156,7 +174,7 @@ export default function AdminScreen() {
         }
     };
 
-    // ======================= NEWS STATE ==========================
+    // ===================== NEWS STATE ======================
     const [newsList, setNewsList] = useState<News[]>([]);
     const [newsLoaded, setNewsLoaded] = useState(false);
     const [newsForm, setNewsForm] = useState<News>({
@@ -166,19 +184,13 @@ export default function AdminScreen() {
         author: "",
         image: "",
     });
+
     const [imageFile, setImageFile] = useState<File | null>(null);
-    const [imagePreview, setImagePreview] = useState<string>("");
+    const [uploading, setUploading] = useState(false);
 
     const loadNews = async () => {
-        if (!token) {
-            toast.error("Unauthorized - please log in as admin");
-            return;
-        }
         try {
-            const res = await axios.get<News[]>(
-                "http://localhost:3000/admin/news",
-                { headers: { Authorization: `Bearer ${token}` } }
-            );
+            const res = await axios.get<News[]>("http://localhost:3000/news");
             setNewsList(res.data);
             setNewsLoaded(true);
         } catch (err) {
@@ -187,22 +199,11 @@ export default function AdminScreen() {
         }
     };
 
-
-    const getNewsImageSrc = (img?: string) => {
-        if (!img) return "";
-        // Nếu đã là URL đầy đủ thì dùng luôn
-        if (img.startsWith("http://") || img.startsWith("https://") || img.startsWith("data:")) {
-            return img;
-        }
-        // Nếu chỉ là đường dẫn tương đối từ server (vd: /uploads/news/abc.jpg)
-        return `http://localhost:3000${img}`;
-    };
-
     useEffect(() => {
-        if (activeTab === "news") {
+        if (activeTab === "news" && !newsLoaded) {
             loadNews();
         }
-    }, [activeTab]);
+    }, [activeTab, newsLoaded]);
 
     const handleNewsFormChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -214,14 +215,46 @@ export default function AdminScreen() {
     const handleImageFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0] || null;
         setImageFile(file);
-        if (file) {
-            setImagePreview(URL.createObjectURL(file));
-        } else {
-            setImagePreview("");
+    };
+
+    const handleUploadImage = async () => {
+        if (!imageFile) {
+            toast.error("Please choose an image file first");
+            return;
+        }
+        if (!token) {
+            toast.error("Unauthorized - please log in as admin");
+            return;
+        }
+        try {
+            setUploading(true);
+            const formData = new FormData();
+            formData.append("image", imageFile);
+
+            const res = await axios.post(
+                "http://localhost:3000/upload/image",
+                formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
+
+            const filePath = res.data.filePath;
+            const fullUrl = `http://localhost:3000${filePath}`;
+            setNewsForm((prev) => ({ ...prev, image: fullUrl }));
+            toast.success("Image uploaded successfully");
+        } catch (err: any) {
+            console.error(err);
+            toast.error(err?.response?.data?.message || "Failed to upload image");
+        } finally {
+            setUploading(false);
         }
     };
 
-    const handleCreateNews = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleCreateNews = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!token) {
             toast.error("Unauthorized - please log in as admin");
@@ -231,28 +264,10 @@ export default function AdminScreen() {
             toast.error("Title is required");
             return;
         }
-
         try {
-            const formData = new FormData();
-            formData.append("title", newsForm.title);
-            formData.append("body", newsForm.body || "");
-            formData.append("date", newsForm.date);
-            formData.append("author", newsForm.author || "");
-
-            // Nếu có file thì gửi file, nếu không thì gửi URL text
-            if (imageFile) {
-                formData.append("image", imageFile);
-            } else if (newsForm.image) {
-                formData.append("image", newsForm.image);
-            }
-
-            await axios.post("http://localhost:3000/admin/news", formData, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "multipart/form-data",
-                },
+            await axios.post("http://localhost:3000/admin/news", newsForm, {
+                headers: { Authorization: `Bearer ${token}` },
             });
-
             toast.success("News created successfully");
             setNewsForm({
                 title: "",
@@ -261,8 +276,6 @@ export default function AdminScreen() {
                 author: "",
                 image: "",
             });
-            setImageFile(null);
-            setImagePreview("");
             loadNews();
         } catch (err: any) {
             console.error(err);
@@ -301,11 +314,12 @@ export default function AdminScreen() {
             toast.success(newStatus ? "Activated" : "Deactivated");
         } catch (err: any) {
             console.error(err);
-            toast.error(err?.response?.data?.message || "Failed to change status");
+            toast.error(
+                err?.response?.data?.message || "Failed to change status"
+            );
         }
     };
 
-    // ======================= JSX ================================
     return (
         <div className="mainBg pt-5 mt-5 min-vh-100">
             <ToastContainer position="top-right" />
@@ -377,7 +391,9 @@ export default function AdminScreen() {
                                         <button
                                             type="button"
                                             className="btn btn-primary"
-                                            onClick={() => setShowDoctorForm((prev) => !prev)}
+                                            onClick={() =>
+                                                setShowDoctorForm((prev) => !prev)
+                                            }
                                         >
                                             {showDoctorForm ? "Close form" : "Create Doctor Account"}
                                         </button>
@@ -430,32 +446,53 @@ export default function AdminScreen() {
                                                     required
                                                 />
                                             </div>
-                                            <div className="col-md-4">
-                                                <label className="form-label">Department</label>
+
+                                            <div className="col-md-3">
+                                                <label className="form-label">Phone</label>
                                                 <input
-                                                    name="department"
+                                                    name="phone"
                                                     className="form-control"
-                                                    value={doctorForm.department}
+                                                    value={doctorForm.phone}
                                                     onChange={handleDoctorChange}
                                                 />
                                             </div>
-                                            <div className="col-md-4">
-                                                <label className="form-label">
-                                                    Nurse ID (optional)
-                                                </label>
+                                            <div className="col-md-3">
+                                                <label className="form-label">DOB</label>
                                                 <input
-                                                    name="nurseID"
+                                                    type="date"
+                                                    name="dob"
                                                     className="form-control"
-                                                    value={doctorForm.nurseID}
+                                                    value={doctorForm.dob}
                                                     onChange={handleDoctorChange}
                                                 />
                                             </div>
-                                            <div className="col-md-4">
-                                                <label className="form-label">Office</label>
+                                            <div className="col-md-3">
+                                                <label className="form-label">CCCD</label>
                                                 <input
-                                                    name="office"
+                                                    name="CCCD"
                                                     className="form-control"
-                                                    value={doctorForm.office}
+                                                    value={doctorForm.CCCD}
+                                                    onChange={handleDoctorChange}
+                                                />
+                                            </div>
+                                            <div className="col-md-3">
+                                                <label className="form-label">Gender</label>
+                                                <select
+                                                    name="gender"
+                                                    className="form-select"
+                                                    value={doctorForm.gender}
+                                                    onChange={handleDoctorChange}
+                                                >
+                                                    <option value="0">Female</option>
+                                                    <option value="1">Male</option>
+                                                </select>
+                                            </div>
+                                            <div className="col-12">
+                                                <label className="form-label">Address</label>
+                                                <input
+                                                    name="address"
+                                                    className="form-control"
+                                                    value={doctorForm.address}
                                                     onChange={handleDoctorChange}
                                                 />
                                             </div>
@@ -476,13 +513,13 @@ export default function AdminScreen() {
                             {activeTab === "nurses" && (
                                 <div className="mt-3">
                                     <div className="d-flex justify-content-between align-items-center mb-3">
-                                        <h4 className="blueText mb-0">
-                                            Nurse Account Management
-                                        </h4>
+                                        <h4 className="blueText mb-0">Nurse Account Management</h4>
                                         <button
                                             type="button"
                                             className="btn btn-primary"
-                                            onClick={() => setShowNurseForm((prev) => !prev)}
+                                            onClick={() =>
+                                                setShowNurseForm((prev) => !prev)
+                                            }
                                         >
                                             {showNurseForm ? "Close form" : "Create Nurse Account"}
                                         </button>
@@ -535,25 +572,57 @@ export default function AdminScreen() {
                                                     required
                                                 />
                                             </div>
-                                            <div className="col-md-4">
-                                                <label className="form-label">Department</label>
+
+                                            <div className="col-md-3">
+                                                <label className="form-label">Phone</label>
                                                 <input
-                                                    name="department"
+                                                    name="phone"
                                                     className="form-control"
-                                                    value={nurseForm.department}
+                                                    value={nurseForm.phone}
                                                     onChange={handleNurseChange}
                                                 />
                                             </div>
-                                            <div className="col-md-4">
-                                                <label className="form-label">Room ID</label>
+                                            <div className="col-md-3">
+                                                <label className="form-label">DOB</label>
                                                 <input
-                                                    name="roomID"
+                                                    type="date"
+                                                    name="dob"
                                                     className="form-control"
-                                                    value={nurseForm.roomID}
+                                                    value={nurseForm.dob}
                                                     onChange={handleNurseChange}
                                                 />
                                             </div>
-                                            <div className="col-md-4">
+                                            <div className="col-md-3">
+                                                <label className="form-label">CCCD</label>
+                                                <input
+                                                    name="CCCD"
+                                                    className="form-control"
+                                                    value={nurseForm.CCCD}
+                                                    onChange={handleNurseChange}
+                                                />
+                                            </div>
+                                            <div className="col-md-3">
+                                                <label className="form-label">Gender</label>
+                                                <select
+                                                    name="gender"
+                                                    className="form-select"
+                                                    value={nurseForm.gender}
+                                                    onChange={handleNurseChange}
+                                                >
+                                                    <option value="0">Female</option>
+                                                    <option value="1">Male</option>
+                                                </select>
+                                            </div>
+                                            <div className="col-9">
+                                                <label className="form-label">Address</label>
+                                                <input
+                                                    name="address"
+                                                    className="form-control"
+                                                    value={nurseForm.address}
+                                                    onChange={handleNurseChange}
+                                                />
+                                            </div>
+                                            <div className="col-3">
                                                 <label className="form-label">Image URL</label>
                                                 <input
                                                     name="image"
@@ -625,7 +694,7 @@ export default function AdminScreen() {
 
                                         <div className="col-12">
                                             <label className="form-label">
-                                                Image URL (optional) hoặc upload dưới đây
+                                                Image URL (or upload below)
                                             </label>
                                             <input
                                                 type="text"
@@ -643,22 +712,15 @@ export default function AdminScreen() {
                                                     className="form-control"
                                                     onChange={handleImageFileChange}
                                                 />
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-outline-primary"
+                                                    onClick={handleUploadImage}
+                                                    disabled={uploading}
+                                                >
+                                                    {uploading ? "Uploading..." : "Upload"}
+                                                </button>
                                             </div>
-
-                                            {imagePreview && (
-                                                <div className="mt-2">
-                                                    <small className="text-muted d-block">Preview:</small>
-                                                    <img
-                                                        src={imagePreview}
-                                                        alt="preview"
-                                                        style={{
-                                                            width: "120px",
-                                                            height: "60px",
-                                                            objectFit: "cover",
-                                                        }}
-                                                    />
-                                                </div>
-                                            )}
                                         </div>
 
                                         <div className="col-12">
@@ -701,7 +763,7 @@ export default function AdminScreen() {
                                                     <td>
                                                         {n.image && (
                                                             <img
-                                                                src={getNewsImageSrc(n.image)}
+                                                                src={n.image}
                                                                 alt={n.title}
                                                                 style={{
                                                                     width: "80px",
@@ -711,10 +773,11 @@ export default function AdminScreen() {
                                                             />
                                                         )}
                                                     </td>
-
                                                     <td>
                                                         {n.isActive ? (
-                                                            <span className="badge bg-success">Active</span>
+                                                            <span className="badge bg-success">
+                                                                Active
+                                                            </span>
                                                         ) : (
                                                             <span className="badge bg-secondary">
                                                                 Inactive

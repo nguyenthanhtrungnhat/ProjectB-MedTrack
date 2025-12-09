@@ -816,6 +816,7 @@ app.put("/appointments/check-overdue", (req, res) => {
 });
 
 // Create account for nurse
+// Create account for nurse (dùng đúng field bảng user)
 app.post("/admin/nurses", verifyToken, isAdmin, (req, res) => {
   const {
     username,
@@ -826,26 +827,26 @@ app.post("/admin/nurses", verifyToken, isAdmin, (req, res) => {
     email,
     CCCD,
     address,
-    gender,
-    department,
-    roomID,
-    image,
+    gender,   // 0/1
+    image,    // ảnh riêng của nurse (tùy, có thể null)
   } = req.body;
 
-  if (!username || !password || !email || !fullName) {
-    return res.status(400).json({ message: "Missing required fields" });
+  if (!username || !password || !fullName || !email) {
+    return res.status(400).json({ message: "Username, password, fullName, email are required" });
   }
 
-  //  Check email trùng
+  // 1. Kiểm tra email trùng
   db.query("SELECT * FROM user WHERE email = ?", [email], (err, existing) => {
     if (err) return res.status(500).json({ message: "Database error", error: err });
     if (existing.length > 0) {
       return res.status(400).json({ message: "Email already in use" });
     }
 
+    // 2. Tạo user mới (đúng field trong bảng user)
     const insertUserSql = `
-      INSERT INTO user (username, password, fullName, dob, phone, email, CCCD, address, gender)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO user
+      (username, password, fullName, dob, phone, email, CCCD, address, gender, isActive)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
     `;
     db.query(
       insertUserSql,
@@ -855,19 +856,21 @@ app.post("/admin/nurses", verifyToken, isAdmin, (req, res) => {
 
         const newUserID = resultUser.insertId;
 
+        // 3. Gán role = 2 (Nurse)
         db.query(
           "INSERT INTO userrole (userID, roleID) VALUES (?, ?)",
           [newUserID, 2],
           (err3) => {
             if (err3) return res.status(500).json({ message: "Assign role failed", error: err3 });
 
+            // 4. Tạo record trong bảng nurse (chỉ cần userID + image nếu có)
             const insertNurseSql = `
-              INSERT INTO nurse (department, userID, roomID, image)
-              VALUES (?, ?, ?, ?)
+              INSERT INTO nurse (userID, image)
+              VALUES (?, ?)
             `;
             db.query(
               insertNurseSql,
-              [department, newUserID, roomID, image],
+              [newUserID, image || null],
               (err4, resultNurse) => {
                 if (err4)
                   return res.status(500).json({ message: "Insert nurse failed", error: err4 });
@@ -887,6 +890,7 @@ app.post("/admin/nurses", verifyToken, isAdmin, (req, res) => {
 });
 
 
+
 // Create account for doctor
 app.post("/admin/doctors", verifyToken, isAdmin, (req, res) => {
   const {
@@ -898,14 +902,11 @@ app.post("/admin/doctors", verifyToken, isAdmin, (req, res) => {
     email,
     CCCD,
     address,
-    gender,
-    department,
-    nurseID,
-    office,
+    gender // 0/1
   } = req.body;
 
-  if (!username || !password || !email || !fullName) {
-    return res.status(400).json({ message: "Missing required fields" });
+  if (!username || !password || !fullName || !email) {
+    return res.status(400).json({ message: "Username, password, fullName, email are required" });
   }
 
   db.query("SELECT * FROM user WHERE email = ?", [email], (err, existing) => {
@@ -915,8 +916,9 @@ app.post("/admin/doctors", verifyToken, isAdmin, (req, res) => {
     }
 
     const insertUserSql = `
-      INSERT INTO user (username, password, fullName, dob, phone, email, CCCD, address, gender)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO user 
+      (username, password, fullName, dob, phone, email, CCCD, address, gender, isActive)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
     `;
     db.query(
       insertUserSql,
@@ -926,30 +928,25 @@ app.post("/admin/doctors", verifyToken, isAdmin, (req, res) => {
 
         const newUserID = resultUser.insertId;
 
+        // role = 1 (Doctor)
         db.query(
           "INSERT INTO userrole (userID, roleID) VALUES (?, ?)",
           [newUserID, 1],
           (err3) => {
             if (err3) return res.status(500).json({ message: "Assign role failed", error: err3 });
 
-            const insertDoctorSql = `
-              INSERT INTO doctor (department, nurseID, userID, office)
-              VALUES (?, ?, ?, ?)
-            `;
-            db.query(
-              insertDoctorSql,
-              [department, nurseID || null, newUserID, office],
-              (err4, resultDoctor) => {
-                if (err4)
-                  return res.status(500).json({ message: "Insert doctor failed", error: err4 });
+            // bảng doctor chỉ cần userID (các field khác để NULL)
+            const insertDoctorSql = `INSERT INTO doctor (userID) VALUES (?)`;
+            db.query(insertDoctorSql, [newUserID], (err4, resultDoctor) => {
+              if (err4)
+                return res.status(500).json({ message: "Insert doctor failed", error: err4 });
 
-                return res.status(201).json({
-                  message: "Doctor account created successfully",
-                  userID: newUserID,
-                  doctorID: resultDoctor.insertId,
-                });
-              }
-            );
+              return res.status(201).json({
+                message: "Doctor account created successfully",
+                userID: newUserID,
+                doctorID: resultDoctor.insertId,
+              });
+            });
           }
         );
       }
