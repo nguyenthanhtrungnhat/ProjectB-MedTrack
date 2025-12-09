@@ -172,8 +172,8 @@ export default function DoctorScreen() {
                                                         style={{ marginLeft: "auto" }}
                                                     ></i>
                                                 </div>
-                                                
-                                               <Link to="/doctor/allshiftrequest" className="greenText text-decoration-none">
+
+                                                <Link to="/doctor/allshiftrequest" className="greenText text-decoration-none">
                                                     More detail
                                                 </Link>
                                             </div>
@@ -217,6 +217,11 @@ export default function DoctorScreen() {
                                             <li>
                                                 <Link to="/doctor/allappointment" className="text-decoration-none">
                                                     <i className="fa fa-caret-right" aria-hidden="true"></i> Appointments
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link to="/doctor/allshiftrequest" className="text-decoration-none">
+                                                    <i className="fa fa-caret-right" aria-hidden="true"></i> Shift Request
                                                 </Link>
                                             </li>
                                         </ul>
