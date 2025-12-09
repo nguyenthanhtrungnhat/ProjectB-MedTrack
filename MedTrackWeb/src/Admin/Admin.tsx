@@ -8,6 +8,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+
 interface News {
     newID?: number;
     title: string;
@@ -157,6 +158,7 @@ export default function AdminScreen() {
 
     // ======================= NEWS STATE ==========================
     const [newsList, setNewsList] = useState<News[]>([]);
+    const [newsLoaded, setNewsLoaded] = useState(false);
     const [newsForm, setNewsForm] = useState<News>({
         title: "",
         body: "",
@@ -168,14 +170,24 @@ export default function AdminScreen() {
     const [imagePreview, setImagePreview] = useState<string>("");
 
     const loadNews = async () => {
+        if (!token) {
+            toast.error("Unauthorized - please log in as admin");
+            return;
+        }
         try {
-            const res = await axios.get<News[]>("http://localhost:3000/news");
+            const res = await axios.get<News[]>(
+                "http://localhost:3000/admin/news",
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
             setNewsList(res.data);
+            setNewsLoaded(true);
         } catch (err) {
             console.error(err);
             toast.error("Failed to load news list");
         }
     };
+
+
     const getNewsImageSrc = (img?: string) => {
         if (!img) return "";
         // Nếu đã là URL đầy đủ thì dùng luôn

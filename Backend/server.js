@@ -129,8 +129,9 @@ app.get("/admin/news", verifyToken, isAdmin, (req, res) => {
 
 // Public: chỉ show news đang active
 app.get("/news", (req, res) => {
-  db.query("SELECT * FROM news WHERE isActive = 1", (err, results) => {
-    if (err) return res.status(500).json({ message: "Database error", error: err });
+  const sql = "SELECT * FROM news WHERE isActive = 1";
+  db.query(sql, (err, results) => {
+    if (err) return res.status(500).json({ error: "Failed to load news", details: err });
     res.json(results);
   });
 });
@@ -978,6 +979,15 @@ app.put("/admin/accounts/:userID/status", verifyToken, isAdmin, (req, res) => {
 
 
 // CRUD for news
+// ADMIN: lấy tất cả news, kể cả active / inactive
+app.get("/admin/news", verifyToken, isAdmin, (req, res) => {
+  const sql = "SELECT * FROM news";
+  db.query(sql, (err, results) => {
+    if (err) return res.status(500).json({ message: "Failed to load news", error: err });
+    res.json(results);
+  });
+});
+
 //Post
 // POST: Tạo news (cho phép upload file hoặc dùng URL)
 app.post(
