@@ -155,7 +155,7 @@ export default function ShiftChange() {
                                 <textarea
                                     className="form-control"
                                     value={reason}
-                                    onChange={(e) => setReason(e.target.value)} 
+                                    onChange={(e) => setReason(e.target.value)}
                                     placeholder="Name - Reason"
                                 ></textarea>
 
@@ -180,11 +180,25 @@ export default function ShiftChange() {
                     </div>
                     <div className="leftBody border whiteBg dropShadow marginBottom">
                         <h6 className='whiteText blueBg featureHead'>Feature</h6>
-                        <ul className='list-unstyled padding'>
-                            <li><Link to="/home/shift-change">Shift Change</Link></li>
-                            <li><Link to="/home/daily-checking">Daily Checking</Link></li>
-                            <li><Link to="/home/schedule">Schedule</Link></li>
-                        </ul>
+                        <div className="padding">
+                            <ul className='list-unstyled'>
+                                <li>
+                                    <Link to="/home/shift-change" className="text-decoration-none">
+                                        <i className="fa fa-caret-right" aria-hidden="true"></i> Shift change registration
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to="/home/daily-checking" className="text-decoration-none">
+                                        <i className="fa fa-caret-right" aria-hidden="true"></i> Daily checking health
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to="/home/schedule" className="text-decoration-none">
+                                        <i className="fa fa-caret-right" aria-hidden="true"></i> Schedule
+                                    </Link>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
 
