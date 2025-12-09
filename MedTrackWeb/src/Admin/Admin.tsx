@@ -176,6 +176,15 @@ export default function AdminScreen() {
             toast.error("Failed to load news list");
         }
     };
+    const getNewsImageSrc = (img?: string) => {
+        if (!img) return "";
+        // Nếu đã là URL đầy đủ thì dùng luôn
+        if (img.startsWith("http://") || img.startsWith("https://") || img.startsWith("data:")) {
+            return img;
+        }
+        // Nếu chỉ là đường dẫn tương đối từ server (vd: /uploads/news/abc.jpg)
+        return `http://localhost:3000${img}`;
+    };
 
     useEffect(() => {
         if (activeTab === "news") {
@@ -680,7 +689,7 @@ export default function AdminScreen() {
                                                     <td>
                                                         {n.image && (
                                                             <img
-                                                                src={n.image}
+                                                                src={getNewsImageSrc(n.image)}
                                                                 alt={n.title}
                                                                 style={{
                                                                     width: "80px",
@@ -690,6 +699,7 @@ export default function AdminScreen() {
                                                             />
                                                         )}
                                                     </td>
+
                                                     <td>
                                                         {n.isActive ? (
                                                             <span className="badge bg-success">Active</span>
@@ -702,8 +712,8 @@ export default function AdminScreen() {
                                                     <td>
                                                         <button
                                                             className={`btn btn-sm ${n.isActive
-                                                                    ? "btn-outline-secondary"
-                                                                    : "btn-outline-success"
+                                                                ? "btn-outline-secondary"
+                                                                : "btn-outline-success"
                                                                 }`}
                                                             onClick={() => handleToggleNewsStatus(n)}
                                                         >

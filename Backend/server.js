@@ -1026,15 +1026,15 @@ app.post(
 //Put
 app.put("/admin/news/:id", verifyToken, isAdmin, (req, res) => {
   const newID = req.params.id;
-  const { title, body, date, author, image } = req.body;
+  const { title, body, date, author, image, isActive } = req.body;
 
   const sql = `
     UPDATE news
-    SET title = ?, body = ?, date = ?, author = ?, image = ?
+    SET title = ?, body = ?, date = ?, author = ?, image = ?, isActive = ?
     WHERE newID = ?
   `;
 
-  db.query(sql, [title, body, date, author, image, newID], (err, result) => {
+  db.query(sql, [title, body, date, author, image, isActive, newID], (err, result) => {
     if (err) return res.status(500).json({ message: "Update news failed", error: err });
     if (result.affectedRows === 0) {
       return res.status(404).json({ message: "News not found" });
@@ -1042,6 +1042,7 @@ app.put("/admin/news/:id", verifyToken, isAdmin, (req, res) => {
     res.json({ message: "News updated successfully" });
   });
 });
+
 //Delete
 app.delete("/admin/news/:id", verifyToken, isAdmin, (req, res) => {
   const newID = req.params.id;
