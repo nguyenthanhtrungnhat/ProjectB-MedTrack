@@ -163,17 +163,17 @@ app.get("/nurses/:nurseID", (req, res) => {
 });
 
 // Get docotor by ID
-app.get("/doctors/:docotorID", (req, res) => {
-  const { docotorID } = req.params;
+app.get("/doctors/:doctorID", (req, res) => {
+  const { doctorID } = req.params;
   const query = `
     SELECT d.*, u.*
     FROM docotor d
     JOIN user u ON d.userID = u.userID
-    WHERE d.docotorID = ?;
+    WHERE d.doctorID = ?;
   `;
-  db.query(query, [docotorID], (err, results) => {
+  db.query(query, [doctorID], (err, results) => {
     if (err) return res.status(500).json({ error: "Database error", details: err });
-    if (results.length === 0) return res.status(404).json({ error: "Docotor not found" });
+    if (results.length === 0) return res.status(404).json({ error: "Doctor not found" });
     res.json(results[0]);
   });
 });
