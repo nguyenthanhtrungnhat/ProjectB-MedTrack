@@ -24,8 +24,8 @@ export default function DoctorScreen() {
     const [user, setUser] = useState<NurseProps | null>(null);
     sessionStorage.setItem("info", JSON.stringify(user));
     const [rooms, setRooms] = useState<RoomProps[]>([]);
-    const [nurseID, setNurseID] = useState<number | null>(null);
-    sessionStorage.setItem("nurseID", JSON.stringify(nurseID));
+    const [doctorID, setDoctorID] = useState<number | null>(null);
+    sessionStorage.setItem("doctorID", JSON.stringify(doctorID));
     const userID = getUserIDFromToken();
     const url = `http://localhost:3000/doctors/by-user/${userID}`;
     const roomsUrl = 'http://localhost:3000/rooms';
@@ -33,13 +33,13 @@ export default function DoctorScreen() {
     const [count, setCount] = useState<number | null>(null);
     const [loading, setLoading] = useState(true);
     useEffect(() => {
-        if (!nurseID) {
+        if (!doctorID) {
             return;
         }
 
         const fetchCount = async () => {
             try {
-                const res = await axios.get(`http://localhost:3000/api/schedules/${nurseID}`);
+                const res = await axios.get(`http://localhost:3000/api/schedules/${doctorID}`);
                 const data = res.data;
                 if (Array.isArray(data)) {
                     setCount(data.length);
@@ -52,27 +52,27 @@ export default function DoctorScreen() {
         };
 
         fetchCount();
-    }, [nurseID]);
+    }, [doctorID]);
     useEffect(() => {
         if (!userID) return;
 
         axios.get(url)
             .then(response => {
-                setNurseID(response.data.nurseID);
-                console.log("Nurse ID:", response.data.nurseID);
+                setDoctorID(response.data.doctorID);
+                console.log("Doctor ID:", response.data.doctorID);
             })
-            .catch(error => console.error("Error fetching nurseID:", error));
+            .catch(error => console.error("Error fetching doctorID:", error));
     }, [userID]);
 
     useEffect(() => {
-        if (!nurseID) return;
+        if (!doctorID) return;
         setLoading(true)
-        axios.get(`http://localhost:3000/nurses/${nurseID}`)
+        axios.get(`http://localhost:3000/doctors/${doctorID}`)
             .then(response => {
                 setUser(response.data);
-                console.log("Nurse Data:", response.data);
+                console.log("Doctor Data:", response.data);
             })
-            .catch(error => console.error("Error fetching nurse:", error));
+            .catch(error => console.error("Error fetching doctor:", error));
 
         axios.get(roomsUrl)
             .then(response => {
@@ -81,7 +81,7 @@ export default function DoctorScreen() {
             })
             .catch(error => console.error("Error fetching rooms:", error))
             .finally(() => setLoading(false)); // stop loading
-    }, [nurseID]);
+    }, [doctorID]);
 
     if (!userID) {
         return <p>Please log in to view your nurse profile.</p>;
