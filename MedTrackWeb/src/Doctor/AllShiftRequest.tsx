@@ -108,6 +108,11 @@ export default function AllShiftRequest() {
                                         <i className="fa fa-caret-right" aria-hidden="true"></i> Appointments
                                     </Link>
                                 </li>
+                                 <li>
+                                    <Link to="/doctor/allshiftrequest" className="text-decoration-none">
+                                        <i className="fa fa-caret-right" aria-hidden="true"></i> Shift Request
+                                    </Link>
+                                </li>
                             </ul>
                         </div>
                     </div>
