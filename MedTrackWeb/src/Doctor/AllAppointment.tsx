@@ -75,10 +75,15 @@ export default function AllAppointment() {
                     <div className="leftBody border whiteBg dropShadow marginBottom">
                         <h6 className='whiteText blueBg featureHead'>Feature</h6>
                         <div className="padding">
-                            <ul className='list-unstyled'>
+                             <ul className='list-unstyled'>
                                 <li>
                                     <Link to="/doctor/allappointment" className="text-decoration-none">
                                         <i className="fa fa-caret-right" aria-hidden="true"></i> Appointments
+                                    </Link>
+                                </li>
+                                 <li>
+                                    <Link to="/doctor/allshiftrequest" className="text-decoration-none">
+                                        <i className="fa fa-caret-right" aria-hidden="true"></i> Shift Request
                                     </Link>
                                 </li>
                             </ul>
