@@ -886,10 +886,6 @@ app.post("/upload/image", verifyToken, isAdmin, upload.single("image"), (req, re
   res.json({ filePath });
 });
 
-// CRUD for news
-app.post("/admin/news", verifyToken, isAdmin, (req, res) => { ... });
-app.put("/admin/news/:id", verifyToken, isAdmin, (req, res) => { ... });
-app.delete("/admin/news/:id", verifyToken, isAdmin, (req, res) => { ... });
 // ================= ADMIN: ACCOUNT MANAGEMENT =================
 
 // Lấy danh sách account theo roleID (1=Doctor, 2=Nurse, 3=Patient)
