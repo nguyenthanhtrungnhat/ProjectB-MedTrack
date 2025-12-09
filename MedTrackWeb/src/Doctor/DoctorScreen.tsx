@@ -243,7 +243,3 @@ export default function DoctorScreen() {
         </div>
     )
 }
-
-function getUserIDFromToken() {
-    throw new Error("Function not implemented.");
-}
