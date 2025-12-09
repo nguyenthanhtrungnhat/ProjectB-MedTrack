@@ -250,12 +250,12 @@ INSERT INTO `role` (`roleID`,`nameRole`) VALUES
 
 -- 3. USERROLE table
 INSERT INTO `userrole` (`userRoleID`,`roleID`,`userID`) VALUES
-(1,1,1),
-(2,2,2),
-(3,3,3),
+(1,2,1),
+(2,3,2),
+(3,1,3),
 (4,666,4);
 
--- 4. ROOM table
+-- 4. ROOM table  
 INSERT INTO `room` (`roomID`,`department`,`location`) VALUES
 (1,'Internal Medicine','208B11');
 

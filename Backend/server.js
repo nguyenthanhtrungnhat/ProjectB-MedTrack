@@ -162,6 +162,22 @@ app.get("/nurses/:nurseID", (req, res) => {
   });
 });
 
+// Get docotor by ID
+app.get("/docotors/:docotorID", (req, res) => {
+  const { docotorID } = req.params;
+  const query = `
+    SELECT d.*, u.*
+    FROM docotor d
+    JOIN user u ON d.userID = u.userID
+    WHERE d.docotorID = ?;
+  `;
+  db.query(query, [docotorID], (err, results) => {
+    if (err) return res.status(500).json({ error: "Database error", details: err });
+    if (results.length === 0) return res.status(404).json({ error: "Docotor not found" });
+    res.json(results[0]);
+  });
+});
+
 // Get full nurse details by userID
 app.get("/nurses/by-user/:userID", (req, res) => {
   const { userID } = req.params;
