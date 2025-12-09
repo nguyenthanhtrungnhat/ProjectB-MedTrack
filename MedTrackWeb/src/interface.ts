@@ -85,3 +85,20 @@ export interface Schedule{
     roomID:string;
     room_location:string;
 }
+export interface ScheduleRequest {
+    requestID: number;
+    scheduleID: number;
+    reason?: string;
+    newDate?: string; // yyyy-mm-dd format
+    status: 0 | 1 | 2; // 0 = Pending, 1 = Approved, 2 = Rejected
+}
+export interface AppointmentProps {
+    appointmentID: number;
+    dateTime: string;             // DATE or DATETIME from DB
+    location: string | null;
+    appointmentStatus: 0 | 1;     // 0 = Coming, 1 = Overdue
+    doctorID: number | null;
+    userID: number | null;
+    doctorName?: string;          // optional if returned from join
+    patientName?: string;         // optional if you want to show patient
+}

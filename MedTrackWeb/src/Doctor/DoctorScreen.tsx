@@ -39,17 +39,14 @@ export default function DoctorScreen() {
 
         const fetchCount = async () => {
             try {
-                const res = await axios.get(`http://localhost:3000/api/schedules/${doctorID}`);
-                const data = res.data;
-                if (Array.isArray(data)) {
-                    setCount(data.length);
-                } else {
-                    setCount(0);
-                }
-            } catch (err: any) {
+                const res = await axios.get(`http://localhost:3000/api/appointment/doctor/${doctorID}`);
+                setCount(Array.isArray(res.data) ? res.data.length : 0);
+            } catch (err) {
+                console.error("Error fetching appointment count:", err);
                 setCount(0);
             }
         };
+
 
         fetchCount();
     }, [doctorID]);
@@ -150,7 +147,7 @@ export default function DoctorScreen() {
                                     <div className="row medicineScheduleDetail">
                                         <div className="col-lg-6 col-sm-6 d-flex justify-content-center mb-2">
                                             <div className="border border-success square170-250 padding20 d-flex flex-column justify-content-between">
-                                                <h5 className="medSche greenText mb-3">Assigned Task</h5>
+                                                <h5 className="medSche greenText mb-3">Today appointment</h5>
                                                 <div className="d-flex align-items-center mb-3">
                                                     <p className="size25 greenText mb-0 me-auto">{count}</p>
                                                     <i
@@ -159,14 +156,14 @@ export default function DoctorScreen() {
                                                         style={{ marginLeft: "auto" }}
                                                     ></i>
                                                 </div>
-                                                <Link to="/home/schedule" className="greenText text-decoration-none">
+                                                <Link to="/doctor/allappointment" className="greenText text-decoration-none">
                                                     More detail
                                                 </Link>
                                             </div>
                                         </div>
                                         <div className="col-lg-6 col-sm-6 d-flex justify-content-center ">
                                             <div className="border border-info square170-250 padding20 d-flex flex-column justify-content-between">
-                                                <h5 className="medSche blueText mb-3">Patient's requirements</h5>
+                                                <h5 className="medSche blueText mb-3">Nurse's requirements</h5>
                                                 <div className="d-flex align-items-center mb-3">
                                                     <p className="size25 blueText mb-0 me-auto">0</p>
                                                     <i
@@ -175,9 +172,10 @@ export default function DoctorScreen() {
                                                         style={{ marginLeft: "auto" }}
                                                     ></i>
                                                 </div>
-                                                <a href="#" className="blueText text-decoration-none">
+                                                
+                                               <Link to="/doctor/allshiftrequest" className="greenText text-decoration-none">
                                                     More detail
-                                                </a>
+                                                </Link>
                                             </div>
                                         </div>
                                     </div>
@@ -217,18 +215,8 @@ export default function DoctorScreen() {
                                     <div className="padding">
                                         <ul className='list-unstyled'>
                                             <li>
-                                                <Link to="/home/shift-change" className="text-decoration-none">
-                                                    <i className="fa fa-caret-right" aria-hidden="true"></i> Shift change registration
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link to="/home/daily-checking" className="text-decoration-none">
-                                                    <i className="fa fa-caret-right" aria-hidden="true"></i> Daily checking health
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link to="/home/schedule" className="text-decoration-none">
-                                                    <i className="fa fa-caret-right" aria-hidden="true"></i> Schedule
+                                                <Link to="/doctor/allappointment" className="text-decoration-none">
+                                                    <i className="fa fa-caret-right" aria-hidden="true"></i> Appointments
                                                 </Link>
                                             </li>
                                         </ul>
