@@ -115,6 +115,7 @@ app.get('/roles', (req, res) => getAllRecords('role', res));
 app.get('/user-roles', (req, res) => getAllRecords('userrole', res));
 app.get('/feedback', (req, res) => getAllRecords('feedback', res));
 app.get('/nursepatient', (req, res) => getAllRecords('nursepatient', res));
+app.get('/schedulerequest', (req, res) => getAllRecords('schedulerequest', res));
 // app.get('/news', (req, res) => getAllRecords('news', res));
 
 // ================= ADMIN: NEWS MANAGEMENT =================
@@ -429,9 +430,9 @@ app.get('/api/schedules/:nurseID', (req, res) => {
 });
 
 app.get("/api/all-appointment/doctor/:doctorID", (req, res) => {
-    const doctorID = req.params.doctorID;
+  const doctorID = req.params.doctorID;
 
-    const sql = `
+  const sql = `
         SELECT a.appointmentID, a.dateTime, a.location, a.appointmentStatus,
                d.doctorID, u.fullName AS patientName
         FROM appointment a
@@ -441,18 +442,18 @@ app.get("/api/all-appointment/doctor/:doctorID", (req, res) => {
         ORDER BY a.dateTime DESC;
     `;
 
-    db.query(sql, [doctorID], (err, result) => {
-        if (err) return res.status(500).json({ message: "Query Failed", error: err });
-        // console.log(result);
-        res.json(result);
-    });
+  db.query(sql, [doctorID], (err, result) => {
+    if (err) return res.status(500).json({ message: "Query Failed", error: err });
+    // console.log(result);
+    res.json(result);
+  });
 });
 
 
 app.get("/api/appointment/doctor/:doctorID", (req, res) => {
-    const doctorID = req.params.doctorID;
+  const doctorID = req.params.doctorID;
 
-    const sql = `
+  const sql = `
         SELECT a.appointmentID, a.dateTime, a.location, a.appointmentStatus,
                d.doctorID, u.fullName AS patientName
         FROM appointment a
@@ -463,12 +464,62 @@ app.get("/api/appointment/doctor/:doctorID", (req, res) => {
         ORDER BY a.dateTime DESC;
     `;
 
-    db.query(sql, [doctorID], (err, result) => {
-        if (err) return res.status(500).json({ message: "Query Failed", error: err });
-        res.json(result);
-    });
+  db.query(sql, [doctorID], (err, result) => {
+    if (err) return res.status(500).json({ message: "Query Failed", error: err });
+    res.json(result);
+  });
 });
 
+//reject schedule request
+app.put("/schedule-request/:id", (req, res) => {
+  const requestID = req.params.id;
+  const { status } = req.body; // ví dụ nhận status để update
+
+  const sql = "UPDATE scheduleRequest SET status = ? WHERE requestID = ?";
+  db.query(sql, [status, requestID], (err, result) => {
+    if (err) return res.status(500).json({ message: "DB error", err });
+
+    if (result.affectedRows === 0)
+      return res.status(404).json({ message: "Request not found" });
+
+    res.json({ message: "Status updated successfully" });
+  });
+});
+
+//approve schedule request
+app.patch("/schedule-request/:id/approve", (req, res) => {
+  const requestID = req.params.id;
+
+  // 1. Lấy thông tin request
+  const getRequestSql = "SELECT scheduleID, newDate, status FROM scheduleRequest WHERE requestID = ?";
+  db.query(getRequestSql, [requestID], (err, result) => {
+    if (err) return res.status(500).json({ message: "Database error", err });
+    if (result.length === 0) return res.status(404).json({ message: "Request not found" });
+
+    const request = result[0];
+
+    if (request.status !== 0) {
+      return res.status(400).json({ message: "Request is not pending" });
+    }
+
+    const scheduleID = request.scheduleID;
+    const newDate = request.newDate;
+
+    // 2. Update scheduleRequest.status = 1
+    const updateRequestSql = "UPDATE scheduleRequest SET status = 1 WHERE requestID = ?";
+    db.query(updateRequestSql, [requestID], (err2) => {
+      if (err2) return res.status(500).json({ message: "Failed to update request", err2 });
+
+      // 3. Update schedule.scheduleDate = newDate
+      const updateScheduleSql = "UPDATE schedule SET scheduleDate = ? WHERE scheduleID = ?";
+      db.query(updateScheduleSql, [newDate, scheduleID], (err3) => {
+        if (err3) return res.status(500).json({ message: "Failed to update schedule", err3 });
+
+        return res.json({ message: "Request approved and schedule updated" });
+      });
+    });
+  });
+});
 
 // POST: Add new schedule
 app.post('/api/schedules', (req, res) => {
@@ -1126,29 +1177,29 @@ app.put("/admin/news/:newID/status", verifyToken, isAdmin, (req, res) => {
 /**************** SHIFT CHANGE *****************/
 // ================= CREATE SHIFT CHANGE REQUEST =================
 app.post("/request", (req, res) => {
-    const { scheduleID, newDate, reason } = req.body;
+  const { scheduleID, newDate, reason } = req.body;
 
-    if (!scheduleID || !newDate || !reason)
-        return res.status(400).send({ message: "Missing required fields" });
+  if (!scheduleID || !newDate || !reason)
+    return res.status(400).send({ message: "Missing required fields" });
 
-    const sql = `
+  const sql = `
         INSERT INTO scheduleRequest (scheduleID, newDate, reason)
         VALUES (?, ?, ?)
     `;
 
-    db.query(sql, [scheduleID, newDate, reason], (err, result) => {
-        if (err) return res.status(500).send(err);
-        res.send({ message: "Shift request submitted", requestID: result.insertId });
-    });
+  db.query(sql, [scheduleID, newDate, reason], (err, result) => {
+    if (err) return res.status(500).send(err);
+    res.send({ message: "Shift request submitted", requestID: result.insertId });
+  });
 });
 
 
 // ================= GET REQUESTS BY NURSE =================
 // Here we JOIN schedules to find nurseID
 app.get("/status/:nurseID", (req, res) => {
-    const nurseID = req.params.nurseID;
+  const nurseID = req.params.nurseID;
 
-    const sql = `
+  const sql = `
         SELECT sr.requestID, sr.newDate, sr.reason, sr.status,
                sc.date AS oldDate, sc.start_at, sc.working_hours
         FROM scheduleRequest sr
@@ -1157,25 +1208,25 @@ app.get("/status/:nurseID", (req, res) => {
         ORDER BY sr.requestID DESC
     `;
 
-    db.query(sql, [nurseID], (err, result) => {
-        if (err) return res.status(500).send(err);
-        res.send(result);
-    });
+  db.query(sql, [nurseID], (err, result) => {
+    if (err) return res.status(500).send(err);
+    res.send(result);
+  });
 });
 
 app.put("/schedule-request/:id", (req, res) => {
-    const requestID = req.params.id;
-    const { status } = req.body; // ví dụ nhận status để update
+  const requestID = req.params.id;
+  const { status } = req.body; // ví dụ nhận status để update
 
-    const sql = "UPDATE scheduleRequest SET status = ? WHERE requestID = ?";
-    db.query(sql, [status, requestID], (err, result) => {
-        if (err) return res.status(500).json({ message: "DB error", err });
+  const sql = "UPDATE scheduleRequest SET status = ? WHERE requestID = ?";
+  db.query(sql, [status, requestID], (err, result) => {
+    if (err) return res.status(500).json({ message: "DB error", err });
 
-        if(result.affectedRows === 0) 
-            return res.status(404).json({ message: "Request not found" });
+    if (result.affectedRows === 0)
+      return res.status(404).json({ message: "Request not found" });
 
-        res.json({ message: "Status updated successfully" });
-    });
+    res.json({ message: "Status updated successfully" });
+  });
 });
 
 // Start the server
