@@ -60,7 +60,7 @@ export default function ShiftChange() {
 
 
     return (
-        <div className="container-fluid pt-5 mt-5 padding">
+        <div className="container-fluid pt-5 mt-5 padding mainBg">
             <div className="row">
 
                 {/* ================= MAIN BODY ================= */}
