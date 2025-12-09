@@ -47,18 +47,21 @@ app.use(express.json());
 // Cho phép truy cập file trong thư mục /uploads
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Cấu hình nơi lưu file upload
+// thư mục lưu ảnh: Backend/uploads/news
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "uploads"));  // thư mục Backend/uploads
+    cb(null, path.join(__dirname, "uploads/news"));
   },
   filename: (req, file, cb) => {
-    const unique = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, unique + path.extname(file.originalname)); // tên file: 123123123.png
-  }
+    const uniqueName = Date.now() + "-" + file.originalname;
+    cb(null, uniqueName);
+  },
 });
 
 const upload = multer({ storage });
+
+// cho phép client truy cập ảnh qua http://localhost:3000/uploads/...
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
 // Generic function to fetch all records from a table
@@ -944,26 +947,49 @@ app.put("/admin/accounts/:userID/status", verifyToken, isAdmin, (req, res) => {
 
 // CRUD for news
 //Post
-app.post("/admin/news", verifyToken, isAdmin, (req, res) => {
-  const { title, body, date, author, image } = req.body;
+// POST: Tạo news (cho phép upload file hoặc dùng URL)
+app.post(
+  "/admin/news",
+  verifyToken,
+  isAdmin,
+  upload.single("image"),   // <-- quan trọng
+  (req, res) => {
+    const { title, body, date, author } = req.body;
 
-  if (!title) {
-    return res.status(400).json({ message: "Title is required" });
+    if (!title) {
+      return res.status(400).json({ message: "Title is required" });
+    }
+
+    // nếu có upload file => dùng đường dẫn file
+    // nếu không, dùng trường image (URL) gửi kèm từ form
+    let imagePath = null;
+    if (req.file) {
+      imagePath = `/uploads/news/${req.file.filename}`;
+    } else if (req.body.image) {
+      imagePath = req.body.image; // URL text
+    }
+
+    const sql = `
+      INSERT INTO news (title, body, date, author, image)
+      VALUES (?, ?, ?, ?, ?)
+    `;
+    db.query(
+      sql,
+      [title, body || null, date || new Date(), author || null, imagePath],
+      (err, result) => {
+        if (err)
+          return res.status(500).json({ message: "Insert news failed", error: err });
+
+        res.status(201).json({
+          message: "News created successfully",
+          newID: result.insertId,
+          image: imagePath,
+        });
+      }
+    );
   }
+);
 
-  const sql = `
-    INSERT INTO news (title, body, date, author, image)
-    VALUES (?, ?, ?, ?, ?)
-  `;
-  db.query(sql, [title, body || null, date || new Date(), author || null, image || null], (err, result) => {
-    if (err) return res.status(500).json({ message: "Insert news failed", error: err });
-
-    res.status(201).json({
-      message: "News created successfully",
-      newID: result.insertId,
-    });
-  });
-});
 
 //Put
 app.put("/admin/news/:id", verifyToken, isAdmin, (req, res) => {
