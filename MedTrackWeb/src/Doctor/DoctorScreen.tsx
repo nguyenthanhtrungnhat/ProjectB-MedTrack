@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
-import NurseInformation from "../NurseInformation";
 import SidebarLogin from "../SidebarLogin";
 import { NurseProps, RoomProps } from "../interface";
 import { useEffect, useState } from "react";
 import Room from "../Room";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
+import DoctorInformation from "../DoctorInformation";
 
 export default function DoctorScreen() {
     const getUserIDFromToken = () => {
@@ -100,7 +100,7 @@ export default function DoctorScreen() {
 
                         <div className="row">
                             {loading ? (
-                                <NurseInformation
+                                <DoctorInformation
                                     nurseID={String(user?.nurseID)}
                                     image={user?.image || ""}
                                     fullName={user?.fullName || ""}
@@ -119,7 +119,7 @@ export default function DoctorScreen() {
                                     loading={loading}
                                 />
                             ) : (
-                                <NurseInformation
+                                <DoctorInformation
                                     nurseID={String(user?.nurseID)}
                                     image={user?.image || ""}
                                     fullName={user?.fullName || ""}
