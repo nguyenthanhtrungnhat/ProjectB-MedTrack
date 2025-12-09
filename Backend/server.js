@@ -428,6 +428,48 @@ app.get('/api/schedules/:nurseID', (req, res) => {
   });
 });
 
+app.get("/api/all-appointment/doctor/:doctorID", (req, res) => {
+    const doctorID = req.params.doctorID;
+
+    const sql = `
+        SELECT a.appointmentID, a.dateTime, a.location, a.appointmentStatus,
+               d.doctorID, u.fullName AS patientName
+        FROM appointment a
+        LEFT JOIN user u ON a.userID = u.userID  -- lấy tên bệnh nhân
+        LEFT JOIN doctor d ON a.doctorID = d.doctorID
+        WHERE a.doctorID = ?
+        ORDER BY a.dateTime DESC;
+    `;
+
+    db.query(sql, [doctorID], (err, result) => {
+        if (err) return res.status(500).json({ message: "Query Failed", error: err });
+        // console.log(result);
+        res.json(result);
+    });
+});
+
+
+app.get("/api/appointment/doctor/:doctorID", (req, res) => {
+    const doctorID = req.params.doctorID;
+
+    const sql = `
+        SELECT a.appointmentID, a.dateTime, a.location, a.appointmentStatus,
+               d.doctorID, u.fullName AS patientName
+        FROM appointment a
+        LEFT JOIN user u ON a.userID = u.userID
+        LEFT JOIN doctor d ON a.doctorID = d.doctorID
+        WHERE a.doctorID = ?
+        AND DATE(a.dateTime) = CURDATE()   -- only today appointments
+        ORDER BY a.dateTime DESC;
+    `;
+
+    db.query(sql, [doctorID], (err, result) => {
+        if (err) return res.status(500).json({ message: "Query Failed", error: err });
+        res.json(result);
+    });
+});
+
+
 // POST: Add new schedule
 app.post('/api/schedules', (req, res) => {
   const {
