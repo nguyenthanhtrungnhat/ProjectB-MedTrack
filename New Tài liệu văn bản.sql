@@ -265,7 +265,7 @@ INSERT INTO `nurse` (`nurseID`,`department`,`userID`,`roomID`,`image`) VALUES
 
 -- 6. DOCTOR table
 INSERT INTO `doctor` (`doctorID`,`department`,`nurseID`,`userID`,`requestID`,`office`) VALUES
-(1,NULL,NULL,4,NULL,'301B10');
+(1,NULL,NULL,3,NULL,'301B10');
 
 -- 7. REQUEST table
 INSERT INTO `request` (`requestID`,`dateTime`,`requestContent`,`requestStatus`,`nurseID`,`doctorID`,`requestType`) VALUES
