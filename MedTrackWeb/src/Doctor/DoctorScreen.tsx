@@ -172,9 +172,10 @@ export default function DoctorScreen() {
                                                         style={{ marginLeft: "auto" }}
                                                     ></i>
                                                 </div>
-                                                <a href="#" className="blueText text-decoration-none">
+                                                
+                                               <Link to="/doctor/allshiftrequest" className="greenText text-decoration-none">
                                                     More detail
-                                                </a>
+                                                </Link>
                                             </div>
                                         </div>
                                     </div>
