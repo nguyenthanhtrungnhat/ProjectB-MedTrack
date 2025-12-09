@@ -1006,9 +1006,11 @@ app.post("/admin/doctors", verifyToken, isAdmin, (req, res) => {
 });
 // ==== UPLOAD ẢNH (ADMIN) ====
 app.post("/upload/image", verifyToken, isAdmin, upload.single("image"), (req, res) => {
-  if (!req.file) return res.status(400).json({ message: "No file uploaded" });
+  if (!req.file) {
+    return res.status(400).json({ message: "No file uploaded" });
+  }
 
-  const filePath = `/uploads/${req.file.filename}`; // đường dẫn lưu trong DB, FE dùng src=http://localhost:3000 + filePath
+  const filePath = `/uploads/news/${req.file.filename}`;
   res.json({ filePath });
 });
 

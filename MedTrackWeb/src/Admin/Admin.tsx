@@ -1,13 +1,13 @@
 // MedTrackWeb/src/Admin/Admin.tsx
-import { useState, useEffect } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "../AllDesign.css";
 import DoctorTable from "./DoctorTable";
 import NurseTable from "./NurseTable";
 import PatientTable from "./PatientTable";
-import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
 
 interface News {
     newID?: number;
@@ -197,8 +197,17 @@ export default function AdminScreen() {
     const [uploading, setUploading] = useState(false);
 
     const loadNews = async () => {
+        if (!token) {
+            toast.error("Unauthorized - please log in as admin");
+            return;
+        }
         try {
-            const res = await axios.get<News[]>("http://localhost:3000/news");
+            const res = await axios.get<News[]>(
+                "http://localhost:3000/admin/news",
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
             setNewsList(res.data);
             setNewsLoaded(true);
         } catch (err) {
@@ -239,20 +248,17 @@ export default function AdminScreen() {
             const formData = new FormData();
             formData.append("image", imageFile);
 
-            const res = await axios.post(
-                "http://localhost:3000/upload/image",
-                formData,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "multipart/form-data",
-                    },
-                }
-            );
+            const res = await axios.post("http://localhost:3000/upload/image", formData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "multipart/form-data",
+                },
+            });
 
-            const filePath = res.data.filePath;
+            const filePath = res.data.filePath;              
             const fullUrl = `http://localhost:3000${filePath}`;
-            setNewsForm((prev) => ({ ...prev, image: fullUrl }));
+            setNewsForm(prev => ({ ...prev, image: fullUrl }));
+
             toast.success("Image uploaded successfully");
         } catch (err: any) {
             console.error(err);
