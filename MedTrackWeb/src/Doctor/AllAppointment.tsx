@@ -25,7 +25,7 @@ export default function AllAppointment() {
             <div className="row">
                 <div className="col-lg-9 col-sm-12 mb-5 order-2 order-lg-1">
                     <div className="border whiteBg dropShadow p-4">
-                        <h4>Appointments</h4>
+                        <h4 className="blueText">Appointments</h4>
                         <table className="table table-bordered">
                             <thead>
                                 <tr>
