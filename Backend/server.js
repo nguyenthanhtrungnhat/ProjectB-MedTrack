@@ -178,6 +178,22 @@ app.get("/nurses/by-user/:userID", (req, res) => {
   });
 });
 
+// Get full doctor details by userID
+app.get("/doctors/by-user/:userID", (req, res) => {
+  const { userID } = req.params;
+  const query = `
+    SELECT d.*, u.*
+    FROM doctor d
+    JOIN user u ON d.userID = u.userID
+    WHERE d.userID = ?;
+  `;
+  db.query(query, [userID], (err, results) => {
+    if (err) return res.status(500).json({ error: "Database error", details: err });
+    if (results.length === 0) return res.status(404).json({ error: "Doctor not found" });
+    res.json(results[0]);
+  });
+});
+
 // API to get patients by roomID
 app.get("/rooms/:roomID/patients", (req, res) => {
   const { roomID } = req.params;
