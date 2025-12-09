@@ -163,7 +163,7 @@ app.get("/nurses/:nurseID", (req, res) => {
 });
 
 // Get docotor by ID
-app.get("/docotors/:docotorID", (req, res) => {
+app.get("/doctors/:docotorID", (req, res) => {
   const { docotorID } = req.params;
   const query = `
     SELECT d.*, u.*
