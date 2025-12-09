@@ -1,13 +1,13 @@
 // MedTrackWeb/src/Admin/Admin.tsx
-import { useState, useEffect } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "../AllDesign.css";
 import DoctorTable from "./DoctorTable";
 import NurseTable from "./NurseTable";
 import PatientTable from "./PatientTable";
-import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
 
 interface News {
     newID?: number;
@@ -197,8 +197,17 @@ export default function AdminScreen() {
     const [uploading, setUploading] = useState(false);
 
     const loadNews = async () => {
+        if (!token) {
+            toast.error("Unauthorized - please log in as admin");
+            return;
+        }
         try {
-            const res = await axios.get<News[]>("http://localhost:3000/news");
+            const res = await axios.get<News[]>(
+                "http://localhost:3000/admin/news",
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
             setNewsList(res.data);
             setNewsLoaded(true);
         } catch (err) {
@@ -250,9 +259,11 @@ export default function AdminScreen() {
                 }
             );
 
-            const filePath = res.data.filePath;
-            const fullUrl = `http://localhost:3000${filePath}`;
-            setNewsForm((prev) => ({ ...prev, image: fullUrl }));
+            const filePath = res.data.filePath; // ví dụ: "/uploads/news/123.jpg"
+
+            // ✅ Lưu đúng y chang path backend trả về
+            setNewsForm(prev => ({ ...prev, image: filePath }));
+
             toast.success("Image uploaded successfully");
         } catch (err: any) {
             console.error(err);
@@ -261,6 +272,23 @@ export default function AdminScreen() {
             setUploading(false);
         }
     };
+    const getImageSrc = (image: string) => {
+        if (!image) return "";
+
+        // 1. Nếu đã là full URL (http / https) thì dùng luôn
+        if (image.startsWith("http://") || image.startsWith("https://")) {
+            return image;
+        }
+
+        // 2. Nếu là ảnh upload từ backend: /uploads/...
+        if (image.startsWith("/uploads")) {
+            return `http://localhost:3000${image}`;
+        }
+
+        // 3. Nếu là đường dẫn tương đối FE: ./images/...
+        return image;
+    };
+
 
     const handleCreateNews = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -784,7 +812,7 @@ export default function AdminScreen() {
                                                     <td>
                                                         {n.image && (
                                                             <img
-                                                                src={n.image}
+                                                                src={getImageSrc(n.image)}
                                                                 alt={n.title}
                                                                 style={{
                                                                     width: "80px",
@@ -794,6 +822,7 @@ export default function AdminScreen() {
                                                             />
                                                         )}
                                                     </td>
+
                                                     <td>
                                                         {n.isActive ? (
                                                             <span className="badge bg-success">
