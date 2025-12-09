@@ -7,6 +7,7 @@ import PatientTable from "./PatientTable";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 interface News {
     newID?: number;
@@ -40,11 +41,18 @@ export default function AdminScreen() {
     >("doctors");
 
     const token = sessionStorage.getItem("token");
+    const navigate = useNavigate();
 
     // ======= TOGGLE FORM =======
     const [showDoctorForm, setShowDoctorForm] = useState(false);
     const [showNurseForm, setShowNurseForm] = useState(false);
 
+    const handleLogout = () => {
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("userID");
+        toast.success("Logged out");
+        navigate("/login");
+    };
     // ===================== DOCTOR FORM ======================
     const [doctorForm, setDoctorForm] = useState<DoctorFormState>({
         username: "",
@@ -321,6 +329,7 @@ export default function AdminScreen() {
     };
 
     return (
+
         <div className="mainBg pt-5 mt-5 min-vh-100">
             <ToastContainer position="top-right" />
             <div className="container-fluid padding">
@@ -333,13 +342,25 @@ export default function AdminScreen() {
                                     Manage accounts and hospital news
                                 </p>
                             </div>
-                            <i
-                                className="fa fa-hospital-o blueText"
-                                style={{ fontSize: "2.5rem" }}
-                                aria-hidden="true"
-                            ></i>
+
+                            {/* 👇 NHÓM BÊN PHẢI: NÚT LOGOUT + ICON */}
+                            <div className="d-flex align-items-center gap-3">
+                                <button
+                                    type="button"
+                                    className="btn btn-outline-danger"
+                                    onClick={handleLogout}
+                                >
+                                    Logout
+                                </button>
+                                <i
+                                    className="fa fa-hospital-o blueText"
+                                    style={{ fontSize: "2.5rem" }}
+                                    aria-hidden="true"
+                                ></i>
+                            </div>
                         </div>
                     </div>
+
 
                     <div className="col-12">
                         <div className="border whiteBg dropShadow padding">
