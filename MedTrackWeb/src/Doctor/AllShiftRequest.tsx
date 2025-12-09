@@ -44,55 +44,57 @@ export default function AllShiftRequest() {
             <div className="row">
                 <div className="col-lg-9 col-sm-12 mb-5 order-2 order-lg-1">
                     <div className="border whiteBg dropShadow p-4">
-                        <h4>Shift Requests</h4>
-                        <table className="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Schedule ID</th>
-                                    <th>Reason</th>
-                                    <th>New Date</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {requests.length === 0 && (
+                        <h4 className="blueText">Shift Requests</h4>
+                        <div className="table-responsive">
+                            <table className="table table-bordered">
+                                <thead>
                                     <tr>
-                                        <td colSpan={6} className="text-center">No requests found</td>
+                                        <th>ID</th>
+                                        <th>Schedule ID</th>
+                                        <th>Reason</th>
+                                        <th>New Date</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
                                     </tr>
-                                )}
-                                {requests.map((r: ScheduleRequest) => (
-                                    <tr key={r.requestID}>
-                                        <td>{r.requestID}</td>
-                                        <td>{r.scheduleID}</td>
-                                        <td>{r.reason || "-"}</td>
-                                        <td>{r.newDate || "-"}</td>
-                                        <td>
-                                            {r.status === 0 ? "Pending" : r.status === 1 ? "Approved" : "Rejected"}
-                                        </td>
-                                        <td>
-                                            {r.status === 0 && (
-                                                <>
-                                                    <button
-                                                        className="btn btn-sm btn-success me-2"
-                                                        onClick={() => handleStatusChange(r.requestID, 1)}
-                                                    >
-                                                        Approve
-                                                    </button>
-                                                    <button
-                                                        className="btn btn-sm btn-danger"
-                                                        onClick={() => handleStatusChange(r.requestID, 2)}
-                                                    >
-                                                        Reject
-                                                    </button>
-                                                </>
-                                            )}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {requests.length === 0 && (
+                                        <tr>
+                                            <td colSpan={6} className="text-center">No requests found</td>
+                                        </tr>
+                                    )}
+                                    {requests.map((r: ScheduleRequest) => (
+                                        <tr key={r.requestID}>
+                                            <td>{r.requestID}</td>
+                                            <td>{r.scheduleID}</td>
+                                            <td>{r.reason || "-"}</td>
+                                            <td>{r.newDate || "-"}</td>
+                                            <td>
+                                                {r.status === 0 ? "Pending" : r.status === 1 ? "Approved" : "Rejected"}
+                                            </td>
+                                            <td>
+                                                {r.status === 0 && (
+                                                    <>
+                                                        <button
+                                                            className="btn btn-sm btn-success me-2"
+                                                            onClick={() => handleStatusChange(r.requestID, 1)}
+                                                        >
+                                                            Approve
+                                                        </button>
+                                                        <button
+                                                            className="btn btn-sm btn-danger"
+                                                            onClick={() => handleStatusChange(r.requestID, 2)}
+                                                        >
+                                                            Reject
+                                                        </button>
+                                                    </>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 <div className="col-lg-3 col-sm-12 order-1 order-lg-2">
@@ -108,7 +110,7 @@ export default function AllShiftRequest() {
                                         <i className="fa fa-caret-right" aria-hidden="true"></i> Appointments
                                     </Link>
                                 </li>
-                                 <li>
+                                <li>
                                     <Link to="/doctor/allshiftrequest" className="text-decoration-none">
                                         <i className="fa fa-caret-right" aria-hidden="true"></i> Shift Request
                                     </Link>
