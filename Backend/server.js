@@ -1019,6 +1019,65 @@ app.put("/admin/news/:newID/status", verifyToken, isAdmin, (req, res) => {
     res.json({ message: "News status updated", newID, isActive });
   });
 });
+/******************* SHIFT CHANGE REQUEST API *********************/
+
+// 🟢 Submit request
+app.post("/api/shift-change/request", (req, res) => {
+  const { scheduleID, reason, nurseID } = req.body;
+
+  if (!scheduleID || !reason || !nurseID)
+    return res.status(400).json({ message: "Missing required fields" });
+
+  const sql = `
+        INSERT INTO shiftchangerequest(scheduleID, reason, status)
+        VALUES (?, ?, 0)
+    `;
+
+  db.query(sql, [scheduleID, reason], (err, result) => {
+    if (err) return res.status(500).json(err);
+
+    res.json({
+      message: "Shift change request submitted",
+      requestID: result.insertId
+    });
+  });
+});
+
+
+// 🟡 Get request list by nurse ID
+app.get("/api/shift-change/status/:nurseID", (req, res) => {
+  const nurseID = req.params.nurseID;
+
+  const sql = `
+        SELECT scr.shiftchangerequestID, scr.scheduleID, scr.reason, scr.status,
+               s.date, s.start_at, s.working_hours
+        FROM shiftchangerequest scr
+        JOIN schedules s ON scr.scheduleID = s.scheduleID
+        WHERE s.nurseID = ?
+    `;
+
+  db.query(sql, [nurseID], (err, results) => {
+    if (err) return res.status(500).json(err);
+    res.json(results);
+  });
+});
+
+
+// 🔴 Admin Approve / Reject request
+app.put("/api/shift-change/update/:id", (req, res) => {
+  const requestID = req.params.id;
+  const { status } = req.body;
+
+  if (![0, 1, 2].includes(status))
+    return res.status(400).json({ message: "Status must be 0(pending), 1(approved), 2(rejected)" });
+
+  const sql = `UPDATE shiftchangerequest SET status=? WHERE shiftchangerequestID=?`;
+
+  db.query(sql, [status, requestID], (err) => {
+    if (err) return res.status(500).json(err);
+    res.json({ message: "Status updated successfully" });
+  });
+});
 
 // Start the server
 const PORT = process.env.PORT || 3000;
