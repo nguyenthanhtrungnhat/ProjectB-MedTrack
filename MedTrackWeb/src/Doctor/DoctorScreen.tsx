@@ -80,6 +80,14 @@ export default function DoctorScreen() {
             .finally(() => setLoading(false)); // stop loading
     }, [doctorID]);
 
+    const [pendingShiftRequestCount, setPendingShiftRequestCount] = useState<number>(0);
+
+    useEffect(() => {
+        axios.get("http://localhost:3000/schedule-request/pending/count")
+            .then(res => setPendingShiftRequestCount(res.data.count))
+            .catch(err => console.error("Error fetching pending shift request count:", err));
+    }, []);
+
     if (!userID) {
         return <p>Please log in to view your nurse profile.</p>;
     }
@@ -165,7 +173,7 @@ export default function DoctorScreen() {
                                             <div className="border border-info square170-250 padding20 d-flex flex-column justify-content-between">
                                                 <h5 className="medSche blueText mb-3">Nurse's requirements</h5>
                                                 <div className="d-flex align-items-center mb-3">
-                                                    <p className="size25 blueText mb-0 me-auto">0</p>
+                                                    <p className="size25 blueText mb-0 me-auto">{pendingShiftRequestCount}</p>
                                                     <i
                                                         className="fa fa-calendar size25 blueText"
                                                         aria-hidden="true"
