@@ -1,30 +1,63 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import "react-toastify/dist/ReactToastify.css";
-import './../AllDesign.css';
+import "../AllDesign.css";
 import SidebarLogin from "../SidebarLogin";
-import { Schedule } from "../interface";
 
 export default function ShiftChange() {
     const storedInfo = sessionStorage.getItem("info");
     const info = storedInfo ? JSON.parse(storedInfo) : null;
-    const [workingDate, setWorkingDate] = useState("");
-    const [reason, setReason] = useState("");
-    const nurseID = JSON.parse(sessionStorage.getItem("nurseID") || "null"); // Ensure correct data type
+    const nurseID = JSON.parse(sessionStorage.getItem("nurseID") || "null");
+
+    const [schedules, setSchedules] = useState<any[]>([]);
+    const [requests, setRequests] = useState<any[]>([]);
     const [selectedScheduleID, setSelectedScheduleID] = useState("");
-    const [schedules, setSchedules] = useState<Schedule[]>([]);
+    const [reason, setReason] = useState("");
+
+    // 🔹 Load schedules
     useEffect(() => {
-        axios
-            .get(`http://localhost:3000/api/schedules/${nurseID}`)
+        axios.get(`http://localhost:3000/api/schedules/${nurseID}`)
             .then(res => setSchedules(res.data))
-            .catch(err => console.error("Error fetching schedules:", err));
+            .catch(err => console.error(err));
+
+        fetchRequests(); // load request list below
     }, [nurseID]);
+
+    // 🔹 Load list request of nurse
+    const fetchRequests = () => {
+        axios.get(`http://localhost:3000/api/shift-change/status/${nurseID}`)
+            .then(res => setRequests(res.data))
+            .catch(err => console.error(err));
+    };
+
+    // 🔹 Submit shift change request
+    const submitRequest = () => {
+        if (!selectedScheduleID || !reason) {
+            alert("Please select schedule and input reason");
+            return;
+        }
+
+        axios.post("http://localhost:3000/api/shift-change/request", {
+            scheduleID: selectedScheduleID,
+            reason,
+            nurseID
+        }).then(() => {
+            alert("Shift change request submitted!");
+            setReason("");
+            setSelectedScheduleID("");
+            fetchRequests();
+        }).catch(err => console.error(err));
+    };
+
     return (
-        <div>
-            <div className="container-fluid pt-5 mt-5 padding vh-100">
-                <div className="row">
-                    <div className="col-lg-9 col-sm-12 mb-5 mt-5 order-2 order-lg-1">
+        <div className="container-fluid pt-5 mt-5 padding">
+            <div className="row">
+                {/* ==== MAIN ==== */}
+                <div className="col-lg-9 col-sm-12 mb-5  order-2 order-lg-1">
+                    <div className="border whiteBg dropShadow p-4">
+
+                        {/* 🔵 Schedule table */}
+                        <h3 className="scBlue">Your Schedules</h3>
                         <table className="table table-striped table-bordered mt-3">
                             <thead>
                                 <tr>
@@ -45,98 +78,93 @@ export default function ShiftChange() {
                                 ))}
                             </tbody>
                         </table>
+                        {/* 🔵 Request List */}
+                        <h3 className="mt-5 scBlue">Your Requests</h3>
+                        <table className="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Schedule</th>
+                                    <th>Date</th>
+                                    <th>Start</th>
+                                    <th>Hours</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {requests.map(r => (
+                                    <tr key={r.shiftchangerequestID}>
+                                        <td>{r.shiftchangerequestID}</td>
+                                        <td>#{r.scheduleID}</td>
+                                        <td>{r.date}</td>
+                                        <td>{r.start_at}</td>
+                                        <td>{r.working_hours}</td>
+                                        <td>
+                                            {r.status === 0 && <span className="text-warning">⏳ Pending</span>}
+                                            {r.status === 1 && <span className="text-success">✔ Approved</span>}
+                                            {r.status === 2 && <span className="text-danger">❌ Rejected</span>}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        {/* 🔵 Request Form */}
                         <div className="d-flex flex-column justify-content-center align-items-center">
-                            <h1 className="scBlue d-inline">
-                                Shift change registration
-                                <i className="fa fa-hand-paper-o" aria-hidden="true"></i>
-                            </h1>
-                            <form className='w-75'>
-                                <div className="form-group">
-                                    <label htmlFor="workingDate">Choose a task</label>
-                                    <select
-                                        className="form-select"
-                                        aria-label="Select schedule"
-                                        value={selectedScheduleID}
-                                        onChange={(e) => setSelectedScheduleID(e.target.value)}
-                                    >
-                                        <option value="">-- Select a schedule --</option>
-                                        {schedules.map((s) => (
-                                            <option key={s.scheduleID} value={s.scheduleID}>
-                                                {s.scheduleID} - {s.subject}
-                                            </option>
-                                        ))}
-                                    </select>
+                            <h2 className="scBlue mt-4">Shift Change Request</h2>
 
-                                </div>
-                                <div className="form-group mt-3">
-                                    <label htmlFor="workingDate">Expected working date</label>
-                                    <input
-                                        type="date"
-                                        className="form-control"
-                                        id="workingDate"
-                                        value={workingDate}
-                                        onChange={(e) => setWorkingDate(e.target.value)}
-                                        required
-                                    />
-                                </div>
-                                <div className="form-group mt-3 mb-3">
-                                    <label htmlFor="reason">Reason for transfer</label>
-                                    <textarea
-                                        className="form-control"
-                                        id="reason"
-                                        value={reason}
-                                        onChange={(e) => setReason(e.target.value)}
-                                        required
-                                    ></textarea>
-                                </div>
-                                <div className="form-group">
-                                    <button
-                                        type="button"
-                                        className="btn btn-success w-100"
-                                    >
-                                        Submit
-                                    </button>
-                                </div>
+                            <form className="w-75">
+                                <label>Choose Schedule</label>
+                                <select
+                                    className="form-select"
+                                    value={selectedScheduleID}
+                                    onChange={(e) => setSelectedScheduleID(e.target.value)}
+                                >
+                                    <option value="">-- Select --</option>
+                                    {schedules.map(s => (
+                                        <option key={s.scheduleID} value={s.scheduleID}>
+                                            #{s.scheduleID} | {s.date} - {s.start_at}
+                                        </option>
+                                    ))}
+                                </select>
+
+                                <label className="mt-3">Reason</label>
+                                <textarea
+                                    className="form-control"
+                                    value={reason}
+                                    onChange={(e) => setReason(e.target.value)}
+                                    required
+                                ></textarea>
+
+                                <button
+                                    type="button"
+                                    className="btn btn-success w-100 mt-3"
+                                    onClick={submitRequest}
+                                >
+                                    Submit Request
+                                </button>
                             </form>
                         </div>
+
+
                     </div>
-                    <div className="col-lg-3 col-sm-12 order-1 order-lg-2">
-                        <div className="leftBody border whiteBg marginBottom dropShadow">
-                            <div className="row">
-                                <div className="col-12 login">
-                                    <SidebarLogin
-                                        phone={info?.phone || ""}
-                                        fullName={info?.fullName || ""}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="leftBody  border whiteBg dropShadow marginBottom">
-                            <div className="row">
-                                <div className="col-12">
-                                    <h6 className='whiteText blueBg featureHead'>Feature</h6>
-                                    <div className="padding">
-                                        <ul className='list-unstyled'>
-                                            <li>
-                                                <Link to="/home/shift-change" className="text-decoration-none">
-                                                    <i className="fa fa-caret-right" aria-hidden="true"></i> Shift change registration
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link to="/home/daily-checking" className="text-decoration-none">
-                                                    <i className="fa fa-caret-right" aria-hidden="true"></i> Daily checking health
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link to="/home/schedule" className="text-decoration-none">
-                                                    <i className="fa fa-caret-right" aria-hidden="true"></i> Schedule
-                                                </Link>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                </div>
+
+                {/* ==== SIDEBAR ==== */}
+                <div className="col-lg-3 col-sm-12 order-1 order-lg-2">
+                    <div className="leftBody border whiteBg marginBottom dropShadow">
+                        <SidebarLogin
+                            phone={info?.phone || ""}
+                            fullName={info?.fullName || ""}
+                        />
+                    </div>
+
+                    <div className="leftBody border whiteBg dropShadow marginBottom">
+                        <h6 className='whiteText blueBg featureHead'>Feature</h6>
+                        <ul className='list-unstyled padding'>
+                            <li><Link to="/home/shift-change">Shift Change</Link></li>
+                            <li><Link to="/home/daily-checking">Daily Checking</Link></li>
+                            <li><Link to="/home/schedule">Schedule</Link></li>
+                        </ul>
                     </div>
                 </div>
             </div>
