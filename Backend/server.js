@@ -1015,174 +1015,59 @@ app.put("/admin/news/:newID/status", verifyToken, isAdmin, (req, res) => {
     res.json({ message: "News status updated", newID, isActive });
   });
 });
-/**************** SHIFT CHANGE (direct in app) *****************/
+/**************** SHIFT CHANGE *****************/
+// ================= CREATE SHIFT CHANGE REQUEST =================
+app.post("/request", (req, res) => {
+    const { scheduleID, newDate, reason } = req.body;
 
-// POST: submit a shift-change request
-// body: { oldScheduleID, newDate (YYYY-MM-DD), reason, nurseID }
-app.post("/api/shift-change/request", (req, res) => {
-  const { oldScheduleID, newDate, reason, nurseID } = req.body;
+    if (!scheduleID || !newDate || !reason)
+        return res.status(400).send({ message: "Missing required fields" });
 
-  if (!oldScheduleID || !newDate || !reason || !nurseID) {
-    return res.status(400).json({ message: "Missing required fields (oldScheduleID, newDate, reason, nurseID)" });
-  }
-
-  // 1) get old schedule details
-  const qOld = "SELECT * FROM schedules WHERE scheduleID = ?";
-  db.query(qOld, [oldScheduleID], (err, oldRows) => {
-    if (err) return res.status(500).json({ message: "DB error", error: err });
-    if (!oldRows || oldRows.length === 0) return res.status(404).json({ message: "Original schedule not found" });
-
-    const old = oldRows[0];
-    // We'll try to find a schedule on newDate that has same start_at, working_hours, roomID and is assigned to a different nurse
-    const qTarget = `
-      SELECT * FROM schedules
-      WHERE date = ? AND start_at = ? AND working_hours = ? AND roomID = ? AND nurseID <> ?
-      LIMIT 1
+    const sql = `
+        INSERT INTO scheduleRequest (scheduleID, newDate, reason)
+        VALUES (?, ?, ?)
     `;
-    db.query(qTarget, [newDate, old.start_at, old.working_hours, old.roomID, old.nurseID], (err2, targetRows) => {
-      if (err2) return res.status(500).json({ message: "DB error", error: err2 });
 
-      if (!targetRows || targetRows.length === 0) {
-        // No direct matching shift found on that date. Option: return helpful message.
-        return res.status(404).json({
-          message: "No matching shift found on the requested date. Try another date or contact admin.",
-          details: { search: { date: newDate, start_at: old.start_at, working_hours: old.working_hours, roomID: old.roomID } }
-        });
-      }
-
-      const target = targetRows[0];
-
-      // 2) Insert request pointing to originalScheduleID and requestedScheduleID
-      const insertSql = `
-        INSERT INTO shiftchangerequest
-          (originalScheduleID, requestedScheduleID, requestedDate, reason, status)
-        VALUES (?, ?, ?, ?, 0)
-      `;
-      db.query(insertSql, [old.scheduleID, target.scheduleID, newDate, reason], (err3, resultInsert) => {
-        if (err3) return res.status(500).json({ message: "Failed to create request", error: err3 });
-
-        return res.status(201).json({
-          message: "Shift change request submitted",
-          requestID: resultInsert.insertId,
-          originalSchedule: { scheduleID: old.scheduleID, date: old.date, start_at: old.start_at },
-          requestedSchedule: { scheduleID: target.scheduleID, date: target.date, start_at: target.start_at }
-        });
-      });
+    db.query(sql, [scheduleID, newDate, reason], (err, result) => {
+        if (err) return res.status(500).send(err);
+        res.send({ message: "Shift request submitted", requestID: result.insertId });
     });
-  });
 });
 
 
-// GET: get list of requests created by a nurse (nurse who owns the original schedule)
-app.get("/api/shift-change/status/:nurseID", (req, res) => {
-  const nurseID = req.params.nurseID;
+// ================= GET REQUESTS BY NURSE =================
+// Here we JOIN schedules to find nurseID
+app.get("/status/:nurseID", (req, res) => {
+    const nurseID = req.params.nurseID;
 
-  const sql = `
-    SELECT
-      scr.shiftchangerequestID,
-      scr.originalScheduleID, scr.requestedScheduleID, scr.requestedDate,
-      scr.reason, scr.status, scr.created_at,
-      s_orig.date AS orig_date, s_orig.start_at AS orig_start, s_orig.working_hours AS orig_hours,
-      s_req.date AS req_date, s_req.start_at AS req_start, s_req.working_hours AS req_hours,
-      s_req.roomID AS req_roomID, s_orig.roomID AS orig_roomID
-    FROM shiftchangerequest scr
-    LEFT JOIN schedules s_orig ON scr.originalScheduleID = s_orig.scheduleID
-    LEFT JOIN schedules s_req ON scr.requestedScheduleID = s_req.scheduleID
-    WHERE s_orig.nurseID = ?
-    ORDER BY scr.created_at DESC
-  `;
+    const sql = `
+        SELECT sr.requestID, sr.newDate, sr.reason, sr.status,
+               sc.date AS oldDate, sc.start_at, sc.working_hours
+        FROM scheduleRequest sr
+        JOIN schedules sc ON sr.scheduleID = sc.scheduleID
+        WHERE sc.nurseID = ?
+        ORDER BY sr.requestID DESC
+    `;
 
-  db.query(sql, [nurseID], (err, rows) => {
-    if (err) return res.status(500).json({ message: "DB error", error: err });
-    res.json(rows);
-  });
+    db.query(sql, [nurseID], (err, result) => {
+        if (err) return res.status(500).send(err);
+        res.send(result);
+    });
 });
 
+app.put("/schedule-request/:id", (req, res) => {
+    const requestID = req.params.id;
+    const { status } = req.body; // ví dụ nhận status để update
 
-// PUT: admin approve/reject a request (use verifyToken + isAdmin)
-// body: { status: 1 } or { status: 2 }
-app.put("/api/shift-change/update/:id", verifyToken, isAdmin, (req, res) => {
-  const requestID = req.params.id;
-  const { status } = req.body;
+    const sql = "UPDATE scheduleRequest SET status = ? WHERE requestID = ?";
+    db.query(sql, [status, requestID], (err, result) => {
+        if (err) return res.status(500).json({ message: "DB error", err });
 
-  if (![0, 1, 2].includes(Number(status))) {
-    return res.status(400).json({ message: "Invalid status value (allowed: 0,1,2)" });
-  }
+        if(result.affectedRows === 0) 
+            return res.status(404).json({ message: "Request not found" });
 
-  // If approve (status === 1) you might want to do the actual swap of nurses between schedules.
-  // Here we only update the status. Optionally do the swap when approved:
-  const getReqSql = "SELECT * FROM shiftchangerequest WHERE shiftchangerequestID = ?";
-  db.query(getReqSql, [requestID], (err, reqRows) => {
-    if (err) return res.status(500).json({ message: "DB error", error: err });
-    if (!reqRows || reqRows.length === 0) return res.status(404).json({ message: "Request not found" });
-
-    const reqObj = reqRows[0];
-
-    if (Number(status) === 1) {
-      // APPROVE => perform swap: swap nurseID between originalSchedule and requestedSchedule
-      // Get both schedules
-      const qSchedules = "SELECT scheduleID, nurseID FROM schedules WHERE scheduleID IN (?, ?)";
-      db.query(qSchedules, [reqObj.originalScheduleID, reqObj.requestedScheduleID], (err2, schedRows) => {
-        if (err2) return res.status(500).json({ message: "DB error", error: err2 });
-
-        // if both schedules exist
-        if (!schedRows || schedRows.length < 2) {
-          // still update status but warn
-          const updSql = "UPDATE shiftchangerequest SET status = ? WHERE shiftchangerequestID = ?";
-          db.query(updSql, [status, requestID], (err3) => {
-            if (err3) return res.status(500).json({ message: "DB error", error: err3 });
-            return res.json({ message: "Request approved but schedule swap skipped (missing schedule rows)" });
-          });
-        } else {
-          // schedule rows may be in any order
-          const a = schedRows[0];
-          const b = schedRows[1];
-          // swap nurseIDs
-          const updateA = db.format("UPDATE schedules SET nurseID = ? WHERE scheduleID = ?", [b.nurseID, a.scheduleID]);
-          const updateB = db.format("UPDATE schedules SET nurseID = ? WHERE scheduleID = ?", [a.nurseID, b.scheduleID]);
-
-          // run in transaction to be safe
-          db.getConnection((connErr, conn) => {
-            if (connErr) return res.status(500).json({ message: "DB conn error", error: connErr });
-
-            conn.beginTransaction(txErr => {
-              if (txErr) {
-                conn.release();
-                return res.status(500).json({ message: "Transaction error", error: txErr });
-              }
-
-              conn.query(updateA, (uErr1) => {
-                if (uErr1) return conn.rollback(() => { conn.release(); res.status(500).json({ message: "Update error", error: uErr1 }); });
-
-                conn.query(updateB, (uErr2) => {
-                  if (uErr2) return conn.rollback(() => { conn.release(); res.status(500).json({ message: "Update error", error: uErr2 }); });
-
-                  // update request status
-                  conn.query("UPDATE shiftchangerequest SET status = ? WHERE shiftchangerequestID = ?", [status, requestID], (uErr3) => {
-                    if (uErr3) return conn.rollback(() => { conn.release(); res.status(500).json({ message: "Update error", error: uErr3 }); });
-
-                    conn.commit(commitErr => {
-                      if (commitErr) return conn.rollback(() => { conn.release(); res.status(500).json({ message: "Commit error", error: commitErr }); });
-
-                      conn.release();
-                      return res.json({ message: "Request approved and schedules swapped successfully" });
-                    });
-                  });
-                });
-              });
-            });
-          });
-        }
-      });
-    } else {
-      // REJECT or set to pending -> just update status
-      const updSql = "UPDATE shiftchangerequest SET status = ? WHERE shiftchangerequestID = ?";
-      db.query(updSql, [status, requestID], (err4) => {
-        if (err4) return res.status(500).json({ message: "DB error", error: err4 });
-        return res.json({ message: "Request status updated" });
-      });
-    }
-  });
+        res.json({ message: "Status updated successfully" });
+    });
 });
 
 // Start the server

@@ -177,6 +177,18 @@ CREATE TABLE `news` (
   PRIMARY KEY (`newID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+-- 16. SCHEDULEREQUEST table
+CREATE TABLE `scheduleRequest` (
+    `requestID` INT NOT NULL AUTO_INCREMENT,
+    `scheduleID` INT NOT NULL,
+    `reason` VARCHAR(1000) DEFAULT NULL,
+    `newDate` DATE DEFAULT NULL,
+    `status` TINYINT DEFAULT 0,               -- 0 = Pending, 1 = Approved, 2 = Rejected
+    PRIMARY KEY (`requestID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+
 -- ===================== ADD FOREIGN KEYS =====================
 
 ALTER TABLE `userrole`
@@ -219,6 +231,10 @@ ALTER TABLE `appointment`
   ADD CONSTRAINT `appointment_ibfk_1` FOREIGN KEY (`doctorID`) REFERENCES `doctor` (`doctorID`),
   ADD CONSTRAINT `appointment_ibfk_2` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`);
 
+ALTER TABLE `scheduleRequest`
+  ADD CONSTRAINT `fk_schedule_request`
+  FOREIGN KEY (`scheduleID`) REFERENCES `schedules` (`scheduleID`)
+  ON DELETE CASCADE ON UPDATE CASCADE;
 -- ===================== INSERT DATA =====================
 
 -- 1. USER table
