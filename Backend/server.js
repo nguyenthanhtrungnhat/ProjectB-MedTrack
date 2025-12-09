@@ -162,12 +162,12 @@ app.get("/nurses/:nurseID", (req, res) => {
   });
 });
 
-// Get docotor by ID
+// Get doctor by ID
 app.get("/doctors/:doctorID", (req, res) => {
   const { doctorID } = req.params;
   const query = `
     SELECT d.*, u.*
-    FROM docotor d
+    FROM doctor d
     JOIN user u ON d.userID = u.userID
     WHERE d.doctorID = ?;
   `;
