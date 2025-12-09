@@ -27,6 +27,7 @@ import MakeAppointment from "./Patient/MakeAppointment";
 import PatientScreen from "./Patient/PatientScreen";
 import Schedule from "./Schedule";
 import Services from "./Services";
+import AllAppointment from './Doctor/AllAppointment';
 
 
 
@@ -122,6 +123,7 @@ const router = createBrowserRouter([
           { path: "doctor-profile", element: <DoctorScreen /> },
           { path: "services", element: <Services /> },
           { path: "hservices", element: <HospitalServices /> },
+          { path: "allappointment", element: <AllAppointment /> },
         ]
       },
     ],
