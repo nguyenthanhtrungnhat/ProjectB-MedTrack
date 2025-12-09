@@ -28,6 +28,7 @@ import PatientScreen from "./Patient/PatientScreen";
 import Schedule from "./Schedule";
 import Services from "./Services";
 import AllAppointment from './Doctor/AllAppointment';
+import AllShiftRequest from './Doctor/AllShiftRequest';
 
 
 
@@ -124,6 +125,7 @@ const router = createBrowserRouter([
           { path: "services", element: <Services /> },
           { path: "hservices", element: <HospitalServices /> },
           { path: "allappointment", element: <AllAppointment /> },
+           { path: "allshiftrequest", element: <AllShiftRequest /> },
         ]
       },
     ],
