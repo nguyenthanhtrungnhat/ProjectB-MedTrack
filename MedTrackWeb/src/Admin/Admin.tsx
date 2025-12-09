@@ -248,16 +248,21 @@ export default function AdminScreen() {
             const formData = new FormData();
             formData.append("image", imageFile);
 
-            const res = await axios.post("http://localhost:3000/upload/image", formData, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "multipart/form-data",
-                },
-            });
+            const res = await axios.post(
+                "http://localhost:3000/upload/image",
+                formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
 
-            const filePath = res.data.filePath;              
-            const fullUrl = `http://localhost:3000${filePath}`;
-            setNewsForm(prev => ({ ...prev, image: fullUrl }));
+            const filePath = res.data.filePath; // ví dụ: "/uploads/news/123.jpg"
+
+            // ✅ Lưu đúng y chang path backend trả về
+            setNewsForm(prev => ({ ...prev, image: filePath }));
 
             toast.success("Image uploaded successfully");
         } catch (err: any) {
@@ -267,6 +272,23 @@ export default function AdminScreen() {
             setUploading(false);
         }
     };
+    const getImageSrc = (image: string) => {
+        if (!image) return "";
+
+        // 1. Nếu đã là full URL (http / https) thì dùng luôn
+        if (image.startsWith("http://") || image.startsWith("https://")) {
+            return image;
+        }
+
+        // 2. Nếu là ảnh upload từ backend: /uploads/...
+        if (image.startsWith("/uploads")) {
+            return `http://localhost:3000${image}`;
+        }
+
+        // 3. Nếu là đường dẫn tương đối FE: ./images/...
+        return image;
+    };
+
 
     const handleCreateNews = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -790,7 +812,7 @@ export default function AdminScreen() {
                                                     <td>
                                                         {n.image && (
                                                             <img
-                                                                src={n.image}
+                                                                src={getImageSrc(n.image)}
                                                                 alt={n.title}
                                                                 style={{
                                                                     width: "80px",
@@ -800,6 +822,7 @@ export default function AdminScreen() {
                                                             />
                                                         )}
                                                     </td>
+
                                                     <td>
                                                         {n.isActive ? (
                                                             <span className="badge bg-success">
