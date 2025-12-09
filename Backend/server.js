@@ -6,6 +6,9 @@ const jwt = require("jsonwebtoken");
 const app = express();
 const verifyToken = require("./verifyToken");
 const axios = require("axios");
+const path = require("path");
+const multer = require("multer");
+
 
 function isAdmin(req, res, next) {
   if (!req.user || req.user.roleID !== 666) {
@@ -41,6 +44,22 @@ db.connect(err => {
 
 // Middleware to parse JSON requests
 app.use(express.json());
+// Cho phép truy cập file trong thư mục /uploads
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// Cấu hình nơi lưu file upload
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, "uploads"));  // thư mục Backend/uploads
+  },
+  filename: (req, file, cb) => {
+    const unique = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, unique + path.extname(file.originalname)); // tên file: 123123123.png
+  }
+});
+
+const upload = multer({ storage });
+
 
 // Generic function to fetch all records from a table
 const getAllRecords = (tableName, res) => {
@@ -93,7 +112,25 @@ app.get('/roles', (req, res) => getAllRecords('role', res));
 app.get('/user-roles', (req, res) => getAllRecords('userrole', res));
 app.get('/feedback', (req, res) => getAllRecords('feedback', res));
 app.get('/nursepatient', (req, res) => getAllRecords('nursepatient', res));
-app.get('/news', (req, res) => getAllRecords('news', res));
+// app.get('/news', (req, res) => getAllRecords('news', res));
+
+// ================= ADMIN: NEWS MANAGEMENT =================
+
+// Admin: xem tất cả news (kể cả unactive)
+app.get("/admin/news", verifyToken, isAdmin, (req, res) => {
+  db.query("SELECT * FROM news", (err, results) => {
+    if (err) return res.status(500).json({ message: "Database error", error: err });
+    res.json(results);
+  });
+});
+
+// Public: chỉ show news đang active
+app.get("/news", (req, res) => {
+  db.query("SELECT * FROM news WHERE isActive = 1", (err, results) => {
+    if (err) return res.status(500).json({ message: "Database error", error: err });
+    res.json(results);
+  });
+});
 
 // Get patient by nurseID
 app.get("/nursepatient/:nurseID", (req, res) => {
@@ -841,6 +878,72 @@ app.post("/admin/doctors", verifyToken, isAdmin, (req, res) => {
     );
   });
 });
+// ==== UPLOAD ẢNH (ADMIN) ====
+app.post("/upload/image", verifyToken, isAdmin, upload.single("image"), (req, res) => {
+  if (!req.file) return res.status(400).json({ message: "No file uploaded" });
+
+  const filePath = `/uploads/${req.file.filename}`; // đường dẫn lưu trong DB, FE dùng src=http://localhost:3000 + filePath
+  res.json({ filePath });
+});
+
+// CRUD for news
+app.post("/admin/news", verifyToken, isAdmin, (req, res) => { ... });
+app.put("/admin/news/:id", verifyToken, isAdmin, (req, res) => { ... });
+app.delete("/admin/news/:id", verifyToken, isAdmin, (req, res) => { ... });
+// ================= ADMIN: ACCOUNT MANAGEMENT =================
+
+// Lấy danh sách account theo roleID (1=Doctor, 2=Nurse, 3=Patient)
+// Không trả về Admin (666)
+app.get("/admin/accounts/:roleID", verifyToken, isAdmin, (req, res) => {
+  const roleID = parseInt(req.params.roleID, 10);
+
+  if (![1, 2, 3].includes(roleID)) {
+    return res.status(400).json({ message: "Invalid roleID" });
+  }
+
+  const sql = `
+    SELECT 
+      u.userID,
+      u.username,
+      u.fullName,
+      u.email,
+      u.phone,
+      u.dob,
+      u.isActive,
+      r.roleID,
+      r.nameRole
+    FROM user u
+    JOIN userrole ur ON u.userID = ur.userID
+    JOIN role r ON ur.roleID = r.roleID
+    WHERE r.roleID = ?
+      AND r.roleID <> 666
+  `;
+
+  db.query(sql, [roleID], (err, results) => {
+    if (err) return res.status(500).json({ message: "Database error", error: err });
+    res.json(results);
+  });
+});
+
+// Đổi trạng thái active / unactive cho 1 account
+app.put("/admin/accounts/:userID/status", verifyToken, isAdmin, (req, res) => {
+  const userID = parseInt(req.params.userID, 10);
+  const { isActive } = req.body; // 1 hoặc 0
+
+  if (isNaN(userID) || (isActive !== 0 && isActive !== 1)) {
+    return res.status(400).json({ message: "Invalid input" });
+  }
+
+  const sql = "UPDATE user SET isActive = ? WHERE userID = ? AND userID <> 4"; // không cập nhật admin
+
+  db.query(sql, [isActive, userID], (err, result) => {
+    if (err) return res.status(500).json({ message: "Database error", error: err });
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "User not found or is admin" });
+    }
+    res.json({ message: "Status updated", userID, isActive });
+  });
+});
 
 
 // CRUD for news
@@ -895,6 +998,25 @@ app.delete("/admin/news/:id", verifyToken, isAdmin, (req, res) => {
       return res.status(404).json({ message: "News not found" });
     }
     res.json({ message: "News deleted successfully" });
+  });
+});
+
+// Đổi trạng thái active / unactive của news
+app.put("/admin/news/:newID/status", verifyToken, isAdmin, (req, res) => {
+  const newID = parseInt(req.params.newID, 10);
+  const { isActive } = req.body; // 0 hoặc 1
+
+  if (isNaN(newID) || (isActive !== 0 && isActive !== 1)) {
+    return res.status(400).json({ message: "Invalid input" });
+  }
+
+  const sql = "UPDATE news SET isActive = ? WHERE newID = ?";
+  db.query(sql, [isActive, newID], (err, result) => {
+    if (err) return res.status(500).json({ message: "Database error", error: err });
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "News not found" });
+    }
+    res.json({ message: "News status updated", newID, isActive });
   });
 });
 
