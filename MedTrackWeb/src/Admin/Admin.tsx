@@ -25,11 +25,11 @@ export default function AdminScreen() {
 
     const token = sessionStorage.getItem("token");
 
-    // ======= TOGGLE FORM =======
+    // ======================= TOGGLE FORM =========================
     const [showDoctorForm, setShowDoctorForm] = useState(false);
     const [showNurseForm, setShowNurseForm] = useState(false);
 
-    // ===================== DOCTOR FORM ======================
+    // ======================= DOCTOR FORM =========================
     const [doctorForm, setDoctorForm] = useState({
         username: "",
         password: "",
@@ -48,13 +48,18 @@ export default function AdminScreen() {
         setDoctorForm((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleCreateDoctor = async (e: React.FormEvent) => {
+    const handleCreateDoctor = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!token) {
             toast.error("Unauthorized - please log in as admin");
             return;
         }
-        if (!doctorForm.username || !doctorForm.password || !doctorForm.fullName || !doctorForm.email) {
+        if (
+            !doctorForm.username ||
+            !doctorForm.password ||
+            !doctorForm.fullName ||
+            !doctorForm.email
+        ) {
             toast.error("Username, Password, Full Name, Email are required");
             return;
         }
@@ -87,7 +92,7 @@ export default function AdminScreen() {
         }
     };
 
-    // ===================== NURSE FORM ======================
+    // ======================= NURSE FORM ==========================
     const [nurseForm, setNurseForm] = useState({
         username: "",
         password: "",
@@ -106,13 +111,18 @@ export default function AdminScreen() {
         setNurseForm((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleCreateNurse = async (e: React.FormEvent) => {
+    const handleCreateNurse = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!token) {
             toast.error("Unauthorized - please log in as admin");
             return;
         }
-        if (!nurseForm.username || !nurseForm.password || !nurseForm.fullName || !nurseForm.email) {
+        if (
+            !nurseForm.username ||
+            !nurseForm.password ||
+            !nurseForm.fullName ||
+            !nurseForm.email
+        ) {
             toast.error("Username, Password, Full Name, Email are required");
             return;
         }
@@ -145,9 +155,8 @@ export default function AdminScreen() {
         }
     };
 
-    // ===================== NEWS STATE ======================
+    // ======================= NEWS STATE ==========================
     const [newsList, setNewsList] = useState<News[]>([]);
-    const [newsLoaded, setNewsLoaded] = useState(false);
     const [newsForm, setNewsForm] = useState<News>({
         title: "",
         body: "",
@@ -155,15 +164,13 @@ export default function AdminScreen() {
         author: "",
         image: "",
     });
-
     const [imageFile, setImageFile] = useState<File | null>(null);
-    const [uploading, setUploading] = useState(false);
+    const [imagePreview, setImagePreview] = useState<string>("");
 
     const loadNews = async () => {
         try {
             const res = await axios.get<News[]>("http://localhost:3000/news");
             setNewsList(res.data);
-            setNewsLoaded(true);
         } catch (err) {
             console.error(err);
             toast.error("Failed to load news list");
@@ -171,10 +178,10 @@ export default function AdminScreen() {
     };
 
     useEffect(() => {
-        if (activeTab === "news" && !newsLoaded) {
+        if (activeTab === "news") {
             loadNews();
         }
-    }, [activeTab, newsLoaded]);
+    }, [activeTab]);
 
     const handleNewsFormChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -186,46 +193,14 @@ export default function AdminScreen() {
     const handleImageFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0] || null;
         setImageFile(file);
-    };
-
-    const handleUploadImage = async () => {
-        if (!imageFile) {
-            toast.error("Please choose an image file first");
-            return;
-        }
-        if (!token) {
-            toast.error("Unauthorized - please log in as admin");
-            return;
-        }
-        try {
-            setUploading(true);
-            const formData = new FormData();
-            formData.append("image", imageFile);
-
-            const res = await axios.post(
-                "http://localhost:3000/upload/image",
-                formData,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "multipart/form-data",
-                    },
-                }
-            );
-
-            const filePath = res.data.filePath;
-            const fullUrl = `http://localhost:3000${filePath}`;
-            setNewsForm((prev) => ({ ...prev, image: fullUrl }));
-            toast.success("Image uploaded successfully");
-        } catch (err: any) {
-            console.error(err);
-            toast.error(err?.response?.data?.message || "Failed to upload image");
-        } finally {
-            setUploading(false);
+        if (file) {
+            setImagePreview(URL.createObjectURL(file));
+        } else {
+            setImagePreview("");
         }
     };
 
-    const handleCreateNews = async (e: React.FormEvent) => {
+    const handleCreateNews = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!token) {
             toast.error("Unauthorized - please log in as admin");
@@ -235,10 +210,28 @@ export default function AdminScreen() {
             toast.error("Title is required");
             return;
         }
+
         try {
-            await axios.post("http://localhost:3000/admin/news", newsForm, {
-                headers: { Authorization: `Bearer ${token}` },
+            const formData = new FormData();
+            formData.append("title", newsForm.title);
+            formData.append("body", newsForm.body || "");
+            formData.append("date", newsForm.date);
+            formData.append("author", newsForm.author || "");
+
+            // Nếu có file thì gửi file, nếu không thì gửi URL text
+            if (imageFile) {
+                formData.append("image", imageFile);
+            } else if (newsForm.image) {
+                formData.append("image", newsForm.image);
+            }
+
+            await axios.post("http://localhost:3000/admin/news", formData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "multipart/form-data",
+                },
             });
+
             toast.success("News created successfully");
             setNewsForm({
                 title: "",
@@ -247,6 +240,8 @@ export default function AdminScreen() {
                 author: "",
                 image: "",
             });
+            setImageFile(null);
+            setImagePreview("");
             loadNews();
         } catch (err: any) {
             console.error(err);
@@ -285,12 +280,11 @@ export default function AdminScreen() {
             toast.success(newStatus ? "Activated" : "Deactivated");
         } catch (err: any) {
             console.error(err);
-            toast.error(
-                err?.response?.data?.message || "Failed to change status"
-            );
+            toast.error(err?.response?.data?.message || "Failed to change status");
         }
     };
 
+    // ======================= JSX ================================
     return (
         <div className="mainBg pt-5 mt-5 min-vh-100">
             <ToastContainer position="top-right" />
@@ -362,9 +356,7 @@ export default function AdminScreen() {
                                         <button
                                             type="button"
                                             className="btn btn-primary"
-                                            onClick={() =>
-                                                setShowDoctorForm((prev) => !prev)
-                                            }
+                                            onClick={() => setShowDoctorForm((prev) => !prev)}
                                         >
                                             {showDoctorForm ? "Close form" : "Create Doctor Account"}
                                         </button>
@@ -427,7 +419,9 @@ export default function AdminScreen() {
                                                 />
                                             </div>
                                             <div className="col-md-4">
-                                                <label className="form-label">Nurse ID (optional)</label>
+                                                <label className="form-label">
+                                                    Nurse ID (optional)
+                                                </label>
                                                 <input
                                                     name="nurseID"
                                                     className="form-control"
@@ -461,13 +455,13 @@ export default function AdminScreen() {
                             {activeTab === "nurses" && (
                                 <div className="mt-3">
                                     <div className="d-flex justify-content-between align-items-center mb-3">
-                                        <h4 className="blueText mb-0">Nurse Account Management</h4>
+                                        <h4 className="blueText mb-0">
+                                            Nurse Account Management
+                                        </h4>
                                         <button
                                             type="button"
                                             className="btn btn-primary"
-                                            onClick={() =>
-                                                setShowNurseForm((prev) => !prev)
-                                            }
+                                            onClick={() => setShowNurseForm((prev) => !prev)}
                                         >
                                             {showNurseForm ? "Close form" : "Create Nurse Account"}
                                         </button>
@@ -610,7 +604,7 @@ export default function AdminScreen() {
 
                                         <div className="col-12">
                                             <label className="form-label">
-                                                Image URL (or upload below)
+                                                Image URL (optional) hoặc upload dưới đây
                                             </label>
                                             <input
                                                 type="text"
@@ -628,15 +622,22 @@ export default function AdminScreen() {
                                                     className="form-control"
                                                     onChange={handleImageFileChange}
                                                 />
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-outline-primary"
-                                                    onClick={handleUploadImage}
-                                                    disabled={uploading}
-                                                >
-                                                    {uploading ? "Uploading..." : "Upload"}
-                                                </button>
                                             </div>
+
+                                            {imagePreview && (
+                                                <div className="mt-2">
+                                                    <small className="text-muted d-block">Preview:</small>
+                                                    <img
+                                                        src={imagePreview}
+                                                        alt="preview"
+                                                        style={{
+                                                            width: "120px",
+                                                            height: "60px",
+                                                            objectFit: "cover",
+                                                        }}
+                                                    />
+                                                </div>
+                                            )}
                                         </div>
 
                                         <div className="col-12">
@@ -691,9 +692,7 @@ export default function AdminScreen() {
                                                     </td>
                                                     <td>
                                                         {n.isActive ? (
-                                                            <span className="badge bg-success">
-                                                                Active
-                                                            </span>
+                                                            <span className="badge bg-success">Active</span>
                                                         ) : (
                                                             <span className="badge bg-secondary">
                                                                 Inactive
