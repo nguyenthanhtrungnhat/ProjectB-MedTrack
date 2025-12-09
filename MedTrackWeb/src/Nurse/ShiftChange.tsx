@@ -23,7 +23,7 @@ export default function ShiftChange() {
     useEffect(() => {
         if (!nurseID) return;
 
-        axios.get(`http://localhost:3000/schedules/${nurseID}`)
+        axios.get(`http://localhost:3000/api/schedules/${nurseID}`)
             .then(res => setSchedules(res.data))
             .catch(err => console.error(err));
 

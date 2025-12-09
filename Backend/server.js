@@ -470,55 +470,57 @@ app.get("/api/appointment/doctor/:doctorID", (req, res) => {
   });
 });
 
-//reject schedule request
-app.put("/schedule-request/:id", (req, res) => {
-  const requestID = req.params.id;
-  const { status } = req.body; // ví dụ nhận status để update
-
-  const sql = "UPDATE scheduleRequest SET status = ? WHERE requestID = ?";
-  db.query(sql, [status, requestID], (err, result) => {
-    if (err) return res.status(500).json({ message: "DB error", err });
-
-    if (result.affectedRows === 0)
-      return res.status(404).json({ message: "Request not found" });
-
-    res.json({ message: "Status updated successfully" });
-  });
+// GET total pending shift requests count
+app.get("/schedule-request/pending/count", (req, res) => {
+    const sql = `SELECT COUNT(*) AS count FROM scheduleRequest WHERE status = 0`; // 0 = Pending
+    db.query(sql, (err, result) => {
+        if (err) return res.status(500).json({ message: "DB error", err });
+        res.json({ count: result[0].count });
+    });
 });
 
-//approve schedule request
-app.patch("/schedule-request/:id/approve", (req, res) => {
-  const requestID = req.params.id;
 
-  // 1. Lấy thông tin request
-  const getRequestSql = "SELECT scheduleID, newDate, status FROM scheduleRequest WHERE requestID = ?";
-  db.query(getRequestSql, [requestID], (err, result) => {
-    if (err) return res.status(500).json({ message: "Database error", err });
-    if (result.length === 0) return res.status(404).json({ message: "Request not found" });
+//reject, approve schedule request
+app.patch("/schedule-request/:id/status", (req, res) => {
+    const requestID = req.params.id;
+    const { status } = req.body; // 1 = approve, 2 = reject
 
-    const request = result[0];
-
-    if (request.status !== 0) {
-      return res.status(400).json({ message: "Request is not pending" });
+    if (![1, 2].includes(status)) {
+        return res.status(400).json({ message: "Invalid status. Must be 1 or 2." });
     }
 
-    const scheduleID = request.scheduleID;
-    const newDate = request.newDate;
+    const getRequestSql = "SELECT scheduleID, newDate, status FROM scheduleRequest WHERE requestID = ?";
+    db.query(getRequestSql, [requestID], (err, result) => {
+        if (err) return res.status(500).json({ message: "Database error", err });
+        if (result.length === 0) return res.status(404).json({ message: "Request not found" });
 
-    // 2. Update scheduleRequest.status = 1
-    const updateRequestSql = "UPDATE scheduleRequest SET status = 1 WHERE requestID = ?";
-    db.query(updateRequestSql, [requestID], (err2) => {
-      if (err2) return res.status(500).json({ message: "Failed to update request", err2 });
+        const request = result[0];
 
-      // 3. Update schedule.scheduleDate = newDate
-      const updateScheduleSql = "UPDATE schedule SET scheduleDate = ? WHERE scheduleID = ?";
-      db.query(updateScheduleSql, [newDate, scheduleID], (err3) => {
-        if (err3) return res.status(500).json({ message: "Failed to update schedule", err3 });
+        if (request.status !== 0) {
+            return res.status(400).json({ message: "Request is not pending" });
+        }
 
-        return res.json({ message: "Request approved and schedule updated" });
-      });
+        const scheduleID = request.scheduleID;
+        const newDate = request.newDate;
+
+        // Update scheduleRequest.status
+        const updateRequestSql = "UPDATE scheduleRequest SET status = ? WHERE requestID = ?";
+        db.query(updateRequestSql, [status, requestID], (err2) => {
+            if (err2) return res.status(500).json({ message: "Failed to update request", err2 });
+
+            if (status === 1) { // approve → update schedule.date
+                if (!newDate) return res.status(400).json({ message: "Request newDate is null" });
+
+                const updateScheduleSql = "UPDATE schedules SET date = ? WHERE scheduleID = ?";
+                db.query(updateScheduleSql, [newDate, scheduleID], (err3) => {
+                    if (err3) return res.status(500).json({ message: "Failed to update schedule", err3 });
+                    return res.json({ message: "Request approved and schedule date updated" });
+                });
+            } else { // reject
+                return res.json({ message: "Request rejected successfully" });
+            }
+        });
     });
-  });
 });
 
 // POST: Add new schedule

@@ -21,6 +21,7 @@ CREATE TABLE `user` (
   `address` varchar(100) DEFAULT NULL,
   `haveTask` date DEFAULT NULL,
   `gender` int DEFAULT NULL,
+  `isActive` TINYINT(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`userID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -174,6 +175,7 @@ CREATE TABLE `news` (
   `date` date DEFAULT NULL,
   `author` varchar(45) DEFAULT NULL,
   `image` varchar(255) DEFAULT NULL,
+  `isActive` TINYINT(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`newID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 

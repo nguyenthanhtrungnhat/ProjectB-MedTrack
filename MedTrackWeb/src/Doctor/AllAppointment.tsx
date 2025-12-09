@@ -25,7 +25,7 @@ export default function AllAppointment() {
             <div className="row">
                 <div className="col-lg-9 col-sm-12 mb-5 order-2 order-lg-1">
                     <div className="border whiteBg dropShadow p-4">
-                        <h4>Appointments</h4>
+                        <h4 className="blueText">Appointments</h4>
                         <table className="table table-bordered">
                             <thead>
                                 <tr>
@@ -75,10 +75,15 @@ export default function AllAppointment() {
                     <div className="leftBody border whiteBg dropShadow marginBottom">
                         <h6 className='whiteText blueBg featureHead'>Feature</h6>
                         <div className="padding">
-                            <ul className='list-unstyled'>
+                             <ul className='list-unstyled'>
                                 <li>
                                     <Link to="/doctor/allappointment" className="text-decoration-none">
                                         <i className="fa fa-caret-right" aria-hidden="true"></i> Appointments
+                                    </Link>
+                                </li>
+                                 <li>
+                                    <Link to="/doctor/allshiftrequest" className="text-decoration-none">
+                                        <i className="fa fa-caret-right" aria-hidden="true"></i> Shift Request
                                     </Link>
                                 </li>
                             </ul>
