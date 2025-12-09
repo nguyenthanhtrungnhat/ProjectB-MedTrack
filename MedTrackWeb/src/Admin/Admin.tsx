@@ -265,14 +265,15 @@ export default function AdminScreen() {
                                                             />
                                                         )}
                                                     </td>
-                                                    <td>
+                                                    {/* <td>
                                                         <button
                                                             className="btn btn-sm btn-outline-danger"
                                                             onClick={() => handleDeleteNews(n.newID)}
                                                         >
                                                             Delete
                                                         </button>
-                                                    </td>
+                                                    </td> */}
+                                                    
                                                 </tr>
                                             ))}
                                             {newsList.length === 0 && (
