@@ -789,73 +789,74 @@ export default function AdminScreen() {
                                             </button>
                                         </div>
                                     </form>
-
-                                    <table className="table table-striped table-bordered">
-                                        <thead className="table-light">
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Title</th>
-                                                <th>Date</th>
-                                                <th>Author</th>
-                                                <th>Image</th>
-                                                <th>Status</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {newsList.map((n) => (
-                                                <tr key={n.newID}>
-                                                    <td>{n.newID}</td>
-                                                    <td>{n.title}</td>
-                                                    <td>{n.date}</td>
-                                                    <td>{n.author}</td>
-                                                    <td>
-                                                        {n.image && (
-                                                            <img
-                                                                src={getImageSrc(n.image)}
-                                                                alt={n.title}
-                                                                style={{
-                                                                    width: "80px",
-                                                                    height: "40px",
-                                                                    objectFit: "cover",
-                                                                }}
-                                                            />
-                                                        )}
-                                                    </td>
-
-                                                    <td>
-                                                        {n.isActive ? (
-                                                            <span className="badge bg-success">
-                                                                Active
-                                                            </span>
-                                                        ) : (
-                                                            <span className="badge bg-secondary">
-                                                                Inactive
-                                                            </span>
-                                                        )}
-                                                    </td>
-                                                    <td>
-                                                        <button
-                                                            className={`btn btn-sm ${n.isActive
-                                                                ? "btn-outline-secondary"
-                                                                : "btn-outline-success"
-                                                                }`}
-                                                            onClick={() => handleToggleNewsStatus(n)}
-                                                        >
-                                                            {n.isActive ? "Unactive" : "Active"}
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                            {newsList.length === 0 && (
+                                    <div className="table-responsive">
+                                        <table className="table table-striped table-bordered ">
+                                            <thead className="table-light">
                                                 <tr>
-                                                    <td colSpan={7} className="text-center text-muted">
-                                                        No news yet. Create one above.
-                                                    </td>
+                                                    <th>ID</th>
+                                                    <th>Title</th>
+                                                    <th>Date</th>
+                                                    <th>Author</th>
+                                                    <th>Image</th>
+                                                    <th>Status</th>
+                                                    <th>Actions</th>
                                                 </tr>
-                                            )}
-                                        </tbody>
-                                    </table>
+                                            </thead>
+                                            <tbody>
+                                                {newsList.map((n) => (
+                                                    <tr key={n.newID}>
+                                                        <td>{n.newID}</td>
+                                                        <td>{n.title}</td>
+                                                        <td>{n.date}</td>
+                                                        <td>{n.author}</td>
+                                                        <td>
+                                                            {n.image && (
+                                                                <img
+                                                                    src={getImageSrc(n.image)}
+                                                                    alt={n.title}
+                                                                    style={{
+                                                                        width: "80px",
+                                                                        height: "40px",
+                                                                        objectFit: "cover",
+                                                                    }}
+                                                                />
+                                                            )}
+                                                        </td>
+
+                                                        <td>
+                                                            {n.isActive ? (
+                                                                <span className="badge bg-success">
+                                                                    Active
+                                                                </span>
+                                                            ) : (
+                                                                <span className="badge bg-secondary">
+                                                                    Inactive
+                                                                </span>
+                                                            )}
+                                                        </td>
+                                                        <td>
+                                                            <button
+                                                                className={`btn btn-sm ${n.isActive
+                                                                    ? "btn-outline-secondary"
+                                                                    : "btn-outline-success"
+                                                                    }`}
+                                                                onClick={() => handleToggleNewsStatus(n)}
+                                                            >
+                                                                {n.isActive ? "Unactive" : "Active"}
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                                {newsList.length === 0 && (
+                                                    <tr>
+                                                        <td colSpan={7} className="text-center text-muted">
+                                                            No news yet. Create one above.
+                                                        </td>
+                                                    </tr>
+                                                )}
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             )}
                         </div>
