@@ -20,7 +20,7 @@ export default function HomePage() {
     }, []);
     return (
         <>
-            <div className="container-fluid pt-5 p-0 padding">
+            <div className="container-fluid pt-5 mt-5">
                 <div id="carouselExampleCaptions" className="carousel slide" data-bs-ride="carousel">
                     <div className="carousel-indicators">
                         <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
