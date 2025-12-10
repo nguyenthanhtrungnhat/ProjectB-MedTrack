@@ -254,8 +254,8 @@ INSERT INTO `role` (`roleID`,`nameRole`) VALUES
 INSERT INTO `userrole` (`userRoleID`,`roleID`,`userID`) VALUES
 (1,2,1),
 (2,3,2),
-(3,1,3),
-(4,666,4);
+(3,3,3),
+(4,1,4);
 
 -- 4. ROOM table  
 INSERT INTO `room` (`roomID`,`department`,`location`) VALUES
@@ -267,7 +267,7 @@ INSERT INTO `nurse` (`nurseID`,`department`,`userID`,`roomID`,`image`) VALUES
 
 -- 6. DOCTOR table
 INSERT INTO `doctor` (`doctorID`,`department`,`nurseID`,`userID`,`requestID`,`office`) VALUES
-(1,NULL,NULL,3,NULL,'301B10');
+(1,NULL,NULL,4,NULL,'301B10');
 
 -- 7. REQUEST table
 INSERT INTO `request` (`requestID`,`dateTime`,`requestContent`,`requestStatus`,`nurseID`,`doctorID`,`requestType`) VALUES
