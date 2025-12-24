@@ -7,7 +7,7 @@ export interface NurseProps {
     nurseID: string,
     address: string,
     email: string,
-    CCCD:number
+    CIC:number
 }
 export interface RoomProps {
     department: string,
@@ -25,12 +25,12 @@ export interface PatientProps {
     hospitalizationsDiagnosis?: string;
     summaryCondition?: string;
     dischargeDiagnosis?: string;
-    BHYT?: string;
+    HI?: string;
     admissionDate?: string;
     relativeName?: string;
     relativeNumber?: number|string
     dischargeDate?: string;
-    CCCD?: number;
+    CIC?: number;
     username?: string;
 }
 
