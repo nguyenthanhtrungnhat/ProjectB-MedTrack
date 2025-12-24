@@ -199,10 +199,10 @@ export default function PatientScreen() {
                                         }
                                         dob={patient?.dob?.split("T")[0] || ""}
                                         phone={patient?.phone || ""}
-                                        CCCD={patient?.CCCD}
+                                        CIC={patient?.CIC}
                                         address={patient?.address || ""}
                                         email={patient?.email || ""}
-                                        BHYT={patient?.BHYT || ""}
+                                        HI={patient?.HI || ""}
                                         admissionDate={patient?.admissionDate?.split("T")[0] || ""}
                                         relativeName={patient?.relativeName || ""}
                                         relativeNumber={Number(patient?.relativeNumber) || ""}
@@ -232,10 +232,10 @@ export default function PatientScreen() {
                                             }
                                             dob={patient?.dob?.split("T")[0] || ""}
                                             phone={patient?.phone || ""}
-                                            CCCD={patient?.CCCD}
+                                            CIC={patient?.CIC}
                                             address={patient?.address || ""}
                                             email={patient?.email || ""}
-                                            BHYT={patient?.BHYT || ""}
+                                            HI={patient?.HI || ""}
                                             admissionDate={patient?.admissionDate?.split("T")[0] || ""}
                                             relativeName={patient?.relativeName || ""}
                                             relativeNumber={Number(patient?.relativeNumber) || ""}
