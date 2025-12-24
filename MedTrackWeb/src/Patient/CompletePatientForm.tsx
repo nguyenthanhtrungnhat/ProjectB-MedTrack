@@ -25,7 +25,7 @@ export default function CompletePatientForm({ onCompleted }: { onCompleted?: () 
         dob: "",
         phone: "",
         address: "",
-        BHYT: "",
+        HI: "",
         relativeName: "",
         relativeNumber: "",
     });
@@ -48,7 +48,7 @@ export default function CompletePatientForm({ onCompleted }: { onCompleted?: () 
         setForm((prev) => ({
             ...prev,
             cccd: data[0] || prev.cccd,
-            BHYT: data[1] || prev.BHYT,
+            HI: data[1] || prev.HI,
             fullName: data[2] || prev.fullName,
             dob:
                 data[3] && data[3].length === 8
@@ -100,7 +100,7 @@ export default function CompletePatientForm({ onCompleted }: { onCompleted?: () 
                     dob: "",
                     phone: "",
                     address: "",
-                    BHYT: "",
+                    HI: "",
                     relativeName: "",
                     relativeNumber: "",
                 });
@@ -179,12 +179,12 @@ export default function CompletePatientForm({ onCompleted }: { onCompleted?: () 
                         </div>
 
                         <div className="col-md-6">
-                            <label className="form-label">Health Insurance (BHYT)</label>
+                            <label className="form-label">Health Insurance (HI)</label>
                             <input
                                 type="text"
-                                name="BHYT"
+                                name="HI"
                                 className="form-control"
-                                value={form.BHYT}
+                                value={form.HI}
                                 onChange={handleChange}
                             />
                         </div>
