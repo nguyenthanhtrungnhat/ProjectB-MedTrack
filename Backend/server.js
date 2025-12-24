@@ -86,9 +86,8 @@ const getAllRecords2 = (tableName, res) => {
     u.dob,
     u.phone,
     u.email,
-    u.CCCD,
+    u.CIC,
     u.address,
-    u.haveTask,
     u.gender
     FROM ${tableName} n
     JOIN user u ON n.userID = u.userID;
@@ -735,14 +734,14 @@ app.put("/api/patient/complete", verifyToken, (req, res) => {
     dob,
     phone,
     address,
-    BHYT,
+    HI,
     relativeName,
     relativeNumber,
-    CCCD, // must match DB column name
+    CIC, // must match DB column name
   } = req.body;
 
   // ✅ Validate required fields
-  if (!userID || !fullName || !gender || !dob || !phone || !address || !CCCD) {
+  if (!userID || !fullName || !gender || !dob || !phone || !address || !CIC) {
     console.log("❌ Missing field(s):", req.body);
     return res.status(400).json({ message: "Missing required fields" });
   }
@@ -750,11 +749,11 @@ app.put("/api/patient/complete", verifyToken, (req, res) => {
   // ✅ Step 1: Update user info
   const updateUserSql = `
     UPDATE user
-    SET fullName = ?, gender = ?, dob = ?, phone = ?, address = ?, CCCD = ?
+    SET fullName = ?, gender = ?, dob = ?, phone = ?, address = ?, CIC = ?
     WHERE userID = ?
   `;
 
-  db.query(updateUserSql, [fullName, gender, dob, phone, address, CCCD, userID], (err1, result1) => {
+  db.query(updateUserSql, [fullName, gender, dob, phone, address, CIC, userID], (err1, result1) => {
     if (err1) {
       console.error("❌ Error updating user:", err1);
       return res.status(500).json({ message: "Failed to update user info", error: err1 });
@@ -779,11 +778,11 @@ app.put("/api/patient/complete", verifyToken, (req, res) => {
       // ✅ Step 3: Update patient record
       const updatePatientSql = `
         UPDATE patient
-        SET BHYT = ?, relativeName = ?, relativeNumber = ?
+        SET HI = ?, relativeName = ?, relativeNumber = ?
         WHERE patientID = ?
       `;
 
-      db.query(updatePatientSql, [BHYT, relativeName, relativeNumber, patientID], (err3) => {
+      db.query(updatePatientSql, [HI, relativeName, relativeNumber, patientID], (err3) => {
         if (err3) {
           console.error("❌ Error updating patient:", err3);
           return res.status(500).json({ message: "Failed to update patient info", error: err3 });
@@ -878,7 +877,7 @@ app.post("/admin/nurses", verifyToken, isAdmin, (req, res) => {
     dob,
     phone,
     email,
-    CCCD,
+    CIC,
     address,
     gender,   // 0/1
     image,    // ảnh riêng của nurse (tùy, có thể null)
@@ -898,12 +897,12 @@ app.post("/admin/nurses", verifyToken, isAdmin, (req, res) => {
     // 2. Tạo user mới (đúng field trong bảng user)
     const insertUserSql = `
       INSERT INTO user
-      (username, password, fullName, dob, phone, email, CCCD, address, gender, isActive)
+      (username, password, fullName, dob, phone, email, CIC, address, gender, isActive)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
     `;
     db.query(
       insertUserSql,
-      [username, password, fullName, dob, phone, email, CCCD, address, gender],
+      [username, password, fullName, dob, phone, email, CIC, address, gender],
       (err2, resultUser) => {
         if (err2) return res.status(500).json({ message: "Insert user failed", error: err2 });
 
@@ -953,7 +952,7 @@ app.post("/admin/doctors", verifyToken, isAdmin, (req, res) => {
     dob,
     phone,
     email,
-    CCCD,
+    CIC,
     address,
     gender // 0/1
   } = req.body;
@@ -970,12 +969,12 @@ app.post("/admin/doctors", verifyToken, isAdmin, (req, res) => {
 
     const insertUserSql = `
       INSERT INTO user 
-      (username, password, fullName, dob, phone, email, CCCD, address, gender, isActive)
+      (username, password, fullName, dob, phone, email, CIC, address, gender, isActive)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
     `;
     db.query(
       insertUserSql,
-      [username, password, fullName, dob, phone, email, CCCD, address, gender],
+      [username, password, fullName, dob, phone, email, CIC, address, gender],
       (err2, resultUser) => {
         if (err2) return res.status(500).json({ message: "Insert user failed", error: err2 });
 
