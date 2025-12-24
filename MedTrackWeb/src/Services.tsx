@@ -4,7 +4,7 @@ export default function Services() {
       <h4 className="blueText headd1">Hospital Service Fees</h4>
       <p>
         Below is the price list for medical services at Becamex International Hospital.
-        Prices are subject to change and may vary depending on health insurance coverage (BHYT).
+        Prices are subject to change and may vary depending on health insurance coverage (HI).
       </p>
 
       {/* Outpatient Examination Services */}
@@ -14,7 +14,7 @@ export default function Services() {
           <tr>
             <th>Service</th>
             <th>Price (VND)</th>
-            <th>BHYT Price (VND)</th>
+            <th>HI Price (VND)</th>
           </tr>
         </thead>
         <tbody>
@@ -31,7 +31,7 @@ export default function Services() {
           <tr>
             <th>Service</th>
             <th>Price (VND)</th>
-            <th>BHYT Price (VND)</th>
+            <th>HI Price (VND)</th>
           </tr>
         </thead>
         <tbody>
@@ -59,7 +59,7 @@ export default function Services() {
           <tr>
             <th>Service</th>
             <th>Price (VND)</th>
-            <th>BHYT Price (VND)</th>
+            <th>HI Price (VND)</th>
           </tr>
         </thead>
         <tbody>
@@ -87,7 +87,7 @@ export default function Services() {
           <tr>
             <th>Room Type</th>
             <th>Price (VND)</th>
-            <th>BHYT Price (VND)</th>
+            <th>HI Price (VND)</th>
           </tr>
         </thead>
         <tbody>
@@ -101,7 +101,7 @@ export default function Services() {
 
       <div className="alert alert-warning mt-4">
         <strong>Note:</strong> The above prices are for reference only and may change over time.
-        Health insurance (BHYT) coverage for room fees depends on the patient’s medical condition.
+        Health insurance (HI) coverage for room fees depends on the patient’s medical condition.
         Prices shown do not include companion room charges.
       </div>
     </div>
