@@ -109,7 +109,7 @@ export default function NurseScreen() {
                                     }
                                     dob={user?.dob?.split("T")[0] || ""}
                                     phone={user?.phone || ""}
-                                    CCCD={Number(user?.CCCD)}
+                                    CIC={Number(user?.CIC)}
                                     address={user?.address || ""}
                                     email={user?.email || ""}
                                     loading={loading}
@@ -128,7 +128,7 @@ export default function NurseScreen() {
                                     }
                                     dob={user?.dob?.split("T")[0] || ""}
                                     phone={user?.phone || ""}
-                                    CCCD={Number(user?.CCCD)}
+                                    CIC={Number(user?.CIC)}
                                     address={user?.address || ""}
                                     email={user?.email || ""}
                                     loading={loading}
