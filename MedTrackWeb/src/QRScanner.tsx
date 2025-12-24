@@ -67,7 +67,7 @@ const QRScanner: React.FC<QRScannerProps> = ({ onScanComplete }) => {
 
   return (
     <>
-      <h5 className="text-center mb-3">Scan CCCD / QR Code</h5>
+      <h5 className="text-center mb-3">Scan CIC / QR Code</h5>
 
       {/* Control buttons */}
       <div className="text-center mb-3">
