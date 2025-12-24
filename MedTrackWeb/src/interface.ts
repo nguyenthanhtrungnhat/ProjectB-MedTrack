@@ -19,7 +19,6 @@ export interface PatientProps {
     gender: string;
     dob: string;
     phone: number|string;
-    patientID: number; // Changed from 'id' to 'patientID' for consistency
     address: string;
     email: string;
     hospitalizationsDiagnosis?: string;
