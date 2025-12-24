@@ -16,8 +16,8 @@ export default function Introduce() {
           <hr />
           <div className={`text-content ${showMore ? "expanded" : ""}`}>
             <p>
-              Becamex International Hospital (BIH) covers an area of 12.76 hectares,
-              located in Go Cat Area, Lai Thieu Ward, Thuan An City, Binh Duong Province.
+              International Hospital (IH) covers an area of 12.76 hectares,
+              located in Lai Thieu Ward, Thuan An City, Binh Duong Province.
             </p>
             <p>
               Operating with the motto <strong>"Patient-centered care"</strong>,
@@ -27,7 +27,7 @@ export default function Introduce() {
               friendly environment.
             </p>
             <p>
-              In addition, BIH focuses on research and the application of the latest
+              In addition, IH focuses on research and the application of the latest
               medical technologies and scientific advancements in both treatment
               procedures and management operations.
             </p>

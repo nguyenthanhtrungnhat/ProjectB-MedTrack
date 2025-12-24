@@ -6,7 +6,7 @@ const HospitalServices = () => {
   return (
     <div className="container mt-5 pt-5 pb-5 mb-5">
       <h2 className="mb-3 fw-bold blueText">
-        Becamex International Hospital Services
+        International Hospital Services
       </h2>
 
       {/* ================= GUIDELINES ================= */}
@@ -57,7 +57,7 @@ const HospitalServices = () => {
       </h4>
 
       <p>
-        Becamex International Hospital provides comprehensive health check
+        International Hospital provides comprehensive health check
         packages from basic to advanced, suitable for individuals and
         organizations.
       </p>

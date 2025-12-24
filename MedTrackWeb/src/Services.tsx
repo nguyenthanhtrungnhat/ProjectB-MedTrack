@@ -6,7 +6,7 @@ export default function Services() {
       </h4>
 
       <p className="text-muted">
-        Below is the price list for medical services at Becamex International Hospital.
+        Below is the price list for medical services at International Hospital.
         Prices may vary depending on health insurance (HI) coverage.
       </p>
 

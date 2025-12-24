@@ -9,7 +9,7 @@ export default function Footer() {
                 </div>
                 <div>
                     <a
-                        href="https://www.facebook.com/becamexih"
+                        href="https://www.facebook.com/"
                         className="me-4 text-reset"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -17,21 +17,6 @@ export default function Footer() {
                         <i className="fa-brands fa-facebook"></i>
                     </a>
 
-                    {/* <a href="" className="me-4 text-reset">
-                            <i className="fab fa-twitter"></i>
-                        </a>
-                        <a href="" className="me-4 text-reset">
-                            <i className="fab fa-google"></i>
-                        </a>
-                        <a href="" className="me-4 text-reset">
-                            <i className="fab fa-instagram"></i>
-                        </a>
-                        <a href="" className="me-4 text-reset">
-                            <i className="fab fa-linkedin"></i>
-                        </a>
-                        <a href="" className="me-4 text-reset">
-                            <i className="fab fa-github"></i>
-                        </a> */}
                 </div>
             </section>
             <section className="">
@@ -39,7 +24,7 @@ export default function Footer() {
                     <div className="row">
                         <div className="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
                             <h6 className="text-uppercase fw-bold mb-4">
-                                <i className="fas fa-gem me-3"></i>Becamex International General Hospital Joint Stock Company
+                                <i className="fas fa-gem me-3"></i>International General Hospital Joint Stock Company
                             </h6>
                             <p>
                                 Here you can use rows and columns to organize your footer content. Lorem ipsum
@@ -91,10 +76,10 @@ export default function Footer() {
                             <p><i className="fas fa-home me-3"></i> Đại lộ Bình Dương, Khu Gò Cát, Phường Lái Thiêu, Thành phố Thuận An, Tỉnh Bình Dương, Việt Nam</p>
                             <p>
                                 <i className="fas fa-envelope me-3"></i>
-                                contact@bih.vn
+                                contact@exmaplecapstone1.vn
                             </p>
-                            <p><i className="fas fa-phone me-3"></i> + 	(0274)3969.647</p>
-                            <p><i className="fas fa-print me-3"></i>(tax number) + 3702291330</p>
+                            <p><i className="fas fa-phone me-3"></i> + 	(0274)1231.345</p>
+                            <p><i className="fas fa-print me-3"></i>(tax number) + 0123734812</p>
                         </div>
                     </div>
                 </div>
@@ -102,8 +87,8 @@ export default function Footer() {
             <hr className="m-0" />
             <div className="text-center p-4 blueBg whiteText">
                 © 2025 Copyright:{" "}
-                <a className="text-reset fw-bold" href="https://bih.vn/">
-                    bih.vn
+                <a className="text-reset fw-bold" href="https://exmaplecapstone1.vn/">
+                    exmaplecapstone1.vn
                 </a>
             </div>
         </footer>

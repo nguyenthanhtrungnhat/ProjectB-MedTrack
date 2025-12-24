@@ -24,6 +24,7 @@ export default function Header() {
     useEffect(() => {
         const role = getUserRoleFromToken();
         setRoleID(role);
+        sessionStorage.setItem("roleID",role)
     }, []);
 
     return (

@@ -14,7 +14,7 @@ export default function BedDetails() {
     const info = storedInfo ? JSON.parse(storedInfo) : null;
     const patientByIdUrl = `http://localhost:3000/patients/${patientID}`;
     const [loading, setLoading] = useState(true);
-
+    const roleID = sessionStorage.getItem("roleID");
     useEffect(() => {
         if (!patientID) return;
         setLoading(true); // start loading
@@ -32,9 +32,10 @@ export default function BedDetails() {
                         {/* Left column */}
                         <div className="col-lg-6 col-sm-12 d-flex">
                             <div className="w-100 d-flex flex-column border whiteBg marginBottom dropShadow p-3">
-                               
+
                                 {loading ? (
                                     <PatientInformation
+                                        patientID={user?.patientID}
                                         image={user?.image || ""}
                                         fullName={user?.fullName || ""}
                                         gender={
@@ -58,6 +59,7 @@ export default function BedDetails() {
 
                                 ) : (
                                     <PatientInformation
+                                        patientID={user?.patientID}
                                         image={user?.image || ""}
                                         fullName={user?.fullName || ""}
                                         gender={
@@ -126,11 +128,42 @@ export default function BedDetails() {
                     </div>
                     <div className="leftBody border whiteBg dropShadow marginBottom">
                         <h6 className="whiteText blueBg featureHead">Feature</h6>
-                        <ul className="list-unstyled p-2">
-                            <li><Link to="/home/shift-change" className="text-decoration-none"><i className="fa fa-caret-right" /> Shift change registration</Link></li>
-                            <li><Link to="/home/daily-checking" className="text-decoration-none"><i className="fa fa-caret-right" /> Daily checking health</Link></li>
-                            <li><Link to="/home/schedule" className="text-decoration-none"><i className="fa fa-caret-right" /> Schedule</Link></li>
-                        </ul>
+                        <div className="padding">
+                            {roleID == "1" && (
+                                <ul className='list-unstyled'>
+                                    <li>
+                                        <Link to="/doctor/allappointment" className="text-decoration-none">
+                                            <i className="fa fa-caret-right" aria-hidden="true"></i> Appointments
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link to="/doctor/allshiftrequest" className="text-decoration-none">
+                                            <i className="fa fa-caret-right" aria-hidden="true"></i> Shift Request
+                                        </Link>
+                                    </li>
+                                </ul>
+                            )}
+                            {roleID == "2" && (
+                                <ul className='list-unstyled'>
+
+                                    <li>
+                                        <Link to="/home/shift-change" className="text-decoration-none">
+                                            <i className="fa fa-caret-right" aria-hidden="true"></i> Shift change registration
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link to="/home/daily-checking" className="text-decoration-none">
+                                            <i className="fa fa-caret-right" aria-hidden="true"></i> Daily checking health
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link to="/home/schedule" className="text-decoration-none">
+                                            <i className="fa fa-caret-right" aria-hidden="true"></i> Schedule
+                                        </Link>
+                                    </li>
+                                </ul>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
