@@ -27,7 +27,7 @@ export default function NurseInformation({
   gender,
   dob,
   phone,
-  CCCD,
+  CIC,
   address,
   email,
   loading
@@ -44,7 +44,7 @@ export default function NurseInformation({
             <InfoRow label="Date of birth" value={dob} loading={loading} />
             <InfoRow label="Gender" value={gender} loading={loading} />
             <InfoRow label="Phone" value={phone} loading={loading} />
-            <InfoRow label="ID card" value={String(CCCD)} loading={loading} />
+            <InfoRow label="ID card" value={String(CIC)} loading={loading} />
             <InfoRow label="Email" value={email} loading={loading} />
             <InfoRow label="Address" value={address} loading={loading} />
           </div>
