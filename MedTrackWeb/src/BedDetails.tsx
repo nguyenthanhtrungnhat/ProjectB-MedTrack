@@ -46,7 +46,7 @@ export default function BedDetails() {
                                         }
                                         dob={user?.dob?.split("T")[0] || ""}
                                         phone={user?.phone || ""}
-                                        patientID={Number(user?.patientID)}
+                                        CIC={Number(user?.CIC)}
                                         address={user?.address || ""}
                                         email={user?.email || ""}
                                         HI={user?.HI || ""}
@@ -69,7 +69,7 @@ export default function BedDetails() {
                                         }
                                         dob={user?.dob?.split("T")[0] || ""}
                                         phone={user?.phone || ""}
-                                        patientID={Number(user?.patientID)}
+                                        CIC={Number(user?.CIC)}
                                         address={user?.address || ""}
                                         email={user?.email || ""}
                                         HI={user?.HI || ""}
