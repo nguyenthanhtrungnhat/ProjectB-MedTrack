@@ -49,7 +49,7 @@ export default function BedDetails() {
                                         patientID={Number(user?.patientID)}
                                         address={user?.address || ""}
                                         email={user?.email || ""}
-                                        BHYT={user?.BHYT || ""}
+                                        HI={user?.HI || ""}
                                         admissionDate={user?.admissionDate?.split("T")[0] || ""}
                                         relativeName={user?.relativeName || ""}
                                         relativeNumber={Number(user?.relativeNumber) || ""}
@@ -72,7 +72,7 @@ export default function BedDetails() {
                                         patientID={Number(user?.patientID)}
                                         address={user?.address || ""}
                                         email={user?.email || ""}
-                                        BHYT={user?.BHYT || ""}
+                                        HI={user?.HI || ""}
                                         admissionDate={user?.admissionDate?.split("T")[0] || ""}
                                         relativeName={user?.relativeName || ""}
                                         relativeNumber={Number(user?.relativeNumber) || ""}
