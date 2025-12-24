@@ -27,21 +27,26 @@ export default function Services() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="fw-semibold">Specialist Examination</td>
-              <td className="text-end fw-bold text-success">123,000</td>
-              <td className="d-none d-md-table-cell text-end">33,200</td>
-            </tr>
-            <tr>
-              <td className="fw-semibold">Emergency Examination</td>
-              <td className="text-end fw-bold text-success">223,000</td>
-              <td className="d-none d-md-table-cell text-end">33,200</td>
-            </tr>
-            <tr>
-              <td className="fw-semibold">Health Consultation</td>
-              <td className="text-end fw-bold text-success">113,000</td>
-              <td className="d-none d-md-table-cell text-end text-muted">-</td>
-            </tr>
+            {[
+              ["Specialist Examination", "123,000", "33,200"],
+              ["Emergency Examination", "223,000", "33,200"],
+              ["Health Consultation", "113,000", "-"],
+            ].map(([name, price, hi], i) => (
+              <tr key={i}>
+                <td className="fw-semibold">{name}</td>
+
+                <td className="text-end">
+                  <div className="fw-bold text-success">{price}</div>
+                  <div className="d-md-none small text-muted">
+                    HI: {hi}
+                  </div>
+                </td>
+
+                <td className="d-none d-md-table-cell text-end text-muted">
+                  {hi}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
@@ -81,7 +86,14 @@ export default function Services() {
             ].map(([name, price, hi], i) => (
               <tr key={i}>
                 <td className="fw-semibold">{name}</td>
-                <td className="text-end fw-bold text-success">{price}</td>
+
+                <td className="text-end">
+                  <div className="fw-bold text-success">{price}</div>
+                  <div className="d-md-none small text-muted">
+                    HI: {hi}
+                  </div>
+                </td>
+
                 <td className="d-none d-md-table-cell text-end text-muted">
                   {hi}
                 </td>
@@ -126,7 +138,14 @@ export default function Services() {
             ].map(([name, price, hi], i) => (
               <tr key={i}>
                 <td className="fw-semibold">{name}</td>
-                <td className="text-end fw-bold text-success">{price}</td>
+
+                <td className="text-end">
+                  <div className="fw-bold text-success">{price}</div>
+                  <div className="d-md-none small text-muted">
+                    HI: {hi}
+                  </div>
+                </td>
+
                 <td className="d-none d-md-table-cell text-end text-muted">
                   {hi}
                 </td>
@@ -162,8 +181,17 @@ export default function Services() {
             ].map(([name, price, hi], i) => (
               <tr key={i}>
                 <td className="fw-semibold">{name}</td>
-                <td className="text-end fw-bold text-success">{price}</td>
-                <td className="d-none d-md-table-cell text-end">{hi}</td>
+
+                <td className="text-end">
+                  <div className="fw-bold text-success">{price}</div>
+                  <div className="d-md-none small text-muted">
+                    HI: {hi}
+                  </div>
+                </td>
+
+                <td className="d-none d-md-table-cell text-end">
+                  {hi}
+                </td>
               </tr>
             ))}
           </tbody>
