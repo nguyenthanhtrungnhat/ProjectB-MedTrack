@@ -17,9 +17,8 @@ CREATE TABLE `user` (
   `dob` date DEFAULT NULL,
   `phone` varchar(15) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
-  `CCCD` varchar(20) DEFAULT NULL,
+  `CIC` varchar(20) DEFAULT NULL,
   `address` varchar(100) DEFAULT NULL,
-  `haveTask` date DEFAULT NULL,
   `gender` int DEFAULT NULL,
   `isActive` TINYINT(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`userID`)
@@ -93,7 +92,7 @@ CREATE TABLE `feedback` (
 -- 9. PATIENT table
 CREATE TABLE `patient` (
   `patientID` int NOT NULL AUTO_INCREMENT,
-  `BHYT` varchar(100) DEFAULT NULL,
+  `HI` varchar(100) DEFAULT NULL,
   `admissionDate` timestamp NULL DEFAULT NULL,
   `dischargeDate` timestamp NULL DEFAULT NULL,
   `hospitalizationsDiagnosis` varchar(2000) DEFAULT NULL,
@@ -240,11 +239,11 @@ ALTER TABLE `scheduleRequest`
 -- ===================== INSERT DATA =====================
 
 -- 1. USER table
-INSERT INTO `user` (`userID`,`username`,`password`,`fullName`,`dob`,`phone`,`email`,`CCCD`,`address`,`haveTask`,`gender`) VALUES
-(1,'nguyen thanh trung nhat','1','nguyen thanh trung nhat','1999-02-28','0922639956','nhat@gmail.com','1212312312312','28/17 khu 5 p. Binh Duong tp. HCM',NULL,1),
-(2,'Phan dinh hieu thao','1','Phan dinh hieu thao','1999-02-28','13123','thao@gmail.com','123123','23123',NULL,1),
-(3,'Huyen Thanh','1','Huyen Thanh','1999-11-01','1231231231','huyen@gmail.com','123','13123',NULL,2),
-(4,'Phu Tan','1','Dang Phu Tan',NULL,NULL,'tan@gmail.com',NULL,NULL,NULL,NULL);
+INSERT INTO `user` (`userID`,`username`,`password`,`fullName`,`dob`,`phone`,`email`,`CIC`,`address`,`gender`) VALUES
+(1,'nguyen thanh trung nhat','1','nguyen thanh trung nhat','1999-02-28','0922639956','nhat@gmail.com','1212312312312','28/17 khu 5 p. Binh Duong tp. HCM',1),
+(2,'Phan dinh hieu thao','1','Phan dinh hieu thao','1999-02-28','13123','thao@gmail.com','123123','23123',1),
+(3,'Huyen Thanh','1','Huyen Thanh','1999-11-01','1231231231','huyen@gmail.com','123','13123',2),
+(4,'Phu Tan','1','Dang Phu Tan',NULL,NULL,'tan@gmail.com',NULL,NULL,NULL);
 
 -- 2. ROLE table
 INSERT INTO `role` (`roleID`,`nameRole`) VALUES 
@@ -280,7 +279,7 @@ INSERT INTO `feedback` (`feedBackID`,`feedBackForFacility`,`feedBackForDoctor`,`
 (3,'Poor service','Poor doctor','Poor nurse');
 
 -- 9. PATIENT table
-INSERT INTO `patient` (`patientID`,`BHYT`,`admissionDate`,`dischargeDate`,`hospitalizationsDiagnosis`,`summaryCondition`,`dischargeDiagnosis`,`relativeName`,`relativeNumber`,`userID`,`feedBackID`,`image`) VALUES
+INSERT INTO `patient` (`patientID`,`HI`,`admissionDate`,`dischargeDate`,`hospitalizationsDiagnosis`,`summaryCondition`,`dischargeDiagnosis`,`relativeName`,`relativeNumber`,`userID`,`feedBackID`,`image`) VALUES
 (1,'123123123123','1999-02-27 17:00:00','1999-02-27 17:00:00','asdadasd','asdasdasd','asdasdasda','adasd',12312,2,2,'img'),
 (2,'1231313123','1999-02-27 17:00:00','1999-02-27 17:00:00','asdasdaadsadasd','asdad','asdasdasd','asdasd',2323,3,3,NULL);
 
