@@ -19,7 +19,7 @@ const getUserIDFromToken = () => {
 export default function CompletePatientForm({ onCompleted }: { onCompleted?: () => void }) {
     const navigate = useNavigate();
     const [form, setForm] = useState({
-        cccd: "",
+        CIC: "",
         fullName: "",
         gender: "",
         dob: "",
@@ -47,7 +47,7 @@ export default function CompletePatientForm({ onCompleted }: { onCompleted?: () 
         const data = decodedText.split("|");
         setForm((prev) => ({
             ...prev,
-            cccd: data[0] || prev.cccd,
+            CIC: data[0] || prev.CIC,
             HI: data[1] || prev.HI,
             fullName: data[2] || prev.fullName,
             dob:
@@ -83,7 +83,7 @@ export default function CompletePatientForm({ onCompleted }: { onCompleted?: () 
                 `http://localhost:3000/api/patient/complete`,
                 {
                     ...form,
-                    CCCD: form.cccd,
+                    CIC: form.CIC,
                     userID,
                 },
                 { headers: { Authorization: `Bearer ${token}` } }
@@ -94,7 +94,7 @@ export default function CompletePatientForm({ onCompleted }: { onCompleted?: () 
                 setToast({ message: "Personal information saved successfully!", type: "success" });
 
                 setForm({
-                    cccd: "",
+                    CIC: "",
                     fullName: "",
                     gender: "",
                     dob: "",
@@ -167,12 +167,12 @@ export default function CompletePatientForm({ onCompleted }: { onCompleted?: () 
                 <div className="col-lg-6">
                     <form onSubmit={handleSubmit} className="row g-3">
                         <div className="col-md-6">
-                            <label className="form-label">Citizen ID (CCCD)</label>
+                            <label className="form-label">Citizen ID (CIC)</label>
                             <input
                                 type="text"
-                                name="cccd"
+                                name="CIC"
                                 className="form-control"
-                                value={form.cccd}
+                                value={form.CIC}
                                 onChange={handleChange}
                                 readOnly
                             />
